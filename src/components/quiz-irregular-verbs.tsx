@@ -21,7 +21,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { updateStats } from "@/lib/storage";
+import { updateStats, addError } from "@/lib/storage";
 
 
 function shuffleArray<T>(array: T[]): T[] {
@@ -47,6 +47,7 @@ export default function QuizIrregularVerbs() {
   const [form3Input, setForm3Input] = useState("");
 
   const [answerStatus, setAnswerStatus] = useState<"correct" | "incorrect" | "timeout" | null>(null);
+  const [translationStatus, setTranslationStatus] = useState<"correct" | "incorrect" | null>(null);
   const [isRestartAlertOpen, setIsRestartAlertOpen] = useState(false);
   const [isHomeAlertOpen, setIsHomeAlertOpen] = useState(false);
   const [questionTimer, setQuestionTimer] = useState(QUESTION_TIME_LIMIT);
@@ -69,6 +70,7 @@ export default function QuizIrregularVerbs() {
         setSelectedTranslation(null);
         setForm2Input("");
         setForm3Input("");
+        setTranslationStatus(null);
         setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
         setQuestionTimer(QUESTION_TIME_LIMIT);
       }, 3000);
@@ -88,6 +90,12 @@ export default function QuizIrregularVerbs() {
           setAnswerStatus("timeout");
           setSelectedTranslation(null);
           updateStats(false);
+          addError({
+            word: currentQuestion.verb,
+            userAnswer: 'No answer',
+            correctAnswer: `${currentQuestion.correctTranslation}, ${currentQuestion.form2}, ${currentQuestion.form3}`,
+            quiz: 'Irregular Verbs',
+          });
           return 0;
         }
         return prev - 1;
@@ -124,13 +132,34 @@ export default function QuizIrregularVerbs() {
     }
   }, [answerStatus, currentQuestion]);
   
+  const handleTranslationClick = (option: string) => {
+    if (answerStatus || isPaused || translationStatus) return;
+
+    setSelectedTranslation(option);
+    const isCorrect = option === currentQuestion.correctTranslation;
+
+    if (isCorrect) {
+      setTranslationStatus('correct');
+      form2InputRef.current?.focus();
+    } else {
+      setTranslationStatus('incorrect');
+      setAnswerStatus('incorrect');
+      updateStats(false);
+      addError({
+        word: currentQuestion.verb,
+        userAnswer: `Translation: ${option}`,
+        correctAnswer: `Translation: ${currentQuestion.correctTranslation}`,
+        quiz: 'Irregular Verbs',
+      });
+    }
+  };
+  
   const handleConfirmClick = () => {
     if (answerStatus || isPaused) return;
 
-    const isTranslationCorrect = selectedTranslation === currentQuestion.correctTranslation;
     const isForm2Correct = form2Input.trim().toLowerCase() === currentQuestion.form2.toLowerCase();
     const isForm3Correct = form3Input.trim().toLowerCase() === currentQuestion.form3.toLowerCase();
-    const isCorrect = isTranslationCorrect && isForm2Correct && isForm3Correct;
+    const isCorrect = isForm2Correct && isForm3Correct;
 
     updateStats(isCorrect);
 
@@ -139,6 +168,12 @@ export default function QuizIrregularVerbs() {
       setAnswerStatus("correct");
     } else {
       setAnswerStatus("incorrect");
+       addError({
+        word: currentQuestion.verb,
+        userAnswer: `Forms: ${form2Input}, ${form3Input}`,
+        correctAnswer: `Forms: ${currentQuestion.form2}, ${currentQuestion.form3}`,
+        quiz: 'Irregular Verbs',
+      });
     }
   };
 
@@ -177,6 +212,7 @@ export default function QuizIrregularVerbs() {
     setForm2Input("");
     setForm3Input("");
     setAnswerStatus(null);
+    setTranslationStatus(null);
     setQuestionTimer(QUESTION_TIME_LIMIT);
     setTotalTime(0);
     setIsPaused(false);
@@ -189,25 +225,34 @@ export default function QuizIrregularVerbs() {
   }
 
   const getTranslationButtonClass = (option: string) => {
-    if (!answerStatus) {
-      if (selectedTranslation === option) return "bg-accent text-accent-foreground ring-2 ring-primary";
-      return "bg-primary text-primary-foreground hover:bg-primary/90";
-    }
-
     const isCorrectAnswer = option === currentQuestion.correctTranslation;
+    const isSelectedAnswer = option === selectedTranslation;
 
-    if (answerStatus === 'timeout') {
-        if(isCorrectAnswer) return "bg-success text-success-foreground hover:bg-success/90";
+    if (answerStatus) {
+        if (answerStatus === 'timeout') {
+            if(isCorrectAnswer) return "bg-success text-success-foreground hover:bg-success/90";
+            return "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
+        }
+
+        if (isCorrectAnswer) {
+          return "bg-success text-success-foreground hover:bg-success/90";
+        }
+        if (isSelectedAnswer && !isCorrectAnswer) {
+          return "bg-destructive text-destructive-foreground hover:bg-destructive/90";
+        }
         return "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
     }
 
-    if (isCorrectAnswer) {
-      return "bg-success text-success-foreground hover:bg-success/90";
+    if (translationStatus && isSelectedAnswer) {
+      return translationStatus === 'correct' 
+          ? "bg-success text-success-foreground" 
+          : "bg-destructive text-destructive-foreground";
     }
-    if (selectedTranslation === option && !isCorrectAnswer) {
-      return "bg-destructive text-destructive-foreground hover:bg-destructive/90";
+    if (translationStatus && !isSelectedAnswer) {
+      return "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
     }
-    return "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
+
+    return "bg-primary text-primary-foreground hover:bg-primary/90";
   };
 
   const getInputClass = (inputValue: string, correctValue: string) => {
@@ -286,8 +331,8 @@ export default function QuizIrregularVerbs() {
               {currentQuestion.translationOptions.map((option) => (
                 <Button
                   key={option}
-                  onClick={() => setSelectedTranslation(option)}
-                  disabled={!!answerStatus || isPaused}
+                  onClick={() => handleTranslationClick(option)}
+                  disabled={!!answerStatus || isPaused || translationStatus !== null}
                   className={cn("h-auto text-base p-2 whitespace-normal transition-all duration-300", getTranslationButtonClass(option))}
                 >
                   {option}
@@ -303,14 +348,14 @@ export default function QuizIrregularVerbs() {
                 value={form2Input}
                 onChange={(e) => setForm2Input(e.target.value)}
                 placeholder="Past Simple"
-                disabled={!!answerStatus || isPaused}
+                disabled={!!answerStatus || isPaused || translationStatus !== 'correct'}
                 className={cn("text-center transition-colors duration-300", getInputClass(form2Input, currentQuestion.form2))}
               />
               <Input
                 value={form3Input}
                 onChange={(e) => setForm3Input(e.target.value)}
                 placeholder="Past Participle"
-                disabled={!!answerStatus || isPaused}
+                disabled={!!answerStatus || isPaused || translationStatus !== 'correct'}
                 className={cn("text-center transition-colors duration-300", getInputClass(form3Input, currentQuestion.form3))}
               />
             </div>
@@ -319,14 +364,16 @@ export default function QuizIrregularVerbs() {
                   Correct forms: {currentQuestion.form2}, {currentQuestion.form3}
               </div>
             )}
-
-            <Button 
-                className="w-full mt-4 h-12 text-lg"
-                onClick={handleConfirmClick}
-                disabled={!!answerStatus || isPaused || !selectedTranslation || !form2Input || !form3Input}
-            >
-                Confirm Answer
-            </Button>
+            
+            {translationStatus === 'correct' && (
+              <Button 
+                  className="w-full mt-4 h-12 text-lg"
+                  onClick={handleConfirmClick}
+                  disabled={!!answerStatus || isPaused || !form2Input || !form3Input}
+              >
+                  Confirm Answer
+              </Button>
+            )}
           </div>
 
           <div className="flex justify-center gap-4 w-full pt-4 border-t">
@@ -399,5 +446,3 @@ export default function QuizIrregularVerbs() {
     </>
   );
 }
-
-    

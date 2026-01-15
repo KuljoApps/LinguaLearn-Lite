@@ -1,7 +1,7 @@
-import { BookOpen, Dumbbell, Sparkles } from 'lucide-react';
+import { BookOpen, Dumbbell, Sparkles, Settings, BarChart, ShieldX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 
 const BrainCircuit = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -64,6 +64,23 @@ export default function Home() {
                     </Button>
                 </Link>
             </CardContent>
+            <CardFooter className="flex justify-center gap-4 p-6 pt-0">
+                <Link href="/settings" passHref>
+                    <Button variant="outline" size="icon">
+                        <Settings />
+                    </Button>
+                </Link>
+                <Link href="/stats" passHref>
+                    <Button variant="outline" size="icon">
+                        <BarChart />
+                    </Button>
+                </Link>
+                <Link href="/errors" passHref>
+                    <Button variant="outline" size="icon">
+                        <ShieldX />
+                    </Button>
+                </Link>
+            </CardFooter>
         </Card>
     </main>
   );

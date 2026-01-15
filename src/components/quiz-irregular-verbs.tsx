@@ -32,8 +32,8 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const QUESTION_TIME_LIMIT = 30;
-const PAUSE_PENALTY = 5;
-const MIN_TIME_FOR_PAUSE = 6;
+const PAUSE_PENALTY = 10;
+const MIN_TIME_FOR_PAUSE = 11;
 
 
 export default function QuizIrregularVerbs() {

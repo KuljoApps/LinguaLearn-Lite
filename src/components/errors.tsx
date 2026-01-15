@@ -18,6 +18,13 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface AggregatedError {
     word: string;
@@ -27,14 +34,24 @@ interface AggregatedError {
     userAnswers: Set<string>;
 }
 
+type QuizFilter = 'all' | 'English - Polish' | 'Polish - English' | 'Irregular Verbs';
+
 export default function ErrorsPage() {
     const [errors, setErrors] = useState<ErrorRecord[]>([]);
     const [isClearAlertOpen, setIsClearAlertOpen] = useState(false);
     const [view, setView] = useState<'latest' | 'frequent'>('latest');
+    const [quizFilter, setQuizFilter] = useState<QuizFilter>('all');
 
     useEffect(() => {
         setErrors(getErrors());
     }, []);
+
+    const filteredErrors = useMemo(() => {
+        if (quizFilter === 'all') {
+            return errors;
+        }
+        return errors.filter(error => error.quiz === quizFilter);
+    }, [errors, quizFilter]);
 
     const handleClearErrors = () => {
         clearErrors();
@@ -47,7 +64,7 @@ export default function ErrorsPage() {
 
         const errorCounts = new Map<string, AggregatedError>();
 
-        for (const error of errors) {
+        for (const error of filteredErrors) {
             const key = `${error.word}|${error.correctAnswer}|${error.quiz}`;
             let entry = errorCounts.get(key);
 
@@ -69,11 +86,11 @@ export default function ErrorsPage() {
         }
         
         return Array.from(errorCounts.values()).sort((a, b) => b.count - a.count);
-    }, [errors, view]);
+    }, [filteredErrors, view]);
 
     const renderTable = () => {
-        if (errors.length === 0) {
-            return <p className="text-center text-muted-foreground pt-10">No errors recorded yet. Keep practicing!</p>;
+        if (filteredErrors.length === 0) {
+            return <p className="text-center text-muted-foreground pt-10">No errors recorded for this filter.</p>;
         }
 
         if (view === 'frequent') {
@@ -116,7 +133,7 @@ export default function ErrorsPage() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {errors.map((error) => (
+                    {filteredErrors.map((error) => (
                         <TableRow key={error.id}>
                             <TableCell className="font-medium">{error.word}</TableCell>
                             <TableCell className="text-destructive">{error.userAnswer}</TableCell>
@@ -135,10 +152,23 @@ export default function ErrorsPage() {
                 <CardHeader>
                     <div className="flex justify-between items-center">
                         <CardTitle className="text-3xl">Common Errors</CardTitle>
-                         <Button variant="outline" onClick={() => setView(view === 'latest' ? 'frequent' : 'latest')}>
-                            <ArrowUpDown className="mr-2 h-4 w-4" />
-                            View {view === 'latest' ? 'Most Frequent' : 'Latest'}
-                        </Button>
+                        <div className="flex items-center gap-2">
+                            <Select value={quizFilter} onValueChange={(value) => setQuizFilter(value as QuizFilter)}>
+                                <SelectTrigger className="w-[180px]">
+                                    <SelectValue placeholder="Filter by quiz" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">All Quizzes</SelectItem>
+                                    <SelectItem value="English - Polish">English - Polish</SelectItem>
+                                    <SelectItem value="Polish - English">Polish - English</SelectItem>
+                                    <SelectItem value="Irregular Verbs">Irregular Verbs</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <Button variant="outline" onClick={() => setView(view === 'latest' ? 'frequent' : 'latest')}>
+                                <ArrowUpDown className="mr-2 h-4 w-4" />
+                                View {view === 'latest' ? 'Most Frequent' : 'Latest'}
+                            </Button>
+                        </div>
                     </div>
                 </CardHeader>
                 <CardContent>

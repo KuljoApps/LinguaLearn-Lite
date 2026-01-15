@@ -3,6 +3,9 @@
 export interface Stats {
     totalAnswers: number;
     totalErrors: number;
+    longestStreak: number;
+    currentStreak: number;
+    lastFiftyAnswers: boolean[];
 }
 
 export interface ErrorRecord {
@@ -19,8 +22,9 @@ const ERRORS_KEY = 'linguaLearnErrors';
 // --- Stats Functions ---
 
 export const getStats = (): Stats => {
+    const defaultStats = { totalAnswers: 0, totalErrors: 0, longestStreak: 0, currentStreak: 0, lastFiftyAnswers: [] };
     if (typeof window === 'undefined') {
-        return { totalAnswers: 0, totalErrors: 0 };
+        return defaultStats;
     }
     try {
         const statsJson = localStorage.getItem(STATS_KEY);
@@ -28,22 +32,37 @@ export const getStats = (): Stats => {
             const stats = JSON.parse(statsJson);
             return {
                 totalAnswers: Number(stats.totalAnswers) || 0,
-                totalErrors: Number(stats.totalErrors) || 0
+                totalErrors: Number(stats.totalErrors) || 0,
+                longestStreak: Number(stats.longestStreak) || 0,
+                currentStreak: Number(stats.currentStreak) || 0,
+                lastFiftyAnswers: Array.isArray(stats.lastFiftyAnswers) ? stats.lastFiftyAnswers : [],
             };
         }
     } catch (error) {
         console.error("Failed to parse stats from localStorage", error);
     }
-    return { totalAnswers: 0, totalErrors: 0 };
+    return defaultStats;
 };
 
 export const updateStats = (isCorrect: boolean) => {
     if (typeof window === 'undefined') return;
     const stats = getStats();
     stats.totalAnswers += 1;
-    if (!isCorrect) {
+
+    if (isCorrect) {
+        stats.currentStreak += 1;
+    } else {
         stats.totalErrors += 1;
+        stats.currentStreak = 0;
     }
+    
+    stats.longestStreak = Math.max(stats.longestStreak, stats.currentStreak);
+    
+    stats.lastFiftyAnswers.unshift(isCorrect);
+    if (stats.lastFiftyAnswers.length > 50) {
+        stats.lastFiftyAnswers.pop();
+    }
+
     try {
         localStorage.setItem(STATS_KEY, JSON.stringify(stats));
     } catch (error) {

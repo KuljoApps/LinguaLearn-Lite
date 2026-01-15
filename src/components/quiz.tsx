@@ -219,18 +219,18 @@ export default function Quiz() {
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center p-6 space-y-8">
             <div className="w-full flex justify-around gap-4 text-center">
-                <div className="flex items-center gap-2 text-muted-foreground">
+                <div className="flex items-center gap-2 text-card-foreground">
                     <Clock className="h-6 w-6" />
                     <span className={cn(
-                        "text-2xl font-bold transition-colors duration-300 text-muted-foreground",
+                        "text-2xl font-bold transition-colors duration-300",
                         showTimePenalty && "text-destructive animate-in fade-in-0 shake-sm"
                     )}>
                         {questionTimer}s
                     </span>
                 </div>
-                <div className="flex items-center gap-2 text-muted-foreground">
+                <div className="flex items-center gap-2 text-card-foreground">
                     <Clock className="h-6 w-6" />
-                    <span className="text-2xl font-bold text-muted-foreground">{formatTime(totalTime)}</span>
+                    <span className="text-2xl font-bold">{formatTime(totalTime)}</span>
                 </div>
             </div>
             <Progress value={questionTimeProgress} className="w-full h-2" />

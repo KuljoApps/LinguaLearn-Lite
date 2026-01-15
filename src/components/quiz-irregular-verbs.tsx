@@ -113,8 +113,14 @@ export default function QuizIrregularVerbs() {
     }
   }, [currentQuestionIndex, isPaused, answerStatus, questions.length]);
 
-
   const currentQuestion = useMemo(() => questions[currentQuestionIndex], [questions, currentQuestionIndex]);
+
+  useEffect(() => {
+    if (answerStatus === 'timeout') {
+      setForm2Input(currentQuestion.form2);
+      setForm3Input(currentQuestion.form3);
+    }
+  }, [answerStatus, currentQuestion]);
   
   const handleConfirmClick = () => {
     if (answerStatus || isPaused) return;
@@ -202,7 +208,9 @@ export default function QuizIrregularVerbs() {
   const getInputClass = (inputValue: string, correctValue: string) => {
     if (!answerStatus) return "";
     
-    if (answerStatus === 'timeout') return "bg-destructive/70 text-destructive-foreground";
+    if (answerStatus === 'timeout') {
+      return "bg-success text-success-foreground";
+    }
 
     const isCorrect = inputValue.trim().toLowerCase() === correctValue.toLowerCase();
 
@@ -301,7 +309,7 @@ export default function QuizIrregularVerbs() {
                 className={cn("text-center transition-colors duration-300", getInputClass(form3Input, currentQuestion.form3))}
               />
             </div>
-            {(answerStatus === 'incorrect' || answerStatus === 'timeout') && (
+            {(answerStatus === 'incorrect' || (answerStatus === 'timeout' && !form2Input && !form3Input)) && (
               <div className="text-center text-success font-medium animate-in fade-in">
                   Correct forms: {currentQuestion.form2}, {currentQuestion.form3}
               </div>
@@ -386,5 +394,7 @@ export default function QuizIrregularVerbs() {
     </>
   );
 }
+
+    
 
     

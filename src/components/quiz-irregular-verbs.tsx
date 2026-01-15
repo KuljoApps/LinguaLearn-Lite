@@ -125,6 +125,12 @@ export default function QuizIrregularVerbs() {
       setForm3Input(currentQuestion.form3);
     }
   }, [answerStatus, currentQuestion]);
+
+  useEffect(() => {
+    if (translationStatus === 'correct') {
+      form2InputRef.current?.focus();
+    }
+  }, [translationStatus]);
   
   const handleTranslationClick = (option: string) => {
     if (answerStatus || isPaused || translationStatus) return;
@@ -134,7 +140,6 @@ export default function QuizIrregularVerbs() {
 
     if (isCorrect) {
       setTranslationStatus('correct');
-      form2InputRef.current?.focus();
     } else {
       setTranslationStatus('incorrect');
       setAnswerStatus('incorrect');

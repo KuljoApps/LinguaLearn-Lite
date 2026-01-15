@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Link from "next/link";
-import { ArrowLeft, Trash2 } from "lucide-react";
+import { ArrowLeft, Trash2, ArrowUpDown } from "lucide-react";
 import { getErrors, clearErrors, type ErrorRecord } from '@/lib/storage';
 import {
   AlertDialog,
@@ -19,9 +19,18 @@ import {
 } from "@/components/ui/alert-dialog";
 import { ScrollArea } from '@/components/ui/scroll-area';
 
+interface AggregatedError {
+    word: string;
+    correctAnswer: string;
+    quiz: string;
+    count: number;
+    userAnswers: Set<string>;
+}
+
 export default function ErrorsPage() {
     const [errors, setErrors] = useState<ErrorRecord[]>([]);
     const [isClearAlertOpen, setIsClearAlertOpen] = useState(false);
+    const [view, setView] = useState<'latest' | 'frequent'>('latest');
 
     useEffect(() => {
         setErrors(getErrors());
@@ -33,39 +42,109 @@ export default function ErrorsPage() {
         setIsClearAlertOpen(false);
     }
 
+    const frequentErrors = useMemo((): AggregatedError[] => {
+        if (view !== 'frequent') return [];
+
+        const errorCounts = new Map<string, AggregatedError>();
+
+        for (const error of errors) {
+            const key = `${error.word}|${error.correctAnswer}|${error.quiz}`;
+            let entry = errorCounts.get(key);
+
+            if (!entry) {
+                entry = {
+                    word: error.word,
+                    correctAnswer: error.correctAnswer,
+                    quiz: error.quiz,
+                    count: 0,
+                    userAnswers: new Set<string>(),
+                };
+                errorCounts.set(key, entry);
+            }
+
+            entry.count++;
+            if (error.userAnswer && error.userAnswer !== 'No answer') {
+                entry.userAnswers.add(error.userAnswer);
+            }
+        }
+        
+        return Array.from(errorCounts.values()).sort((a, b) => b.count - a.count);
+    }, [errors, view]);
+
+    const renderTable = () => {
+        if (errors.length === 0) {
+            return <p className="text-center text-muted-foreground pt-10">No errors recorded yet. Keep practicing!</p>;
+        }
+
+        if (view === 'frequent') {
+            return (
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="w-[80px] text-center">Count</TableHead>
+                            <TableHead>Word</TableHead>
+                            <TableHead>Your Answers</TableHead>
+                            <TableHead>Correct Answer</TableHead>
+                            <TableHead>Quiz</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {frequentErrors.map((error, index) => (
+                            <TableRow key={index}>
+                                <TableCell className="font-bold text-center">{error.count}</TableCell>
+                                <TableCell className="font-medium">{error.word}</TableCell>
+                                <TableCell className="text-destructive max-w-xs break-words">
+                                    {Array.from(error.userAnswers).join(', ')}
+                                </TableCell>
+                                <TableCell className="text-success">{error.correctAnswer}</TableCell>
+                                <TableCell>{error.quiz}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            );
+        }
+
+        return (
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>Word</TableHead>
+                        <TableHead>Your Answer</TableHead>
+                        <TableHead>Correct Answer</TableHead>
+                        <TableHead>Quiz</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {errors.map((error) => (
+                        <TableRow key={error.id}>
+                            <TableCell className="font-medium">{error.word}</TableCell>
+                            <TableCell className="text-destructive">{error.userAnswer}</TableCell>
+                            <TableCell className="text-success">{error.correctAnswer}</TableCell>
+                            <TableCell>{error.quiz}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        );
+    }
+
     return (
         <>
-            <Card className="w-full max-w-2xl shadow-2xl">
+            <Card className="w-full max-w-4xl shadow-2xl">
                 <CardHeader>
-                    <CardTitle className="text-center text-3xl">Common Errors</CardTitle>
+                    <div className="flex justify-between items-center">
+                        <CardTitle className="text-3xl">Common Errors</CardTitle>
+                         <Button variant="outline" onClick={() => setView(view === 'latest' ? 'frequent' : 'latest')}>
+                            <ArrowUpDown className="mr-2 h-4 w-4" />
+                            View {view === 'latest' ? 'Most Frequent' : 'Latest'}
+                        </Button>
+                    </div>
                 </CardHeader>
                 <CardContent>
-                    {errors.length === 0 ? (
-                        <p className="text-center text-muted-foreground">No errors recorded yet. Keep practicing!</p>
-                    ) : (
-                        <ScrollArea className="h-72">
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Word</TableHead>
-                                        <TableHead>Your Answer</TableHead>
-                                        <TableHead>Correct Answer</TableHead>
-                                        <TableHead>Quiz</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {errors.map((error) => (
-                                        <TableRow key={error.id}>
-                                            <TableCell className="font-medium">{error.word}</TableCell>
-                                            <TableCell className="text-destructive">{error.userAnswer}</TableCell>
-                                            <TableCell className="text-success">{error.correctAnswer}</TableCell>
-                                            <TableCell>{error.quiz}</TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </ScrollArea>
-                    )}
+                    <ScrollArea className="h-96">
+                        {renderTable()}
+                    </ScrollArea>
                 </CardContent>
                 <CardFooter className="flex justify-center gap-4 pt-6">
                     <Link href="/" passHref>

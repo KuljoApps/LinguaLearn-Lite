@@ -1,4 +1,4 @@
-import { BookOpen, Dumbbell, Sparkles, Settings, BarChart, ShieldX } from 'lucide-react';
+import { BookOpen, Dumbbell, Sparkles, Settings, BarChart, ShieldX, MessageSquareQuote } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -61,6 +61,12 @@ export default function Home() {
                     <Button className="w-full h-12 text-lg" size="lg">
                         <Sparkles className="mr-2 h-5 w-5" />
                         Irregular Verbs
+                    </Button>
+                </Link>
+                <Link href="/quiz/idioms" passHref>
+                    <Button className="w-full h-12 text-lg" size="lg">
+                        <MessageSquareQuote className="mr-2 h-5 w-5" />
+                        Idioms
                     </Button>
                 </Link>
             </CardContent>

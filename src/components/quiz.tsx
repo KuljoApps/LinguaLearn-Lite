@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
@@ -8,6 +9,18 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import Link from 'next/link';
+import { useRouter } from "next/navigation";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
@@ -24,6 +37,9 @@ export default function Quiz() {
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [answerStatus, setAnswerStatus] = useState<"correct" | "incorrect" | null>(null);
+  const [isRestartAlertOpen, setIsRestartAlertOpen] = useState(false);
+  const [isHomeAlertOpen, setIsHomeAlertOpen] = useState(false);
+  const router = useRouter();
   
   useEffect(() => {
     setQuestions(shuffleArray(initialQuestions));
@@ -55,12 +71,33 @@ export default function Quiz() {
     }
   };
 
+  const handleRestartClick = () => {
+    if (currentQuestionIndex > 0) {
+      setIsRestartAlertOpen(true);
+    } else {
+      restartTest();
+    }
+  };
+  
+  const handleHomeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (currentQuestionIndex > 0) {
+      e.preventDefault();
+      setIsHomeAlertOpen(true);
+    }
+  };
+
   const restartTest = () => {
     setQuestions(shuffleArray(initialQuestions));
     setCurrentQuestionIndex(0);
     setScore(0);
     setSelectedAnswer(null);
     setAnswerStatus(null);
+    setIsRestartAlertOpen(false);
+  }
+
+  const goHome = () => {
+    setIsHomeAlertOpen(false);
+    router.push('/');
   }
 
   const getButtonClass = (option: string) => {
@@ -99,63 +136,95 @@ export default function Quiz() {
   const progressValue = ((currentQuestionIndex + 1) / questions.length) * 100;
 
   return (
-    <Card className="w-full max-w-lg shadow-2xl">
-      <CardHeader className="text-center">
-        <div className="flex items-center justify-center gap-2">
-            <BrainCircuit className="h-8 w-8 text-primary" />
-            <CardTitle className="text-3xl font-bold tracking-tight">LinguaLearn</CardTitle>
-        </div>
-        <CardDescription>Select the correct translation.</CardDescription>
-      </CardHeader>
-      <CardContent className="flex flex-col items-center justify-center p-6 space-y-8">
-        <div className="text-center space-y-2">
-            <p className="text-muted-foreground">What is the Polish meaning of</p>
-            <p className="text-4xl font-headline font-bold text-card-foreground">"{currentQuestion.word}"?</p>
-        </div>
+    <>
+      <Card className="w-full max-w-lg shadow-2xl">
+        <CardHeader className="text-center">
+          <div className="flex items-center justify-center gap-2">
+              <BrainCircuit className="h-8 w-8 text-primary" />
+              <CardTitle className="text-3xl font-bold tracking-tight">LinguaLearn</CardTitle>
+          </div>
+          <CardDescription>Select the correct translation.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center justify-center p-6 space-y-8">
+          <div className="text-center space-y-2">
+              <p className="text-muted-foreground">What is the Polish meaning of</p>
+              <p className="text-4xl font-headline font-bold text-card-foreground">"{currentQuestion.word}"?</p>
+          </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-          {currentQuestion.options.map((option) => (
-            <Button
-              key={option}
-              onClick={() => handleAnswerClick(option)}
-              disabled={!!answerStatus}
-              className={cn("h-auto text-base p-4 whitespace-normal transition-all duration-300", getButtonClass(option))}
-            >
-              {option}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+            {currentQuestion.options.map((option) => (
+              <Button
+                key={option}
+                onClick={() => handleAnswerClick(option)}
+                disabled={!!answerStatus}
+                className={cn("h-auto text-base p-4 whitespace-normal transition-all duration-300", getButtonClass(option))}
+              >
+                {option}
+              </Button>
+            ))}
+          </div>
+          <div className="flex justify-center gap-4 w-full pt-4 border-t">
+            <Link href="/" passHref>
+              <Button variant="outline" size="icon" onClick={handleHomeClick}>
+                <Home />
+              </Button>
+            </Link>
+            <Button variant="outline" size="icon" onClick={handleRestartClick}>
+              <RefreshCw />
             </Button>
-          ))}
-        </div>
-        <div className="flex justify-center gap-4 w-full pt-4 border-t">
-          <Link href="/" passHref>
-            <Button variant="outline" size="icon">
-              <Home />
+            <Button variant="outline" size="icon" disabled>
+              <Pause />
             </Button>
-          </Link>
-          <Button variant="outline" size="icon" onClick={restartTest}>
-            <RefreshCw />
-          </Button>
-          <Button variant="outline" size="icon" disabled>
-            <Pause />
-          </Button>
-        </div>
-      </CardContent>
-      <CardFooter className="flex-col gap-4 p-6 pt-0">
-        <div className="flex justify-between w-full items-center">
-            <div className="text-sm text-muted-foreground">
-                Question {currentQuestionIndex + 1} of {questions.length}
-            </div>
-            <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">Score:</span>
-                <div
-                    key={score}
-                    className="text-2xl font-bold text-primary animate-in fade-in zoom-in-125 duration-300"
-                >
-                    {score}
-                </div>
-            </div>
-        </div>
-        <Progress value={progressValue} className="w-full h-2" />
-      </CardFooter>
-    </Card>
+          </div>
+        </CardContent>
+        <CardFooter className="flex-col gap-4 p-6 pt-0">
+          <div className="flex justify-between w-full items-center">
+              <div className="text-sm text-muted-foreground">
+                  Question {currentQuestionIndex + 1} of {questions.length}
+              </div>
+              <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium">Score:</span>
+                  <div
+                      key={score}
+                      className="text-2xl font-bold text-primary animate-in fade-in zoom-in-125 duration-300"
+                  >
+                      {score}
+                  </div>
+              </div>
+          </div>
+          <Progress value={progressValue} className="w-full h-2" />
+        </CardFooter>
+      </Card>
+      
+      <AlertDialog open={isRestartAlertOpen} onOpenChange={setIsRestartAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure you want to restart?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will restart the quiz and all your current progress will be lost.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={restartTest}>Restart</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={isHomeAlertOpen} onOpenChange={setIsHomeAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure you want to go home?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will end the current quiz and all your progress will be lost.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={goHome}>Go to Home</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }

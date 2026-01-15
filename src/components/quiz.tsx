@@ -191,7 +191,7 @@ export default function Quiz() {
             <Progress value={questionTimeProgress} className="w-full h-2" />
 
           <div className="text-center space-y-2">
-              <p className="text-muted-foreground">What is the Polish meaning of</p>
+              <p className="text-muted-foreground">What is the English meaning of</p>
               <p className="text-4xl font-headline font-bold text-card-foreground">"{currentQuestion.word}"?</p>
           </div>
 

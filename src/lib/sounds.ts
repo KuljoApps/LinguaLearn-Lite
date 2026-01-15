@@ -15,6 +15,8 @@ export const playSound = (type: 'correct' | 'incorrect') => {
     gainNode.gain.setValueAtTime(0, audioContext.currentTime);
     gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.01);
 
+    oscillator.start(audioContext.currentTime);
+
     if (type === 'correct') {
         oscillator.type = 'triangle';
         oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
@@ -28,6 +30,4 @@ export const playSound = (type: 'correct' | 'incorrect') => {
         gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.2);
         oscillator.stop(audioContext.currentTime + 0.2);
     }
-
-    oscillator.start(audioContext.currentTime);
 };

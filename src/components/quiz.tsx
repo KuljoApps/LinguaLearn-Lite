@@ -56,7 +56,7 @@ export default function Quiz() {
 
   const getButtonClass = (option: string) => {
     if (!answerStatus) {
-      return "bg-secondary hover:bg-secondary/80";
+      return ""; // Uses default button variant (primary color)
     }
 
     const isCorrectAnswer = option === currentQuestion.correctAnswer;

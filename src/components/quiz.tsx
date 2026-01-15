@@ -56,15 +56,16 @@ export default function Quiz() {
   }, []);
 
   useEffect(() => {
+    let timer: NodeJS.Timeout;
     if (answerStatus) {
-      const timer = setTimeout(() => {
+      timer = setTimeout(() => {
         setAnswerStatus(null);
         setSelectedAnswer(null);
+        setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
         setQuestionTimer(QUESTION_TIME_LIMIT);
-        setCurrentQuestionIndex((prevIndex) => (prevIndex + 1));
       }, 1500);
-      return () => clearTimeout(timer);
     }
+    return () => clearTimeout(timer);
   }, [answerStatus]);
 
   useEffect(() => {
@@ -75,9 +76,9 @@ export default function Quiz() {
     const interval = setInterval(() => {
       setQuestionTimer((prev) => {
         if (prev <= 1) {
+          clearInterval(interval);
           setAnswerStatus("timeout");
           setSelectedAnswer(null);
-          clearInterval(interval);
           return 0;
         }
         return prev - 1;
@@ -85,7 +86,7 @@ export default function Quiz() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [currentQuestionIndex, questions.length, answerStatus, isPaused]);
+  }, [isPaused, answerStatus, currentQuestionIndex, questions.length]);
 
   useEffect(() => {
     if (currentQuestionIndex >= questions.length || isPaused) {
@@ -134,11 +135,11 @@ export default function Quiz() {
     if (!isPaused) {
       setIsPaused(true);
     } else {
+      setIsPaused(false);
       const newTime = Math.max(0, questionTimer - PAUSE_PENALTY);
       setQuestionTimer(newTime);
       setShowTimePenalty(true);
       setTimeout(() => setShowTimePenalty(false), 500);
-      setIsPaused(false);
     }
   }
 
@@ -218,8 +219,8 @@ export default function Quiz() {
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center p-6 space-y-8">
             <div className="w-full flex justify-around gap-4 text-center">
-                <div className="flex items-center gap-2">
-                    <Clock className="h-6 w-6 text-muted-foreground" />
+                <div className="flex items-center gap-2 text-muted-foreground">
+                    <Clock className="h-6 w-6" />
                     <span className={cn(
                         "text-2xl font-bold transition-colors duration-300",
                         showTimePenalty && "text-destructive animate-in fade-in-0 shake-sm"

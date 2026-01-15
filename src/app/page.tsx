@@ -1,7 +1,35 @@
-import { BrainCircuit, BookOpen, Dumbbell, Star } from 'lucide-react';
+import { BookOpen, Dumbbell, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+const BrainCircuit = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <defs>
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style={{stopColor: 'hsl(var(--chart-1))', stopOpacity:1}} />
+                <stop offset="100%" style={{stopColor: 'hsl(var(--chart-3))', stopOpacity:1}} />
+            </linearGradient>
+        </defs>
+        <path d="M12 5a3 3 0 1 0-5.997.125" stroke="url(#grad1)"/>
+        <path d="M12 5a3 3 0 1 1 5.997.125" stroke="url(#grad1)"/>
+        <path d="M15 5a3 3 0 0 0-3-3" />
+        <path d="M9 5a3 3 0 0 1 3-3" />
+        <path d="M12 12a3 3 0 1 0-5.997.125" />
+        <path d="M12 12a3 3 0 1 1 5.997.125" />
+        <path d="M15 12a3 3 0 0 0-3-3" />
+        <path d="M9 12a3 3 0 0 1 3-3" />
+        <path d="M12 19a3 3 0 1 0-5.997.125" />
+        <path d="M12 19a3 3 0 1 1 5.997.125" />
+        <path d="M15 19a3 3 0 0 0-3-3" />
+        <path d="M9 19a3 3 0 0 1 3-3" />
+        <path d="M6 7.65V10.35" />
+        <path d="M18 7.65V10.35" />
+        <path d="M6 14.65V17.35" />
+        <path d="M18 14.65V17.35" />
+    </svg>
+);
+
 
 export default function Home() {
   return (
@@ -9,7 +37,7 @@ export default function Home() {
         <Card className="w-full max-w-md shadow-2xl text-center">
             <CardHeader>
                 <div className="flex items-center justify-center gap-4 mb-4">
-                    <BrainCircuit className="h-12 w-12 text-primary" />
+                    <BrainCircuit />
                     <h1 className="text-4xl font-bold tracking-tight">LinguaLearn</h1>
                 </div>
                 <p className="text-muted-foreground">

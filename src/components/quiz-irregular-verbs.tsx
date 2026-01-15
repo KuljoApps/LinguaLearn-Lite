@@ -24,19 +24,30 @@ import {
 import { updateStats, addError } from "@/lib/storage";
 import { playSound } from "@/lib/sounds";
 
-const LinguaLearnLogo = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <defs>
-            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{stopColor: 'hsl(var(--chart-2))', stopOpacity:1}} />
-                <stop offset="100%" style={{stopColor: 'hsl(var(--chart-4))', stopOpacity:1}} />
-            </linearGradient>
-        </defs>
-        <path d="M22 22H2" stroke="url(#grad1)" />
-        <path d="M19 22V9.33a2 2 0 0 0-.64-1.42l-5-5.01a2 2 0 0 0-2.72 0l-5 5.01A2 2 0 0 0 5 9.33V22" stroke="url(#grad1)" />
-        <path d="M9 13h6" stroke="url(#grad1)" />
-        <path d="M9 17h6" stroke="url(#grad1)" />
-        <path d="M15 22v-5a3 3 0 0 0-6 0v5" stroke="url(#grad1)" />
+const LinguaLearnLogo = (props) => (
+    <svg width="48" height="48" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+        {/* Book */}
+        <path d="M50 42C69.33 42 85 47.58 85 55.5V60.5C85 55.91 69.33 50.33 50 50.33C30.67 50.33 15 55.91 15 60.5V55.5C15 47.58 30.67 42 50 42Z" fill="hsl(var(--primary))"/>
+        <path d="M95 55.5C95 47.58 79.33 42 60 42V67C79.33 67 95 61.42 95 53.5V55.5Z" fill="hsl(var(--primary))"/>
+        <path d="M5 55.5C5 47.58 20.67 42 40 42V67C20.67 67 5 61.42 5 53.5V55.5Z" fill="hsl(var(--primary))"/>
+        <path d="M90 55.5C90 47.58 74.33 42 55 42V63C74.33 63 90 57.42 90 49.5V55.5Z" fill="white"/>
+        <path d="M10 55.5C10 47.58 25.67 42 45 42V63C25.67 63 10 57.42 10 49.5V55.5Z" fill="white"/>
+        <path d="M50 43.5V63" stroke="hsl(var(--primary))" strokeWidth="2"/>
+
+        {/* Mortarboard */}
+        <path d="M50 5L10 25L50 45L90 25L50 5Z" fill="hsl(var(--destructive))"/>
+        {/* White lines */}
+        <path d="M10 25L50 45L90 25" stroke="white" strokeWidth="4"/>
+        <path d="M50 5V45" stroke="white" strokeWidth="4"/>
+        <path d="M25.5 32L10 25L25.5 18" stroke="white" strokeWidth="4"/>
+        <path d="M74.5 32L90 25L74.5 18" stroke="white" strokeWidth="4"/>
+        {/* Blue outline */}
+        <path d="M50 5L10 25L50 45L90 25L50 5Z" stroke="hsl(var(--primary))" strokeWidth="2.5" strokeLinejoin="round"/>
+
+        {/* Tassel */}
+        <path d="M88 25V31" stroke="hsl(var(--destructive))" strokeWidth="2"/>
+        <path d="M88 38C90.2091 38 92 36.2091 92 34C92 31.7909 90.2091 30 88 30C85.7909 30 84 31.7909 84 34C84 36.2091 85.7909 38 88 38Z" fill="hsl(var(--destructive))"/>
+        <path d="M88 31.5a2.5 2.5 0 0 0 0 5" stroke="white" strokeWidth="1"/>
     </svg>
 );
 
@@ -138,7 +149,7 @@ export default function QuizIrregularVerbs() {
   const currentQuestion = useMemo(() => questions[currentQuestionIndex], [questions, currentQuestionIndex]);
 
   useEffect(() => {
-    if (answerStatus === 'timeout') {
+    if (answerStatus === 'timeout' && currentQuestion) {
       setForm2Input(currentQuestion.form2.split('/')[0]);
       setForm3Input(currentQuestion.form3.split('/')[0]);
     }
@@ -288,7 +299,7 @@ export default function QuizIrregularVerbs() {
     return isCorrect ? "bg-success text-success-foreground" : "bg-destructive text-destructive-foreground";
   }
   
-  if (questions.length === 0 || currentQuestionIndex >= questions.length) {
+  if (questions.length === 0 || !currentQuestion) {
     return (
         <Card className="w-full max-w-lg shadow-2xl">
             <CardHeader className="text-center">

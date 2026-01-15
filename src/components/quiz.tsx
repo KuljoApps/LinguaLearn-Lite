@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { BrainCircuit, Home, RefreshCw, Pause } from "lucide-react";
+import { BrainCircuit, Home, RefreshCw, Pause, Clock } from "lucide-react";
 import { questions as initialQuestions, type Question } from "@/lib/questions";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -31,14 +31,18 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
+const QUESTION_TIME_LIMIT = 15;
+
 export default function Quiz() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  const [answerStatus, setAnswerStatus] = useState<"correct" | "incorrect" | null>(null);
+  const [answerStatus, setAnswerStatus] = useState<"correct" | "incorrect" | "timeout" | null>(null);
   const [isRestartAlertOpen, setIsRestartAlertOpen] = useState(false);
   const [isHomeAlertOpen, setIsHomeAlertOpen] = useState(false);
+  const [questionTimer, setQuestionTimer] = useState(QUESTION_TIME_LIMIT);
+  
   const router = useRouter();
   
   useEffect(() => {
@@ -50,11 +54,32 @@ export default function Quiz() {
       const timer = setTimeout(() => {
         setAnswerStatus(null);
         setSelectedAnswer(null);
+        setQuestionTimer(QUESTION_TIME_LIMIT);
         setCurrentQuestionIndex((prevIndex) => (prevIndex + 1));
       }, 1500);
       return () => clearTimeout(timer);
     }
   }, [answerStatus]);
+
+  useEffect(() => {
+    if (currentQuestionIndex >= questions.length || !!answerStatus) {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setQuestionTimer((prev) => {
+        if (prev === 1) {
+          setAnswerStatus("timeout");
+          setSelectedAnswer(null);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [currentQuestionIndex, questions.length, answerStatus]);
+
 
   const currentQuestion = useMemo(() => questions[currentQuestionIndex], [questions, currentQuestionIndex]);
   
@@ -92,6 +117,7 @@ export default function Quiz() {
     setScore(0);
     setSelectedAnswer(null);
     setAnswerStatus(null);
+    setQuestionTimer(QUESTION_TIME_LIMIT);
     setIsRestartAlertOpen(false);
   }
 
@@ -107,6 +133,11 @@ export default function Quiz() {
 
     const isCorrectAnswer = option === currentQuestion.correctAnswer;
     const isSelectedAnswer = option === selectedAnswer;
+
+    if (answerStatus === 'timeout') {
+        if(isCorrectAnswer) return "bg-success text-success-foreground hover:bg-success/90";
+        return "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
+    }
 
     if (isCorrectAnswer) {
       return "bg-success text-success-foreground hover:bg-success/90";
@@ -134,6 +165,7 @@ export default function Quiz() {
   }
 
   const progressValue = ((currentQuestionIndex + 1) / questions.length) * 100;
+  const questionTimeProgress = (questionTimer / QUESTION_TIME_LIMIT) * 100;
 
   return (
     <>
@@ -146,6 +178,18 @@ export default function Quiz() {
           <CardDescription>Select the correct translation.</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center p-6 space-y-8">
+            <div className="w-full flex justify-around gap-4 text-center">
+                <div className="flex items-center gap-2">
+                    <Clock className="h-6 w-6 text-muted-foreground" />
+                    <span className="text-2xl font-bold">{questionTimer}s</span>
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                    <Clock className="h-6 w-6" />
+                    <span className="text-2xl font-bold">--:--</span>
+                </div>
+            </div>
+            <Progress value={questionTimeProgress} className="w-full h-2" />
+
           <div className="text-center space-y-2">
               <p className="text-muted-foreground">What is the Polish meaning of</p>
               <p className="text-4xl font-headline font-bold text-card-foreground">"{currentQuestion.word}"?</p>
@@ -157,7 +201,7 @@ export default function Quiz() {
                 key={option}
                 onClick={() => handleAnswerClick(option)}
                 disabled={!!answerStatus}
-                className={cn("h-auto text-base p-4 whitespace-normal transition-all duration-300", getButtonClass(option))}
+                className={cn("h-auto text-lg p-4 whitespace-normal transition-all duration-300", getButtonClass(option))}
               >
                 {option}
               </Button>

@@ -248,7 +248,7 @@ export default function QuizIrregularVerbs() {
         <CardHeader className="text-center">
           <div className="flex items-center justify-center gap-2">
               <BrainCircuit className="h-8 w-8 text-primary" />
-              <CardTitle className="text-3xl font-bold tracking-tight">LinguaLearn - Irregular Verbs</CardTitle>
+              <CardTitle className="text-3xl font-bold tracking-tight">LinguaLearn</CardTitle>
           </div>
           <CardDescription>Select the translation and fill in the verb forms.</CardDescription>
         </CardHeader>
@@ -394,7 +394,3 @@ export default function QuizIrregularVerbs() {
     </>
   );
 }
-
-    
-
-    

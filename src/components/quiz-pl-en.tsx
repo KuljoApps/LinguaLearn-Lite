@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { BrainCircuit, Home, RefreshCw, Pause, Play, Clock } from "lucide-react";
-import { questions as initialQuestions, type Question } from "@/lib/questions-en-pl";
+import { questions as initialQuestions, type Question } from "@/lib/questions-pl-en";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -36,7 +36,7 @@ const PAUSE_PENALTY = 5;
 const MIN_TIME_FOR_PAUSE = 6;
 
 
-export default function QuizEnPl() {
+export default function QuizPlEn() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -236,7 +236,7 @@ export default function QuizEnPl() {
             <Progress value={questionTimeProgress} className="w-full h-2" />
 
           <div className="text-center space-y-2">
-              <p className="text-muted-foreground">What is the Polish meaning of</p>
+              <p className="text-muted-foreground">What is the English meaning of</p>
               <p className="text-4xl font-headline font-bold text-card-foreground">"{currentQuestion.word}"?</p>
           </div>
 

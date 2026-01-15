@@ -1,9 +1,9 @@
-import QuizEnPl from '@/components/quiz-en-pl';
+import QuizPlEn from '@/components/quiz-pl-en';
 
-export default function QuizPage() {
+export default function QuizPlEnPage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4">
-      <QuizEnPl />
+      <QuizPlEn />
     </main>
   );
 }

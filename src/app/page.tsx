@@ -45,16 +45,18 @@ export default function Home() {
                 </p>
             </CardHeader>
             <CardContent className="flex flex-col space-y-4 p-6">
-                <Link href="/quiz" passHref>
+                <Link href="/quiz/en-pl" passHref>
                     <Button className="w-full h-12 text-lg" size="lg">
                         <BookOpen className="mr-2 h-5 w-5" />
+                        English - Polish Quiz
+                    </Button>
+                </Link>
+                <Link href="/quiz/pl-en" passHref>
+                    <Button className="w-full h-12 text-lg" size="lg">
+                        <Dumbbell className="mr-2 h-5 w-5" />
                         Polish - English Quiz
                     </Button>
                 </Link>
-                <Button className="w-full h-12 text-lg" size="lg" disabled>
-                    <Dumbbell className="mr-2 h-5 w-5" />
-                    Coming Soon...
-                </Button>
                 <Button className="w-full h-12 text-lg" size="lg" disabled>
                     <Star className="mr-2 h-5 w-5" />
                     Coming Soon...

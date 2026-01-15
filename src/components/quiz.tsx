@@ -135,11 +135,11 @@ export default function Quiz() {
     if (!isPaused) {
       setIsPaused(true);
     } else {
-      setIsPaused(false);
       const newTime = Math.max(0, questionTimer - PAUSE_PENALTY);
-      setQuestionTimer(newTime);
       setShowTimePenalty(true);
       setTimeout(() => setShowTimePenalty(false), 500);
+      setQuestionTimer(newTime);
+      setIsPaused(false);
     }
   }
 
@@ -222,7 +222,7 @@ export default function Quiz() {
                 <div className="flex items-center gap-2 text-muted-foreground">
                     <Clock className="h-6 w-6" />
                     <span className={cn(
-                        "text-2xl font-bold transition-colors duration-300",
+                        "text-2xl font-bold transition-colors duration-300 text-muted-foreground",
                         showTimePenalty && "text-destructive animate-in fade-in-0 shake-sm"
                     )}>
                         {questionTimer}s
@@ -230,7 +230,7 @@ export default function Quiz() {
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground">
                     <Clock className="h-6 w-6" />
-                    <span className="text-2xl font-bold">{formatTime(totalTime)}</span>
+                    <span className="text-2xl font-bold text-muted-foreground">{formatTime(totalTime)}</span>
                 </div>
             </div>
             <Progress value={questionTimeProgress} className="w-full h-2" />

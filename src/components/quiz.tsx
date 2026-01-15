@@ -68,15 +68,16 @@ export default function Quiz() {
   }, [answerStatus]);
 
   useEffect(() => {
-    if (currentQuestionIndex >= questions.length || !!answerStatus || isPaused) {
+    if (isPaused || !!answerStatus || currentQuestionIndex >= questions.length) {
       return;
     }
 
     const interval = setInterval(() => {
       setQuestionTimer((prev) => {
-        if (prev === 1) {
+        if (prev <= 1) {
           setAnswerStatus("timeout");
           setSelectedAnswer(null);
+          clearInterval(interval);
           return 0;
         }
         return prev - 1;

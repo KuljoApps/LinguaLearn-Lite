@@ -121,8 +121,8 @@ export default function QuizIrregularVerbs() {
 
   useEffect(() => {
     if (answerStatus === 'timeout') {
-      setForm2Input(currentQuestion.form2);
-      setForm3Input(currentQuestion.form3);
+      setForm2Input(currentQuestion.form2.split('/')[0]);
+      setForm3Input(currentQuestion.form3.split('/')[0]);
     }
   }, [answerStatus, currentQuestion]);
 
@@ -156,8 +156,8 @@ export default function QuizIrregularVerbs() {
   const handleConfirmClick = () => {
     if (answerStatus || isPaused) return;
 
-    const isForm2Correct = form2Input.trim().toLowerCase() === currentQuestion.form2.toLowerCase();
-    const isForm3Correct = form3Input.trim().toLowerCase() === currentQuestion.form3.toLowerCase();
+    const isForm2Correct = currentQuestion.form2.toLowerCase().split('/').includes(form2Input.trim().toLowerCase());
+    const isForm3Correct = currentQuestion.form3.toLowerCase().split('/').includes(form3Input.trim().toLowerCase());
     const isCorrect = isForm2Correct && isForm3Correct;
 
     updateStats(isCorrect);
@@ -261,7 +261,7 @@ export default function QuizIrregularVerbs() {
       return "bg-success text-success-foreground";
     }
 
-    const isCorrect = inputValue.trim().toLowerCase() === correctValue.toLowerCase();
+    const isCorrect = correctValue.toLowerCase().split('/').includes(inputValue.trim().toLowerCase());
 
     return isCorrect ? "bg-success text-success-foreground" : "bg-destructive text-destructive-foreground";
   }
@@ -445,3 +445,5 @@ export default function QuizIrregularVerbs() {
     </>
   );
 }
+
+    

@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { BrainCircuit } from "lucide-react";
+import { BrainCircuit, Home, RefreshCw, Pause } from "lucide-react";
 import { questions as initialQuestions, type Question } from "@/lib/questions";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import Link from 'next/link';
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
@@ -54,6 +55,14 @@ export default function Quiz() {
     }
   };
 
+  const restartTest = () => {
+    setQuestions(shuffleArray(initialQuestions));
+    setCurrentQuestionIndex(0);
+    setScore(0);
+    setSelectedAnswer(null);
+    setAnswerStatus(null);
+  }
+
   const getButtonClass = (option: string) => {
     if (!answerStatus) {
       return "bg-primary text-primary-foreground hover:bg-primary/90";
@@ -81,11 +90,7 @@ export default function Quiz() {
                 <p className="text-center text-xl">Your final score is: {score} / {questions.length}</p>
             </CardContent>
             <CardFooter className="flex justify-center">
-                <Button onClick={() => {
-                    setQuestions(shuffleArray(initialQuestions));
-                    setCurrentQuestionIndex(0);
-                    setScore(0);
-                }}>Play Again</Button>
+                <Button onClick={restartTest}>Play Again</Button>
             </CardFooter>
         </Card>
     );
@@ -119,6 +124,19 @@ export default function Quiz() {
               {option}
             </Button>
           ))}
+        </div>
+        <div className="flex justify-center gap-4 w-full pt-4 border-t">
+          <Link href="/" passHref>
+            <Button variant="outline" size="icon">
+              <Home />
+            </Button>
+          </Link>
+          <Button variant="outline" size="icon" onClick={restartTest}>
+            <RefreshCw />
+          </Button>
+          <Button variant="outline" size="icon" disabled>
+            <Pause />
+          </Button>
         </div>
       </CardContent>
       <CardFooter className="flex-col gap-4 p-6 pt-0">

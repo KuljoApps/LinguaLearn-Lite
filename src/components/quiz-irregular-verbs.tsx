@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useMemo, useRef } from "react";
@@ -69,7 +70,7 @@ export default function QuizIrregularVerbs() {
         setForm3Input("");
         setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
         setQuestionTimer(QUESTION_TIME_LIMIT);
-      }, 2000);
+      }, 3000);
     }
     return () => clearTimeout(timer);
   }, [answerStatus]);
@@ -201,7 +202,7 @@ export default function QuizIrregularVerbs() {
   const getInputClass = (inputValue: string, correctValue: string) => {
     if (!answerStatus) return "";
     
-    if (answerStatus === 'timeout') return "bg-muted text-muted-foreground";
+    if (answerStatus === 'timeout') return "bg-destructive text-destructive-foreground";
 
     const isCorrect = inputValue.trim().toLowerCase() === correctValue.toLowerCase();
 
@@ -300,7 +301,7 @@ export default function QuizIrregularVerbs() {
                 className={cn("text-center transition-colors duration-300", getInputClass(form3Input, currentQuestion.form3))}
               />
             </div>
-            {answerStatus === 'incorrect' && (
+            {(answerStatus === 'incorrect' || answerStatus === 'timeout') && (
               <div className="text-center text-success font-medium animate-in fade-in">
                   Correct forms: {currentQuestion.form2}, {currentQuestion.form3}
               </div>

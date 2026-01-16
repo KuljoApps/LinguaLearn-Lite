@@ -86,17 +86,17 @@ export default function SettingsPage() {
                     <Separator />
                     <div>
                         <h3 className="text-lg font-semibold mb-2">About the app</h3>
-                        <p className="text-sm text-muted-foreground mb-4">
-                            This application builds your language skills with quick fun quizzes.
-                        </p>
-                        <div className="flex items-center justify-between">
-                             <p className="text-sm text-muted-foreground pr-4">
-                                Version 1.0.0
+                        <div className="flex items-center justify-between mb-4">
+                            <p className="text-sm text-muted-foreground pr-4">
+                                This application builds your language skills with quick fun quizzes.
                             </p>
-                             <Link href="/settings/about" passHref>
+                            <Link href="/settings/about" passHref>
                                 <Button variant="outline" size="sm">More</Button>
                             </Link>
                         </div>
+                        <p className="text-sm text-muted-foreground">
+                            Version 1.0.0
+                        </p>
                     </div>
                 </CardContent>
                 <CardFooter className="flex justify-center p-6">

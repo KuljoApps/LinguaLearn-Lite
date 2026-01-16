@@ -21,6 +21,7 @@ export interface Stats {
     lastPlayTimestamp: number | null;
     uniqueDaysPlayed: number;
     playedQuizzes: string[];
+    totalPerfectScores: number;
 }
 
 export interface ErrorRecord {
@@ -100,7 +101,11 @@ const checkAndUnlockAchievements = (stats: Stats): Achievement[] => {
             case 'daily_30':
                 currentProgress = stats.uniqueDaysPlayed;
                 break;
-            // 'flawless' is handled by a specific event
+            case 'perfectionist':
+            case 'virtuoso':
+            case 'grandmaster':
+                currentProgress = stats.totalPerfectScores || 0;
+                break;
             default:
                 break;
         }
@@ -123,19 +128,21 @@ const checkAndUnlockAchievements = (stats: Stats): Achievement[] => {
 };
 
 export const checkSessionAchievements = (isPerfect: boolean): Achievement[] => {
-    const achievements = getAchievements();
-    const newlyUnlocked: Achievement[] = [];
-    const flawlessAchievement = allAchievements.find(a => a.id === 'flawless')!;
-    const status = achievements[flawlessAchievement.id] || { progress: 0, unlockedAt: null };
-
-    if (!status.unlockedAt && isPerfect) {
-        status.progress = 1;
-        status.unlockedAt = Date.now();
-        achievements[flawlessAchievement.id] = status;
-        newlyUnlocked.push(flawlessAchievement);
-        saveAchievements(achievements);
+    if (!isPerfect || typeof window === 'undefined') {
+        return [];
     }
-    return newlyUnlocked;
+
+    const stats = getStats();
+    stats.totalPerfectScores = (stats.totalPerfectScores || 0) + 1;
+
+    try {
+        localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+    } catch (error) {
+        console.error("Failed to save stats to localStorage", error);
+    }
+
+    // Now, check if this new count unlocks any achievements
+    return checkAndUnlockAchievements(stats);
 }
 
 
@@ -180,7 +187,7 @@ export const clearSettings = () => {
 // --- Stats Functions ---
 
 export const getStats = (): Stats => {
-    const defaultStats: Stats = { totalAnswers: 0, totalCorrectAnswers: 0, totalErrors: 0, longestStreak: 0, currentStreak: 0, lastFiftyAnswers: [], longestStreakDate: null, longestStreakQuiz: null, perQuizStats: {}, totalTimeSpent: 0, lastPlayTimestamp: null, uniqueDaysPlayed: 0, playedQuizzes: [] };
+    const defaultStats: Stats = { totalAnswers: 0, totalCorrectAnswers: 0, totalErrors: 0, longestStreak: 0, currentStreak: 0, lastFiftyAnswers: [], longestStreakDate: null, longestStreakQuiz: null, perQuizStats: {}, totalTimeSpent: 0, lastPlayTimestamp: null, uniqueDaysPlayed: 0, playedQuizzes: [], totalPerfectScores: 0 };
     if (typeof window === 'undefined') {
         return defaultStats;
     }
@@ -269,7 +276,7 @@ export const updateTimeSpent = (seconds: number): Achievement[] => {
 
 export const clearStats = () => {
     if (typeof window === 'undefined') return;
-    const defaultStats: Stats = { totalAnswers: 0, totalCorrectAnswers: 0, totalErrors: 0, longestStreak: 0, currentStreak: 0, lastFiftyAnswers: [], longestStreakDate: null, longestStreakQuiz: null, perQuizStats: {}, totalTimeSpent: 0, lastPlayTimestamp: null, uniqueDaysPlayed: 0, playedQuizzes: [] };
+    const defaultStats: Stats = { totalAnswers: 0, totalCorrectAnswers: 0, totalErrors: 0, longestStreak: 0, currentStreak: 0, lastFiftyAnswers: [], longestStreakDate: null, longestStreakQuiz: null, perQuizStats: {}, totalTimeSpent: 0, lastPlayTimestamp: null, uniqueDaysPlayed: 0, playedQuizzes: [], totalPerfectScores: 0 };
     localStorage.setItem(STATS_KEY, JSON.stringify(defaultStats));
     localStorage.removeItem(ACHIEVEMENTS_KEY);
     localStorage.removeItem(ERRORS_KEY);

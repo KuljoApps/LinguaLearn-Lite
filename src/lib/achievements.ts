@@ -29,6 +29,8 @@ export const allAchievements: Achievement[] = [
   { id: 'daily_14', name: 'Devoted', description: 'Play on 14 separate days.', icon: CalendarClock, goal: 14 },
   { id: 'daily_30', name: 'Habituated', description: 'Play on 30 separate days.', icon: CalendarClock, goal: 30 },
 
-  // Special
-  { id: 'flawless', name: 'Flawless Victory', description: 'Get a perfect score (100%) on any quiz.', icon: Award, goal: 1 },
+  // Perfect Scores
+  { id: 'perfectionist', name: 'Perfectionist', description: 'Get a perfect score on 10 quizzes.', icon: Award, goal: 10 },
+  { id: 'virtuoso', name: 'Virtuoso', description: 'Get a perfect score on 25 quizzes.', icon: Award, goal: 25 },
+  { id: 'grandmaster', name: 'Grand Master', description: 'Get a perfect score on 50 quizzes.', icon: Award, goal: 50 },
 ];

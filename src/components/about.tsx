@@ -20,9 +20,6 @@ export default function AboutPage() {
                 <p className="text-muted-foreground">
                     Built with Next.js, React, ShadCN UI, Tailwind CSS, and Genkit.
                 </p>
-                <p className="font-bold pt-4">
-                    Version 1.0.0
-                </p>
             </CardContent>
             <CardFooter className="flex justify-center p-6">
                 <Link href="/settings" passHref>

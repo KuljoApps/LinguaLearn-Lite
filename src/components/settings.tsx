@@ -94,9 +94,6 @@ export default function SettingsPage() {
                                 <Button variant="outline" size="sm">More</Button>
                             </Link>
                         </div>
-                        <p className="text-sm text-muted-foreground">
-                            Version 1.0.0
-                        </p>
                     </div>
                 </CardContent>
                 <CardFooter className="flex justify-center p-6">

@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from '@/lib/utils';
 
 interface AggregatedError {
     word: string;
@@ -176,7 +177,7 @@ export default function ErrorsPage() {
         <>
             <Card className="w-full max-w-4xl shadow-2xl">
                 <CardHeader>
-                    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+                    <div className="flex w-full flex-wrap items-center justify-center gap-4 sm:justify-between">
                         <CardTitle className="text-3xl">Common Errors</CardTitle>
                         <div className="flex flex-col gap-2">
                             <Select value={quizFilter} onValueChange={(value) => setQuizFilter(value as QuizFilter)}>
@@ -199,7 +200,7 @@ export default function ErrorsPage() {
                         </div>
                     </div>
                 </CardHeader>
-                <CardContent className="h-96 w-full overflow-auto pl-6 pr-0 pt-0 pb-2">
+                <CardContent className="h-96 w-full overflow-auto p-0">
                     {renderTable()}
                 </CardContent>
                 <CardFooter className="flex justify-center gap-4 pt-6">

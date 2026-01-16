@@ -113,7 +113,7 @@ export default function QuizPhrasalVerbs() {
           playSound("incorrect");
           vibrate("incorrect");
           
-          const unlocked = updateStats(false, QUIZ_NAME);
+          const unlocked = updateStats(false, QUIZ_NAME, questions[currentQuestionIndex].id);
           unlocked.forEach(showAchievementToast);
 
           addError({
@@ -157,7 +157,7 @@ export default function QuizPhrasalVerbs() {
 
     setSelectedAnswer(answer);
     const isCorrect = answer === currentQuestion.correctAnswer;
-    const unlocked = updateStats(isCorrect, QUIZ_NAME);
+    const unlocked = updateStats(isCorrect, QUIZ_NAME, currentQuestion.id);
     unlocked.forEach(showAchievementToast);
     
     if (isCorrect) {

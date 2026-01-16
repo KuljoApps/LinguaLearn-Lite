@@ -122,7 +122,7 @@ export default function QuizIrregularVerbs() {
           playSound("incorrect");
           vibrate("incorrect");
 
-          const unlocked = updateStats(false, QUIZ_NAME);
+          const unlocked = updateStats(false, QUIZ_NAME, questions[currentQuestionIndex].id);
           unlocked.forEach(showAchievementToast);
           
           addError({
@@ -188,7 +188,7 @@ export default function QuizIrregularVerbs() {
       playSound('incorrect');
       vibrate('incorrect');
 
-      const unlocked = updateStats(false, QUIZ_NAME);
+      const unlocked = updateStats(false, QUIZ_NAME, currentQuestion.id);
       unlocked.forEach(showAchievementToast);
 
       addError({
@@ -207,7 +207,7 @@ export default function QuizIrregularVerbs() {
     const isForm3Correct = currentQuestion.form3.toLowerCase().split('/').includes(form3Input.trim().toLowerCase());
     const isCorrect = isForm2Correct && isForm3Correct && translationStatus === 'correct';
 
-    const unlocked = updateStats(isCorrect, QUIZ_NAME);
+    const unlocked = updateStats(isCorrect, QUIZ_NAME, currentQuestion.id);
     unlocked.forEach(showAchievementToast);
 
     if (isCorrect) {

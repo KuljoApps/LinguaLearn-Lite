@@ -1,4 +1,9 @@
-import { Award, BarChart, BrainCircuit, CalendarClock, Clock, Crown, Flame, Sparkles, Star, Trophy, Zap, type LucideIcon } from 'lucide-react';
+import { Award, BarChart, Brain, BookMarked, BrainCircuit, CalendarClock, Clock, Crown, Flame, Globe, MessagesSquare, Sparkles, Star, Trophy, Webhook, Zap, type LucideIcon } from 'lucide-react';
+import { questions as enPlQuestions } from './questions-en-pl';
+import { questions as plEnQuestions } from './questions-pl-en';
+import { questions as irregularVerbsQuestions } from './questions-irregular-verbs';
+import { questions as phrasalVerbsQuestions } from './questions-phrasal-verbs';
+import { questions as idiomsQuestions } from './questions-idioms';
 
 export interface Achievement {
   id: string;
@@ -33,4 +38,11 @@ export const allAchievements: Achievement[] = [
   { id: 'perfectionist', name: 'Perfectionist', description: 'Get a perfect score on 10 quizzes.', icon: Award, goal: 10 },
   { id: 'virtuoso', name: 'Virtuoso', description: 'Get a perfect score on 25 quizzes.', icon: Award, goal: 25 },
   { id: 'grandmaster', name: 'Grand Master', description: 'Get a perfect score on 50 quizzes.', icon: Award, goal: 50 },
+  
+  // Mastery
+  { id: 'mastery_en_pl', name: 'English-Polish Scholar', description: 'Correctly answer every English-Polish question.', icon: BookMarked, goal: enPlQuestions.length },
+  { id: 'mastery_pl_en', name: 'Polish-English Scholar', description: 'Correctly answer every Polish-English question.', icon: Globe, goal: plEnQuestions.length },
+  { id: 'mastery_irregular', name: 'Verb Virtuoso', description: 'Correctly answer every irregular verb question.', icon: Webhook, goal: irregularVerbsQuestions.length },
+  { id: 'mastery_phrasal', name: 'Phrasal Fanatic', description: 'Correctly answer every phrasal verb question.', icon: Brain, goal: phrasalVerbsQuestions.length },
+  { id: 'mastery_idioms', name: 'Idiom Idol', description: 'Correctly answer every idiom question.', icon: MessagesSquare, goal: idiomsQuestions.length },
 ];

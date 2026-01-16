@@ -2,6 +2,10 @@
 
 import { allAchievements, type Achievement } from './achievements';
 
+export interface MasteryProgress {
+    [quizName: string]: number[]; // Array of unique question IDs
+}
+
 export interface Stats {
     totalAnswers: number;
     totalCorrectAnswers: number;
@@ -47,6 +51,30 @@ const STATS_KEY = 'linguaLearnStats_v2';
 const ERRORS_KEY = 'linguaLearnErrors_v2';
 const SETTINGS_KEY = 'linguaLearnSettings_v2';
 const ACHIEVEMENTS_KEY = 'linguaLearnAchievements_v2';
+const MASTERY_KEY = 'linguaLearnMastery_v1';
+
+
+// --- Mastery Functions ---
+
+export const getMasteryProgress = (): MasteryProgress => {
+    if (typeof window === 'undefined') return {};
+    try {
+        const masteryJson = localStorage.getItem(MASTERY_KEY);
+        return masteryJson ? JSON.parse(masteryJson) : {};
+    } catch (error) {
+        console.error("Failed to parse mastery progress from localStorage", error);
+        return {};
+    }
+}
+
+const saveMasteryProgress = (progress: MasteryProgress) => {
+    if (typeof window === 'undefined') return;
+    try {
+        localStorage.setItem(MASTERY_KEY, JSON.stringify(progress));
+    } catch (error) {
+        console.error("Failed to save mastery progress to localStorage", error);
+    }
+}
 
 
 // --- Achievement Functions ---
@@ -73,6 +101,7 @@ const saveAchievements = (achievements: Record<string, AchievementStatus>) => {
 
 const checkAndUnlockAchievements = (stats: Stats): Achievement[] => {
     const achievements = getAchievements();
+    const masteryProgress = getMasteryProgress();
     const newlyUnlocked: Achievement[] = [];
 
     allAchievements.forEach(achievement => {
@@ -105,6 +134,21 @@ const checkAndUnlockAchievements = (stats: Stats): Achievement[] => {
             case 'virtuoso':
             case 'grandmaster':
                 currentProgress = stats.totalPerfectScores || 0;
+                break;
+            case 'mastery_en_pl':
+                currentProgress = masteryProgress['English - Polish']?.length || 0;
+                break;
+            case 'mastery_pl_en':
+                currentProgress = masteryProgress['Polish - English']?.length || 0;
+                break;
+            case 'mastery_irregular':
+                currentProgress = masteryProgress['Irregular Verbs']?.length || 0;
+                break;
+            case 'mastery_phrasal':
+                currentProgress = masteryProgress['Phrasal Verbs']?.length || 0;
+                break;
+            case 'mastery_idioms':
+                currentProgress = masteryProgress['Idioms']?.length || 0;
                 break;
             default:
                 break;
@@ -203,9 +247,23 @@ export const getStats = (): Stats => {
     return defaultStats;
 };
 
-export const updateStats = (isCorrect: boolean, quizName: string): Achievement[] => {
+export const updateStats = (isCorrect: boolean, quizName: string, questionId: number): Achievement[] => {
     if (typeof window === 'undefined') return [];
     const stats = getStats();
+
+    // Mastery progress update
+    if (isCorrect) {
+        const masteryProgress = getMasteryProgress();
+        if (!masteryProgress[quizName]) {
+            masteryProgress[quizName] = [];
+        }
+        // Use a Set to ensure uniqueness before pushing
+        const questionSet = new Set(masteryProgress[quizName]);
+        if (!questionSet.has(questionId)) {
+            masteryProgress[quizName].push(questionId);
+            saveMasteryProgress(masteryProgress);
+        }
+    }
 
     // Daily play tracking
     const today = new Date();
@@ -280,6 +338,7 @@ export const clearStats = () => {
     localStorage.setItem(STATS_KEY, JSON.stringify(defaultStats));
     localStorage.removeItem(ACHIEVEMENTS_KEY);
     localStorage.removeItem(ERRORS_KEY);
+    localStorage.removeItem(MASTERY_KEY);
 }
 
 

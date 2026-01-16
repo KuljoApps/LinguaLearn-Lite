@@ -58,6 +58,12 @@ export const saveSettings = (settings: Settings) => {
     }
 }
 
+export const clearSettings = () => {
+    if (typeof window === 'undefined') return;
+    localStorage.removeItem(SETTINGS_KEY);
+};
+
+
 // --- Stats Functions ---
 
 export const getStats = (): Stats => {

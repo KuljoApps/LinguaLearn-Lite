@@ -8,8 +8,18 @@ import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-import { getSettings, saveSettings, type Settings as AppSettings } from "@/lib/storage";
+import { ArrowLeft, Trash2 } from "lucide-react";
+import { getSettings, saveSettings, clearSettings, type Settings as AppSettings } from "@/lib/storage";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export default function SettingsPage() {
     const [settings, setSettings] = useState<AppSettings>({
@@ -17,6 +27,7 @@ export default function SettingsPage() {
         vibrationsEnabled: true,
         volume: 50
     });
+    const [isResetAlertOpen, setIsResetAlertOpen] = useState(false);
 
     useEffect(() => {
         setSettings(getSettings());
@@ -28,54 +39,88 @@ export default function SettingsPage() {
         saveSettings(newSettings);
     }
 
+    const handleResetSettings = () => {
+        clearSettings();
+        setSettings(getSettings());
+        setIsResetAlertOpen(false);
+    };
+
     return (
-        <Card className="w-full max-w-md shadow-2xl">
-            <CardHeader>
-                <CardTitle className="text-center text-3xl">Settings</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <Label htmlFor="sounds-switch" className="text-lg">Sounds</Label>
-                    <Switch
-                        id="sounds-switch"
-                        checked={settings.soundsEnabled}
-                        onCheckedChange={(checked) => handleSettingChange('soundsEnabled', checked)}
-                    />
-                </div>
-                <div className="space-y-4">
-                    <Label htmlFor="volume-slider" className="text-base">Volume</Label>
-                    <Slider
-                        id="volume-slider"
-                        min={0}
-                        max={100}
-                        step={1}
-                        value={[settings.volume]}
-                        onValueChange={(value) => handleSettingChange('volume', value[0])}
-                        disabled={!settings.soundsEnabled}
-                    />
-                </div>
-                <Separator />
-                <div className="flex items-center justify-between">
-                    <Label htmlFor="vibrations-switch" className="text-lg">Vibrations</Label>
-                    <Switch id="vibrations-switch" />
-                </div>
-                <Separator />
-                <div>
-                    <h3 className="text-lg font-semibold mb-2">About</h3>
-                    <p className="text-sm text-muted-foreground">
-                        LinguaLearn is an app designed to help you learn new languages in a fun and interactive way.
-                        <br />
-                        Version 1.0.0
-                    </p>
-                </div>
-            </CardContent>
-            <CardFooter className="flex justify-center">
-                <Link href="/" passHref>
-                    <Button variant="outline">
-                        <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
-                    </Button>
-                </Link>
-            </CardFooter>
-        </Card>
+        <>
+            <Card className="w-full max-w-md shadow-2xl">
+                <CardHeader>
+                    <CardTitle className="text-center text-3xl">Settings</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    <div className="flex items-center justify-between">
+                        <Label htmlFor="sounds-switch" className="text-lg">Sounds</Label>
+                        <Switch
+                            id="sounds-switch"
+                            checked={settings.soundsEnabled}
+                            onCheckedChange={(checked) => handleSettingChange('soundsEnabled', checked)}
+                        />
+                    </div>
+                    <div className="space-y-4">
+                        <Label htmlFor="volume-slider" className="text-base">Volume</Label>
+                        <Slider
+                            id="volume-slider"
+                            min={0}
+                            max={100}
+                            step={1}
+                            value={[settings.volume]}
+                            onValueChange={(value) => handleSettingChange('volume', value[0])}
+                            disabled={!settings.soundsEnabled}
+                        />
+                    </div>
+                    <Separator />
+                    <div className="flex items-center justify-between">
+                        <Label htmlFor="vibrations-switch" className="text-lg">Vibrations</Label>
+                        <Switch
+                            id="vibrations-switch"
+                            checked={settings.vibrationsEnabled}
+                            onCheckedChange={(checked) => handleSettingChange('vibrationsEnabled', checked)}
+                        />
+                    </div>
+                    <Separator />
+                    <div>
+                        <h3 className="text-lg font-semibold mb-2">About</h3>
+                        <p className="text-sm text-muted-foreground">
+                            LinguaLearn is an app designed to help you learn new languages in a fun and interactive way.
+                            <br />
+                            Version 1.0.0
+                        </p>
+                    </div>
+                </CardContent>
+                <CardFooter className="flex justify-center p-6">
+                    <div className="flex flex-wrap justify-center gap-4">
+                        <Link href="/" passHref>
+                            <Button variant="outline">
+                                <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
+                            </Button>
+                        </Link>
+                        <Button variant="destructive" onClick={() => setIsResetAlertOpen(true)}>
+                            <Trash2 className="mr-2 h-4 w-4" /> Reset Settings
+                        </Button>
+                    </div>
+                </CardFooter>
+            </Card>
+
+            <AlertDialog open={isResetAlertOpen} onOpenChange={setIsResetAlertOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            This will reset all settings to their default values. This action cannot be undone.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={handleResetSettings} className="bg-destructive hover:bg-destructive/90">
+                            Reset
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+        </>
     );
 }

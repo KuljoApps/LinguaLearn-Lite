@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
@@ -129,8 +130,9 @@ export default function ErrorsPage() {
                         {frequentErrors.map((error, index) => {
                             const isExpanded = expandedRows.has(index);
                             const userAnswersText = Array.from(error.userAnswers).join(', ');
+                            const uniqueKey = `${error.word}-${error.correctAnswer}-${index}`;
                             return (
-                                <TableRow key={index} onClick={() => handleRowClick(index)} className="cursor-pointer">
+                                <TableRow key={uniqueKey} onClick={() => handleRowClick(uniqueKey)} className="cursor-pointer">
                                     <TableCell className="font-bold text-center whitespace-nowrap">{error.count}</TableCell>
                                     <TableCell className="font-medium whitespace-nowrap">{isExpanded ? error.word : truncateText(error.word)}</TableCell>
                                     <TableCell className="text-success whitespace-nowrap">{isExpanded ? error.correctAnswer : truncateText(error.correctAnswer)}</TableCell>
@@ -176,32 +178,32 @@ export default function ErrorsPage() {
     return (
         <>
             <Card className="w-full max-w-4xl shadow-2xl">
-                <CardHeader>
-                    <div className="flex w-full flex-wrap items-center justify-center gap-4 sm:justify-between">
-                        <CardTitle className="text-3xl">Common Errors</CardTitle>
-                        <div className="flex flex-col gap-2">
-                            <Select value={quizFilter} onValueChange={(value) => setQuizFilter(value as QuizFilter)}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Filter by quiz" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">All Quizzes</SelectItem>
-                                    <SelectItem value="English - Polish">English - Polish</SelectItem>
-                                    <SelectItem value="Polish - English">Polish - English</SelectItem>
-                                    <SelectItem value="Irregular Verbs">Irregular Verbs</SelectItem>
-                                    <SelectItem value="Phrasal Verbs">Phrasal Verbs</SelectItem>
-                                    <SelectItem value="Idioms">Idioms</SelectItem>
-                                </SelectContent>
-                            </Select>
-                            <Button variant="outline" onClick={() => setView(view === 'latest' ? 'frequent' : 'latest')}>
-                                <ArrowUpDown className="mr-2 h-4 w-4" />
-                                View {view === 'latest' ? 'Most Frequent' : 'Latest'}
-                            </Button>
-                        </div>
+                <CardHeader className="flex flex-col items-center gap-4 p-6 sm:flex-row sm:justify-between">
+                    <CardTitle className="text-3xl">Common Errors</CardTitle>
+                    <div className="flex flex-col gap-2">
+                        <Select value={quizFilter} onValueChange={(value) => setQuizFilter(value as QuizFilter)}>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Filter by quiz" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">All Quizzes</SelectItem>
+                                <SelectItem value="English - Polish">English - Polish</SelectItem>
+                                <SelectItem value="Polish - English">Polish - English</SelectItem>
+                                <SelectItem value="Irregular Verbs">Irregular Verbs</SelectItem>
+                                <SelectItem value="Phrasal Verbs">Phrasal Verbs</SelectItem>
+                                <SelectItem value="Idioms">Idioms</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <Button variant="outline" onClick={() => setView(view === 'latest' ? 'frequent' : 'latest')}>
+                            <ArrowUpDown className="mr-2 h-4 w-4" />
+                            View {view === 'latest' ? 'Most Frequent' : 'Latest'}
+                        </Button>
                     </div>
                 </CardHeader>
-                <CardContent className="h-96 w-full overflow-auto p-0">
-                    {renderTable()}
+                <CardContent className="h-96 w-full p-0">
+                    <div className="h-full w-full overflow-auto">
+                        {renderTable()}
+                    </div>
                 </CardContent>
                 <CardFooter className="flex justify-center gap-4 pt-6">
                     <Link href="/" passHref>

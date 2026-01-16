@@ -78,7 +78,7 @@ const checkAndUnlockAchievements = (stats: Stats): Achievement[] => {
         const status = achievements[achievement.id] || { progress: 0, unlockedAt: null };
         if (status.unlockedAt) return; // Already unlocked
 
-        let currentProgress = 0;
+        let currentProgress = status.progress;
         switch (achievement.id) {
             case 'novice':
             case 'apprentice':
@@ -90,7 +90,7 @@ const checkAndUnlockAchievements = (stats: Stats): Achievement[] => {
                 currentProgress = stats.longestStreak;
                 break;
             case 'polyglot':
-                currentProgress = stats.playedQuizzes.length;
+                currentProgress = new Set(stats.playedQuizzes).size;
                 break;
             case 'time_traveler':
                 currentProgress = stats.totalTimeSpent;
@@ -99,19 +99,25 @@ const checkAndUnlockAchievements = (stats: Stats): Achievement[] => {
                 currentProgress = stats.uniqueDaysPlayed;
                 break;
             // 'flawless' and 'error_eraser' are handled by specific events
+            default:
+                // For achievements like 'flawless', progress is not calculated here
+                break;
         }
 
         status.progress = currentProgress;
+        
         if (currentProgress >= achievement.goal) {
-            status.unlockedAt = Date.now();
-            newlyUnlocked.push(achievement);
+            if (!status.unlockedAt) { // Ensure we only unlock it once
+                status.unlockedAt = Date.now();
+                newlyUnlocked.push(achievement);
+            }
         }
         achievements[achievement.id] = status;
     });
 
-    if (newlyUnlocked.length > 0) {
-        saveAchievements(achievements);
-    }
+    // Always save the updated progress and any newly unlocked achievements.
+    saveAchievements(achievements);
+
     return newlyUnlocked;
 };
 

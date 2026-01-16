@@ -8,7 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
-import { ArrowLeft, Trash2, Eye } from "lucide-react";
+import { ArrowLeft, Trash2 } from "lucide-react";
 import { getSettings, saveSettings, clearSettings, type Settings as AppSettings } from "@/lib/storage";
 import {
   AlertDialog,
@@ -86,12 +86,7 @@ export default function SettingsPage() {
                     </div>
                     <Separator />
                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                            <Label htmlFor="eyecare-slider" className="text-lg flex items-center gap-2">
-                                <Eye className="h-5 w-5" />
-                                Ochrona Wzroku
-                            </Label>
-                        </div>
+                        <Label htmlFor="eyecare-slider" className="text-lg">Eye Care</Label>
                         <Slider
                             id="eyecare-slider"
                             min={0}

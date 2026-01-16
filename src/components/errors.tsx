@@ -40,10 +40,30 @@ export default function ErrorsPage() {
     const [isClearAlertOpen, setIsClearAlertOpen] = useState(false);
     const [view, setView] = useState<'latest' | 'frequent'>('latest');
     const [quizFilter, setQuizFilter] = useState<QuizFilter>('all');
+    const [expandedRows, setExpandedRows] = useState<Set<string | number>>(new Set());
 
     useEffect(() => {
         setErrors(getErrors());
     }, []);
+
+    const handleRowClick = (id: string | number) => {
+        setExpandedRows(prev => {
+            const newSet = new Set(prev);
+            if (newSet.has(id)) {
+                newSet.delete(id);
+            } else {
+                newSet.add(id);
+            }
+            return newSet;
+        });
+    };
+
+    const truncateText = (text: string, length = 15) => {
+        if (text.length <= length) {
+            return text;
+        }
+        return `${text.substring(0, length)}...`;
+    };
 
     const filteredErrors = useMemo(() => {
         if (quizFilter === 'all') {
@@ -98,21 +118,25 @@ export default function ErrorsPage() {
                         <TableRow>
                             <TableHead className="w-[80px] text-center">Count</TableHead>
                             <TableHead>Word</TableHead>
-                            <TableHead>Your Answers</TableHead>
                             <TableHead>Correct Answer</TableHead>
+                            <TableHead>Your Answers</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {frequentErrors.map((error, index) => (
-                            <TableRow key={index}>
-                                <TableCell className="font-bold text-center">{error.count}</TableCell>
-                                <TableCell className="font-medium">{error.word}</TableCell>
-                                <TableCell className="text-destructive max-w-xs break-words">
-                                    {Array.from(error.userAnswers).join(', ')}
-                                </TableCell>
-                                <TableCell className="text-success">{error.correctAnswer}</TableCell>
-                            </TableRow>
-                        ))}
+                        {frequentErrors.map((error, index) => {
+                            const isExpanded = expandedRows.has(index);
+                            const userAnswersText = Array.from(error.userAnswers).join(', ');
+                            return (
+                                <TableRow key={index} onClick={() => handleRowClick(index)} className="cursor-pointer">
+                                    <TableCell className="font-bold text-center">{error.count}</TableCell>
+                                    <TableCell className="font-medium">{isExpanded ? error.word : truncateText(error.word)}</TableCell>
+                                    <TableCell className="text-success">{isExpanded ? error.correctAnswer : truncateText(error.correctAnswer)}</TableCell>
+                                    <TableCell className="text-destructive max-w-xs break-words">
+                                        {isExpanded ? userAnswersText : truncateText(userAnswersText)}
+                                    </TableCell>
+                                </TableRow>
+                            );
+                        })}
                     </TableBody>
                 </Table>
             );
@@ -123,18 +147,21 @@ export default function ErrorsPage() {
                 <TableHeader>
                     <TableRow>
                         <TableHead>Word</TableHead>
-                        <TableHead>Your Answer</TableHead>
                         <TableHead>Correct Answer</TableHead>
+                        <TableHead>Your Answer</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {filteredErrors.map((error) => (
-                        <TableRow key={error.id}>
-                            <TableCell className="font-medium">{error.word}</TableCell>
-                            <TableCell className="text-destructive">{error.userAnswer}</TableCell>
-                            <TableCell className="text-success">{error.correctAnswer}</TableCell>
-                        </TableRow>
-                    ))}
+                    {filteredErrors.map((error) => {
+                        const isExpanded = expandedRows.has(error.id);
+                        return (
+                            <TableRow key={error.id} onClick={() => handleRowClick(error.id)} className="cursor-pointer">
+                                <TableCell className="font-medium">{isExpanded ? error.word : truncateText(error.word)}</TableCell>
+                                <TableCell className="text-success">{isExpanded ? error.correctAnswer : truncateText(error.correctAnswer)}</TableCell>
+                                <TableCell className="text-destructive">{isExpanded ? error.userAnswer : truncateText(error.userAnswer)}</TableCell>
+                            </TableRow>
+                        );
+                    })}
                 </TableBody>
             </Table>
         );

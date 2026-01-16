@@ -93,9 +93,9 @@ export default function QuizIrregularVerbs() {
           playSound("incorrect");
           updateStats(false);
           addError({
-            word: currentQuestion.verb,
+            word: questions[currentQuestionIndex].verb,
             userAnswer: 'No answer',
-            correctAnswer: `${currentQuestion.correctTranslation}, ${currentQuestion.form2}, ${currentQuestion.form3}`,
+            correctAnswer: `${questions[currentQuestionIndex].correctTranslation}, ${questions[currentQuestionIndex].form2}, ${questions[currentQuestionIndex].form3}`,
             quiz: 'Irregular Verbs',
           });
           return 0;
@@ -150,8 +150,8 @@ export default function QuizIrregularVerbs() {
       updateStats(false);
       addError({
         word: currentQuestion.verb,
-        userAnswer: `Translation: ${option}`,
-        correctAnswer: `Translation: ${currentQuestion.correctTranslation}`,
+        userAnswer: option,
+        correctAnswer: currentQuestion.correctTranslation,
         quiz: 'Irregular Verbs',
       });
     }

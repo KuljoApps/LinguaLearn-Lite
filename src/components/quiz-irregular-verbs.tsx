@@ -59,6 +59,7 @@ export default function QuizIrregularVerbs() {
   const [totalTime, setTotalTime] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [showTimePenalty, setShowTimePenalty] = useState(false);
+  const [shuffledTranslationOptions, setShuffledTranslationOptions] = useState<string[]>([]);
   
   const router = useRouter();
   const form2InputRef = useRef<HTMLInputElement>(null);
@@ -158,6 +159,12 @@ export default function QuizIrregularVerbs() {
   }, [currentQuestionIndex, questions.length, isPaused, totalTime, showAchievementToast]);
   
   const currentQuestion = useMemo(() => questions[currentQuestionIndex], [questions, currentQuestionIndex]);
+
+  useEffect(() => {
+    if (currentQuestion) {
+      setShuffledTranslationOptions(shuffleArray(currentQuestion.translationOptions));
+    }
+  }, [currentQuestion]);
 
   useEffect(() => {
     if (answerStatus === 'timeout' && currentQuestion) {
@@ -382,7 +389,7 @@ export default function QuizIrregularVerbs() {
           <div className="w-full space-y-4">
             <p className="text-center text-muted-foreground">1. Select the correct translation</p>
             <div className="grid grid-cols-3 gap-2 w-full">
-              {currentQuestion.translationOptions.map((option) => (
+              {shuffledTranslationOptions.map((option) => (
                 <Button
                   key={option}
                   onClick={() => handleTranslationClick(option)}

@@ -49,6 +49,7 @@ export default function QuizEnPl() {
   const [totalTime, setTotalTime] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [showTimePenalty, setShowTimePenalty] = useState(false);
+  const [shuffledOptions, setShuffledOptions] = useState<string[]>([]);
   
   const router = useRouter();
   
@@ -103,6 +104,12 @@ export default function QuizEnPl() {
 
 
   const currentQuestion = useMemo(() => questions[currentQuestionIndex], [questions, currentQuestionIndex]);
+
+  useEffect(() => {
+    if (currentQuestion) {
+      setShuffledOptions(shuffleArray(currentQuestion.options));
+    }
+  }, [currentQuestion]);
   
   const handleAnswerClick = (answer: string) => {
     if (answerStatus || isPaused) return;
@@ -242,7 +249,7 @@ export default function QuizEnPl() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-            {currentQuestion.options.map((option) => (
+            {shuffledOptions.map((option) => (
               <Button
                 key={option}
                 onClick={() => handleAnswerClick(option)}

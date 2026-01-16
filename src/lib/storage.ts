@@ -50,6 +50,12 @@ export interface AchievementStatus {
 
 const LANGUAGE_KEY = 'linguaLearnLanguage';
 const SETTINGS_KEY = 'linguaLearnSettings_v2';
+const GLOBAL_STATS_KEY = 'linguaLearnGlobalStats_v1';
+
+interface GlobalStats {
+    uniqueDaysPlayed: number;
+    lastPlayTimestamp: number | null;
+}
 
 const getKey = (baseKey: string): string => {
     const lang = getLanguage();
@@ -65,6 +71,50 @@ export const getLanguage = (): 'en' | 'fr' => {
 export const setLanguage = (lang: 'en' | 'fr') => {
     if (typeof window === 'undefined') return;
     localStorage.setItem(LANGUAGE_KEY, lang);
+}
+
+// --- Global Stats Functions ---
+const getGlobalStats = (): GlobalStats => {
+    const defaultGlobalStats: GlobalStats = { uniqueDaysPlayed: 0, lastPlayTimestamp: null };
+    if (typeof window === 'undefined') return defaultGlobalStats;
+
+    try {
+        const globalStatsJson = localStorage.getItem(GLOBAL_STATS_KEY);
+        if (globalStatsJson) {
+            return JSON.parse(globalStatsJson);
+        } else {
+            // Migration logic for existing users
+            const statsEnJson = localStorage.getItem('linguaLearnStats_v2_en');
+            const statsFrJson = localStorage.getItem('linguaLearnStats_v2_fr');
+            const statsEn = statsEnJson ? JSON.parse(statsEnJson) : null;
+            const statsFr = statsFrJson ? JSON.parse(statsFrJson) : null;
+
+            const uniqueDaysEn = statsEn?.uniqueDaysPlayed || 0;
+            const uniqueDaysFr = statsFr?.uniqueDaysPlayed || 0;
+            const lastPlayEn = statsEn?.lastPlayTimestamp || 0;
+            const lastPlayFr = statsFr?.lastPlayTimestamp || 0;
+
+            const migratedStats: GlobalStats = {
+                uniqueDaysPlayed: Math.max(uniqueDaysEn, uniqueDaysFr),
+                lastPlayTimestamp: Math.max(lastPlayEn, lastPlayFr) || null,
+            };
+            
+            saveGlobalStats(migratedStats);
+            return migratedStats;
+        }
+    } catch (error) {
+        console.error("Failed to parse global stats", error);
+        return defaultGlobalStats;
+    }
+}
+
+const saveGlobalStats = (globalStats: GlobalStats) => {
+    if (typeof window === 'undefined') return;
+    try {
+        localStorage.setItem(GLOBAL_STATS_KEY, JSON.stringify(globalStats));
+    } catch (error) {
+        console.error("Failed to save global stats", error);
+    }
 }
 
 
@@ -271,6 +321,9 @@ export const getStats = (): Stats => {
         const statsJson = localStorage.getItem(getKey('linguaLearnStats_v2'));
         if (statsJson) {
             const stats = JSON.parse(statsJson);
+            // On load, sync the global daily play count into the stats object for display purposes
+            const globalStats = getGlobalStats();
+            stats.uniqueDaysPlayed = globalStats.uniqueDaysPlayed;
             return { ...defaultStats, ...stats };
         }
     } catch (error) {
@@ -282,14 +335,14 @@ export const getStats = (): Stats => {
 export const updateStats = (isCorrect: boolean, quizName: string, questionId: number): Achievement[] => {
     if (typeof window === 'undefined') return [];
     const stats = getStats();
+    const masteryProgress = getMasteryProgress();
+    const globalStats = getGlobalStats();
 
     // Mastery progress update
     if (isCorrect) {
-        const masteryProgress = getMasteryProgress();
         if (!masteryProgress[quizName]) {
             masteryProgress[quizName] = [];
         }
-        // Use a Set to ensure uniqueness before pushing
         const questionSet = new Set(masteryProgress[quizName]);
         if (!questionSet.has(questionId)) {
             masteryProgress[quizName].push(questionId);
@@ -297,35 +350,38 @@ export const updateStats = (isCorrect: boolean, quizName: string, questionId: nu
         }
     }
 
-    // Daily play tracking
+    // Daily play tracking (GLOBAL)
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const todayTimestamp = today.getTime();
 
-    if (!stats.lastPlayTimestamp || stats.lastPlayTimestamp < todayTimestamp) {
-        stats.uniqueDaysPlayed += 1;
+    if (!globalStats.lastPlayTimestamp || globalStats.lastPlayTimestamp < todayTimestamp) {
+        globalStats.uniqueDaysPlayed += 1;
     }
-    stats.lastPlayTimestamp = Date.now();
+    globalStats.lastPlayTimestamp = Date.now();
+    
+    // Sync global value back to the language-specific stats object for achievement checks
+    stats.uniqueDaysPlayed = globalStats.uniqueDaysPlayed;
 
     // Quiz variety tracking
     if (!stats.playedQuizzes.includes(quizName)) {
         stats.playedQuizzes.push(quizName);
     }
     
-    // Global stats
+    // Global stats for the current language
     stats.totalAnswers += 1;
     stats.lastFiftyAnswers.unshift(isCorrect);
     if (stats.lastFiftyAnswers.length > 50) {
         stats.lastFiftyAnswers.pop();
     }
 
-    // Per-quiz stats
+    // Per-quiz stats for the current language
     if (!stats.perQuizStats[quizName]) {
         stats.perQuizStats[quizName] = { totalAnswers: 0, totalErrors: 0 };
     }
     stats.perQuizStats[quizName].totalAnswers += 1;
 
-    // Streak and error handling
+    // Streak and error handling for the current language
     if (isCorrect) {
         stats.currentStreak += 1;
         stats.totalCorrectAnswers += 1;
@@ -343,6 +399,7 @@ export const updateStats = (isCorrect: boolean, quizName: string, questionId: nu
 
     try {
         localStorage.setItem(getKey('linguaLearnStats_v2'), JSON.stringify(stats));
+        saveGlobalStats(globalStats);
     } catch (error) {
         console.error("Failed to save stats to localStorage", error);
     }
@@ -366,6 +423,7 @@ export const updateTimeSpent = (seconds: number): Achievement[] => {
 
 export const clearStats = () => {
     if (typeof window === 'undefined') return;
+    // This only clears language-specific data. Global daily play stats will persist.
     const defaultStats: Stats = { totalAnswers: 0, totalCorrectAnswers: 0, totalErrors: 0, longestStreak: 0, currentStreak: 0, lastFiftyAnswers: [], longestStreakDate: null, longestStreakQuiz: null, perQuizStats: {}, totalTimeSpent: 0, lastPlayTimestamp: null, uniqueDaysPlayed: 0, playedQuizzes: [], totalPerfectScores: 0 };
     localStorage.setItem(getKey('linguaLearnStats_v2'), JSON.stringify(defaultStats));
     localStorage.removeItem(getKey('linguaLearnAchievements_v2'));

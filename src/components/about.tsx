@@ -44,7 +44,7 @@ export default function AboutPage() {
                 <Separator />
                 <div className="flex flex-col items-center w-full">
                     <h3 className="text-lg font-semibold mb-4">Terms and Licenses</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+                    <div className="grid grid-cols-2 gap-4 w-full">
                          <Link href="/settings/about/terms" passHref className="w-full">
                             <Button variant="outline" className="w-full">
                                 <FileText className="mr-2 h-4 w-4" />

@@ -3,8 +3,10 @@
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Mail, Phone, MapPin } from "lucide-react";
 import LinguaLearnLogo from "@/components/LinguaLearnLogo";
+import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export default function AboutPage() {
     return (
@@ -13,13 +15,34 @@ export default function AboutPage() {
                 <LinguaLearnLogo width="48" height="48" />
                 <CardTitle className="text-3xl">About LinguaLearn</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4 text-center">
+            <CardContent className="space-y-6 text-center">
                 <p className="text-muted-foreground">
                     This application is a language learning tool designed to help you expand your vocabulary through interactive quizzes.
                 </p>
-                <p className="text-muted-foreground">
-                    Built with Next.js, React, ShadCN UI, Tailwind CSS, and Genkit.
-                </p>
+                <Separator />
+                <div className="text-left">
+                    <h3 className="text-lg font-semibold text-center mb-4">Contact the Creator</h3>
+                    <div className="flex items-center gap-4">
+                        <Avatar className="h-16 w-16">
+                            <AvatarFallback>KA</AvatarFallback>
+                        </Avatar>
+                        <div className="space-y-1 text-sm">
+                            <p className="font-bold">Kuljo Apps, Damian Kuliś</p>
+                            <div className="flex items-center gap-2 text-muted-foreground">
+                                <MapPin className="h-4 w-4" />
+                                <span>Warszawa</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-muted-foreground">
+                                <Mail className="h-4 w-4" />
+                                <span>kuljo.apps@gmail.com</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-muted-foreground">
+                                <Phone className="h-4 w-4" />
+                                <span>600-130-255</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </CardContent>
             <CardFooter className="flex justify-center p-6">
                 <Link href="/settings" passHref>

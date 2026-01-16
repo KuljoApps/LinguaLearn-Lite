@@ -121,8 +121,8 @@ export default function ErrorsPage() {
                         <TableRow>
                             <TableHead className="w-[80px] text-center">Count</TableHead>
                             <TableHead>Word</TableHead>
-                            <TableHead>Correct Answer</TableHead>
                             <TableHead>Your Answers</TableHead>
+                            <TableHead>Correct Answer</TableHead>
                             <TableHead>Quiz</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -135,10 +135,10 @@ export default function ErrorsPage() {
                                 <TableRow key={uniqueKey} onClick={() => handleRowClick(uniqueKey)} className="cursor-pointer">
                                     <TableCell className="font-bold text-center whitespace-nowrap">{error.count}</TableCell>
                                     <TableCell className="font-medium whitespace-nowrap">{isExpanded ? error.word : truncateText(error.word)}</TableCell>
-                                    <TableCell className="text-success whitespace-nowrap">{isExpanded ? error.correctAnswer : truncateText(error.correctAnswer)}</TableCell>
                                     <TableCell className="text-destructive whitespace-nowrap">
                                         {isExpanded ? userAnswersText : truncateText(userAnswersText)}
                                     </TableCell>
+                                    <TableCell className="text-success whitespace-nowrap">{isExpanded ? error.correctAnswer : truncateText(error.correctAnswer)}</TableCell>
                                     <TableCell className="whitespace-nowrap">{error.quiz}</TableCell>
                                 </TableRow>
                             );
@@ -153,8 +153,8 @@ export default function ErrorsPage() {
                 <TableHeader>
                     <TableRow>
                         <TableHead>Word</TableHead>
-                        <TableHead>Correct Answer</TableHead>
                         <TableHead>Your Answer</TableHead>
+                        <TableHead>Correct Answer</TableHead>
                         <TableHead>Quiz</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -164,8 +164,8 @@ export default function ErrorsPage() {
                         return (
                             <TableRow key={error.id} onClick={() => handleRowClick(error.id)} className="cursor-pointer">
                                 <TableCell className="font-medium whitespace-nowrap">{isExpanded ? error.word : truncateText(error.word)}</TableCell>
-                                <TableCell className="text-success whitespace-nowrap">{isExpanded ? error.correctAnswer : truncateText(error.correctAnswer)}</TableCell>
                                 <TableCell className="text-destructive whitespace-nowrap">{isExpanded ? error.userAnswer : truncateText(error.userAnswer)}</TableCell>
+                                <TableCell className="text-success whitespace-nowrap">{isExpanded ? error.correctAnswer : truncateText(error.correctAnswer)}</TableCell>
                                 <TableCell className="whitespace-nowrap">{error.quiz}</TableCell>
                             </TableRow>
                         );
@@ -201,19 +201,19 @@ export default function ErrorsPage() {
                     </div>
                 </CardHeader>
                 <CardContent className="h-96 w-full p-0">
-                    <div className="h-full w-full overflow-auto">
-                        {renderTable()}
-                    </div>
+                    {renderTable()}
                 </CardContent>
-                <CardFooter className="flex justify-center gap-4 pt-6">
-                    <Link href="/" passHref>
-                        <Button variant="outline">
-                            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
+                <CardFooter className="flex justify-center p-0 pt-6">
+                    <div className="flex flex-wrap justify-center gap-4">
+                        <Link href="/" passHref>
+                            <Button variant="outline">
+                                <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
+                            </Button>
+                        </Link>
+                        <Button variant="destructive" onClick={() => setIsClearAlertOpen(true)} disabled={errors.length === 0}>
+                            <Trash2 className="mr-2 h-4 w-4" /> Clear Errors
                         </Button>
-                    </Link>
-                    <Button variant="destructive" onClick={() => setIsClearAlertOpen(true)} disabled={errors.length === 0}>
-                        <Trash2 className="mr-2 h-4 w-4" /> Clear Errors
-                    </Button>
+                    </div>
                 </CardFooter>
             </Card>
 

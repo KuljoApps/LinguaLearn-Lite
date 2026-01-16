@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle, Flame, Percent, ShieldX, Trash2 } from "lucide-react";
+import { ArrowLeft, CheckCircle, Flame, Percent, ShieldX, Trash2, ArrowUpRight } from "lucide-react";
 import { getStats, clearStats, type Stats, getErrors, type ErrorRecord } from "@/lib/storage";
 import {
   AlertDialog,
@@ -125,7 +125,7 @@ export default function StatisticsPage() {
                     <div className="grid grid-cols-2 gap-4">
                         <Popover>
                             <PopoverTrigger asChild>
-                                <Card className="cursor-pointer transition-colors hover:bg-muted/50">
+                                <Card className="relative cursor-pointer transition-colors hover:bg-muted/50">
                                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                         <CardTitle className="text-sm font-medium">Total Answers</CardTitle>
                                         <CheckCircle className="h-5 w-5 text-amber" />
@@ -133,6 +133,7 @@ export default function StatisticsPage() {
                                     <CardContent>
                                         <div className="text-2xl font-bold">{stats.totalAnswers.toLocaleString()}</div>
                                     </CardContent>
+                                    <ArrowUpRight className="absolute bottom-2 right-2 h-4 w-4 text-muted-foreground/40" />
                                 </Card>
                             </PopoverTrigger>
                             <PopoverContent className="w-56">
@@ -153,7 +154,7 @@ export default function StatisticsPage() {
                         </Popover>
                         <Popover>
                             <PopoverTrigger asChild>
-                                <Card className="cursor-pointer transition-colors hover:bg-muted/50">
+                                <Card className="relative cursor-pointer transition-colors hover:bg-muted/50">
                                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                         <CardTitle className="text-sm font-medium">Total Errors</CardTitle>
                                         <ShieldX className="h-5 w-5 text-amber" />
@@ -161,6 +162,7 @@ export default function StatisticsPage() {
                                     <CardContent>
                                         <div className="text-2xl font-bold">{stats.totalErrors.toLocaleString()}</div>
                                     </CardContent>
+                                    <ArrowUpRight className="absolute bottom-2 right-2 h-4 w-4 text-muted-foreground/40" />
                                 </Card>
                             </PopoverTrigger>
                             <PopoverContent className="w-56">
@@ -181,7 +183,7 @@ export default function StatisticsPage() {
                         </Popover>
                          <Popover>
                             <PopoverTrigger asChild>
-                                <Card className="cursor-pointer transition-colors hover:bg-muted/50">
+                                <Card className="relative cursor-pointer transition-colors hover:bg-muted/50">
                                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                         <CardTitle className="text-sm font-medium">Success Rate</CardTitle>
                                         <Percent className="h-5 w-5 text-amber" />
@@ -189,6 +191,7 @@ export default function StatisticsPage() {
                                     <CardContent>
                                         <div className="text-2xl font-bold">{successRate}%</div>
                                     </CardContent>
+                                    <ArrowUpRight className="absolute bottom-2 right-2 h-4 w-4 text-muted-foreground/40" />
                                 </Card>
                             </PopoverTrigger>
                             <PopoverContent className="w-56">
@@ -215,7 +218,7 @@ export default function StatisticsPage() {
                         </Popover>
                         <Popover>
                             <PopoverTrigger asChild>
-                                <Card className="cursor-pointer transition-colors hover:bg-muted/50">
+                                <Card className="relative cursor-pointer transition-colors hover:bg-muted/50">
                                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                         <CardTitle className="text-sm font-medium">Longest Streak</CardTitle>
                                         <Flame className="h-6 w-6 text-amber" />
@@ -223,6 +226,7 @@ export default function StatisticsPage() {
                                     <CardContent>
                                         <div className="text-2xl font-bold">{stats.longestStreak.toLocaleString()}</div>
                                     </CardContent>
+                                    <ArrowUpRight className="absolute bottom-2 right-2 h-4 w-4 text-muted-foreground/40" />
                                 </Card>
                             </PopoverTrigger>
                             <PopoverContent className="w-auto">

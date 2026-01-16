@@ -29,6 +29,13 @@ export default function SettingsPage() {
         const newSettings = { ...settings, [key]: value };
         setSettings(newSettings);
         saveSettings(newSettings);
+
+        if (key === 'vibrationsEnabled' && value === true) {
+            if (typeof window !== 'undefined' && 'vibrate' in window.navigator) {
+                // A short vibration to confirm the setting is on.
+                window.navigator.vibrate(100);
+            }
+        }
     }
 
     const handleResetSettings = () => {

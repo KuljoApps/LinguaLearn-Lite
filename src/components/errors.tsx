@@ -107,7 +107,7 @@ export default function ErrorsPage() {
 
     const renderTable = () => {
         if (filteredErrors.length === 0) {
-            return <p className="text-center text-muted-foreground pt-10">No errors recorded for this filter.</p>;
+            return <p className="text-center text-muted-foreground pt-10 pr-6">No errors recorded for this filter.</p>;
         }
 
         if (view === 'frequent') {
@@ -127,7 +127,7 @@ export default function ErrorsPage() {
                             const userAnswersText = Array.from(error.userAnswers).join(', ');
                             return (
                                 <TableRow key={index} onClick={() => handleRowClick(index)} className="cursor-pointer">
-                                    <TableCell className="font-bold text-center">{error.count}</TableCell>
+                                    <TableCell className="font-bold text-center whitespace-nowrap">{error.count}</TableCell>
                                     <TableCell className="font-medium whitespace-nowrap">{isExpanded ? error.word : truncateText(error.word)}</TableCell>
                                     <TableCell className="text-success whitespace-nowrap">{isExpanded ? error.correctAnswer : truncateText(error.correctAnswer)}</TableCell>
                                     <TableCell className="text-destructive whitespace-nowrap">
@@ -193,8 +193,8 @@ export default function ErrorsPage() {
                         </div>
                     </div>
                 </CardHeader>
-                <CardContent>
-                    <div className="h-96">
+                <CardContent className="pl-6 pr-0 pt-0 pb-2">
+                    <div className="h-96 w-full overflow-auto">
                         {renderTable()}
                     </div>
                 </CardContent>

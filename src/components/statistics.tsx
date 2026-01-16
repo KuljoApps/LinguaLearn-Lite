@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -5,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle, Flame, Percent, ShieldX, Trash2 } from "lucide-react";
-import { getStats, clearStats, type Stats } from "@/lib/storage";
+import { getStats, clearStats, type Stats, getErrors, type ErrorRecord } from "@/lib/storage";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,16 +17,19 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
 const defaultStats: Stats = { totalAnswers: 0, totalErrors: 0, longestStreak: 0, currentStreak: 0, lastFiftyAnswers: [] };
 
 export default function StatisticsPage() {
     const [stats, setStats] = useState<Stats>(defaultStats);
+    const [errors, setErrors] = useState<ErrorRecord[]>([]);
     const [isClearAlertOpen, setIsClearAlertOpen] = useState(false);
 
     useEffect(() => {
         setStats(getStats());
+        setErrors(getErrors());
     }, []);
 
     const handleClearStats = () => {
@@ -38,21 +42,76 @@ export default function StatisticsPage() {
         ? Math.round(((stats.totalAnswers - stats.totalErrors) / stats.totalAnswers) * 100)
         : 0;
 
-    const lastFiftyAnswersGrid = Array.from({ length: 50 }).map((_, index) => {
-        const answer = stats.lastFiftyAnswers[index];
-        if (answer === undefined) {
-            return <div key={index} className="h-4 w-4 rounded-sm bg-muted/20" />;
+    const renderLastFiftyAnswersGrid = () => {
+        const gridItems = [];
+        let errorIndex = -1;
+
+        for (let i = 0; i < 50; i++) {
+            const answer = stats.lastFiftyAnswers[i];
+
+            if (answer === undefined) {
+                gridItems.push(<div key={`empty-${i}`} className="h-4 w-4 rounded-sm bg-muted/20" />);
+                continue;
+            }
+
+            if (answer) {
+                 gridItems.push(
+                    <div
+                        key={`correct-${i}`}
+                        className="h-4 w-4 rounded-sm bg-success"
+                    />
+                );
+            } else {
+                errorIndex++;
+                const currentError = errors[errorIndex];
+
+                if (!currentError) {
+                    gridItems.push(
+                        <div
+                            key={`error-no-data-${i}`}
+                            className="h-4 w-4 rounded-sm bg-destructive"
+                        />
+                    );
+                    continue;
+                }
+                
+                gridItems.push(
+                    <Popover key={`error-${i}`}>
+                        <PopoverTrigger asChild>
+                            <button
+                                aria-label="Show error details"
+                                className="h-4 w-4 rounded-sm bg-destructive cursor-pointer focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                            />
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto max-w-xs text-sm">
+                            <div className="space-y-2">
+                                <h4 className="font-medium leading-none">Error Details</h4>
+                                <p className="text-muted-foreground">
+                                    From quiz: <span className="font-semibold text-foreground">{currentError.quiz}</span>
+                                </p>
+                                <p>
+                                    <span className="text-muted-foreground">Word: </span>
+                                    <span className="font-bold">{currentError.word}</span>
+                                </p>
+                                <p>
+                                    <span className="text-muted-foreground">Correct: </span>
+                                    <span className="font-bold text-success">{currentError.correctAnswer}</span>
+                                </p>
+                                {currentError.userAnswer !== 'No answer' && (
+                                    <p>
+                                        <span className="text-muted-foreground">Your answer: </span>
+                                        <span className="font-bold text-destructive">{currentError.userAnswer}</span>
+                                    </p>
+                                )}
+                            </div>
+                        </PopoverContent>
+                    </Popover>
+                );
+            }
         }
-        return (
-            <div
-                key={index}
-                className={cn(
-                    "h-4 w-4 rounded-sm",
-                    answer ? "bg-success" : "bg-destructive"
-                )}
-            />
-        );
-    });
+        return gridItems;
+    };
+
 
     return (
         <>
@@ -105,7 +164,7 @@ export default function StatisticsPage() {
                         </CardHeader>
                         <CardContent>
                             <div className="flex flex-wrap gap-1">
-                                {lastFiftyAnswersGrid}
+                                {renderLastFiftyAnswersGrid()}
                             </div>
                         </CardContent>
                     </Card>
@@ -143,3 +202,5 @@ export default function StatisticsPage() {
         </>
     );
 }
+
+    

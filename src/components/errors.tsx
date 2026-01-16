@@ -194,7 +194,7 @@ export default function ErrorsPage() {
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <div className="h-96 overflow-auto">
+                    <div className="h-96">
                         {renderTable()}
                     </div>
                 </CardContent>

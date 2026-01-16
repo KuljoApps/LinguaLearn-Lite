@@ -150,7 +150,7 @@ export default function ErrorsPage() {
         <>
             <Card className="w-full max-w-4xl shadow-2xl">
                 <CardHeader>
-                    <div className="flex justify-between items-center">
+                    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
                         <CardTitle className="text-3xl">Common Errors</CardTitle>
                         <div className="flex items-center gap-2">
                             <Select value={quizFilter} onValueChange={(value) => setQuizFilter(value as QuizFilter)}>

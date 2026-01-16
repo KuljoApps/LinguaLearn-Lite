@@ -6,7 +6,7 @@ export type LicenseInfo = {
   licenseText: string;
 };
 
-const mitLicense = `Copyright (c) 2024 Vercel, Inc.
+const mitLicenseTemplate = (copyrightHolder: string) => `Copyright (c) ${copyrightHolder}
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -217,6 +217,30 @@ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.`;
 
+const bsd2ClauseLicense = `Copyright (c) 2012, Scott Motte
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.`;
+
 
 export const packageLicenses: LicenseInfo[] = [
     {
@@ -224,14 +248,14 @@ export const packageLicenses: LicenseInfo[] = [
         version: '15.5.9',
         license: 'MIT',
         url: 'https://github.com/vercel/next.js',
-        licenseText: mitLicense,
+        licenseText: mitLicenseTemplate('Vercel, Inc.'),
     },
     {
         name: 'React',
         version: '19.2.1',
         license: 'MIT',
         url: 'https://github.com/facebook/react',
-        licenseText: mitLicense.replace('Vercel, Inc.', 'Facebook, Inc. and its affiliates.'),
+        licenseText: mitLicenseTemplate('Facebook, Inc. and its affiliates.'),
     },
     {
         name: 'Genkit',
@@ -241,11 +265,18 @@ export const packageLicenses: LicenseInfo[] = [
         licenseText: apacheLicense,
     },
     {
-        name: 'Radix UI (used by ShadCN)',
+        name: 'Firebase',
+        version: '11.9.1',
+        license: 'Apache-2.0',
+        url: 'https://github.com/firebase/firebase-js-sdk',
+        licenseText: apacheLicense,
+    },
+    {
+        name: 'Radix UI Primitives',
         version: 'various',
         license: 'MIT',
         url: 'https://github.com/radix-ui/primitives',
-        licenseText: mitLicense.replace('Vercel, Inc.', 'WorkOS, Inc.'),
+        licenseText: mitLicenseTemplate('WorkOS, Inc.'),
     },
     {
         name: 'Lucide React',
@@ -259,34 +290,90 @@ export const packageLicenses: LicenseInfo[] = [
         version: '3.4.1',
         license: 'MIT',
         url: 'https://github.com/tailwindlabs/tailwindcss',
-        licenseText: mitLicense.replace('Vercel, Inc.', 'Tailwind Labs, Inc.'),
+        licenseText: mitLicenseTemplate('Tailwind Labs, Inc.'),
+    },
+    {
+        name: 'React Hook Form',
+        version: '7.54.2',
+        license: 'MIT',
+        url: 'https://github.com/react-hook-form/react-hook-form',
+        licenseText: mitLicenseTemplate('Beier (Bill) Luo'),
     },
     {
         name: 'Zod',
         version: '3.24.2',
         license: 'MIT',
         url: 'https://github.com/colinhacks/zod',
-        licenseText: mitLicense.replace('Vercel, Inc.', 'Colin McDonnell'),
+        licenseText: mitLicenseTemplate('Colin McDonnell'),
     },
     {
         name: 'Recharts',
         version: '2.15.1',
         license: 'MIT',
         url: 'https://github.com/recharts/recharts',
-        licenseText: mitLicense.replace('Vercel, Inc.', 'Recharts'),
+        licenseText: mitLicenseTemplate('Recharts'),
     },
     {
         name: 'date-fns',
         version: '3.6.0',
         license: 'MIT',
         url: 'https://github.com/date-fns/date-fns',
-        licenseText: mitLicense.replace('Vercel, Inc.', 'date-fns contributors'),
+        licenseText: mitLicenseTemplate('date-fns contributors'),
+    },
+    {
+        name: 'react-day-picker',
+        version: '9.11.3',
+        license: 'MIT',
+        url: 'https://github.com/gpbl/react-day-picker',
+        licenseText: mitLicenseTemplate('Giampaolo Bellavite'),
+    },
+    {
+        name: 'class-variance-authority',
+        version: '0.7.1',
+        license: 'MIT',
+        url: 'https://github.com/joebell/cva',
+        licenseText: mitLicenseTemplate('Joe Bell'),
     },
     {
         name: 'clsx',
         version: '2.1.1',
         license: 'MIT',
         url: 'https://github.com/lukeed/clsx',
-        licenseText: mitLicense.replace('Vercel, Inc.', 'Luke Edwards'),
+        licenseText: mitLicenseTemplate('Luke Edwards'),
+    },
+    {
+        name: 'tailwind-merge',
+        version: '3.0.1',
+        license: 'MIT',
+        url: 'https://github.com/dcastil/tailwind-merge',
+        licenseText: mitLicenseTemplate('Dany Castillo'),
+    },
+    {
+        name: 'tailwindcss-animate',
+        version: '1.0.7',
+        license: 'MIT',
+        url: 'https://github.com/jamiebuilds/tailwindcss-animate',
+        licenseText: mitLicenseTemplate('shadcn'),
+    },
+    {
+        name: 'embla-carousel-react',
+        version: '8.6.0',
+        license: 'MIT',
+        url: 'https://github.com/davidcetinkaya/embla-carousel',
+        licenseText: mitLicenseTemplate('David Cetinkaya'),
+    },
+    {
+        name: 'patch-package',
+        version: '8.0.0',
+        license: 'MIT',
+        url: 'https://github.com/ds300/patch-package',
+        licenseText: mitLicenseTemplate('David Sheldrick'),
+    },
+    {
+        name: 'dotenv',
+        version: '16.5.0',
+        license: 'BSD-2-Clause',
+        url: 'https://github.com/motdotla/dotenv',
+        licenseText: bsd2ClauseLicense,
     },
 ];

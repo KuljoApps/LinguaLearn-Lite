@@ -15,6 +15,11 @@ import { questions as plDeQuestions } from './questions-pl-de';
 import { questions as irregularVerbsDeQuestions } from './questions-irregular-verbs-de';
 import { questions as phrasalVerbsDeQuestions } from './questions-phrasal-verbs-de';
 import { questions as idiomsDeQuestions } from './questions-idioms-de';
+import { questions as itPlQuestions } from './questions-it-pl';
+import { questions as plItQuestions } from './questions-pl-it';
+import { questions as irregularVerbsItQuestions } from './questions-irregular-verbs-it';
+import { questions as phrasalVerbsItQuestions } from './questions-phrasal-verbs-it';
+import { questions as idiomsItQuestions } from './questions-idioms-it';
 
 
 export interface Achievement {
@@ -25,35 +30,37 @@ export interface Achievement {
   description_fr?: string;
   name_de?: string;
   description_de?: string;
+  name_it?: string;
+  description_it?: string;
   icon: LucideIcon;
   goal: number;
 }
 
 export const allAchievements: Achievement[] = [
   // Total Correct Answers
-  { id: 'novice', name: 'Novice', name_fr: 'Débutant', name_de: 'Anfänger', description: 'Answer 50 questions correctly.', description_fr: 'Répondre correctement à 50 questions.', description_de: 'Beantworte 50 Fragen richtig.', icon: Sparkles, goal: 50 },
-  { id: 'apprentice', name: 'Apprentice', name_fr: 'Apprenti', name_de: 'Lehrling', description: 'Answer 250 questions correctly.', description_fr: 'Répondre correctement à 250 questions.', description_de: 'Beantworte 250 Fragen richtig.', icon: Star, goal: 250 },
-  { id: 'master', name: 'Master', name_fr: 'Maître', name_de: 'Meister', description: 'Answer 1000 questions correctly.', description_fr: 'Répondre correctement à 1000 questions.', description_de: 'Beantworte 1000 Fragen richtig.', icon: Crown, goal: 1000 },
+  { id: 'novice', name: 'Novice', name_fr: 'Débutant', name_de: 'Anfänger', name_it: 'Novizio', description: 'Answer 50 questions correctly.', description_fr: 'Répondre correctement à 50 questions.', description_de: 'Beantworte 50 Fragen richtig.', description_it: 'Rispondi correttamente a 50 domande.', icon: Sparkles, goal: 50 },
+  { id: 'apprentice', name: 'Apprentice', name_fr: 'Apprenti', name_de: 'Lehrling', name_it: 'Apprendista', description: 'Answer 250 questions correctly.', description_fr: 'Répondre correctement à 250 questions.', description_de: 'Beantworte 250 Fragen richtig.', description_it: 'Rispondi correttamente a 250 domande.', icon: Star, goal: 250 },
+  { id: 'master', name: 'Master', name_fr: 'Maître', name_de: 'Meister', name_it: 'Maestro', description: 'Answer 1000 questions correctly.', description_fr: 'Répondre correctly à 1000 questions.', description_de: 'Beantworte 1000 Fragen richtig.', description_it: 'Rispondi correttamente a 1000 domande.', icon: Crown, goal: 1000 },
 
   // Streaks
-  { id: 'streak25', name: 'On Fire', name_fr: 'En Feu', name_de: 'Heißgelaufen', description: 'Get 25 correct answers in a row.', description_fr: 'Obtenir 25 bonnes réponses d\'affilée.', description_de: 'Erhalte 25 richtige Antworten in Folge.', icon: Flame, goal: 25 },
-  { id: 'streak50', name: 'Unstoppable', name_fr: 'Inarrêtable', name_de: 'Unaufhaltsam', description: 'Get 50 correct answers in a row.', description_fr: 'Obtenir 50 bonnes réponses d\'affilée.', description_de: 'Erhalte 50 richtige Antworten in Folge.', icon: Zap, goal: 50 },
-  { id: 'streak100', name: 'Legendary', name_fr: 'Légendaire', name_de: 'Legendär', description: 'Get 100 correct answers in a row.', description_fr: 'Obtenir 100 bonnes réponses d\'affilée.', description_de: 'Erhalte 100 richtige Antworten in Folge.', icon: Trophy, goal: 100 },
+  { id: 'streak25', name: 'On Fire', name_fr: 'En Feu', name_de: 'Heißgelaufen', name_it: 'Inarrestabile', description: 'Get 25 correct answers in a row.', description_fr: 'Obtenir 25 bonnes réponses d\'affilée.', description_de: 'Erhalte 25 richtige Antworten in Folge.', description_it: 'Ottieni 25 risposte corrette di fila.', icon: Flame, goal: 25 },
+  { id: 'streak50', name: 'Unstoppable', name_fr: 'Inarrêtable', name_de: 'Unaufhaltsam', name_it: 'Imbattibile', description: 'Get 50 correct answers in a row.', description_fr: 'Obtenir 50 bonnes réponses d\'affilée.', description_de: 'Erhalte 50 richtige Antworten in Folge.', description_it: 'Ottieni 50 risposte corrette di fila.', icon: Zap, goal: 50 },
+  { id: 'streak100', name: 'Legendary', name_fr: 'Légendaire', name_de: 'Legendär', name_it: 'Leggendario', description: 'Get 100 correct answers in a row.', description_fr: 'Obtenir 100 bonnes réponses d\'affilée.', description_de: 'Erhalte 100 richtige Antworten in Folge.', description_it: 'Ottieni 100 risposte corrette di fila.', icon: Trophy, goal: 100 },
 
   // Time Spent
-  { id: 'time_1h', name: 'Time Traveler', name_fr: 'Voyageur Temporel', name_de: 'Zeitreisender', description: 'Spend 1 hour learning in total.', description_fr: 'Passer 1 heure à apprendre au total.', description_de: 'Verbringe insgesamt 1 Stunde mit Lernen.', icon: Clock, goal: 3600 },
-  { id: 'time_3h', name: 'Time Bender', name_fr: 'Maître du Temps', name_de: 'Zeitbeuger', description: 'Spend 3 hours learning in total.', description_fr: 'Passer 3 heures à apprendre au total.', description_de: 'Verbringe insgesamt 3 Stunden mit Lernen.', icon: BarChart, goal: 10800 },
-  { id: 'time_6h', name: 'Time Lord', name_fr: 'Seigneur du Temps', name_de: 'Zeitlord', description: 'Spend 6 hours learning in total.', description_fr: 'Passer 6 heures à apprendre au total.', description_de: 'Verbringe insgesamt 6 Stunden mit Lernen.', icon: BrainCircuit, goal: 21600 },
+  { id: 'time_1h', name: 'Time Traveler', name_fr: 'Voyageur Temporel', name_de: 'Zeitreisender', name_it: 'Viaggiatore del Tempo', description: 'Spend 1 hour learning in total.', description_fr: 'Passer 1 heure à apprendre au total.', description_de: 'Verbringe insgesamt 1 Stunde mit Lernen.', description_it: 'Passa 1 ora a imparare in totale.', icon: Clock, goal: 3600 },
+  { id: 'time_3h', name: 'Time Bender', name_fr: 'Maître du Temps', name_de: 'Zeitbeuger', name_it: 'Padrone del Tempo', description: 'Spend 3 hours learning in total.', description_fr: 'Passer 3 heures à apprendre au total.', description_de: 'Verbringe insgesamt 3 Stunden mit Lernen.', description_it: 'Passa 3 ore a imparare in totale.', icon: BarChart, goal: 10800 },
+  { id: 'time_6h', name: 'Time Lord', name_fr: 'Seigneur du Temps', name_de: 'Zeitlord', name_it: 'Signore del Tempo', description: 'Spend 6 hours learning in total.', description_fr: 'Passer 6 heures à apprendre au total.', description_de: 'Verbringe insgesamt 6 Stunden mit Lernen.', description_it: 'Passa 6 ore a imparare in totale.', icon: BrainCircuit, goal: 21600 },
 
   // Daily Play
-  { id: 'daily_7', name: 'Committed', name_fr: 'Engagé', name_de: 'Engagiert', description: 'Play on 7 separate days.', description_fr: 'Jouer pendant 7 jours distincts.', description_de: 'Spiele an 7 verschiedenen Tagen.', icon: CalendarClock, goal: 7 },
-  { id: 'daily_14', name: 'Devoted', name_fr: 'Dévoué', name_de: 'Hingebungsvoll', description: 'Play on 14 separate days.', description_fr: 'Jouer pendant 14 jours distincts.', description_de: 'Spiele an 14 verschiedenen Tagen.', icon: CalendarClock, goal: 14 },
-  { id: 'daily_30', name: 'Habituated', name_fr: 'Habitué', name_de: 'Gewohnheitstier', description: 'Play on 30 separate days.', description_fr: 'Jouer pendant 30 jours distincts.', description_de: 'Spiele an 30 verschiedenen Tagen.', icon: CalendarClock, goal: 30 },
+  { id: 'daily_7', name: 'Committed', name_fr: 'Engagé', name_de: 'Engagiert', name_it: 'Impegnato', description: 'Play on 7 separate days.', description_fr: 'Jouer pendant 7 jours distincts.', description_de: 'Spiele an 7 verschiedenen Tagen.', description_it: 'Gioca per 7 giorni separati.', icon: CalendarClock, goal: 7 },
+  { id: 'daily_14', name: 'Devoted', name_fr: 'Dévoué', name_de: 'Hingebungsvoll', name_it: 'Devoto', description: 'Play on 14 separate days.', description_fr: 'Jouer pendant 14 jours distincts.', description_de: 'Spiele an 14 verschiedenen Tagen.', description_it: 'Gioca per 14 giorni separati.', icon: CalendarClock, goal: 14 },
+  { id: 'daily_30', name: 'Habituated', name_fr: 'Habitué', name_de: 'Gewohnheitstier', name_it: 'Abituato', description: 'Play on 30 separate days.', description_fr: 'Jouer pendant 30 jours distincts.', description_de: 'Spiele an 30 verschiedenen Tagen.', description_it: 'Gioca per 30 giorni separati.', icon: CalendarClock, goal: 30 },
 
   // Perfect Scores
-  { id: 'perfectionist', name: 'Perfectionist', name_fr: 'Perfectionniste', name_de: 'Perfektionist', description: 'Get a perfect score on 10 quizzes.', description_fr: 'Obtenir un score parfait à 10 quiz.', description_de: 'Erziele in 10 Quiz eine perfekte Punktzahl.', icon: Award, goal: 10 },
-  { id: 'virtuoso', name: 'Virtuoso', name_fr: 'Virtuose', name_de: 'Virtuose', description: 'Get a perfect score on 25 quizzes.', description_fr: 'Obtenir un score parfait à 25 quiz.', description_de: 'Erziele in 25 Quiz eine perfekte Punktzahl.', icon: Award, goal: 25 },
-  { id: 'grandmaster', name: 'Grand Master', name_fr: 'Grand Maître', name_de: 'Großmeister', description: 'Get a perfect score on 50 quizzes.', description_fr: 'Obtenir un score parfait à 50 quiz.', description_de: 'Erziele in 50 Quiz eine perfekte Punktzahl.', icon: Award, goal: 50 },
+  { id: 'perfectionist', name: 'Perfectionist', name_fr: 'Perfectionniste', name_de: 'Perfektionist', name_it: 'Perfezionista', description: 'Get a perfect score on 10 quizzes.', description_fr: 'Obtenir un score parfait à 10 quiz.', description_de: 'Erziele in 10 Quiz eine perfekte Punktzahl.', description_it: 'Ottieni un punteggio perfetto in 10 quiz.', icon: Award, goal: 10 },
+  { id: 'virtuoso', name: 'Virtuoso', name_fr: 'Virtuose', name_de: 'Virtuose', name_it: 'Virtuoso', description: 'Get a perfect score on 25 quizzes.', description_fr: 'Obtenir un score parfait à 25 quiz.', description_de: 'Erziele in 25 Quiz eine perfekte Punktzahl.', description_it: 'Ottieni un punteggio perfetto in 25 quiz.', icon: Award, goal: 25 },
+  { id: 'grandmaster', name: 'Grand Master', name_fr: 'Grand Maître', name_de: 'Großmeister', name_it: 'Gran Maestro', description: 'Get a perfect score on 50 quizzes.', description_fr: 'Obtenir un score parfait à 50 quiz.', description_de: 'Erziele in 50 Quiz eine perfekte Punktzahl.', description_it: 'Ottieni un punteggio perfetto in 50 quiz.', icon: Award, goal: 50 },
   
   // Mastery (English)
   { id: 'mastery_en_pl', name: 'English-Polish Scholar', description: 'Correctly answer every English-Polish question.', icon: BookMarked, goal: enPlQuestions.length },
@@ -75,4 +82,11 @@ export const allAchievements: Achievement[] = [
   { id: 'mastery_irregular_de', name: 'Verb Virtuoso (DE)', name_de: 'Verben-Virtuose (DE)', description: 'Correctly answer every irregular verb question.', description_de: 'Beantworte jede Frage zu unregelmäßigen Verben richtig.', icon: Webhook, goal: irregularVerbsDeQuestions.length },
   { id: 'mastery_phrasal_de', name: 'Separable Verb Fanatic (DE)', name_de: 'Fan der trennbaren Verben (DE)', description: 'Correctly answer every separable verb question.', description_de: 'Beantworte jede Frage zu trennbaren Verben richtig.', icon: Brain, goal: phrasalVerbsDeQuestions.length },
   { id: 'mastery_idioms_de', name: 'Idiom Idol (DE)', name_de: 'Redewendungs-Idol (DE)', description: 'Correctly answer every idiom question.', description_de: 'Beantworte jede Frage zu Redewendungen richtig.', icon: MessagesSquare, goal: idiomsDeQuestions.length },
+
+  // Mastery (Italian)
+  { id: 'mastery_it_pl', name: 'Italian-Polish Scholar', name_it: 'Studioso Italo-Polacco', description: 'Correctly answer every Italian-Polish question.', description_it: 'Rispondi correttamente a ogni domanda Italiano-Polacco.', icon: BookMarked, goal: itPlQuestions.length },
+  { id: 'mastery_pl_it', name: 'Polish-Italian Scholar', name_it: 'Studioso Polacco-Italiano', description: 'Correctly answer every Polish-Italian question.', description_it: 'Rispondi correttamente a ogni domanda Polacco-Italiano.', icon: Globe, goal: plItQuestions.length },
+  { id: 'mastery_irregular_it', name: 'Verb Virtuoso (IT)', name_it: 'Virtuoso dei Verbi (IT)', description: 'Correctly answer every irregular verb question.', description_it: 'Rispondi correttamente a ogni domanda sui verbi irregolari.', icon: Webhook, goal: irregularVerbsItQuestions.length },
+  { id: 'mastery_phrasal_it', name: 'Phrasal Fanatic (IT)', name_it: 'Fan dei Verbi Frasali (IT)', description: 'Correctly answer every phrasal verb question.', description_it: 'Rispondi correttamente a ogni domanda sui verbi frasali.', icon: Brain, goal: phrasalVerbsItQuestions.length },
+  { id: 'mastery_idioms_it', name: 'Idiom Idol (IT)', name_it: 'Idolo dei Modi di dire (IT)', description: 'Correctly answer every idiom question.', description_it: 'Rispondi correttamente a ogni domanda sui modi di dire.', icon: MessagesSquare, goal: idiomsItQuestions.length },
 ];

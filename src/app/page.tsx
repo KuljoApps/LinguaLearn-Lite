@@ -11,59 +11,67 @@ import { useState, useEffect } from 'react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 export default function Home() {
-    const [language, setCurrentLanguage] = useState<'en' | 'fr' | 'de'>('en');
+    const [language, setCurrentLanguage] = useState<'en' | 'fr' | 'de' | 'it'>('en');
 
     useEffect(() => {
         setCurrentLanguage(getLanguage());
     }, []);
 
-    const handleLanguageChange = (lang: 'en' | 'fr' | 'de') => {
+    const handleLanguageChange = (lang: 'en' | 'fr' | 'de' | 'it') => {
         setLanguage(lang);
         setCurrentLanguage(lang);
     };
 
     const isFrench = language === 'fr';
     const isGerman = language === 'de';
+    const isItalian = language === 'it';
 
     const getWelcomeMessage = () => {
         if (isFrench) return "Prêt à remettre en question tes choix de vie dans une autre langue? Allons-y!";
         if (isGerman) return "Bereit, deine Lebensentscheidungen in einer anderen Sprache zu hinterfragen? Los geht's!";
+        if (isItalian) return "Pronto a mettere in discussione le tue scelte di vita in un'altra lingua? Andiamo!";
         return "Ready to question your life choices in another language? Let's go!";
     };
 
     const getQuizTitle1 = () => {
         if (isFrench) return "Français - Polonais";
         if (isGerman) return "Deutsch - Polnisch";
+        if (isItalian) return "Italiano - Polacco";
         return "English - Polish";
     };
 
     const getQuizTitle2 = () => {
         if (isFrench) return "Polonais - Français";
         if (isGerman) return "Polnisch - Deutsch";
+        if (isItalian) return "Polacco - Italiano";
         return "Polish - English";
     };
     
     const getQuizTitle3 = () => {
         if (isFrench) return "Verbes Irréguliers";
         if (isGerman) return "Unregelmäßige Verben";
+        if (isItalian) return "Verbi Irregolari";
         return "Irregular Verbs";
     }
 
     const getQuizTitle4 = () => {
         if (isFrench) return "Verbes à Particule";
         if (isGerman) return "Trennbare Verben";
+        if (isItalian) return "Verbi Frasali";
         return "Phrasal Verbs";
     }
     
     const getQuizTitle5 = () => {
         if (isFrench) return "Idiomes";
         if (isGerman) return "Redewendungen";
+        if (isItalian) return "Modi di dire";
         return "Idioms";
     }
 
     const getFlag = () => {
         if (isFrench) return '🇫🇷';
         if (isGerman) return '🇩🇪';
+        if (isItalian) return '🇮🇹';
         return '🇬🇧';
     }
 
@@ -81,31 +89,31 @@ export default function Home() {
                     </p>
                 </CardHeader>
                 <CardContent className="flex flex-col space-y-4 p-6 pt-0">
-                    <Link href={isFrench ? "/quiz/fr-pl" : isGerman ? "/quiz/de-pl" : "/quiz/en-pl"} passHref>
+                    <Link href={isFrench ? "/quiz/fr-pl" : isGerman ? "/quiz/de-pl" : isItalian ? "/quiz/it-pl" : "/quiz/en-pl"} passHref>
                         <Button className="w-full h-12 text-lg" size="lg">
                             <BookOpen className="mr-2 h-5 w-5" />
                             {getQuizTitle1()}
                         </Button>
                     </Link>
-                    <Link href={isFrench ? "/quiz/pl-fr" : isGerman ? "/quiz/pl-de" : "/quiz/pl-en"} passHref>
+                    <Link href={isFrench ? "/quiz/pl-fr" : isGerman ? "/quiz/pl-de" : isItalian ? "/quiz/pl-it" : "/quiz/pl-en"} passHref>
                         <Button className="w-full h-12 text-lg" size="lg">
                             <Dumbbell className="mr-2 h-5 w-5" />
                             {getQuizTitle2()}
                         </Button>
                     </Link>
-                    <Link href={isFrench ? "/quiz/irregular-verbs-fr" : isGerman ? "/quiz/irregular-verbs-de" : "/quiz/irregular-verbs"} passHref>
+                    <Link href={isFrench ? "/quiz/irregular-verbs-fr" : isGerman ? "/quiz/irregular-verbs-de" : isItalian ? "/quiz/irregular-verbs-it" : "/quiz/irregular-verbs"} passHref>
                         <Button className="w-full h-12 text-lg" size="lg">
                             <Sparkles className="mr-2 h-5 w-5" />
                             {getQuizTitle3()}
                         </Button>
                     </Link>
-                    <Link href={isFrench ? "/quiz/phrasal-verbs-fr" : isGerman ? "/quiz/phrasal-verbs-de" : "/quiz/phrasal-verbs"} passHref>
+                    <Link href={isFrench ? "/quiz/phrasal-verbs-fr" : isGerman ? "/quiz/phrasal-verbs-de" : isItalian ? "/quiz/phrasal-verbs-it" : "/quiz/phrasal-verbs"} passHref>
                         <Button className="w-full h-12 text-lg" size="lg">
                             <Layers className="mr-2 h-5 w-5" />
                             {getQuizTitle4()}
                         </Button>
                     </Link>
-                    <Link href={isFrench ? "/quiz/idioms-fr" : isGerman ? "/quiz/idioms-de" : "/quiz/idioms"} passHref>
+                    <Link href={isFrench ? "/quiz/idioms-fr" : isGerman ? "/quiz/idioms-de" : isItalian ? "/quiz/idioms-it" : "/quiz/idioms"} passHref>
                         <Button className="w-full h-12 text-lg" size="lg">
                             <MessageSquareQuote className="mr-2 h-5 w-5" />
                             {getQuizTitle5()}
@@ -128,6 +136,9 @@ export default function Home() {
                             </DropdownMenuItem>
                             <DropdownMenuItem onClick={() => handleLanguageChange('de')}>
                                 <span className="mr-2 text-lg">🇩🇪</span> Deutsch
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleLanguageChange('it')}>
+                                <span className="mr-2 text-lg">🇮🇹</span> Italiano
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>

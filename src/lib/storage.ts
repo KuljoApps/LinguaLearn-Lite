@@ -49,7 +49,7 @@ export interface AchievementStatus {
     unlockedAt: number | null;
 }
 
-type Language = 'en' | 'fr' | 'de';
+type Language = 'en' | 'fr' | 'de' | 'it';
 
 const LANGUAGE_KEY = 'linguaLearnLanguage';
 const SETTINGS_KEY = 'linguaLearnSettings_v2';
@@ -249,6 +249,22 @@ const checkAndUnlockAchievements = (stats: Stats): Achievement[] => {
                 break;
             case 'mastery_idioms_de':
                 currentProgress = masteryProgress['Idioms (DE)']?.length || 0;
+                break;
+            // Italian Mastery
+            case 'mastery_it_pl':
+                currentProgress = masteryProgress['Italiano - Polacco']?.length || 0;
+                break;
+            case 'mastery_pl_it':
+                currentProgress = masteryProgress['Polacco - Italiano']?.length || 0;
+                break;
+            case 'mastery_irregular_it':
+                currentProgress = masteryProgress['Verbi Irregolari (IT)']?.length || 0;
+                break;
+            case 'mastery_phrasal_it':
+                currentProgress = masteryProgress['Verbi Frasali (IT)']?.length || 0;
+                break;
+            case 'mastery_idioms_it':
+                currentProgress = masteryProgress['Modi di dire (IT)']?.length || 0;
                 break;
             default:
                 break;

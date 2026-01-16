@@ -121,8 +121,8 @@ export default function ErrorsPage() {
                         <TableRow>
                             <TableHead className="w-[80px] text-center">Count</TableHead>
                             <TableHead>Word</TableHead>
-                            <TableHead>Your Answers</TableHead>
                             <TableHead>Correct Answer</TableHead>
+                            <TableHead>Your Answers</TableHead>
                             <TableHead>Quiz</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -135,10 +135,10 @@ export default function ErrorsPage() {
                                 <TableRow key={uniqueKey} onClick={() => handleRowClick(uniqueKey)} className="cursor-pointer">
                                     <TableCell className="font-bold text-center whitespace-nowrap">{error.count}</TableCell>
                                     <TableCell className="font-medium whitespace-nowrap">{isExpanded ? error.word : truncateText(error.word)}</TableCell>
+                                    <TableCell className="text-success whitespace-nowrap">{isExpanded ? error.correctAnswer : truncateText(error.correctAnswer)}</TableCell>
                                     <TableCell className="text-destructive whitespace-nowrap">
                                         {isExpanded ? userAnswersText : truncateText(userAnswersText)}
                                     </TableCell>
-                                    <TableCell className="text-success whitespace-nowrap">{isExpanded ? error.correctAnswer : truncateText(error.correctAnswer)}</TableCell>
                                     <TableCell className="whitespace-nowrap">{error.quiz}</TableCell>
                                 </TableRow>
                             );
@@ -153,8 +153,8 @@ export default function ErrorsPage() {
                 <TableHeader>
                     <TableRow>
                         <TableHead>Word</TableHead>
-                        <TableHead>Your Answer</TableHead>
                         <TableHead>Correct Answer</TableHead>
+                        <TableHead>Your Answer</TableHead>
                         <TableHead>Quiz</TableHead>
                         <TableHead>Date</TableHead>
                     </TableRow>
@@ -165,8 +165,8 @@ export default function ErrorsPage() {
                         return (
                             <TableRow key={error.id} onClick={() => handleRowClick(error.id)} className="cursor-pointer">
                                 <TableCell className="font-medium whitespace-nowrap">{isExpanded ? error.word : truncateText(error.word)}</TableCell>
-                                <TableCell className="text-destructive whitespace-nowrap">{isExpanded ? error.userAnswer : truncateText(error.userAnswer)}</TableCell>
                                 <TableCell className="text-success whitespace-nowrap">{isExpanded ? error.correctAnswer : truncateText(error.correctAnswer)}</TableCell>
+                                <TableCell className="text-destructive whitespace-nowrap">{isExpanded ? error.userAnswer : truncateText(error.userAnswer)}</TableCell>
                                 <TableCell className="whitespace-nowrap">{error.quiz}</TableCell>
                                 <TableCell className="whitespace-nowrap text-muted-foreground">
                                     {formatDistanceToNow(new Date(error.id), { addSuffix: true })}

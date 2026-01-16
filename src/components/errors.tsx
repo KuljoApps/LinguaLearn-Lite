@@ -84,7 +84,7 @@ export default function ErrorsPage() {
         const errorCounts = new Map<string, AggregatedError>();
 
         for (const error of filteredErrors) {
-            const key = `${error.word}|${error.correctAnswer}|${error.quiz}`;
+            const key = `${error.word}|${error.correctAnswer}`;
             let entry = errorCounts.get(key);
 
             if (!entry) {
@@ -129,9 +129,9 @@ export default function ErrorsPage() {
                             return (
                                 <TableRow key={index} onClick={() => handleRowClick(index)} className="cursor-pointer">
                                     <TableCell className="font-bold text-center">{error.count}</TableCell>
-                                    <TableCell className="font-medium">{isExpanded ? error.word : truncateText(error.word)}</TableCell>
-                                    <TableCell className="text-success">{isExpanded ? error.correctAnswer : truncateText(error.correctAnswer)}</TableCell>
-                                    <TableCell className="text-destructive max-w-xs break-words">
+                                    <TableCell className="font-medium whitespace-nowrap">{isExpanded ? error.word : truncateText(error.word)}</TableCell>
+                                    <TableCell className="text-success whitespace-nowrap">{isExpanded ? error.correctAnswer : truncateText(error.correctAnswer)}</TableCell>
+                                    <TableCell className="text-destructive whitespace-nowrap">
                                         {isExpanded ? userAnswersText : truncateText(userAnswersText)}
                                     </TableCell>
                                 </TableRow>
@@ -156,9 +156,9 @@ export default function ErrorsPage() {
                         const isExpanded = expandedRows.has(error.id);
                         return (
                             <TableRow key={error.id} onClick={() => handleRowClick(error.id)} className="cursor-pointer">
-                                <TableCell className="font-medium">{isExpanded ? error.word : truncateText(error.word)}</TableCell>
-                                <TableCell className="text-success">{isExpanded ? error.correctAnswer : truncateText(error.correctAnswer)}</TableCell>
-                                <TableCell className="text-destructive">{isExpanded ? error.userAnswer : truncateText(error.userAnswer)}</TableCell>
+                                <TableCell className="font-medium whitespace-nowrap">{isExpanded ? error.word : truncateText(error.word)}</TableCell>
+                                <TableCell className="text-success whitespace-nowrap">{isExpanded ? error.correctAnswer : truncateText(error.correctAnswer)}</TableCell>
+                                <TableCell className="text-destructive whitespace-nowrap">{isExpanded ? error.userAnswer : truncateText(error.userAnswer)}</TableCell>
                             </TableRow>
                         );
                     })}

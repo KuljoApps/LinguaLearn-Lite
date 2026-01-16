@@ -110,15 +110,17 @@ export default function StatisticsPage() {
                         </CardContent>
                     </Card>
                 </CardContent>
-                <CardFooter className="flex justify-center gap-4">
-                    <Link href="/" passHref>
-                        <Button variant="outline">
-                            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
+                <CardFooter className="flex justify-center">
+                    <div className="flex flex-wrap justify-center gap-4">
+                        <Link href="/" passHref>
+                            <Button variant="outline">
+                                <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
+                            </Button>
+                        </Link>
+                        <Button variant="destructive" onClick={() => setIsClearAlertOpen(true)} disabled={stats.totalAnswers === 0}>
+                            <Trash2 className="mr-2 h-4 w-4" /> Clear Stats
                         </Button>
-                    </Link>
-                    <Button variant="destructive" onClick={() => setIsClearAlertOpen(true)} disabled={stats.totalAnswers === 0}>
-                        <Trash2 className="mr-2 h-4 w-4" /> Clear Stats
-                    </Button>
+                    </div>
                 </CardFooter>
             </Card>
 

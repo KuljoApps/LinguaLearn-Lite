@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -5,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle, Flame, Percent, ShieldX, Trash2, ArrowUpRight } from "lucide-react";
-import { getStats, clearStats, type Stats, getErrors, type ErrorRecord, type Achievement } from "@/lib/storage";
+import { getStats, clearStats, type Stats, getErrors, type ErrorRecord, getLanguage, type Language } from "@/lib/storage";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,19 +18,62 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
 
-const defaultStats: Stats = { totalAnswers: 0, totalCorrectAnswers: 0, totalErrors: 0, longestStreak: 0, currentStreak: 0, lastFiftyAnswers: [], longestStreakDate: null, longestStreakQuiz: null, perQuizStats: {}, totalTimeSpent: 0, lastPlayTimestamp: null, uniqueDaysPlayed: 0, playedQuizzes: [] };
+const defaultStats: Stats = { totalAnswers: 0, totalCorrectAnswers: 0, totalErrors: 0, longestStreak: 0, currentStreak: 0, lastFiftyAnswers: [], longestStreakDate: null, longestStreakQuiz: null, perQuizStats: {}, totalTimeSpent: 0, lastPlayTimestamp: null, uniqueDaysPlayed: 0, playedQuizzes: [], totalPerfectScores: 0 };
+
+const uiTexts = {
+    title: { en: 'Statistics', fr: 'Statistiques', de: 'Statistiken', it: 'Statistiche', es: 'Estadísticas' },
+    totalAnswers: { en: 'Total Answers', fr: 'Total de Réponses', de: 'Gesamte Antworten', it: 'Risposte Totali', es: 'Respuestas Totales' },
+    totalErrors: { en: 'Total Errors', fr: 'Total d\'Erreurs', de: 'Gesamtfehler', it: 'Errori Totali', es: 'Errores Totales' },
+    successRate: { en: 'Success Rate', fr: 'Taux de Réussite', de: 'Erfolgsquote', it: 'Tasso di Successo', es: 'Tasa de Éxito' },
+    longestStreak: { en: 'Longest Streak', fr: 'Plus Longue Série', de: 'Längste Serie', it: 'Serie più Lunga', es: 'Racha más Larga' },
+    answersPerQuiz: { en: 'Answers per Quiz', fr: 'Réponses par Quiz', de: 'Antworten pro Quiz', it: 'Risposte per Quiz', es: 'Respuestas por Cuestionario' },
+    noData: { en: 'No data yet.', fr: 'Pas encore de données.', de: 'Noch keine Daten.', it: 'Nessun dato ancora.', es: 'Aún no hay datos.' },
+    errorsPerQuiz: { en: 'Errors per Quiz', fr: 'Erreurs par Quiz', de: 'Fehler pro Quiz', it: 'Errori per Quiz', es: 'Errores por Cuestionario' },
+    successRatePerQuiz: { en: 'Success Rate per Quiz', fr: 'Taux de Réussite par Quiz', de: 'Erfolgsquote pro Quiz', it: 'Tasso di Successo per Quiz', es: 'Tasa de Éxito por Cuestionario' },
+    longestStreakAchieved: { en: 'Longest Streak Achieved', fr: 'Plus Longue Série Atteinte', de: 'Längste Serie Erreicht', it: 'Serie più Lunga Raggiunta', es: 'Racha más Larga Alcanzada' },
+    notYetAchieved: { en: 'Not yet achieved.', fr: 'Pas encore atteint.', de: 'Noch nicht erreicht.', it: 'Non ancora raggiunto.', es: 'Aún no se ha logrado.' },
+    inQuiz: { en: 'in', fr: 'dans', de: 'in', it: 'in', es: 'en' },
+    lastFifty: { en: 'Last 50 Answers', fr: '50 Dernières Réponses', de: 'Letzte 50 Antworten', it: 'Ultime 50 Risposte', es: 'Últimas 50 Respuestas' },
+    errorDetails: { en: 'Error Details', fr: 'Détails de l\'Erreur', de: 'Fehlerdetails', it: 'Dettagli Errore', es: 'Detalles del Error' },
+    fromQuiz: { en: 'From quiz:', fr: 'Du quiz :', de: 'Vom Quiz:', it: 'Dal quiz:', es: 'Del cuestionario:' },
+    word: { en: 'Word:', fr: 'Mot :', de: 'Wort:', it: 'Parola:', es: 'Palabra:' },
+    correct: { en: 'Correct:', fr: 'Correct :', de: 'Richtig:', it: 'Corretto:', es: 'Correcto:' },
+    yourAnswer: { en: 'Your answer:', fr: 'Votre réponse :', de: 'Deine Antwort:', it: 'La tua risposta:', es: 'Tu respuesta:' },
+    backToHome: { en: 'Back to Home', fr: 'Retour à l\'Accueil', de: 'Zurück zur Startseite', it: 'Torna alla Home', es: 'Volver al Inicio' },
+    clearStats: { en: 'Clear Stats', fr: 'Effacer les Stats', de: 'Statistiken löschen', it: 'Cancella Statistiche', es: 'Borrar Estadísticas' },
+    alertTitle: { en: 'Are you sure?', fr: 'Êtes-vous sûr ?', de: 'Bist du sicher?', it: 'Sei sicuro?', es: '¿Estás seguro?' },
+    alertDescription: { en: 'This will permanently delete all your statistics and achievements. This action cannot be undone.', fr: 'Cela supprimera définitivement toutes vos statistiques et réalisations. Cette action ne peut pas être annulée.', de: 'Dadurch werden alle deine Statistiken und Erfolge dauerhaft gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.', it: 'Questo eliminerà permanentemente tutte le tue statistiche e i tuoi obiettivi. Questa azione non può essere annullata.', es: 'Esto eliminará permanentemente todas tus estadísticas y logros. Esta acción no se puede deshacer.' },
+    cancel: { en: 'Cancel', fr: 'Annuler', de: 'Abbrechen', it: 'Annulla', es: 'Cancelar' },
+    clear: { en: 'Clear', fr: 'Effacer', de: 'Löschen', it: 'Cancella', es: 'Borrar' },
+};
+
 
 export default function StatisticsPage() {
     const [stats, setStats] = useState<Stats>(defaultStats);
     const [errors, setErrors] = useState<ErrorRecord[]>([]);
     const [isClearAlertOpen, setIsClearAlertOpen] = useState(false);
+    const [language, setLanguage] = useState<Language>('en');
 
     useEffect(() => {
-        setStats(getStats());
-        setErrors(getErrors());
+        const loadDataForCurrentLanguage = () => {
+            setLanguage(getLanguage());
+            setStats(getStats());
+            setErrors(getErrors());
+        };
+
+        loadDataForCurrentLanguage(); // Initial load
+
+        window.addEventListener('language-changed', loadDataForCurrentLanguage);
+
+        return () => {
+            window.removeEventListener('language-changed', loadDataForCurrentLanguage);
+        };
     }, []);
+
+    const getUIText = (key: keyof typeof uiTexts) => {
+        return uiTexts[key][language] || uiTexts[key]['en'];
+    };
 
     const handleClearStats = () => {
         clearStats();
@@ -87,21 +131,21 @@ export default function StatisticsPage() {
                         </PopoverTrigger>
                         <PopoverContent className="w-auto max-w-xs text-sm">
                             <div className="space-y-2">
-                                <h4 className="font-medium leading-none text-center">Error Details</h4>
+                                <h4 className="font-medium leading-none text-center">{getUIText('errorDetails')}</h4>
                                 <p className="text-muted-foreground">
-                                    From quiz: <span className="font-semibold text-foreground">{currentError.quiz}</span>
+                                    {getUIText('fromQuiz')} <span className="font-semibold text-foreground">{currentError.quiz}</span>
                                 </p>
                                 <p>
-                                    <span className="text-muted-foreground">Word: </span>
+                                    <span className="text-muted-foreground">{getUIText('word')} </span>
                                     <span className="font-bold">{currentError.word}</span>
                                 </p>
                                 <p>
-                                    <span className="text-muted-foreground">Correct: </span>
+                                    <span className="text-muted-foreground">{getUIText('correct')} </span>
                                     <span className="font-bold text-success">{currentError.correctAnswer}</span>
                                 </p>
                                 {currentError.userAnswer !== 'No answer' && (
                                     <p>
-                                        <span className="text-muted-foreground">Your answer: </span>
+                                        <span className="text-muted-foreground">{getUIText('yourAnswer')} </span>
                                         <span className="font-bold text-destructive">{currentError.userAnswer}</span>
                                     </p>
                                 )}
@@ -119,7 +163,7 @@ export default function StatisticsPage() {
         <>
             <Card className="w-full max-w-md shadow-2xl">
                 <CardHeader>
-                    <CardTitle className="text-center text-3xl">Statistics</CardTitle>
+                    <CardTitle className="text-center text-3xl">{getUIText('title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
@@ -127,7 +171,7 @@ export default function StatisticsPage() {
                             <PopoverTrigger asChild>
                                 <Card className="relative cursor-pointer transition-colors hover:bg-muted/50">
                                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                        <CardTitle className="text-sm font-medium">Total Answers</CardTitle>
+                                        <CardTitle className="text-sm font-medium">{getUIText('totalAnswers')}</CardTitle>
                                         <CheckCircle className="h-5 w-5 text-amber" />
                                     </CardHeader>
                                     <CardContent>
@@ -137,7 +181,7 @@ export default function StatisticsPage() {
                                 </Card>
                             </PopoverTrigger>
                             <PopoverContent className="w-56">
-                                <h4 className="font-medium text-center mb-2">Answers per Quiz</h4>
+                                <h4 className="font-medium text-center mb-2">{getUIText('answersPerQuiz')}</h4>
                                 <div className="space-y-1 text-sm">
                                     {quizNames.length > 0 ? (
                                         quizNames.map((quizName) => (
@@ -147,7 +191,7 @@ export default function StatisticsPage() {
                                             </div>
                                         ))
                                     ) : (
-                                        <p className="text-muted-foreground text-center">No data yet.</p>
+                                        <p className="text-muted-foreground text-center">{getUIText('noData')}</p>
                                     )}
                                 </div>
                             </PopoverContent>
@@ -156,7 +200,7 @@ export default function StatisticsPage() {
                             <PopoverTrigger asChild>
                                 <Card className="relative cursor-pointer transition-colors hover:bg-muted/50">
                                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                        <CardTitle className="text-sm font-medium">Total Errors</CardTitle>
+                                        <CardTitle className="text-sm font-medium">{getUIText('totalErrors')}</CardTitle>
                                         <ShieldX className="h-5 w-5 text-amber" />
                                     </CardHeader>
                                     <CardContent>
@@ -166,7 +210,7 @@ export default function StatisticsPage() {
                                 </Card>
                             </PopoverTrigger>
                             <PopoverContent className="w-56">
-                                <h4 className="font-medium text-center mb-2">Errors per Quiz</h4>
+                                <h4 className="font-medium text-center mb-2">{getUIText('errorsPerQuiz')}</h4>
                                 <div className="space-y-1 text-sm">
                                     {quizNames.length > 0 ? (
                                         quizNames.map((quizName) => (
@@ -176,7 +220,7 @@ export default function StatisticsPage() {
                                             </div>
                                         ))
                                     ) : (
-                                        <p className="text-muted-foreground text-center">No data yet.</p>
+                                        <p className="text-muted-foreground text-center">{getUIText('noData')}</p>
                                     )}
                                 </div>
                             </PopoverContent>
@@ -185,7 +229,7 @@ export default function StatisticsPage() {
                             <PopoverTrigger asChild>
                                 <Card className="relative cursor-pointer transition-colors hover:bg-muted/50">
                                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                        <CardTitle className="text-sm font-medium">Success Rate</CardTitle>
+                                        <CardTitle className="text-sm font-medium">{getUIText('successRate')}</CardTitle>
                                         <Percent className="h-5 w-5 text-amber" />
                                     </CardHeader>
                                     <CardContent>
@@ -195,7 +239,7 @@ export default function StatisticsPage() {
                                 </Card>
                             </PopoverTrigger>
                             <PopoverContent className="w-56">
-                                <h4 className="font-medium text-center mb-2">Success Rate per Quiz</h4>
+                                <h4 className="font-medium text-center mb-2">{getUIText('successRatePerQuiz')}</h4>
                                 <div className="space-y-1 text-sm">
                                     {quizNames.length > 0 ? (
                                         quizNames.map((quizName) => {
@@ -211,7 +255,7 @@ export default function StatisticsPage() {
                                             );
                                         })
                                     ) : (
-                                        <p className="text-muted-foreground text-center">No data yet.</p>
+                                        <p className="text-muted-foreground text-center">{getUIText('noData')}</p>
                                     )}
                                 </div>
                             </PopoverContent>
@@ -220,7 +264,7 @@ export default function StatisticsPage() {
                             <PopoverTrigger asChild>
                                 <Card className="relative cursor-pointer transition-colors hover:bg-muted/50">
                                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                        <CardTitle className="text-sm font-medium">Longest Streak</CardTitle>
+                                        <CardTitle className="text-sm font-medium">{getUIText('longestStreak')}</CardTitle>
                                         <Flame className="h-6 w-6 text-amber" />
                                     </CardHeader>
                                     <CardContent>
@@ -231,15 +275,15 @@ export default function StatisticsPage() {
                             </PopoverTrigger>
                             <PopoverContent className="w-auto">
                                 <div className="text-center space-y-1">
-                                    <h4 className="font-medium mb-1">Longest Streak Achieved</h4>
+                                    <h4 className="font-medium mb-1">{getUIText('longestStreakAchieved')}</h4>
                                     <p className="text-sm text-muted-foreground">
                                         {stats.longestStreak > 0 && stats.longestStreakDate
                                             ? new Date(stats.longestStreakDate).toLocaleString()
-                                            : 'Not yet achieved.'}
+                                            : getUIText('notYetAchieved')}
                                     </p>
                                     {stats.longestStreakQuiz && (
                                         <p className="text-xs text-muted-foreground">
-                                            in <span className="font-semibold text-foreground">{stats.longestStreakQuiz}</span>
+                                            {getUIText('inQuiz')} <span className="font-semibold text-foreground">{stats.longestStreakQuiz}</span>
                                         </p>
                                     )}
                                 </div>
@@ -248,7 +292,7 @@ export default function StatisticsPage() {
                     </div>
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-sm font-medium">Last 50 Answers</CardTitle>
+                            <CardTitle className="text-sm font-medium">{getUIText('lastFifty')}</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <div className="flex flex-wrap gap-1">
@@ -261,11 +305,11 @@ export default function StatisticsPage() {
                     <div className="flex flex-wrap justify-center gap-4">
                         <Link href="/" passHref>
                             <Button variant="outline">
-                                <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
+                                <ArrowLeft className="mr-2 h-4 w-4" /> {getUIText('backToHome')}
                             </Button>
                         </Link>
                         <Button variant="destructive" onClick={() => setIsClearAlertOpen(true)} disabled={stats.totalAnswers === 0}>
-                            <Trash2 className="mr-2 h-4 w-4" /> Clear Stats
+                            <Trash2 className="mr-2 h-4 w-4" /> {getUIText('clearStats')}
                         </Button>
                     </div>
                 </CardFooter>
@@ -274,15 +318,15 @@ export default function StatisticsPage() {
             <AlertDialog open={isClearAlertOpen} onOpenChange={setIsClearAlertOpen}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogTitle>{getUIText('alertTitle')}</AlertDialogTitle>
                         <AlertDialogDescription>
-                            This will permanently delete all your statistics and achievements. This action cannot be undone.
+                            {getUIText('alertDescription')}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel>{getUIText('cancel')}</AlertDialogCancel>
                         <AlertDialogAction onClick={handleClearStats} className="bg-destructive hover:bg-destructive/90">
-                            Clear
+                           {getUIText('clear')}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

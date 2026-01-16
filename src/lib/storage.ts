@@ -49,7 +49,7 @@ export interface AchievementStatus {
     unlockedAt: number | null;
 }
 
-type Language = 'en' | 'fr' | 'de' | 'it' | 'es';
+export type Language = 'en' | 'fr' | 'de' | 'it' | 'es';
 
 const LANGUAGE_KEY = 'linguaLearnLanguage';
 const SETTINGS_KEY = 'linguaLearnSettings_v2';
@@ -74,6 +74,7 @@ export const getLanguage = (): Language => {
 export const setLanguage = (lang: Language) => {
     if (typeof window === 'undefined') return;
     localStorage.setItem(LANGUAGE_KEY, lang);
+    window.dispatchEvent(new CustomEvent('language-changed'));
 }
 
 // --- Global Stats Functions ---

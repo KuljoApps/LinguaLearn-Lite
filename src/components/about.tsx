@@ -63,7 +63,7 @@ export default function AboutPage() {
             <CardFooter className="flex justify-center p-6">
                 <Link href="/settings" passHref>
                     <Button variant="outline">
-                        <ArrowLeft className="mr-2 h-4 w-4 text-deep-purple" /> Back to Settings
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Back to Settings
                     </Button>
                 </Link>
             </CardFooter>

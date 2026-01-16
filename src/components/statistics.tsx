@@ -123,132 +123,124 @@ export default function StatisticsPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Total Answers</CardTitle>
-                                <Popover>
-                                    <PopoverTrigger asChild>
-                                        <button className="focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-full">
-                                            <CheckCircle className="h-5 w-5 text-amber cursor-pointer" />
-                                        </button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-56">
-                                        <h4 className="font-medium text-center mb-2">Answers per Quiz</h4>
-                                        <div className="space-y-1 text-sm">
-                                            {quizNames.length > 0 ? (
-                                                quizNames.map((quizName) => (
-                                                    <div key={quizName} className="flex justify-between">
-                                                        <span>{quizName}:</span>
-                                                        <span className="font-bold">{stats.perQuizStats[quizName].totalAnswers}</span>
-                                                    </div>
-                                                ))
-                                            ) : (
-                                                <p className="text-muted-foreground text-center">No data yet.</p>
-                                            )}
-                                        </div>
-                                    </PopoverContent>
-                                </Popover>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.totalAnswers.toLocaleString()}</div>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Total Errors</CardTitle>
-                                <Popover>
-                                    <PopoverTrigger asChild>
-                                         <button className="focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-full">
-                                            <ShieldX className="h-5 w-5 text-amber cursor-pointer" />
-                                        </button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-56">
-                                        <h4 className="font-medium text-center mb-2">Errors per Quiz</h4>
-                                        <div className="space-y-1 text-sm">
-                                            {quizNames.length > 0 ? (
-                                                quizNames.map((quizName) => (
-                                                    <div key={quizName} className="flex justify-between">
-                                                        <span>{quizName}:</span>
-                                                        <span className="font-bold">{stats.perQuizStats[quizName].totalErrors}</span>
-                                                    </div>
-                                                ))
-                                            ) : (
-                                                <p className="text-muted-foreground text-center">No data yet.</p>
-                                            )}
-                                        </div>
-                                    </PopoverContent>
-                                </Popover>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.totalErrors.toLocaleString()}</div>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Success Rate</CardTitle>
-                                <Popover>
-                                    <PopoverTrigger asChild>
-                                        <button className="focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-full">
-                                            <Percent className="h-5 w-5 text-amber cursor-pointer" />
-                                        </button>
-                                    </PopoverTrigger>
-                                     <PopoverContent className="w-56">
-                                        <h4 className="font-medium text-center mb-2">Success Rate per Quiz</h4>
-                                        <div className="space-y-1 text-sm">
-                                            {quizNames.length > 0 ? (
-                                                quizNames.map((quizName) => {
-                                                    const quizStats = stats.perQuizStats[quizName];
-                                                    const rate = quizStats.totalAnswers > 0
-                                                        ? Math.round(((quizStats.totalAnswers - quizStats.totalErrors) / quizStats.totalAnswers) * 100)
-                                                        : 0;
-                                                    return (
-                                                        <div key={quizName} className="flex justify-between">
-                                                            <span>{quizName}:</span>
-                                                            <span className="font-bold">{rate}%</span>
-                                                        </div>
-                                                    );
-                                                })
-                                            ) : (
-                                                <p className="text-muted-foreground text-center">No data yet.</p>
-                                            )}
-                                        </div>
-                                    </PopoverContent>
-                                </Popover>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{successRate}%</div>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Longest Streak</CardTitle>
-                                <Popover>
-                                    <PopoverTrigger asChild>
-                                        <button className="focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-full">
-                                            <Flame className="h-6 w-6 text-amber cursor-pointer" />
-                                        </button>
-                                    </PopoverTrigger>
-                                     <PopoverContent className="w-auto">
-                                        <div className="text-center space-y-1">
-                                            <h4 className="font-medium mb-1">Longest Streak Achieved</h4>
-                                            <p className="text-sm text-muted-foreground">
-                                                {stats.longestStreak > 0 && stats.longestStreakDate
-                                                    ? new Date(stats.longestStreakDate).toLocaleString()
-                                                    : 'Not yet achieved.'}
-                                            </p>
-                                            {stats.longestStreakQuiz && (
-                                                <p className="text-xs text-muted-foreground">
-                                                    in <span className="font-semibold text-foreground">{stats.longestStreakQuiz}</span>
-                                                </p>
-                                            )}
-                                        </div>
-                                    </PopoverContent>
-                                </Popover>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.longestStreak.toLocaleString()}</div>
-                            </CardContent>
-                        </Card>
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <Card className="cursor-pointer transition-colors hover:bg-muted/50">
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                        <CardTitle className="text-sm font-medium">Total Answers</CardTitle>
+                                        <CheckCircle className="h-5 w-5 text-amber" />
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="text-2xl font-bold">{stats.totalAnswers.toLocaleString()}</div>
+                                    </CardContent>
+                                </Card>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-56">
+                                <h4 className="font-medium text-center mb-2">Answers per Quiz</h4>
+                                <div className="space-y-1 text-sm">
+                                    {quizNames.length > 0 ? (
+                                        quizNames.map((quizName) => (
+                                            <div key={quizName} className="flex justify-between">
+                                                <span>{quizName}:</span>
+                                                <span className="font-bold">{stats.perQuizStats[quizName].totalAnswers}</span>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p className="text-muted-foreground text-center">No data yet.</p>
+                                    )}
+                                </div>
+                            </PopoverContent>
+                        </Popover>
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <Card className="cursor-pointer transition-colors hover:bg-muted/50">
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                        <CardTitle className="text-sm font-medium">Total Errors</CardTitle>
+                                        <ShieldX className="h-5 w-5 text-amber" />
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="text-2xl font-bold">{stats.totalErrors.toLocaleString()}</div>
+                                    </CardContent>
+                                </Card>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-56">
+                                <h4 className="font-medium text-center mb-2">Errors per Quiz</h4>
+                                <div className="space-y-1 text-sm">
+                                    {quizNames.length > 0 ? (
+                                        quizNames.map((quizName) => (
+                                            <div key={quizName} className="flex justify-between">
+                                                <span>{quizName}:</span>
+                                                <span className="font-bold">{stats.perQuizStats[quizName].totalErrors}</span>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p className="text-muted-foreground text-center">No data yet.</p>
+                                    )}
+                                </div>
+                            </PopoverContent>
+                        </Popover>
+                         <Popover>
+                            <PopoverTrigger asChild>
+                                <Card className="cursor-pointer transition-colors hover:bg-muted/50">
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                        <CardTitle className="text-sm font-medium">Success Rate</CardTitle>
+                                        <Percent className="h-5 w-5 text-amber" />
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="text-2xl font-bold">{successRate}%</div>
+                                    </CardContent>
+                                </Card>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-56">
+                                <h4 className="font-medium text-center mb-2">Success Rate per Quiz</h4>
+                                <div className="space-y-1 text-sm">
+                                    {quizNames.length > 0 ? (
+                                        quizNames.map((quizName) => {
+                                            const quizStats = stats.perQuizStats[quizName];
+                                            const rate = quizStats.totalAnswers > 0
+                                                ? Math.round(((quizStats.totalAnswers - quizStats.totalErrors) / quizStats.totalAnswers) * 100)
+                                                : 0;
+                                            return (
+                                                <div key={quizName} className="flex justify-between">
+                                                    <span>{quizName}:</span>
+                                                    <span className="font-bold">{rate}%</span>
+                                                </div>
+                                            );
+                                        })
+                                    ) : (
+                                        <p className="text-muted-foreground text-center">No data yet.</p>
+                                    )}
+                                </div>
+                            </PopoverContent>
+                        </Popover>
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <Card className="cursor-pointer transition-colors hover:bg-muted/50">
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                        <CardTitle className="text-sm font-medium">Longest Streak</CardTitle>
+                                        <Flame className="h-6 w-6 text-amber" />
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="text-2xl font-bold">{stats.longestStreak.toLocaleString()}</div>
+                                    </CardContent>
+                                </Card>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto">
+                                <div className="text-center space-y-1">
+                                    <h4 className="font-medium mb-1">Longest Streak Achieved</h4>
+                                    <p className="text-sm text-muted-foreground">
+                                        {stats.longestStreak > 0 && stats.longestStreakDate
+                                            ? new Date(stats.longestStreakDate).toLocaleString()
+                                            : 'Not yet achieved.'}
+                                    </p>
+                                    {stats.longestStreakQuiz && (
+                                        <p className="text-xs text-muted-foreground">
+                                            in <span className="font-semibold text-foreground">{stats.longestStreakQuiz}</span>
+                                        </p>
+                                    )}
+                                </div>
+                            </PopoverContent>
+                        </Popover>
                     </div>
                     <Card>
                         <CardHeader>

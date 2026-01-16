@@ -25,7 +25,7 @@ export default function AboutPage() {
                     <div className="flex items-center gap-4">
                         <KuljoAppsLogo width={85} height={85} />
                         <div className="space-y-1 text-sm text-left">
-                            <p className="font-bold">Kuljo Apps, Damian Kuliś</p>
+                            <p className="font-bold">Kuljo Apps (Damian Kuliś)</p>
                             <div className="flex items-center gap-2 text-muted-foreground">
                                 <MapPin className="h-4 w-4 text-deep-purple" />
                                 <span>Warszawa</span>

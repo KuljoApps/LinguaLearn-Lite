@@ -50,7 +50,7 @@ export default function TermsPage() {
 
                 <h3 className="text-lg font-semibold">4. Intellectual Property</h3>
                 <p>
-                    The Application, including its design, logo, user interface, and underlying code, is the exclusive property of Kuljo Apps, Damian Kuliś. All rights are reserved. The quiz content is provided for educational purposes.
+                    The Application, including its design, logo, user interface, and underlying code, is the exclusive property of <span className="font-semibold">Kuljo Apps (Damian Kuliś)</span>. All rights are reserved. The quiz content is provided for educational purposes.
                 </p>
 
                 <h3 className="text-lg font-semibold">5. Disclaimer of Warranties</h3>
@@ -60,7 +60,7 @@ export default function TermsPage() {
 
                 <h3 className="text-lg font-semibold">6. Limitation of Liability</h3>
                 <p>
-                    To the fullest extent permitted by applicable law, Kuljo Apps, Damian Kuliś shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of the Application.
+                    To the fullest extent permitted by applicable law, <span className="font-semibold">Kuljo Apps (Damian Kuliś)</span> shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of the Application.
                 </p>
 
                 <h3 className="text-lg font-semibold">7. Changes to Terms</h3>

@@ -25,6 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from '@/lib/utils';
+import { formatDistanceToNow } from 'date-fns';
 
 interface AggregatedError {
     word: string;
@@ -129,7 +130,7 @@ export default function ErrorsPage() {
                         {frequentErrors.map((error, index) => {
                             const isExpanded = expandedRows.has(index);
                             const userAnswersText = Array.from(error.userAnswers).join(', ');
-                            const uniqueKey = `${error.word}-${error.correctAnswer}-${index}`;
+                             const uniqueKey = `${error.quiz}|${error.word}-${error.correctAnswer}-${index}`;
                             return (
                                 <TableRow key={uniqueKey} onClick={() => handleRowClick(uniqueKey)} className="cursor-pointer">
                                     <TableCell className="font-bold text-center whitespace-nowrap">{error.count}</TableCell>
@@ -155,6 +156,7 @@ export default function ErrorsPage() {
                         <TableHead>Your Answer</TableHead>
                         <TableHead>Correct Answer</TableHead>
                         <TableHead>Quiz</TableHead>
+                        <TableHead>Date</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -166,6 +168,9 @@ export default function ErrorsPage() {
                                 <TableCell className="text-destructive whitespace-nowrap">{isExpanded ? error.userAnswer : truncateText(error.userAnswer)}</TableCell>
                                 <TableCell className="text-success whitespace-nowrap">{isExpanded ? error.correctAnswer : truncateText(error.correctAnswer)}</TableCell>
                                 <TableCell className="whitespace-nowrap">{error.quiz}</TableCell>
+                                <TableCell className="whitespace-nowrap text-muted-foreground">
+                                    {formatDistanceToNow(new Date(error.id), { addSuffix: true })}
+                                </TableCell>
                             </TableRow>
                         );
                     })}
@@ -202,7 +207,7 @@ export default function ErrorsPage() {
                 <CardContent className="h-96 w-full p-0">
                     {renderTable()}
                 </CardContent>
-                <CardFooter className="flex justify-center py-6">
+                <CardFooter className="flex justify-center p-6">
                     <div className="flex flex-wrap justify-center gap-4">
                         <Link href="/" passHref>
                             <Button variant="outline">

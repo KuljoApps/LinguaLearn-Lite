@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
@@ -183,7 +184,7 @@ export default function ErrorsPage() {
 
     const SortableHeader = ({ title, sortKey }: { title: string, sortKey: SortableKey }) => (
         <TableHead>
-            <Button variant="ghost" onClick={() => requestSort(sortKey)} className="justify-start px-0">
+            <Button variant="ghost" onClick={() => requestSort(sortKey)} className="justify-start px-0 font-bold text-foreground">
                 {title}
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
@@ -203,7 +204,7 @@ export default function ErrorsPage() {
                             <SortableHeader title="Count" sortKey="count" />
                             <SortableHeader title="Word" sortKey="word" />
                             <SortableHeader title="Correct Answer" sortKey="correctAnswer" />
-                            <TableHead>Your Answers</TableHead>
+                            <TableHead className="font-bold text-foreground">Your Answers</TableHead>
                             <SortableHeader title="Quiz" sortKey="quiz" />
                         </TableRow>
                     </TableHeader>

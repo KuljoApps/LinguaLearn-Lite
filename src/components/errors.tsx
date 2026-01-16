@@ -100,8 +100,8 @@ export default function ErrorsPage() {
                         <TableRow>
                             <TableHead className="w-[80px] text-center">Count</TableHead>
                             <TableHead>Word</TableHead>
-                            <TableHead>Your Answers</TableHead>
                             <TableHead>Correct Answer</TableHead>
+                            <TableHead>Your Answers</TableHead>
                             <TableHead>Quiz</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -110,10 +110,10 @@ export default function ErrorsPage() {
                             <TableRow key={index}>
                                 <TableCell className="font-bold text-center">{error.count}</TableCell>
                                 <TableCell className="font-medium">{error.word}</TableCell>
+                                <TableCell className="text-success">{error.correctAnswer}</TableCell>
                                 <TableCell className="text-destructive max-w-xs break-words">
                                     {Array.from(error.userAnswers).join(', ')}
                                 </TableCell>
-                                <TableCell className="text-success">{error.correctAnswer}</TableCell>
                                 <TableCell>{error.quiz}</TableCell>
                             </TableRow>
                         ))}
@@ -127,8 +127,8 @@ export default function ErrorsPage() {
                 <TableHeader>
                     <TableRow>
                         <TableHead>Word</TableHead>
-                        <TableHead>Your Answer</TableHead>
                         <TableHead>Correct Answer</TableHead>
+                        <TableHead>Your Answer</TableHead>
                         <TableHead>Quiz</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -136,8 +136,8 @@ export default function ErrorsPage() {
                     {filteredErrors.map((error) => (
                         <TableRow key={error.id}>
                             <TableCell className="font-medium">{error.word}</TableCell>
-                            <TableCell className="text-destructive">{error.userAnswer}</TableCell>
                             <TableCell className="text-success">{error.correctAnswer}</TableCell>
+                            <TableCell className="text-destructive">{error.userAnswer}</TableCell>
                             <TableCell>{error.quiz}</TableCell>
                         </TableRow>
                     ))}

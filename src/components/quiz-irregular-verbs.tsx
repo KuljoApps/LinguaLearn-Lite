@@ -24,6 +24,7 @@ import {
 import { updateStats, addError } from "@/lib/storage";
 import { playSound } from "@/lib/sounds";
 import LinguaLearnLogo from '@/components/LinguaLearnLogo';
+import { vibrate } from "@/lib/vibrations";
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
@@ -91,6 +92,7 @@ export default function QuizIrregularVerbs() {
           setAnswerStatus("timeout");
           setSelectedTranslation(null);
           playSound("incorrect");
+          vibrate("incorrect");
           updateStats(false);
           addError({
             word: questions[currentQuestionIndex].verb,
@@ -143,10 +145,12 @@ export default function QuizIrregularVerbs() {
     if (isCorrect) {
       setTranslationStatus('correct');
       playSound('correct');
+      vibrate('correct');
     } else {
       setTranslationStatus('incorrect');
       setAnswerStatus('incorrect');
       playSound('incorrect');
+      vibrate('incorrect');
       updateStats(false);
       addError({
         word: currentQuestion.verb,
@@ -170,9 +174,11 @@ export default function QuizIrregularVerbs() {
       setScore((prevScore) => prevScore + 1);
       setAnswerStatus("correct");
       playSound('correct');
+      vibrate('correct');
     } else {
       setAnswerStatus("incorrect");
       playSound('incorrect');
+      vibrate('incorrect');
        addError({
         word: currentQuestion.verb,
         userAnswer: `Forms: ${form2Input}, ${form3Input}`,

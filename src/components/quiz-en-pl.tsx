@@ -23,6 +23,7 @@ import {
 import { updateStats, addError } from "@/lib/storage";
 import { playSound } from "@/lib/sounds";
 import LinguaLearnLogo from '@/components/LinguaLearnLogo';
+import { vibrate } from "@/lib/vibrations";
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
@@ -82,6 +83,7 @@ export default function QuizEnPl() {
           setAnswerStatus("timeout");
           setSelectedAnswer(null);
           playSound("incorrect");
+          vibrate("incorrect");
           
           updateStats(false);
           addError({
@@ -126,9 +128,11 @@ export default function QuizEnPl() {
       setScore((prevScore) => prevScore + 1);
       setAnswerStatus("correct");
       playSound("correct");
+      vibrate("correct");
     } else {
       setAnswerStatus("incorrect");
       playSound("incorrect");
+      vibrate("incorrect");
       addError({
         word: currentQuestion.word,
         userAnswer: answer,

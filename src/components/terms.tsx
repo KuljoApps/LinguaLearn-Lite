@@ -27,9 +27,9 @@ export default function TermsPage() {
                     Welcome to LinguaLearn ("the Application"). This application is designed to help you learn and practice languages through interactive quizzes. By using our Application, you agree to be bound by these Terms of Service ("Terms").
                 </p>
 
-                <h3 className="text-lg font-semibold">2. Use of the Service</h3>
+                <h3 className="text-lg font-semibold">2. Cost and Use of Service</h3>
                 <p>
-                    LinguaLearn is provided for your personal, non-commercial use only. You agree not to use the Application for any unlawful purpose or in any way that might harm, disrupt, or impair the service.
+                    LinguaLearn is provided completely free of charge. There are no subscriptions, hidden costs, or microtransactions. The Application is intended for your personal, private, and non-commercial use only. You agree not to use the Application for any business, corporate, for-profit, or unlawful purposes.
                 </p>
 
                 <h3 className="text-lg font-semibold">3. Data Privacy and Storage</h3>
@@ -38,13 +38,13 @@ export default function TermsPage() {
                 </p>
                 <ul className="list-disc list-inside space-y-2 pl-4">
                     <li>
-                        All your data, including quiz statistics, error history, and application settings, is stored exclusively on your local device using your web browser's `localStorage` functionality.
+                        The Application does not collect any personal data from its users.
                     </li>
                     <li>
-                        We do not collect, store, or transmit any of your personal data or usage statistics to any external servers.
+                        All usage data, which includes your quiz statistics, error history, and application settings, is stored exclusively on your local device using your web browser's `localStorage` functionality.
                     </li>
                     <li>
-                        You have full control over your data. You can clear your statistics and error history at any time from within the Application.
+                        We do not collect, store, or transmit any of your data to any external servers. You have full control over your data and can clear it at any time from within the Application.
                     </li>
                 </ul>
 
@@ -55,7 +55,7 @@ export default function TermsPage() {
 
                 <h3 className="text-lg font-semibold">5. Disclaimer of Warranties</h3>
                 <p>
-                    The Application is provided "as is" and "as available" without any warranties of any kind, express or implied. We do not warrant that the Application will be error-free, uninterrupted, or that the translations and quiz content will be completely accurate. You use the Application at your own risk.
+                    The Application is provided "as is" and "as available". We do not warrant that the Application will be error-free or uninterrupted. The creator is not responsible for any errors that may appear while using the application, including any factual or content-related inaccuracies in the quizzes. You use the Application at your own risk.
                 </p>
 
                 <h3 className="text-lg font-semibold">6. Limitation of Liability</h3>

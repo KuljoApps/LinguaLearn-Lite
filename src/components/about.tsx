@@ -27,15 +27,15 @@ export default function AboutPage() {
                         <div className="space-y-1 text-sm text-left">
                             <p className="font-bold">Kuljo Apps, Damian Kuliś</p>
                             <div className="flex items-center gap-2 text-muted-foreground">
-                                <MapPin className="h-4 w-4" />
+                                <MapPin className="h-4 w-4 text-deep-purple" />
                                 <span>Warszawa</span>
                             </div>
                             <div className="flex items-center gap-2 text-muted-foreground">
-                                <Mail className="h-4 w-4" />
+                                <Mail className="h-4 w-4 text-deep-purple" />
                                 <span>kuljo.apps@gmail.com</span>
                             </div>
                             <div className="flex items-center gap-2 text-muted-foreground">
-                                <Phone className="h-4 w-4" />
+                                <Phone className="h-4 w-4 text-deep-purple" />
                                 <span>600-130-255</span>
                             </div>
                         </div>
@@ -47,13 +47,13 @@ export default function AboutPage() {
                     <div className="grid grid-cols-2 gap-4 w-full">
                          <Link href="/settings/about/terms" passHref className="w-full">
                             <Button variant="outline" className="w-full">
-                                <FileText className="mr-2 h-4 w-4" />
+                                <FileText className="mr-2 h-4 w-4 text-deep-purple" />
                                 Terms
                             </Button>
                         </Link>
                         <Link href="/settings/about/licenses" passHref className="w-full">
                             <Button variant="outline" className="w-full">
-                                <Gavel className="mr-2 h-4 w-4" />
+                                <Gavel className="mr-2 h-4 w-4 text-deep-purple" />
                                 Licenses
                             </Button>
                         </Link>
@@ -63,7 +63,7 @@ export default function AboutPage() {
             <CardFooter className="flex justify-center p-6">
                 <Link href="/settings" passHref>
                     <Button variant="outline">
-                        <ArrowLeft className="mr-2 h-4 w-4" /> Back to Settings
+                        <ArrowLeft className="mr-2 h-4 w-4 text-deep-purple" /> Back to Settings
                     </Button>
                 </Link>
             </CardFooter>

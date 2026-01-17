@@ -6,7 +6,7 @@ export interface Question {
   correctAnswer: string;
 }
 
-// Note: Phrasal verbs are less common in French. This list contains common verb expressions.
+// Note: This list contains common verb expressions (verbes à particule).
 export const questions: Question[] = [
   { id: 1, language: 'French', word: 'en avoir marre', options: ['mieć dość', 'być szczęśliwym', 'kochać kogoś', 'nudzić się'], correctAnswer: 'mieć dość' },
   { id: 2, language: 'French', word: 'jeter un œil', options: ['stracić oko', 'płakać', 'rzucać okiem', 'patrzeć w lustro'], correctAnswer: 'rzucać okiem' },

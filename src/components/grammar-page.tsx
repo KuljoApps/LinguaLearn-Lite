@@ -34,13 +34,17 @@ export default function GrammarPage({ title, backHref, content }: GrammarPagePro
                                 </AccordionTrigger>
                                 <AccordionContent className="space-y-4">
                                     <p className="text-base">{rule.text}</p>
-                                    {rule.examples && rule.examples.map((example, index) => (
-                                        <div key={index} className="p-3 bg-muted rounded-md space-y-1 mt-2 first:mt-0">
-                                            <p className="font-semibold text-sm">Przykład:</p>
-                                            <p className="italic">"{example.original}"</p>
-                                            <p className="text-sm text-muted-foreground">Tłumaczenie: "{example.translation}"</p>
+                                    {rule.examples && rule.examples.length > 0 && (
+                                        <div>
+                                            <p className="font-semibold">Przykłady:</p>
+                                            {rule.examples.map((example, index) => (
+                                                <div key={index} className="mt-2 pl-3 border-l-2 border-muted-foreground/20 pt-1 pb-2">
+                                                    <p className="italic">"{example.original}"</p>
+                                                    <p className="text-sm text-muted-foreground">Tłumaczenie: "{example.translation}"</p>
+                                                </div>
+                                            ))}
                                         </div>
-                                    ))}
+                                    )}
                                 </AccordionContent>
                             </AccordionItem>
                         ))}

@@ -120,7 +120,7 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
                         <CardTitle className="text-center">{city.name[displayLang]}</CardTitle>
                       </CardHeader>
                       <CardContent className="flex flex-col items-center gap-4 px-4 pt-0 pb-4">
-                        <ScrollArea className="h-48 w-full pr-4">
+                        <ScrollArea className="h-40 w-full pr-4">
                           <p className="text-sm text-muted-foreground text-justify">
                             {city.description[displayLang].replace(/ ([a-zA-Z])\s/g, ' $1\u00A0')}
                           </p>

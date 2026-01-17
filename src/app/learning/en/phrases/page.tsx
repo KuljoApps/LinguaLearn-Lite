@@ -13,7 +13,7 @@ export default function PhrasesEnPage() {
                         <h1 className="text-3xl font-bold tracking-tight">Expressions & Phrases</h1>
                     </div>
                 </CardHeader>
-                <CardContent className="grid grid-cols-2 gap-4 p-6">
+                <CardContent className="grid grid-cols-2 gap-4 p-4">
                     <Link href="/learning/en/phrases/restaurant" passHref>
                         <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary">
                             <Utensils className="h-12 w-12" />
@@ -63,7 +63,7 @@ export default function PhrasesEnPage() {
                         </Button>
                     </Link>
                 </CardContent>
-                <CardFooter className="flex justify-center p-6">
+                <CardFooter className="flex justify-center p-4">
                     <Link href="/learning/en" passHref>
                         <Button variant="outline">
                             <ArrowLeft className="mr-2 h-4 w-4" /> Back to Learning

@@ -63,7 +63,7 @@ export default function Home() {
         if (isFrench) return "Faux Amis";
         if (isGerman) return "Trennbare Verben";
         if (isItalian) return "Verbi Frasali";
-        if (isSpanish) return "Verbos con Preposición";
+        if (isSpanish) return "Falsos Amigos";
         return "Phrasal Verbs";
     }
     

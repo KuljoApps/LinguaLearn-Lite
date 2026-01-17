@@ -38,12 +38,12 @@ function shuffleArray<T>(array: T[]): T[] {
 const QUESTION_TIME_LIMIT = 15;
 const PAUSE_PENALTY = 5;
 const MIN_TIME_FOR_PAUSE = 6;
-const QUIZ_NAME = 'Verbos con Preposición (ES)';
+const QUIZ_NAME = 'Falsos Amigos (ES)';
 const TIME_UPDATE_INTERVAL = 5; // seconds
 const QUIZ_LENGTH = 10;
 
 
-export default function QuizPhrasalVerbsEs() {
+export default function QuizFalsosAmigosEs() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -288,7 +288,7 @@ export default function QuizPhrasalVerbsEs() {
               <LinguaLearnLogo className="h-8 w-8" />
               <CardTitle className="text-3xl font-bold tracking-tight">LinguaLearn</CardTitle>
           </div>
-          <CardDescription>Selecciona la traducción correcta del verbo.</CardDescription>
+          <CardDescription>¡Cuidado con los falsos amigos! Elige la traducción correcta.</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center p-6 space-y-8">
             <div className="w-full flex justify-around gap-4 text-center">

@@ -105,7 +105,7 @@ export default function Home() {
                         {getWelcomeMessage()}
                     </p>
                 </CardHeader>
-                <CardContent className="flex flex-col space-y-4 p-6 pt-0">
+                <CardContent className="flex flex-col space-y-4 p-6 pt-0 pb-4">
                     <Link href={isFrench ? "/quiz/fr-pl" : isGerman ? "/quiz/de-pl" : isItalian ? "/quiz/it-pl" : isSpanish ? "/quiz/es-pl" : "/quiz/en-pl"} passHref>
                         <Button className="w-full h-12 text-lg" size="lg">
                             <BookOpen className="mr-2 h-5 w-5" />
@@ -137,14 +137,14 @@ export default function Home() {
                         </Button>
                     </Link>
                 </CardContent>
-                <div className="px-6 pb-6">
+                <div className="px-6 pb-4">
                     <Separator />
-                    <Button variant="outline" className="w-full h-12 text-lg mt-6 border-2 border-primary">
+                    <Button variant="outline" className="w-full h-12 text-lg mt-4 border-2 border-primary">
                         <GraduationCap className="mr-2 h-5 w-5" />
                         {getLearningButtonText()}
                     </Button>
                 </div>
-                <CardFooter className="flex justify-center gap-4 p-6 pt-0">
+                <CardFooter className="flex justify-center gap-4 p-6 pt-2">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="outline" size="icon" title="Change language">

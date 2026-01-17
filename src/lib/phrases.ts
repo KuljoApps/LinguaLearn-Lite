@@ -1,13 +1,13 @@
 
 import type { Language } from './storage';
-import { airportPhrases } from './phrases-airport';
-import { emergencyPhrases } from './phrases-emergency';
-import { hotelPhrases } from './phrases-hotel';
-import { partyPhrases } from './phrases-party';
-import { restaurantPhrases } from './phrases-restaurant';
-import { shopPhrases } from './phrases-shop';
-import { stationPhrases } from './phrases-station';
-import { weatherPhrases } from './phrases-weather';
+import { airportPhrases } from './phrases-airport.ts';
+import { emergencyPhrases } from './phrases-emergency.ts';
+import { hotelPhrases } from './phrases-hotel.ts';
+import { partyPhrases } from './phrases-party.ts';
+import { restaurantPhrases } from './phrases-restaurant.ts';
+import { shopPhrases } from './phrases-shop.ts';
+import { stationPhrases } from './phrases-station.ts';
+import { weatherPhrases } from './phrases-weather.ts';
 
 export interface Phrase {
   phrase: string;

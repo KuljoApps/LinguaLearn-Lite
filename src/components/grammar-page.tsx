@@ -8,6 +8,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ArrowLeft, BookText } from 'lucide-react';
 import type { GrammarRule } from '@/lib/grammar';
+import type { Language } from '@/lib/storage';
 
 interface GrammarPageProps {
     title: string;
@@ -16,6 +17,18 @@ interface GrammarPageProps {
 }
 
 export default function GrammarPage({ title, backHref, content }: GrammarPageProps) {
+    const lang = backHref.split('/')[2] as Language;
+
+    const backButtonTexts: Record<Language, string> = {
+        en: 'Back to Grammar',
+        de: 'Zurück zur Grammatik',
+        es: 'Volver a Gramática',
+        fr: 'Retour à la Grammaire',
+        it: 'Torna a Grammatica',
+    };
+    
+    const backText = backButtonTexts[lang] || 'Back to Grammar';
+
     return (
         <Card className="w-full max-w-2xl shadow-2xl">
             <CardHeader className="text-center">
@@ -54,7 +67,7 @@ export default function GrammarPage({ title, backHref, content }: GrammarPagePro
             <CardFooter className="flex justify-center p-6 border-t">
                 <Link href={backHref} passHref>
                     <Button variant="outline">
-                        <ArrowLeft className="mr-2 h-4 w-4" /> Powrót
+                        <ArrowLeft className="mr-2 h-4 w-4" /> {backText}
                     </Button>
                 </Link>
             </CardFooter>

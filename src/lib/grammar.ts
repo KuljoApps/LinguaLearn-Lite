@@ -39,6 +39,27 @@ export const allGrammar: GrammarContent = {
         { heading: 'Skróty', text: 'W mowie potocznej często używa się form skróconych, np. "isn\'t", "don\'t", "can\'t".', example: 'He can\'t swim.', example_pl: 'On nie umie pływać.' },
       ],
     },
+    'adjectives': {
+        title: 'Adjectives',
+        content: [
+            { heading: 'Position', text: 'Adjectives in English almost always come before the noun they describe.', example: 'A beautiful cat', example_pl: 'Piękny kot' },
+            { heading: 'Order of Adjectives', text: 'When using multiple adjectives, they usually follow a specific order: opinion, size, age, shape, color, origin, material, purpose.', example: 'A lovely small old round black Italian leather riding boot.', example_pl: 'Uroczy mały stary okrągły czarny włoski skórzany but do jazdy konnej.' },
+        ],
+    },
+    'adverbs': {
+        title: 'Adverbs',
+        content: [
+            { heading: 'Adverbs of Manner', text: 'Describe how an action is performed. They often end in "-ly" and are placed after the verb or object.', example: 'She sings beautifully.', example_pl: 'Ona pięknie śpiewa.' },
+            { heading: 'Adverbs of Frequency', text: 'Describe how often an action happens (always, sometimes, never). They are usually placed before the main verb.', example: 'I always drink coffee in the morning.', example_pl: 'Zawsze piję kawę rano.' },
+        ],
+    },
+    'pronouns': {
+        title: 'Pronouns',
+        content: [
+            { heading: 'Subject Pronouns', text: 'Replace the noun that is the subject of the sentence (I, you, he, she, it, we, they).', example: 'She is my sister.', example_pl: 'Ona jest moją siostrą.' },
+            { heading: 'Object Pronouns', text: 'Replace the noun that is the object of the sentence (me, you, him, her, it, us, them).', example: 'He gave me the book.', example_pl: 'On dał mi książkę.' },
+        ],
+    },
   },
   de: {
     'sentence-structure': {
@@ -62,7 +83,28 @@ export const allGrammar: GrammarContent = {
           { heading: 'Przeczenie "nicht"', text: '"Nicht" służy do negowania czasowników, przymiotników, przysłówków i całych zdań. Zazwyczaj stoi na końcu zdania lub przed częścią, którą neguje.', example: 'Ich lerne nicht. / Das ist nicht gut.', example_pl: 'Ja się nie uczę. / To nie jest dobre.' },
           { heading: 'Przeczenie "kein"', text: '"Kein" służy do negowania rzeczowników z rodzajnikiem nieokreślonym lub bez rodzajnika. Odmienia się jak rodzajnik nieokreślony.', example: 'Ich habe keinen Hund.', example_pl: 'Nie mam (żadnego) psa.' },
         ],
-      },
+    },
+    'adjectives': {
+        title: 'Adjektive',
+        content: [
+            { heading: 'Odmiana przymiotnika', text: 'W niemieckim przymiotniki odmieniają się, gdy stoją przed rzeczownikiem. Końcówka zależy od rodzajnika, przypadku i liczby.', example: 'Ein guter Mann (mieszana), der gute Mann (słaba), guter Mann (mocna).', example_pl: 'Dobry mężczyzna.' },
+            { heading: 'Przymiotnik jako orzecznik', text: 'Gdy przymiotnik występuje po czasownikach "sein", "werden", "bleiben" (jako orzecznik), pozostaje nieodmienny.', example: 'Der Mann ist gut.', example_pl: 'Mężczyzna jest dobry.' },
+        ],
+    },
+    'adverbs': {
+        title: 'Adverbien',
+        content: [
+            { heading: 'Tworzenie przysłówków', text: 'Wiele przysłówków w języku niemieckim ma taką samą formę jak nieodmieniony przymiotnik.', example: 'Er fährt schnell (szybko). Das schnelle Auto (szybki samochód).', example_pl: 'On jedzie szybko. Szybki samochód.' },
+            { heading: 'Pozycja w zdaniu', text: 'Przysłówki czasu, przyczyny, sposobu i miejsca często występują w określonej kolejności (TeKaMoLo: Temporal, Kausal, Modal, Lokal).', example: 'Ich fahre heute (Te) wegen des Wetters (Ka) langsam (Mo) nach Hause (Lo).', example_pl: 'Jadę dzisiaj z powodu pogody powoli do domu.' },
+        ],
+    },
+    'pronouns': {
+        title: 'Pronomen',
+        content: [
+            { heading: 'Zaimki osobowe', text: 'Zastępują osoby lub rzeczy i odmieniają się przez przypadki (Nominativ, Akkusativ, Dativ).', example: 'Ich sehe ihn (Akk). Er gibt mir (Dat) das Buch.', example_pl: 'Widzę go. On daje mi książkę.' },
+            { heading: 'Zaimki dzierżawcze', text: 'Określają przynależność (mein, dein, sein, ihr...). Odmieniają się jak rodzajnik nieokreślony i zależą od rodzaju i liczby rzeczownika.', example: 'Das ist mein Hund.', example_pl: 'To jest mój pies.' },
+        ],
+    },
   },
   es: {
     'sentence-structure': {
@@ -85,7 +127,28 @@ export const allGrammar: GrammarContent = {
           { heading: 'Przeczenie "no"', text: 'Przeczenia tworzy się bardzo prosto, stawiając słówko "no" bezpośrednio przed odmienionym czasownikiem.', example: 'No hablo español.', example_pl: 'Nie mówię po hiszpańsku.' },
           { heading: 'Podwójne przeczenie', text: 'W języku hiszpańskim podwójne przeczenie jest poprawne i konieczne, np. przy użyciu "nadie" (nikt), "nada" (nic), "nunca" (nigdy).', example: 'No veo a nadie.', example_pl: 'Nikogo nie widzę (dosł. Nie widzę nikogo).' },
         ],
-      },
+    },
+    'adjectives': {
+        title: 'Adjetivos',
+        content: [
+            { heading: 'Pozycja przymiotnika', text: 'Zazwyczaj przymiotnik stoi po rzeczowniku, który opisuje. Zmiana pozycji może zmienić znaczenie.', example: 'Un coche grande (duży samochód) vs un gran coche (wspaniały samochód).', example_pl: 'Duży samochód vs wspaniały samochód.' },
+            { heading: 'Zgodność rodzaju i liczby', text: 'Przymiotniki muszą zgadzać się co do rodzaju (męski/żeński) i liczby (pojedyncza/mnoga) z rzeczownikiem.', example: 'La casa es bonita. Los coches son bonitos.', example_pl: 'Dom jest ładny. Samochody są ładne.' },
+        ],
+    },
+    'adverbs': {
+        title: 'Adverbios',
+        content: [
+            { heading: 'Tworzenie z przymiotników', text: 'Wiele przysłówków tworzy się, dodając końcówkę "-mente" do żeńskiej formy przymiotnika.', example: 'rápido -> rápida -> rápidamente', example_pl: 'szybki -> szybko' },
+            { heading: 'Pozycja w zdaniu', text: 'Przysłówki zazwyczaj stoją blisko słowa, które modyfikują (czasownika, przymiotnika lub innego przysłówka).', example: 'Él corre muy rápido.', example_pl: 'On biega bardzo szybko.' },
+        ],
+    },
+    'pronouns': {
+        title: 'Pronombres',
+        content: [
+            { heading: 'Pominięcie zaimka podmiotowego', text: 'Zaimki podmiotowe (yo, tú, él...) są często pomijane, ponieważ forma czasownika jasno wskazuje, o kogo chodzi.', example: '(Yo) hablo español.', example_pl: 'Mówię po hiszpańsku.' },
+            { heading: 'Zaimki dopełnienia', text: 'Zaimki dopełnienia bliższego (lo, la, los, las) i dalszego (le, les) stoją przed odmienionym czasownikiem lub są dołączone do bezokolicznika/gerundio.', example: 'Lo veo. / Quiero verlo.', example_pl: 'Widzę go. / Chcę go zobaczyć.' },
+        ],
+    },
   },
   fr: {
     'sentence-structure': {
@@ -108,7 +171,28 @@ export const allGrammar: GrammarContent = {
           { heading: 'Konstrukcja "ne ... pas"', text: 'Podstawowe przeczenie tworzy się za pomocą dwóch słów: "ne" i "pas", które otaczają odmieniony czasownik.', example: 'Je ne parle pas français.', example_pl: 'Nie mówię po francusku.' },
           { heading: 'Skracanie w mowie', text: 'W języku mówionym bardzo często pomija się "ne", pozostawiając tylko "pas".', example: 'Je parle pas français.', example_pl: '(Potocznie) Nie mówię po francusku.' },
         ],
-      },
+    },
+    'adjectives': {
+        title: 'Adjectifs',
+        content: [
+            { heading: 'Pozycja przymiotnika', text: 'Większość przymiotników stoi po rzeczowniku. Krótkie i powszechne przymiotniki (jak beau, grand, petit, bon) stoją przed rzeczownikiem.', example: 'Une voiture rouge (czerwony samochód) vs une belle voiture (piękny samochód).', example_pl: 'Czerwony samochód vs piękny samochód.' },
+            { heading: 'Zgodność rodzaju i liczby', text: 'Przymiotniki muszą zgadzać się co do rodzaju (męski/żeński) i liczby (pojedyncza/mnoga) z rzeczownikiem, który opisują.', example: 'Un petit garçon, une petite fille, de petits garçons, de petites filles.', example_pl: 'Mały chłopiec, mała dziewczynka, mali chłopcy, małe dziewczynki.' },
+        ],
+    },
+    'adverbs': {
+        title: 'Adverbes',
+        content: [
+            { heading: 'Tworzenie z przymiotników', text: 'Wiele przysłówków tworzy się, dodając końcówkę "-ment" do żeńskiej formy przymiotnika.', example: 'lent -> lente -> lentement', example_pl: 'wolny -> wolno' },
+            { heading: 'Pozycja w zdaniu', text: 'W czasach prostych przysłówek stoi po czasowniku. W czasach złożonych (np. Passé Composé) krótki przysłówek stoi między czasownikiem posiłkowym a Participe Passé.', example: 'Il parle lentement. / Il a bien mangé.', example_pl: 'On mówi powoli. / On dobrze zjadł.' },
+        ],
+    },
+    'pronouns': {
+        title: 'Pronoms',
+        content: [
+            { heading: 'Zaimki dopełnienia (COD/COI)', text: 'Stoją zawsze przed czasownikiem (lub czasownikiem posiłkowym w czasach złożonych).', example: 'Je te vois. (Widzę cię) / Je lui parle. (Mówię do niego/niej).', example_pl: 'Widzę cię. / Mówię do niego/niej.' },
+            { heading: 'Zaimki "en" i "y"', text: '"En" zastępuje rzeczowniki z "de" (np. de la, du, des), a "y" zastępuje rzeczowniki z "à" lub określenia miejsca.', example: 'Tu as des frères? Oui, j\'en ai. / Tu vas à Paris? Oui, j\'y vais.', example_pl: 'Masz braci? Tak, mam. / Jedziesz do Paryża? Tak, jadę.' },
+        ],
+    },
   },
   it: {
     'sentence-structure': {
@@ -130,6 +214,27 @@ export const allGrammar: GrammarContent = {
           { heading: 'Przeczenie "non"', text: 'Przeczenia tworzy się poprzez umieszczenie słówka "non" bezpośrednio przed odmienionym czasownikiem.', example: 'Non parlo italiano.', example_pl: 'Nie mówię po włosku.' },
           { heading: 'Inne słowa przeczące', text: 'Podobnie jak w hiszpańskim, słowa takie jak "niente" (nic) czy "nessuno" (nikt) wymagają "non" przed czasownikiem, jeśli stoją po nim.', example: 'Non ho visto nessuno.', example_pl: 'Nikogo nie widziałem.' },
         ],
-      },
+    },
+    'adjectives': {
+        title: 'Aggettivi',
+        content: [
+            { heading: 'Pozycja przymiotnika', text: 'Podobnie jak w hiszpańskim, przymiotniki zazwyczaj stoją po rzeczowniku. Niektóre, jak "bello" czy "bravo", mogą stać przed.', example: 'Una macchina rossa (czerwony samochód) vs una bella macchina (piękny samochód).', example_pl: 'Czerwony samochód vs piękny samochód.' },
+            { heading: 'Zgodność', text: 'Przymiotniki muszą zgadzać się co do rodzaju i liczby z rzeczownikiem, który opisują. Mają różne końcówki w zależności od grupy.', example: 'un ragazzo alto, una ragazza alta, due ragazzi alti, due ragazze alte.', example_pl: 'wysoki chłopak, wysoka dziewczyna, wysocy chłopcy, wysokie dziewczyny.' },
+        ],
+    },
+    'adverbs': {
+        title: 'Avverbi',
+        content: [
+            { heading: 'Tworzenie z przymiotników', text: 'Podobnie jak w hiszpańskim i francuskim, przysłówki tworzy się dodając końcówkę "-mente" do żeńskiej formy przymiotnika.', example: 'lento -> lenta -> lentamente', example_pl: 'wolny -> wolno' },
+            { heading: 'Pozycja w zdaniu', text: 'Przysłówki zazwyczaj umieszcza się po czasowniku, który modyfikują.', example: 'Lui parla lentamente.', example_pl: 'On mówi powoli.' },
+        ],
+    },
+    'pronouns': {
+        title: 'Pronomi',
+        content: [
+            { heading: 'Pominięcie zaimka podmiotowego', text: 'Zaimki podmiotowe (io, tu, lui...) są bardzo często pomijane, ponieważ forma czasownika jest wystarczająca do identyfikacji podmiotu.', example: '(Io) sono polacco.', example_pl: 'Jestem Polakiem.' },
+            { heading: 'Połączone zaimki dopełnienia', text: 'Zaimki dopełnienia bliższego i dalszego mogą się łączyć, tworząc jedną formę (np. me lo, te la). Zawsze stoją przed odmienionym czasownikiem.', example: 'Me lo dai?', example_pl: 'Dasz mi to?' },
+        ],
+    },
   },
 };

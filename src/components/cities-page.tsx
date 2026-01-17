@@ -6,10 +6,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/componen
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { ArrowLeft, Building2, Users, Map, Landmark, Sparkles, Calendar } from 'lucide-react';
+import { ArrowLeft, Building2, Users, Map, Sparkles, Calendar } from 'lucide-react';
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ScrollArea } from '@/components/ui/scroll-area';
 import type { CitiesPageData } from '@/lib/cities';
+import type { Language } from '@/lib/storage';
 
 export default function CitiesPage({ data }: { data: CitiesPageData }) {
   const [displayLang, setDisplayLang] = React.useState<'pl' | 'native'>('native');
@@ -56,6 +57,16 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
     </TableRow>
   );
 
+  const flagMap: Record<Language, string> = {
+    en: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+    de: '🇩🇪',
+    fr: '🇫🇷',
+    it: '🇮🇹',
+    es: '🇪🇸',
+  };
+  
+  const displayedFlag = displayLang === 'native' ? flagMap[data.lang] : '🇵🇱';
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4">
       <Card className="w-full max-w-xl shadow-2xl">
@@ -69,13 +80,13 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
                     <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="h-auto p-1 rounded-md">
                         <div className="flex items-center justify-center h-8 w-8 rounded-md border border-input bg-background">
-                            <span className="text-xl">{{en: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', de: '🇩🇪', fr: '🇫🇷', it: '🇮🇹', es: '🇪🇸'}[data.lang] : '🇵🇱'}</span>
+                            <span className="text-xl">{displayedFlag}</span>
                         </div>
                     </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                     <DropdownMenuItem onClick={() => setDisplayLang('native')}>
-                        <span className="mr-2 text-lg">{{en: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', de: '🇩🇪', fr: '🇫🇷', it: '🇮🇹', es: '🇪🇸'}[data.lang]}</span> {getNativeLangName(data.lang)}
+                        <span className="mr-2 text-lg">{flagMap[data.lang]}</span> {getNativeLangName(data.lang)}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setDisplayLang('pl')}>
                         <span className="mr-2 text-lg">🇵🇱</span> Polski
@@ -118,7 +129,7 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
                           <TableBody>
                             {renderFactRow(<Users />, t('population'), city.facts.population)}
                             {renderFactRow(<Map />, t('area'), city.facts.area[displayLang])}
-                            {renderFactRow(<Landmark />, t('landmark'), city.facts.landmark[displayLang])}
+                            {renderFactRow(<Sparkles />, t('landmark'), city.facts.landmark[displayLang])}
                             {renderFactRow(<Calendar />, t('founded'), city.facts.founded[displayLang])}
                             {renderFactRow(<Sparkles />, t('nickname'), city.facts.nickname[displayLang])}
                           </TableBody>

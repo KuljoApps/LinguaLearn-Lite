@@ -208,7 +208,7 @@ export const allPhrases: PhrasesContent = {
         title: 'Hotel',
         phrases: [
             { phrase: 'I have a reservation.', translation: 'Mam rezerwację.' },
-            { phrase: 'My name is...', translation: 'Nazywam się...' },
+            { phrase: 'Does the hotel have a swimming pool?', translation: 'Czy hotel ma basen?' },
             { phrase: 'Can I check in, please?', translation: 'Czy mogę się zameldować?' },
             { phrase: 'What time is check-out?', translation: 'O której godzinie jest wymeldowanie?' },
             { phrase: 'Can I have a room with a view?', translation: 'Czy mogę prosić o pokój z widokiem?' },
@@ -449,7 +449,7 @@ export const allPhrases: PhrasesContent = {
         title: 'Hotel',
         phrases: [
             { phrase: 'Ich habe eine Reservierung.', translation: 'Mam rezerwację.' },
-            { phrase: 'Mein Name ist...', translation: 'Nazywam się...' },
+            { phrase: 'Hat das Hotel einen Pool?', translation: 'Czy hotel ma basen?' },
             { phrase: 'Kann ich bitte einchecken?', translation: 'Czy mogę się zameldować?' },
             { phrase: 'Wann ist der Check-out?', translation: 'O której godzinie jest wymeldowanie?' },
             { phrase: 'Kann ich ein Zimmer mit Aussicht haben?', translation: 'Czy mogę prosić o pokój z widokiem?' },
@@ -690,7 +690,7 @@ export const allPhrases: PhrasesContent = {
         title: 'Hôtel',
         phrases: [
             { phrase: 'J\'ai une réservation.', translation: 'Mam rezerwację.' },
-            { phrase: 'Mon nom est...', translation: 'Nazywam się...' },
+            { phrase: 'L\'hôtel dispose-t-il d\'une piscine?', translation: 'Czy hotel ma basen?' },
             { phrase: 'Je peux m\'enregistrer, s\'il vous plaît?', translation: 'Czy mogę się zameldować?' },
             { phrase: 'À quelle heure est le départ?', translation: 'O której godzinie jest wymeldowanie?' },
             { phrase: 'Puis-je avoir une chambre avec vue?', translation: 'Czy mogę prosić o pokój z widokiem?' },
@@ -931,7 +931,7 @@ export const allPhrases: PhrasesContent = {
         title: 'Hotel',
         phrases: [
             { phrase: 'Tengo una reserva.', translation: 'Mam rezerwację.' },
-            { phrase: 'Mi nombre es...', translation: 'Nazywam się...' },
+            { phrase: '¿El hotel tiene piscina?', translation: 'Czy hotel ma basen?' },
             { phrase: '¿Puedo registrarme, por favor?', translation: 'Czy mogę się zameldować?' },
             { phrase: '¿A qué hora es el check-out?', translation: 'O której godzinie jest wymeldowanie?' },
             { phrase: '¿Puedo tener una habitación con vistas?', translation: 'Czy mogę prosić o pokój z widokiem?' },
@@ -1172,7 +1172,7 @@ export const allPhrases: PhrasesContent = {
         title: 'Hotel',
         phrases: [
             { phrase: 'Ho una prenotazione.', translation: 'Mam rezerwację.' },
-            { phrase: 'Il mio nome è...', translation: 'Nazywam się...' },
+            { phrase: 'L\'hotel ha una piscina?', translation: 'Czy hotel ma basen?' },
             { phrase: 'Posso fare il check-in, per favore?', translation: 'Czy mogę się zameldować?' },
             { phrase: 'A che ora è il check-out?', translation: 'O której godzinie jest wymeldowanie?' },
             { phrase: 'Posso avere una camera con vista?', translation: 'Czy mogę prosić o pokój z widokiem?' },

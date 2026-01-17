@@ -1,4 +1,4 @@
-import { BookCopy, ArrowLeft, GraduationCap, Clock, BookText, MessageSquareText } from 'lucide-react';
+import { BookCopy, ArrowLeft, GraduationCap, Clock, FilePenLine, MessageSquareText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
@@ -15,7 +15,7 @@ export default function LearningEnPage() {
                 </CardHeader>
                 <CardContent className="flex flex-col space-y-4 p-6">
                     <Link href="/learning/en/questions" passHref>
-                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
+                        <Button className="w-full h-12 text-lg">
                             <BookCopy className="mr-2 h-5 w-5" />
                             Question Base
                         </Button>
@@ -28,7 +28,7 @@ export default function LearningEnPage() {
                     </Link>
                     <Link href="/learning/en/grammar" passHref>
                         <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
-                            <BookText className="mr-2 h-5 w-5" />
+                            <FilePenLine className="mr-2 h-5 w-5" />
                             General Grammar
                         </Button>
                     </Link>

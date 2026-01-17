@@ -26,7 +26,10 @@ const spainData: AboutCountryData = {
         'W kraju tym jest więcej barów na mieszkańca niż w jakimkolwiek innym kraju UE.',
         'Hiszpania produkuje ponad połowę światowej oliwy z oliwek.',
         'W Hiszpanii nie ma wróżki zębuszki; zamiast tego jest mysz o imieniu Ratoncito Pérez.',
-        'La Tomatina to coroczny festiwal w Buñol, podczas którego ludzie rzucają w siebie tonami pomidorów.'
+        'La Tomatina to coroczny festiwal w Buñol, podczas którego ludzie rzucają w siebie tonami pomidorów.',
+        'Hiszpania jest ojczyzną lizaków Chupa Chups.',
+        'W Hiszpanii znajduje się jedyna w Europie pustynia - pustynia Tabernas.',
+        'W Sylwestra Hiszpanie tradycyjnie jedzą 12 winogron o północy, po jednym na każde uderzenie zegara, co ma przynieść szczęście.'
       ],
       native: [
         'España es el único país de Europa que tiene una frontera física con un país africano (Marruecos).',
@@ -35,12 +38,16 @@ const spainData: AboutCountryData = {
         'El país tiene más bares por habitante que cualquier otro país de la UE.',
         'España produce más de la mitad del aceite de oliva del mundo.',
         'En España no hay hada de los dientes; en su lugar hay un ratón llamado Ratoncito Pérez.',
-        'La Tomatina es un festival anual en Buñol donde la gente se lanza toneladas de tomates.'
+        'La Tomatina es un festival anual en Buñol donde la gente se lanza toneladas de tomates.',
+        'España es la cuna de las piruletas Chupa Chups.',
+        'España alberga el único desierto de Europa: el desierto de Tabernas.',
+        'En Nochevieja, los españoles comen tradicionalmente 12 uvas a medianoche, una por cada campanada, para atraer la buena suerte.'
       ]
     },
     backButton: { pl: 'Powrót do Kultury', native: 'Volver a Cultura' },
     readMore: { pl: 'Czytaj więcej', native: 'Leer más' },
     readLess: { pl: 'Zwiń', native: 'Leer menos' },
+    language: { pl: 'Język', native: 'Idioma' },
   },
   stats: {
     capital: { pl: 'Madryt', native: 'Madrid' },

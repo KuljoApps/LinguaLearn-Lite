@@ -26,7 +26,10 @@ const germanyData: AboutCountryData = {
         'Ucieczka z więzienia nie jest w Niemczech nielegalna, ponieważ uznaje się naturalne dążenie człowieka do wolności.',
         'Fanta została wynaleziona w Niemczech podczas II wojny światowej.',
         'Pierwsza drukowana książka na świecie (Biblia Gutenberga) powstała w Niemczech.',
-        'Ponad 65% autostrad w Niemczech (Autobahn) nie ma oficjalnego ograniczenia prędkości.'
+        'Ponad 65% autostrad w Niemczech (Autobahn) nie ma oficjalnego ograniczenia prędkości.',
+        'Najwyższym szczytem Niemiec jest Zugspitze (2962 m n.p.m.).',
+        'Niemcy są jednym z największych na świecie producentów samochodów.',
+        'Pierwszy magazyn na świecie został opublikowany w Niemczech w 1663 roku.'
       ],
       native: [
         'In Deutschland gibt es über 1.500 Wurstsorten und 300 Brotsorten.',
@@ -35,12 +38,16 @@ const germanyData: AboutCountryData = {
         'Gefängnisausbruch ist in Deutschland nicht illegal, da das natürliche Streben des Menschen nach Freiheit anerkannt wird.',
         'Fanta wurde während des Zweiten Weltkriegs in Deutschland erfunden.',
         'Das erste gedruckte Buch der Welt (die Gutenberg-Bibel) entstand in Deutschland.',
-        'Über 65% der Autobahnen in Deutschland haben keine offizielle Geschwindigkeitsbegrenzung.'
+        'Über 65% der Autobahnen in Deutschland haben keine offizielle Geschwindigkeitsbegrenzung.',
+        'Der höchste Gipfel Deutschlands ist die Zugspitze (2.962 m).',
+        'Deutschland ist einer der größten Automobilhersteller der Welt.',
+        'Die erste Zeitschrift der Welt wurde 1663 in Deutschland veröffentlicht.'
       ]
     },
     backButton: { pl: 'Powrót do Kultury', native: 'Zurück zur Kultur' },
     readMore: { pl: 'Czytaj więcej', native: 'Mehr lesen' },
     readLess: { pl: 'Zwiń', native: 'Weniger lesen' },
+    language: { pl: 'Język', native: 'Sprache' },
   },
   stats: {
     capital: { pl: 'Berlin', native: 'Berlin' },

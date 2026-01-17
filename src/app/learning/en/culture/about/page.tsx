@@ -26,7 +26,10 @@ const englandData: AboutCountryData = {
         'Francuski był oficjalnym językiem Anglii przez około 300 lat.',
         'Królowa jest właścicielką wszystkich niemarkowanych łabędzi na otwartych wodach w kraju.',
         'W Anglii wynaleziono wino musujące, na długo przed francuskim szampanem.',
-        'W Gloucestershire odbywają się coroczne zawody w toczeniu sera ze wzgórza.'
+        'W Gloucestershire odbywają się coroczne zawody w toczeniu sera ze wzgórza.',
+        'Anglia nie ma oficjalnego hymnu narodowego; "God Save the King" jest hymnem Zjednoczonego Królestwa.',
+        'W Anglii jest więcej kurczaków niż ludzi.',
+        'Pierwszy znaczek pocztowy na świecie, "Penny Black", został wydany w Wielkiej Brytanii w 1840 roku.'
       ],
       native: [
         'Windsor is home to the oldest and largest inhabited castle in the world.',
@@ -35,12 +38,16 @@ const englandData: AboutCountryData = {
         'French was the official language of England for about 300 years.',
         'The Queen owns all the unmarked swans in open water in the country.',
         'Sparkling wine was invented in England, long before French champagne.',
-        'There is an annual cheese-rolling competition in Gloucestershire.'
+        'There is an annual cheese-rolling competition in Gloucestershire.',
+        'England has no official national anthem; "God Save the King" is the anthem of the UK.',
+        'There are more chickens in England than people.',
+        'The world\'s first postage stamp, the "Penny Black", was issued in the UK in 1840.'
       ]
     },
     backButton: { pl: 'Powrót do Kultury', native: 'Back to Culture' },
     readMore: { pl: 'Czytaj więcej', native: 'Read more' },
     readLess: { pl: 'Zwiń', native: 'Read less' },
+    language: { pl: 'Język', native: 'Language' },
   },
   stats: {
     capital: { pl: 'Londyn', native: 'London' },

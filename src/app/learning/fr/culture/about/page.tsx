@@ -26,7 +26,10 @@ const franceData: AboutCountryData = {
         'Louvre w Paryżu jest największym muzeum sztuki na świecie.',
         'Nielegalne jest nazywanie świni imieniem Napoleon we Francji.',
         'Croissant został w rzeczywistości wynaleziony w Wiedniu, w Austrii.',
-        'Francja jest największym krajem w Unii Europejskiej pod względem powierzchni.'
+        'Francja jest największym krajem w Unii Europejskiej pod względem powierzchni.',
+        'Tour de France rozpoczął się w 1903 roku.',
+        'Pierwszy publiczny pokaz filmowy odbył się w Paryżu w 1895 roku przez braci Lumière.',
+        'Mont Blanc w Alpach Francuskich jest najwyższym szczytem Europy Zachodniej.'
       ],
       native: [
         'La France est le pays le plus visité au monde.',
@@ -35,12 +38,16 @@ const franceData: AboutCountryData = {
         'Le Louvre à Paris est le plus grand musée d\'art du monde.',
         'Il est illégal de nommer un cochon Napoléon en France.',
         'Le croissant a en fait été inventé à Vienne, en Autriche.',
-        'La France est le plus grand pays de l\'Union européenne par sa superficie.'
+        'La France est le plus grand pays de l\'Union européenne par sa superficie.',
+        'Le Tour de France a commencé en 1903.',
+        'La première projection publique de film a eu lieu à Paris en 1895 par les frères Lumière.',
+        'Le Mont Blanc dans les Alpes françaises est le plus haut sommet d\'Europe occidentale.'
       ]
     },
     backButton: { pl: 'Powrót do Kultury', native: 'Retour à la Culture' },
     readMore: { pl: 'Czytaj więcej', native: 'Lire la suite' },
     readLess: { pl: 'Zwiń', native: 'Lire moins' },
+    language: { pl: 'Język', native: 'Langue' },
   },
   stats: {
     capital: { pl: 'Paryż', native: 'Paris' },

@@ -29,6 +29,7 @@ export interface AboutCountryData {
     backButton: { pl: string; native: string; };
     readMore: { pl: string; native: string; };
     readLess: { pl: string; native: string; };
+    language: { pl: string; native: string; };
   };
   stats: {
     capital: { pl: string; native: string; };
@@ -57,7 +58,7 @@ export default function AboutCountryPage({ data }: AboutCountryPageProps) {
   const getStat = (key: keyof AboutCountryData['stats']) => {
     const stat = data.stats[key];
     if (typeof stat === 'object' && stat !== null && !Array.isArray(stat)) {
-      return stat[displayLang];
+      return stat[displayLang === 'pl' ? 'pl' : 'native'];
     }
     return stat;
   };
@@ -78,7 +79,7 @@ export default function AboutCountryPage({ data }: AboutCountryPageProps) {
     </TableRow>
   );
 
-  const description = t('description').replace(/ ([a-zA-Z]) /g, ' $1\u00A0');
+  const description = t('description').replace(/ ([a-zA-Z])\s/g, ' $1\u00A0');
   const sentences = description.match(/[^.!?]+[.!?]+/g) || [description];
   const previewText = sentences.slice(0, 2).join(' ');
   const restOfText = sentences.length > 2 ? sentences.slice(2).join(' ') : null;
@@ -87,25 +88,8 @@ export default function AboutCountryPage({ data }: AboutCountryPageProps) {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4">
       <Card className="w-full max-w-2xl shadow-2xl">
-        <CardHeader className="relative text-center">
+        <CardHeader className="text-center">
           <CardTitle className="text-3xl">{t('title')}</CardTitle>
-          <div className="absolute right-6 top-1/2 -translate-y-1/2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon">
-                  <span className="text-2xl">{displayLang === 'native' ? data.flag.native : data.flag.pl}</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setDisplayLang('native')}>
-                  <span className="mr-2 text-lg">{data.flag.native}</span> {data.countryName.native}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setDisplayLang('pl')}>
-                  <span className="mr-2 text-lg">{data.flag.pl}</span> Polski
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex flex-col items-center gap-6 md:flex-row">
@@ -118,21 +102,45 @@ export default function AboutCountryPage({ data }: AboutCountryPageProps) {
                 className="rounded-full border-4 border-primary/20 object-cover shadow-lg"
               />
             </div>
-             <div className="text-sm text-muted-foreground md:text-base text-justify">
-              <p>{previewText}</p>
-              {restOfText && (
-                <Collapsible open={isDescriptionOpen} onOpenChange={setIsDescriptionOpen} className="mt-2">
-                  <CollapsibleContent>
-                    <p>{restOfText}</p>
-                  </CollapsibleContent>
-                  <CollapsibleTrigger asChild>
-                    <Button variant="link" className="p-0 h-auto text-sm text-primary/80 hover:text-primary underline mt-2">
-                      {isDescriptionOpen ? t('readLess') : t('readMore')}
-                      <ChevronDown className={`ml-1 h-4 w-4 transition-transform duration-200 ${isDescriptionOpen ? 'rotate-180' : ''}`} />
-                    </Button>
-                  </CollapsibleTrigger>
+            <div className="w-full">
+              <div className="text-sm text-muted-foreground md:text-base text-justify">
+                <p>{previewText}</p>
+                 <Collapsible open={isDescriptionOpen} onOpenChange={setIsDescriptionOpen}>
+                  {restOfText && (
+                    <CollapsibleContent className="mt-2">
+                      <p>{restOfText}</p>
+                    </CollapsibleContent>
+                  )}
+                  <div className="flex justify-between items-center mt-2">
+                    {restOfText ? (
+                      <CollapsibleTrigger asChild>
+                         <Button variant="link" className="p-0 h-auto text-sm text-primary/80 hover:text-primary underline">
+                          {isDescriptionOpen ? t('readLess') : t('readMore')}
+                          <ChevronDown className={`ml-1 h-4 w-4 transition-transform duration-200 ${isDescriptionOpen ? 'rotate-180' : ''}`} />
+                        </Button>
+                      </CollapsibleTrigger>
+                    ) : <div />}
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm underline text-muted-foreground">{t('language')}</span>
+                       <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="outline" size="icon" className="h-8 w-8">
+                            <span className="text-xl">{displayLang === 'native' ? data.flag.native : data.flag.pl}</span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={() => setDisplayLang('native')}>
+                            <span className="mr-2 text-lg">{data.flag.native}</span> {data.countryName.native}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => setDisplayLang('pl')}>
+                            <span className="mr-2 text-lg">{data.flag.pl}</span> Polski
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  </div>
                 </Collapsible>
-              )}
+              </div>
             </div>
           </div>
 
@@ -152,7 +160,7 @@ export default function AboutCountryPage({ data }: AboutCountryPageProps) {
             <h3 className="text-center text-lg font-semibold">{t('funFactsTitle')}</h3>
             <ul className="list-inside list-disc space-y-1 pl-4 text-sm text-muted-foreground">
               {getFunFacts().map((fact, index) => (
-                <li key={index}>{fact.replace(/ ([a-zA-Z]) /g, ' $1\u00A0')}</li>
+                <li key={index}>{fact.replace(/ ([a-zA-Z])\s/g, ' $1\u00A0')}</li>
               ))}
             </ul>
           </div>

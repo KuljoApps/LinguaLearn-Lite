@@ -26,7 +26,10 @@ const italyData: AboutCountryData = {
         'W całych Włoszech istnieje ponad 140 rodzajów makaronu.',
         'Włochy otaczają dwa niezależne państwa: San Marino i Watykan.',
         'Włosi jedzą ponad 23 kg makaronu na osobę rocznie.',
-        'Pizza, w swojej nowoczesnej formie, została wynaleziona w Neapolu.'
+        'Pizza, w swojej nowoczesnej formie, została wynaleziona w Neapolu.',
+        'We Włoszech znajduje się najstarszy uniwersytet na świecie w ciągłej działalności, Uniwersytet Boloński, założony w 1088 roku.',
+        'Włochy mają więcej wulkanów niż jakikolwiek inny kraj europejski.',
+        'Krzywa Wieża w Pizie nie jest jedyną krzywą wieżą we Włoszech; jest ich kilka, w tym dzwonnica San Giorgio dei Greci w Wenecji.'
       ],
       native: [
         'In Italia ci sono più di 1.500 laghi.',
@@ -35,12 +38,16 @@ const italyData: AboutCountryData = {
         'Esistono oltre 140 tipi di pasta in tutto il paese.',
         'L\'Italia circonda due stati indipendenti: San Marino e Città del Vaticano.',
         'Gli italiani mangiano oltre 23 kg di pasta a persona all\'anno.',
-        'La pizza, nella sua forma moderna, è stata inventata a Napoli.'
+        'La pizza, nella sua forma moderna, è stata inventata a Napoli.',
+        'L\'Italia ospita la più antica università del mondo in attività continuativa, l\'Università di Bologna, fondata nel 1088.',
+        'L\'Italia ha più vulcani di qualsiasi altro paese europeo.',
+        'La Torre Pendente di Pisa non è l\'unica torre pendente in Italia; ce ne sono diverse, tra cui il campanile di San Giorgio dei Greci a Venezia.'
       ]
     },
     backButton: { pl: 'Powrót do Kultury', native: 'Torna a Cultura' },
     readMore: { pl: 'Czytaj więcej', native: 'Leggi di più' },
     readLess: { pl: 'Zwiń', native: 'Leggi di meno' },
+    language: { pl: 'Język', native: 'Lingua' },
   },
   stats: {
     capital: { pl: 'Rzym', native: 'Roma' },

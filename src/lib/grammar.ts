@@ -60,6 +60,14 @@ export const allGrammar: GrammarContent = {
             { heading: 'Object Pronouns', text: 'Replace the noun that is the object of the sentence (me, you, him, her, it, us, them).', example: 'He gave me the book.', example_pl: 'On dał mi książkę.' },
         ],
     },
+    'articles': {
+      title: 'Articles',
+      content: [
+          { heading: 'Definite Article (the)', text: 'The definite article "the" is used to refer to specific, known nouns.', example: 'The dog is friendly.', example_pl: '(Ten konkretny) pies jest przyjazny.' },
+          { heading: 'Indefinite Articles (a/an)', text: '"A" is used before words starting with a consonant sound, and "an" before words starting with a vowel sound. They refer to a non-specific noun.', example: 'I saw a cat. / He wants an apple.', example_pl: 'Widziałem (jakiegoś) kota. / On chce (jakieś) jabłko.' },
+          { heading: 'Zero Article', text: 'No article is used with plural countable nouns or uncountable nouns when speaking generally.', example: 'Cats are independent. / I like music.', example_pl: 'Koty są niezależne. / Lubię muzykę.' },
+      ],
+  },
   },
   de: {
     'sentence-structure': {
@@ -105,6 +113,14 @@ export const allGrammar: GrammarContent = {
             { heading: 'Zaimki dzierżawcze', text: 'Określają przynależność (mein, dein, sein, ihr...). Odmieniają się jak rodzajnik nieokreślony i zależą od rodzaju i liczby rzeczownika.', example: 'Das ist mein Hund.', example_pl: 'To jest mój pies.' },
         ],
     },
+    'articles': {
+      title: 'Artikel',
+      content: [
+          { heading: 'Bestimmte Artikel (der, die, das)', text: 'Rodzajniki określone odnoszą się do konkretnych, znanych osób lub rzeczy.', example: 'Der Hund ist groß.', example_pl: '(Ten konkretny) pies jest duży.' },
+          { heading: 'Unbestimmte Artikel (ein, eine)', text: 'Rodzajniki nieokreślone odnoszą się do nieokreślonej, jednej osoby lub rzeczy. Nie mają formy liczby mnogiej.', example: 'Ich sehe einen Hund.', example_pl: 'Widzę (jakiegoś) psa.' },
+          { heading: 'Nullartikel (brak rodzajnika)', text: 'Rodzajnika nie używa się m.in. przed nazwami własnymi, materiałami, rzeczownikami w liczbie mnogiej (gdy mowa ogólnie) i po określeniach miary.', example: 'Ich trinke Milch. / Das sind Äpfel.', example_pl: 'Piję mleko. / To są jabłka.' },
+      ],
+  },
   },
   es: {
     'sentence-structure': {
@@ -149,6 +165,14 @@ export const allGrammar: GrammarContent = {
             { heading: 'Zaimki dopełnienia', text: 'Zaimki dopełnienia bliższego (lo, la, los, las) i dalszego (le, les) stoją przed odmienionym czasownikiem lub są dołączone do bezokolicznika/gerundio.', example: 'Lo veo. / Quiero verlo.', example_pl: 'Widzę go. / Chcę go zobaczyć.' },
         ],
     },
+    'articles': {
+      title: 'Artículos',
+      content: [
+          { heading: 'Artículos Determinados (el, la, los, las)', text: 'Rodzajniki określone odnoszą się do konkretnych, znanych rzeczowników.', example: 'El coche es rojo.', example_pl: '(Ten konkretny) samochód jest czerwony.' },
+          { heading: 'Artículos Indeterminados (un, una, unos, unas)', text: 'Rodzajniki nieokreślone odnoszą się do niesprecyzowanych, jakichkolwiek rzeczowników.', example: 'Veo un coche.', example_pl: 'Widzę (jakiś) samochód.' },
+          { heading: 'Kontrakcje (al, del)', text: 'Przyimki "a" i "de" łączą się z rodzajnikiem "el", tworząc formy "al" (a + el) i "del" (de + el).', example: 'Voy al cine. / Vengo del trabajo.', example_pl: 'Idę do kina. / Wracam z pracy.' },
+      ],
+  },
   },
   fr: {
     'sentence-structure': {
@@ -193,6 +217,14 @@ export const allGrammar: GrammarContent = {
             { heading: 'Zaimki "en" i "y"', text: '"En" zastępuje rzeczowniki z "de" (np. de la, du, des), a "y" zastępuje rzeczowniki z "à" lub określenia miejsca.', example: 'Tu as des frères? Oui, j\'en ai. / Tu vas à Paris? Oui, j\'y vais.', example_pl: 'Masz braci? Tak, mam. / Jedziesz do Paryża? Tak, jadę.' },
         ],
     },
+    'articles': {
+      title: 'Les Articles',
+      content: [
+          { heading: 'Articles Définis (le, la, l\', les)', text: 'Rodzajniki określone używane są przed rzeczownikami, które są konkretne lub już znane.', example: 'J\'aime le chocolat.', example_pl: 'Lubię (tę konkretną, ogólnie znaną) czekoladę.' },
+          { heading: 'Articles Indéfinis (un, une, des)', text: 'Rodzajniki nieokreślone wprowadzają nowy, nieokreślony rzeczownik.', example: 'J\'ai acheté un livre.', example_pl: 'Kupiłem/am (jakąś) książkę.' },
+          { heading: 'Articles Partitifs (du, de la, de l\', des)', text: 'Używane do określenia niepoliczalnej ilości czegoś (trochę, część).', example: 'Je voudrais de l\'eau.', example_pl: 'Chciałbym/Chciałabym (trochę) wody.' },
+      ],
+  },
   },
   it: {
     'sentence-structure': {
@@ -236,5 +268,12 @@ export const allGrammar: GrammarContent = {
             { heading: 'Połączone zaimki dopełnienia', text: 'Zaimki dopełnienia bliższego i dalszego mogą się łączyć, tworząc jedną formę (np. me lo, te la). Zawsze stoją przed odmienionym czasownikiem.', example: 'Me lo dai?', example_pl: 'Dasz mi to?' },
         ],
     },
+    'articles': {
+      title: 'Articoli',
+      content: [
+          { heading: 'Articoli Determinativi (il, lo, la...)', text: 'Rodzajniki określone używane są przed znanymi, specyficznymi rzeczownikami. Ich forma zależy od rodzaju, liczby i pierwszej litery rzeczownika.', example: 'Il cane, lo studente, la casa, l\'amica.', example_pl: 'Pies, student, dom, przyjaciółka.' },
+          { heading: 'Articoli Indeterminativi (un, uno, una...)', text: 'Rodzajniki nieokreślone wprowadzają nowy rzeczownik. Ich forma również zależy od rodzaju i pierwszej litery rzeczownika.', example: 'un cane, uno studente, una casa, un\'amica.', example_pl: '(jakiś) pies, (jakiś) student, (jakiś) dom, (jakaś) przyjaciółka.' },
+      ],
+  },
   },
 };

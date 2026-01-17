@@ -1,4 +1,4 @@
-import { ArrowLeft, BookText, Split, HelpCircle, Ban, Palette, Rabbit, UserSquare } from 'lucide-react';
+import { ArrowLeft, BookText, Split, HelpCircle, Ban, Palette, Rabbit, UserSquare, Newspaper } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
@@ -30,6 +30,12 @@ export default function GrammarDePage() {
                         <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
                             <Ban className="mr-2 h-5 w-5" />
                             Verneinung
+                        </Button>
+                    </Link>
+                     <Link href="/learning/de/grammar/articles" passHref>
+                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
+                            <Newspaper className="mr-2 h-5 w-5" />
+                            Artikel
                         </Button>
                     </Link>
                     <Link href="/learning/de/grammar/adjectives" passHref>

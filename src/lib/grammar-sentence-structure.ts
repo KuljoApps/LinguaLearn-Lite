@@ -44,6 +44,14 @@ export const sentenceStructureContent: GrammarContent = {
               { original: 'We went to the cinema (miejsce) yesterday (czas).', translation: 'Poszliśmy wczoraj do kina.' },
               { original: 'She drives her car carefully (sposób) in the city (miejsce).', translation: 'Ona ostrożnie prowadzi samochód w mieście.' }
             ]
+          },
+          {
+            heading: 'Pozycja przysłówków częstotliwości',
+            text: 'Przysłówki takie jak "always", "often", "sometimes" czy "never" zazwyczaj stoją przed głównym czasownikiem, ale po czasowniku "to be".',
+            examples: [
+              { original: 'I often drink coffee in the morning.', translation: 'Często piję kawę rano.' },
+              { original: 'She is always on time.', translation: 'Ona jest zawsze na czas.' }
+            ]
           }
         ],
       },
@@ -90,6 +98,14 @@ export const sentenceStructureContent: GrammarContent = {
                 examples: [
                   { original: 'Ich fahre morgen (Zeit) nach Berlin (Ort).', translation: 'Jadę jutro do Berlina.' },
                   { original: 'Wir treffen uns um 18 Uhr (Zeit) vor dem Kino (Ort).', translation: 'Spotykamy się o 18:00 przed kinem.' }
+                ]
+              },
+              {
+                heading: 'Szyk w zdaniu podrzędnym (Nebensatz)',
+                text: 'W zdaniach podrzędnych, wprowadzanych spójnikami takimi jak "dass" (że), "weil" (ponieważ) czy "wenn" (kiedy/jeśli), odmieniony czasownik zawsze wędruje na sam koniec zdania.',
+                examples: [
+                  { original: 'Ich weiß, dass er heute kommt.', translation: 'Wiem, że on dzisiaj przyjdzie.' },
+                  { original: 'Wir bleiben zu Hause, weil es regnet.', translation: 'Zostajemy w domu, ponieważ pada deszcz.' }
                 ]
               }
             ],
@@ -138,6 +154,14 @@ export const sentenceStructureContent: GrammarContent = {
                   { original: 'Ayer fuimos a la playa.', translation: 'Wczoraj poszliśmy na plażę.' },
                   { original: 'Mi hermana vive en Madrid desde hace cinco años.', translation: 'Moja siostra mieszka w Madrycie od pięciu lat.' }
                 ]
+              },
+              {
+                heading: 'Pozycja przymiotników',
+                text: 'W przeciwieństwie do polskiego i angielskiego, większość przymiotników w języku hiszpańskim umieszcza się po rzeczowniku, który opisują.',
+                examples: [
+                  { original: 'Tengo un coche rojo.', translation: 'Mam czerwony samochód.' },
+                  { original: 'Es una mujer inteligente.', translation: 'To jest inteligentna kobieta.' }
+                ]
               }
             ],
           },
@@ -185,6 +209,14 @@ export const sentenceStructureContent: GrammarContent = {
                   { original: 'Nous allons au cinéma ce soir.', translation: 'Idziemy dziś wieczorem do kina.' },
                   { original: 'Hier, il a beaucoup plu.', translation: 'Wczoraj mocno padało.' }
                 ]
+              },
+              {
+                heading: 'Pozycja przysłówków w czasach złożonych',
+                text: 'Krótkie i powszechne przysłówki (np. bien, mal, beaucoup, déjà) w czasach złożonych, jak Passé Composé, umieszcza się między czasownikiem posiłkowym a imiesłowem (participe passé).',
+                examples: [
+                  { original: 'J\'ai bien dormi.', translation: 'Dobrze spałem.' },
+                  { original: 'Nous avons beaucoup mangé.', translation: 'Dużo zjedliśmy.' }
+                ]
               }
             ],
           },
@@ -231,6 +263,14 @@ export const sentenceStructureContent: GrammarContent = {
                 examples: [
                   { original: 'Domani andiamo al mare.', translation: 'Jutro jedziemy nad morze.' },
                   { original: 'Lavoro in ufficio ogni giorno.', translation: 'Pracuję w biurze każdego dnia.' }
+                ]
+              },
+              {
+                heading: 'Pozycja przymiotników',
+                text: 'Podobnie jak w hiszpańskim, większość przymiotników (zwłaszcza tych opisujących kolor, kształt, narodowość) umieszcza się po rzeczowniku.',
+                examples: [
+                  { original: 'Ho una macchina rossa.', translation: 'Mam czerwony samochód.' },
+                  { original: 'È una ragazza intelligente.', translation: 'To jest inteligentna dziewczyna.' }
                 ]
               }
             ],

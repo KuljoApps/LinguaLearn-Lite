@@ -28,6 +28,14 @@ export const articlesContent: GrammarContent = {
                       { original: 'I like music.', translation: 'Lubię muzykę (ogólnie).' },
                       { original: 'We play tennis every Saturday.', translation: 'Gramy w tenisa w każdą sobotę.' }
                   ]
+              },
+              {
+                heading: 'Użycie "the" z rzeczownikami ogólnymi',
+                text: 'Zazwyczaj nie używamy "the" mówiąc o rzeczownikach w liczbie mnogiej lub niepoliczalnych w sensie ogólnym. Używamy go jednak, gdy odnosimy się do konkretnej, określonej grupy lub ilości.',
+                examples: [
+                  { original: 'I love horses. (konie ogólnie)', translation: 'Kocham konie.' },
+                  { original: 'The horses in that field are beautiful. (konkretne konie)', translation: 'Konie na tamtym polu są piękne.' }
+                ]
               }
           ],
       },
@@ -58,6 +66,14 @@ export const articlesContent: GrammarContent = {
                     examples: [
                         { original: 'Ich trinke gern Milch.', translation: 'Chętnie piję mleko.' },
                         { original: 'Kinder spielen gern.', translation: 'Dzieci chętnie się bawią.' }
+                    ]
+                },
+                {
+                    heading: 'Ściągnięcia przyimka z rodzajnikiem',
+                    text: 'W języku niemieckim bardzo często łączy się niektóre przyimki z rodzajnikami w celowniku (Dativ) i bierniku (Akkusativ), tworząc jedną formę, np. an + dem = am, in + das = ins.',
+                    examples: [
+                      { original: 'Am Montag gehe ich ins Kino.', translation: 'W poniedziałek idę do kina. (an dem / in das)' },
+                      { original: 'Wir gehen zum Bahnhof.', translation: 'Idziemy na dworzec. (zu dem)' }
                     ]
                 }
             ],
@@ -90,6 +106,14 @@ export const articlesContent: GrammarContent = {
                         { original: 'Vamos al cine esta noche.', translation: 'Idziemy dziś wieczorem do kina.' },
                         { original: 'El coche del vecino es nuevo.', translation: 'Samochód sąsiada jest nowy.' }
                     ]
+                },
+                {
+                    heading: 'Rodzajnik nijaki "lo"',
+                    text: '"Lo" jest używane przed przymiotnikiem, przysłówkiem lub imiesłowem, aby przekształcić je w abstrakcyjny rzeczownik. Najczęściej tłumaczy się to jako "to, co jest...".',
+                    examples: [
+                      { original: 'Lo importante es participar.', translation: 'Ważne jest to, żeby wziąć udział (dosł. to, co ważne, to uczestniczyć).' },
+                      { original: 'No sabes lo bien que canta.', translation: 'Nie wiesz, jak dobrze ona śpiewa (dosł. to, jak dobrze śpiewa).' }
+                    ]
                 }
             ],
         },
@@ -121,6 +145,14 @@ export const articlesContent: GrammarContent = {
                         { original: 'Je voudrais de l\'eau, s\'il vous plaît.', translation: 'Chciałbym/abym (trochę) wody, proszę.' },
                         { original: 'Il a du courage.', translation: 'On ma (trochę) odwagi.' }
                     ]
+                },
+                {
+                    heading: 'Użycie "de" w przeczeniach',
+                    text: 'W zdaniach przeczących rodzajniki nieokreślone (un, une, des) oraz cząstkowe (du, de la, de l\') zazwyczaj zmieniają się na "de" (lub "d\'" przed samogłoską).',
+                    examples: [
+                      { original: 'J\'ai un chien. -> Je n\'ai pas de chien.', translation: 'Mam psa. -> Nie mam psa.' },
+                      { original: 'Je bois de l\'eau. -> Je ne bois pas d\'eau.', translation: 'Piję wodę. -> Nie piję wody.' }
+                    ]
                 }
             ],
         },
@@ -151,6 +183,14 @@ export const articlesContent: GrammarContent = {
                     examples: [
                         { original: 'Vorrei del vino rosso, per favore.', translation: 'Chciałbym/abym trochę czerwonego wina, proszę.' },
                         { original: 'Ho comprato dei libri nuovi.', translation: 'Kupiłem/am (kilka) nowych książek.' }
+                    ]
+                },
+                {
+                    heading: 'Przyimki ściągnięte (Preposizioni articolate)',
+                    text: 'W języku włoskim przyimki proste (di, a, da, in, su) łączą się z rodzajnikami określonymi, tworząc jedną, obowiązkową formę, np. di + il = del, a + lo = allo.',
+                    examples: [
+                      { original: 'Il libro dello studente è sul tavolo. (di + lo / su + il)', translation: 'Książka studenta jest na stole.' },
+                      { original: 'Vado al cinema con gli amici. (a + il / con + gli)', translation: 'Idę do kina z przyjaciółmi.' }
                     ]
                 }
             ],

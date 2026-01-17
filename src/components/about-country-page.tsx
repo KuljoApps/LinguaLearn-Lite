@@ -123,7 +123,7 @@ export default function AboutCountryPage({ data }: AboutCountryPageProps) {
                     <p>{restOfText}</p>
                   </CollapsibleContent>
                   <CollapsibleTrigger asChild>
-                    <Button variant="link" className="p-0 h-auto text-sm text-primary/80 hover:text-primary">
+                    <Button variant="link" className="p-0 h-auto text-sm text-primary/80 hover:text-primary underline mt-2">
                       {isDescriptionOpen ? t('readLess') : t('readMore')}
                       <ChevronDown className={`ml-1 h-4 w-4 transition-transform duration-200 ${isDescriptionOpen ? 'rotate-180' : ''}`} />
                     </Button>

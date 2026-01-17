@@ -58,8 +58,16 @@ export const allTenses: Tense[] = [
   { language: 'es', name: 'Condicional compuesto', usage: 'Wyraża czynność, która mogłaby się wydarzyć w przeszłości, ale się nie wydarzyła.', example: 'Habría ido, pero estaba enfermo.', example_pl: 'Poszedłbym, ale byłem chory.' },
 
   // Italian
-  { language: 'it', name: 'Presente Indicativo', usage: 'Opisuje czynności teraźniejsze, nawyki i prawdy ogólne.', example: 'Lui legge un libro.', example_pl: 'On czyta książkę.' },
-  { language: 'it', name: 'Passato Prossimo', usage: 'Najczęściej używany czas przeszły, opisuje czynności zakończone w przeszłości, które mają związek z teraźniejszością.', example: 'Ho mangiato la pizza.', example_pl: 'Zjadłem/am pizzę.' },
-  { language: 'it', name: 'Imperfetto', usage: 'Używany do opisywania tła, zwyczajów, czynności powtarzających się i stanów w przeszłości.', example: 'Da bambino, andavo al mare ogni estate.', example_pl: 'Jako dziecko, jeździłem nad morze każdego lata.' },
-  { language: 'it', name: 'Futuro Semplice', usage: 'Używany do wyrażania przyszłych czynności, prognoz i obietnic.', example: 'Domani studierò la storia.', example_pl: 'Jutro będę się uczyć historii.' },
+  { language: 'it', name: 'Presente (Indicativo)', usage: 'Opisuje czynności teraźniejsze, nawyki i prawdy ogólne.', example: 'Lui legge un libro.', example_pl: 'On czyta książkę.' },
+  { language: 'it', name: 'Presente (Congiuntivo)', usage: 'Wyraża wątpliwość, życzenie, opinię, możliwość w teraźniejszości.', example: 'Penso che lui legga molto.', example_pl: 'Myślę, że on dużo czyta.' },
+  { language: 'it', name: 'Passato prossimo (Indicativo)', usage: 'Najczęściej używany czas przeszły dokonany, opisuje czynności zakończone w przeszłości.', example: 'Ieri ho mangiato una pizza.', example_pl: 'Wczoraj zjadłem/am pizzę.' },
+  { language: 'it', name: 'Imperfetto (Indicativo)', usage: 'Używany do opisywania tła, zwyczajów i czynności powtarzających się w przeszłości.', example: 'Da bambino, giocavo sempre fuori.', example_pl: 'Jako dziecko, zawsze bawiłem się na zewnątrz.' },
+  { language: 'it', name: 'Passato remoto (Indicativo)', usage: 'Czas przeszły prosty, używany głównie w literaturze do opisu odległych wydarzeń historycznych.', example: 'Dante scrisse la Divina Commedia.', example_pl: 'Dante napisał Boską Komedię.' },
+  { language: 'it', name: 'Trapassato prossimo (Indicativo)', usage: 'Czas zaprzeszły, opisuje czynność zakończoną przed inną czynnością w przeszłości.', example: 'Quando sono arrivato, il film era già iniziato.', example_pl: 'Kiedy przybyłem, film już się zaczął.' },
+  { language: 'it', name: 'Passato (Congiuntivo)', usage: 'Wyraża wątpliwość lub opinię o czynności, która miała miejsce w przeszłości.', example: 'Sono felice che tu sia venuto.', example_pl: 'Cieszę się, że przyszedłeś.' },
+  { language: 'it', name: 'Imperfetto (Congiuntivo)', usage: 'Wyraża życzenie, hipotezę lub warunek, który jest mało prawdopodobny.', example: 'Se avessi più tempo, viaggerei di più.', example_pl: 'Gdybym miał więcej czasu, więcej bym podróżował.' },
+  { language: 'it', name: 'Trapassato (Congiuntivo)', usage: 'Wyraża nierealną hipotezę dotyczącą przeszłości.', example: 'Se lo avessi saputo, ti avrei aiutato.', example_pl: 'Gdybym o tym wiedział, pomógłbym ci.' },
+  { language: 'it', name: 'Futuro semplice (Indicativo)', usage: 'Używany do wyrażania przyszłych czynności, obietnic i przypuszczeń.', example: 'Domani andrò al cinema.', example_pl: 'Jutro pójdę do kina.' },
+  { language: 'it', name: 'Futuro anteriore (Indicativo)', usage: 'Wyraża czynność przyszłą, która zakończy się przed inną czynnością przyszłą.', example: 'Dopo che avrò finito i compiti, uscirò.', example_pl: 'Gdy skończę zadania domowe, wyjdę.' },
+  { language: 'it', name: 'Condizionale presente / passato', usage: 'Tryb przypuszczający. \'Presente\' wyraża życzenia i prośby (chciałbym). \'Passato\' wyraża nierealne czynności z przeszłości (zrobiłbym był), często wyrażając żal.', example: 'Presente: Vorrei un caffè. / Passato: Sarei venuto, ma ero malato.', example_pl: 'Teraźniejszy: Chciałbym kawę. / Przeszły: Byłbym przyszedł, ale byłem chory.' },
 ];

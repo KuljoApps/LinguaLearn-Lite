@@ -172,9 +172,30 @@ export const allGrammar: GrammarContent = {
     'articles': {
       title: 'Articles',
       content: [
-          { heading: 'Definite Article (the)', text: 'The definite article "the" is used to refer to specific, known nouns.', examples: [{original: 'The dog is friendly.', translation: '(Ten konkretny) pies jest przyjazny.'}] },
-          { heading: 'Indefinite Articles (a/an)', text: '"A" is used before words starting with a consonant sound, and "an" before words starting with a vowel sound. They refer to a non-specific noun.', examples: [{original: 'I saw a cat. / He wants an apple.', translation: 'Widziałem (jakiegoś) kota. / On chce (jakieś) jabłko.'}] },
-          { heading: 'Zero Article', text: 'No article is used with plural countable nouns or uncountable nouns when speaking generally.', examples: [{original: 'Cats are independent. / I like music.', translation: 'Koty są niezależne. / Lubię muzykę.'}] },
+          { 
+              heading: 'Rodzajnik określony (the)', 
+              text: 'Używany, gdy mówimy o czymś konkretnym, już znanym lub jedynym w swoim rodzaju.',
+              examples: [
+                  { original: 'The dog I saw was very friendly.', translation: '(Ten konkretny) pies, którego widziałem, był bardzo przyjazny.' },
+                  { original: 'The sun is shining today.', translation: 'Słońce dzisiaj świeci.' }
+              ]
+          },
+          { 
+              heading: 'Rodzajniki nieokreślone (a/an)', 
+              text: '"A" używamy przed spółgłoskami, "an" przed samogłoskami. Stosujemy je, mówiąc o czymś po raz pierwszy lub o jednej rzeczy z wielu.',
+              examples: [
+                  { original: 'I bought a new car.', translation: 'Kupiłem (jakiś) nowy samochód.' },
+                  { original: 'She is an excellent student.', translation: 'Ona jest znakomitą studentką.' }
+              ]
+          },
+          { 
+              heading: 'Rodzajnik zerowy (Zero Article)', 
+              text: 'Nie używamy rodzajnika, mówiąc o rzeczach w ogólności (rzeczowniki niepoliczalne lub w liczbie mnogiej), a także przed nazwami własnymi, posiłkami czy sportami.',
+              examples: [
+                  { original: 'I like music.', translation: 'Lubię muzykę (ogólnie).' },
+                  { original: 'We play tennis every Saturday.', translation: 'Gramy w tenisa w każdą sobotę.' }
+              ]
+          }
       ],
   },
   },
@@ -330,9 +351,30 @@ export const allGrammar: GrammarContent = {
     'articles': {
       title: 'Artikel',
       content: [
-          { heading: 'Bestimmte Artikel (der, die, das)', text: 'Rodzajniki określone odnoszą się do konkretnych, znanych osób lub rzeczy.', examples: [{original: 'Der Hund ist groß.', translation: '(Ten konkretny) pies jest duży.'}] },
-          { heading: 'Unbestimmte Artikel (ein, eine)', text: 'Rodzajniki nieokreślone odnoszą się do nieokreślonej, jednej osoby lub rzeczy. Nie mają formy liczby mnogiej.', examples: [{original: 'Ich sehe einen Hund.', translation: 'Widzę (jakiegoś) psa.'}] },
-          { heading: 'Nullartikel (brak rodzajnika)', text: 'Rodzajnika nie używa się m.in. przed nazwami własnymi, materiałami, rzeczownikami w liczbie mnogiej (gdy mowa ogólnie) i po określeniach miary.', examples: [{original: 'Ich trinke Milch. / Das sind Äpfel.', translation: 'Piję mleko. / To są jabłka.'}] },
+          { 
+              heading: 'Rodzajnik określony (der, die, das)', 
+              text: 'Odnosi się do konkretnych, znanych osób lub rzeczy. Forma zależy od rodzaju gramatycznego (męski, żeński, nijaki), liczby i przypadku.',
+              examples: [
+                  { original: 'Der Hund ist groß.', translation: '(Ten konkretny) pies jest duży.' },
+                  { original: 'Ich gebe der Frau das Buch.', translation: 'Daję (tej konkretnej) kobiecie książkę.' }
+              ]
+          },
+          { 
+              heading: 'Rodzajnik nieokreślony (ein, eine)', 
+              text: 'Odnosi się do nieokreślonej, jednej osoby lub rzeczy. Odmienia się przez przypadki i rodzaje, ale nie ma formy liczby mnogiej.',
+              examples: [
+                  { original: 'Ich sehe einen Hund.', translation: 'Widzę (jakiegoś) psa.' },
+                  { original: 'Das ist eine interessante Frage.', translation: 'To jest (jakieś) interesujące pytanie.' }
+              ]
+          },
+          { 
+              heading: 'Rodzajnik zerowy (Nullartikel)', 
+              text: 'Brak rodzajnika stosuje się przed nazwami własnymi, nazwami miast i większości krajów, materiałami, a także przed rzeczownikami w liczbie mnogiej, jeśli mówimy o nich w sposób ogólny.',
+              examples: [
+                  { original: 'Ich trinke gern Milch.', translation: 'Chętnie piję mleko.' },
+                  { original: 'Kinder spielen gern.', translation: 'Dzieci chętnie się bawią.' }
+              ]
+          }
       ],
   },
   },
@@ -447,7 +489,7 @@ export const allGrammar: GrammarContent = {
             ]
           },
           { 
-            heading: 'Pojedyncze przeczenie (słowo przeczące przed czasownikiem)', 
+            heading: 'Pojedyncze przeczenie', 
             text: 'Jeśli słowo takie jak "nadie", "nada" czy "nunca" postawimy na początku zdania (przed czasownikiem), wtedy "no" jest pomijane.',
             examples: [
               { original: 'Nadie me ha llamado.', translation: 'Nikt do mnie nie dzwonił.' },
@@ -488,9 +530,30 @@ export const allGrammar: GrammarContent = {
     'articles': {
       title: 'Artículos',
       content: [
-          { heading: 'Artículos Determinados (el, la, los, las)', text: 'Rodzajniki określone odnoszą się do konkretnych, znanych rzeczowników.', examples: [{original: 'El coche es rojo.', translation: '(Ten konkretny) samochód jest czerwony.'}] },
-          { heading: 'Artículos Indeterminados (un, una, unos, unas)', text: 'Rodzajniki nieokreślone odnoszą się do niesprecyzowanych, jakichkolwiek rzeczowników.', examples: [{original: 'Veo un coche.', translation: 'Widzę (jakiś) samochód.'}] },
-          { heading: 'Kontrakcje (al, del)', text: 'Przyimki "a" i "de" łączą się z rodzajnikiem "el", tworząc formy "al" (a + el) i "del" (de + el).', examples: [{original: 'Voy al cine. / Vengo del trabajo.', translation: 'Idę do kina. / Wracam z pracy.'}] },
+          { 
+              heading: 'Rodzajniki określone (el, la, los, las)', 
+              text: 'Odnoszą się do konkretnych, znanych osób lub rzeczy i muszą zgadzać się z rzeczownikiem co do rodzaju i liczby.',
+              examples: [
+                  { original: 'El perro es mi mejor amigo.', translation: '(Ten konkretny) pies jest moim najlepszym przyjacielem.' },
+                  { original: 'Las casas en esta calle son muy bonitas.', translation: 'Domy na tej ulicy są bardzo ładne.' }
+              ]
+          },
+          { 
+              heading: 'Rodzajniki nieokreślone (un, una, unos, unas)', 
+              text: 'Używane, gdy mówimy o czymś po raz pierwszy lub o jednej rzeczy z wielu. Również muszą zgadzać się co do rodzaju i liczby.',
+              examples: [
+                  { original: 'Necesito un bolígrafo.', translation: 'Potrzebuję (jakiegoś) długopisu.' },
+                  { original: 'Compraron unas flores para su madre.', translation: 'Kupili (jakieś) kwiaty dla swojej mamy.' }
+              ]
+          },
+          { 
+              heading: 'Kontrakcje (al, del)', 
+              text: 'Gdy przyimki "a" lub "de" występują przed rodzajnikiem męskim liczby pojedynczej "el", łączą się, tworząc formy "al" (a + el) i "del" (de + el).',
+              examples: [
+                  { original: 'Vamos al cine esta noche.', translation: 'Idziemy dziś wieczorem do kina.' },
+                  { original: 'El coche del vecino es nuevo.', translation: 'Samochód sąsiada jest nowy.' }
+              ]
+          }
       ],
   },
   },
@@ -646,9 +709,30 @@ export const allGrammar: GrammarContent = {
     'articles': {
       title: 'Les Articles',
       content: [
-          { heading: 'Articles Définis (le, la, l\', les)', text: 'Rodzajniki określone używane są przed rzeczownikami, które są konkretne lub już znane.', examples: [{original: 'J\'aime le chocolat.', translation: 'Lubię (tę konkretną, ogólnie znaną) czekoladę.'}] },
-          { heading: 'Articles Indéfinis (un, une, des)', text: 'Rodzajniki nieokreślone wprowadzają nowy, nieokreślony rzeczownik.', examples: [{original: 'J\'ai acheté un livre.', translation: 'Kupiłem/am (jakąś) książkę.'}] },
-          { heading: 'Articles Partitifs (du, de la, de l\', des)', text: 'Używane do określenia niepoliczalnej ilości czegoś (trochę, część).', examples: [{original: 'Je voudrais de l\'eau.', translation: 'Chciałbym/Chciałabym (trochę) wody.'}] },
+          { 
+              heading: 'Rodzajniki określone (le, la, l\', les)', 
+              text: 'Używane przed rzeczownikami znanymi lub określonymi. Forma zależy od rodzaju i liczby rzeczownika oraz od tego, czy zaczyna się on od samogłoski.',
+              examples: [
+                  { original: 'J\'aime le chocolat.', translation: 'Lubię czekoladę (ogólnie, jako znaną substancję).' },
+                  { original: 'Les enfants jouent dans le jardin.', translation: '(Te konkretne) dzieci bawią się w ogrodzie.' }
+              ]
+          },
+          { 
+              heading: 'Rodzajniki nieokreślone (un, une, des)', 
+              text: 'Wprowadzają nowy, nieokreślony rzeczownik. "Des" jest formą liczby mnogiej i oznacza "kilka", "jakieś".',
+              examples: [
+                  { original: 'J\'ai acheté un livre.', translation: 'Kupiłem/am (jakąś) książkę.' },
+                  { original: 'Il y a des nuages dans le ciel.', translation: 'Na niebie są (jakieś) chmury.' }
+              ]
+          },
+          { 
+              heading: 'Rodzajniki cząstkowe (du, de la, de l\', des)', 
+              text: 'Używane do określenia niepoliczalnej ilości czegoś, czego nie da się policzyć na sztuki (np. woda, chleb, odwaga). Tłumaczone jako "trochę", "część".',
+              examples: [
+                  { original: 'Je voudrais de l\'eau, s\'il vous plaît.', translation: 'Chciałbym/abym (trochę) wody, proszę.' },
+                  { original: 'Il a du courage.', translation: 'On ma (trochę) odwagi.' }
+              ]
+          }
       ],
   },
   },
@@ -776,7 +860,7 @@ export const allGrammar: GrammarContent = {
         title: 'Aggettivi',
         content: [
             { heading: 'Pozycja przymiotnika', text: 'Podobnie jak w hiszpańskim, przymiotniki zazwyczaj stoją po rzeczowniku. Niektóre, jak "bello" czy "bravo", mogą stać przed.', examples: [{original: 'Una macchina rossa (czerwony samochód) vs una bella macchina (piękny samochód).', translation: 'Czerwony samochód vs piękny samochód.'}] },
-            { heading: 'Zgodność', text: 'Przymiotniki muszą zgadzać się co do rodzaju i liczby z rzeczownikiem, który opisują. Mają różne końcówki w zależności od grupy.', examples: [{original: 'un ragazzo alto, una ragazza alta, due ragazzi alti, due ragazze alte.', translation: 'wysoki chłopak, wysoka dziewczyna, wysocy chłopcy, wysokie dziewczyny.'}] },
+            { heading: 'Zgodność', text: 'Przymiotniki muszą zgadzać się co do rodzaju i liczby z rzeczownikiem, który opisują. Mają różne końcówki w zależności od grupy.', examples: [{original: 'un ragazzo alto, una ragazza alta, due ragazzi alti, due ragazze alte.', translation: 'wysoki chłopak, wysoka dziewczyna, wysocy chłopcy, wysokie dziewczynki.'}] },
         ],
     },
     'adverbs': {
@@ -796,8 +880,30 @@ export const allGrammar: GrammarContent = {
     'articles': {
       title: 'Articoli',
       content: [
-          { heading: 'Articoli Determinativi (il, lo, la...)', text: 'Rodzajniki określone używane są przed znanymi, specyficznymi rzeczownikami. Ich forma zależy od rodzaju, liczby i pierwszej litery rzeczownika.', examples: [{original: 'Il cane, lo studente, la casa, l\'amica.', translation: 'Pies, student, dom, przyjaciółka.'}] },
-          { heading: 'Articoli Indeterminativi (un, uno, una...)', text: 'Rodzajniki nieokreślone wprowadzają nowy rzeczownik. Ich forma również zależy od rodzaju i pierwszej litery rzeczownika.', examples: [{original: 'un cane, uno studente, una casa, un\'amica.', translation: '(jakiś) pies, (jakiś) student, (jakiś) dom, (jakaś) przyjaciółka.'}] },
+          { 
+              heading: 'Rodzajniki określone (Determinativi)', 
+              text: 'Ich forma (il, lo, la, l\', i, gli, le) zależy od rodzaju, liczby i pierwszej litery rzeczownika. Używane przed konkretnymi, znanymi rzeczownikami.',
+              examples: [
+                  { original: 'il cane (pies), lo studente (student), l\'amica (przyjaciółka)', translation: 'Pies, student, przyjaciółka.' },
+                  { original: 'Mi piace la pizza che abbiamo mangiato ieri.', translation: 'Smakuje mi ta pizza, którą jedliśmy wczoraj.' }
+              ]
+          },
+          { 
+              heading: 'Rodzajniki nieokreślone (Indeterminativi)', 
+              text: 'Ich forma (un, uno, una, un\') również zależy od rodzaju i pierwszej litery rzeczownika. Używane do wprowadzenia nowej, nieokreślonej rzeczy.',
+              examples: [
+                  { original: 'Ho visto un film interessante.', translation: 'Obejrzałem/am interesujący film.' },
+                  { original: 'C\'è uno zaino sul tavolo.', translation: 'Na stole jest (jakiś) plecak.' }
+              ]
+          },
+          { 
+              heading: 'Rodzajniki cząstkowe (Partitivi)', 
+              text: 'Tworzone przez połączenie przyimka "di" z rodzajnikiem określonym (del, dello, della...). Używane do określenia niepoliczalnej lub nieokreślonej ilości czegoś.',
+              examples: [
+                  { original: 'Vorrei del vino rosso, per favore.', translation: 'Chciałbym/abym trochę czerwonego wina, proszę.' },
+                  { original: 'Ho comprato dei libri nuovi.', translation: 'Kupiłem/am (kilka) nowych książek.' }
+              ]
+          }
       ],
   },
   },

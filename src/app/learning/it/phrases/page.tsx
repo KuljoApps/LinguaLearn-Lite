@@ -16,37 +16,37 @@ export default function PhrasesItPage() {
                 <CardContent className="grid grid-cols-2 gap-4 p-6">
                     <Link href="/learning/it/phrases/restaurant" passHref>
                         <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary">
-                            <Utensils className="h-8 w-8" />
+                            <Utensils className="h-10 w-10" />
                             Ristorante
                         </Button>
                     </Link>
                     <Link href="/learning/it/phrases/airport" passHref>
                         <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary">
-                            <Plane className="h-8 w-8" />
+                            <Plane className="h-10 w-10" />
                             Aeroporto
                         </Button>
                     </Link>
                     <Link href="/learning/it/phrases/shop" passHref>
                         <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary">
-                            <ShoppingCart className="h-8 w-8" />
+                            <ShoppingCart className="h-10 w-10" />
                             Negozio
                         </Button>
                     </Link>
                     <Link href="/learning/it/phrases/station" passHref>
                         <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary">
-                            <Train className="h-8 w-8" />
+                            <Train className="h-10 w-10" />
                             Stazione
                         </Button>
                     </Link>
                     <Link href="/learning/it/phrases/party" passHref>
                         <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary">
-                            <PartyPopper className="h-8 w-8" />
+                            <PartyPopper className="h-10 w-10" />
                             Festa
                         </Button>
                     </Link>
                     <Link href="/learning/it/phrases/emergency" passHref>
                         <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary">
-                            <Siren className="h-8 w-8" />
+                            <Siren className="h-10 w-10" />
                             Emergenza
                         </Button>
                     </Link>

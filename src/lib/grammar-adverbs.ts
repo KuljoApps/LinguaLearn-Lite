@@ -23,11 +23,19 @@ export const adverbsContent: GrammarContent = {
               },
               {
                   heading: 'Pozycja przysłówków w zdaniu',
-                  text: 'Miejsce przysłówka zależy od jego rodzaju. Przysłówki częstotliwości (np. "always", "never") stoją przed głównym czasownikiem, ale po "to be". Przysłówki sposobu stoją zazwyczaj po czasowniku lub dopełnieniu.',
+                  text: 'Miejsce przysłówka zależy od jego rodzaju. Przysłówki sposobu stoją zazwyczaj po czasowniku lub dopełnieniu. Przysłówki czasu (np. "yesterday", "now") są elastyczne i mogą stać na początku lub na końcu zdania.',
                   examples: [
-                      { original: 'She always arrives on time.', translation: 'Ona zawsze przyjeżdża na czas.' },
-                      { original: 'He speaks quietly.', translation: 'On mówi cicho.' }
+                    { original: 'She sings beautifully.', translation: 'Ona pięknie śpiewa.' },
+                    { original: 'I will call you tomorrow.', translation: 'Zadzwonię do ciebie jutro.' }
                   ]
+              },
+              {
+                heading: 'Przysłówki częstotliwości (Adverbs of Frequency)',
+                text: 'Przysłówki częstotliwości (np. "always", "often", "sometimes", "never") zazwyczaj stoją przed głównym czasownikiem, ale po czasowniku "to be".',
+                examples: [
+                  { original: 'She is always late.', translation: 'Ona zawsze się spóźnia.' },
+                  { original: 'He often goes to the cinema.', translation: 'On często chodzi do kina.' }
+                ]
               },
               {
                   heading: 'Stopniowanie przysłówków',
@@ -69,6 +77,14 @@ export const adverbsContent: GrammarContent = {
                   ]
               },
               {
+                heading: 'Przysłówki modalne (Modaladverbien)',
+                text: 'Niemiecki używa wielu krótkich przysłówków (tzw. partykuł modalnych), aby nadać wypowiedzi emocjonalny odcień. Słowa takie jak "doch", "ja", "wohl" często nie mają bezpośredniego tłumaczenia, ale zmieniają ton zdania.',
+                examples: [
+                  { original: 'Das ist ja super!', translation: 'To jest przecież super! (wyraża zdziwienie/entuzjazm)' },
+                  { original: 'Du kommst doch mit, oder?', translation: 'No przecież idziesz z nami, prawda? (wyraża oczekiwanie/naleganie)' }
+                ]
+              },
+              {
                   heading: 'Stopniowanie przysłówków',
                   text: 'Przysłówki stopniuje się tak samo jak przymiotniki. Do stopnia wyższego dodaje się końcówkę "-er", a do najwyższego "am ...-sten". Istnieją również formy nieregularne.',
                   examples: [
@@ -90,6 +106,14 @@ export const adverbsContent: GrammarContent = {
                       { original: 'rápido/rápida -> rápidamente', translation: 'szybki/szybka -> szybko' },
                       { original: 'lento/lenta -> lentamente', translation: 'wolny/wolna -> powoli' }
                   ]
+              },
+              {
+                heading: 'Użycie kilku przysłówków na "-mente"',
+                text: 'Gdy w jednym zdaniu występuje kilka przysłówków zakończonych na "-mente", tylko ostatni z nich zachowuje tę końcówkę. Poprzednie występują w formie żeńskiej przymiotnika.',
+                examples: [
+                  { original: 'Ella habló clara y lentamente.', translation: 'Ona mówiła jasno i powoli.' },
+                  { original: 'Lo hizo rápida y eficientemente.', translation: 'Zrobił to szybko i wydajnie.' }
+                ]
               },
               {
                   heading: 'Przysłówki o tej samej formie co przymiotniki',
@@ -147,6 +171,14 @@ export const adverbsContent: GrammarContent = {
                   ]
               },
               {
+                heading: 'Przysłówki ilości (Adverbes de quantité)',
+                text: 'Przysłówki takie jak "beaucoup" (dużo), "peu" (mało), "assez" (wystarczająco) w połączeniu z rzeczownikiem wymagają użycia przyimka "de" (lub "d\'" przed samogłoską).',
+                examples: [
+                  { original: 'Il a beaucoup d\'amis.', translation: 'On ma dużo przyjaciół.' },
+                  { original: 'J\'ai peu de temps.', translation: 'Mam mało czasu.' }
+                ]
+              },
+              {
                   heading: 'Stopniowanie przysłówków',
                   text: 'Przysłówki stopniuje się opisowo za pomocą "plus" (bardziej), "moins" (mniej) i "aussi" (tak... jak).',
                   examples: [
@@ -192,6 +224,14 @@ export const adverbsContent: GrammarContent = {
                       { original: 'Vieni qui, per favore.', translation: 'Chodź tutaj, proszę.' },
                       { original: 'La stazione è là, in fondo alla strada.', translation: 'Stacja jest tam, na końcu ulicy.' }
                   ]
+              },
+              {
+                heading: 'Cząstki przysłówkowe "ci" i "ne"',
+                text: 'Cząstki "ci" i "ne" mogą pełnić funkcję przysłówków. "Ci" często zastępuje określenie miejsca ("tam"), a "ne" określenie miejsca, z którego się pochodzi lub oddala ("stamtąd").',
+                examples: [
+                  { original: 'Conosci Roma? Sì, ci sono stato. (ci = a Roma)', translation: 'Znasz Rzym? Tak, byłem tam.' },
+                  { original: 'Sei stato in ufficio? No, ne vengo proprio ora. (ne = dall\'ufficio)', translation: 'Byłeś w biurze? Nie, właśnie stamtąd wracam.' }
+                ]
               }
           ],
         },

@@ -119,8 +119,8 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
                         </div>
                         <CardTitle className="text-center">{city.name[displayLang]}</CardTitle>
                       </CardHeader>
-                      <CardContent className="flex h-[420px] flex-col items-center gap-4 px-4 pt-0 pb-4">
-                        <ScrollArea className="h-40 w-full">
+                      <CardContent className="flex flex-col items-center gap-4 px-4 pt-0 pb-4">
+                        <ScrollArea className="h-48 w-full pr-4">
                           <p className="text-sm text-muted-foreground text-justify">
                             {city.description[displayLang].replace(/ ([a-zA-Z])\s/g, ' $1\u00A0')}
                           </p>
@@ -142,7 +142,7 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
             </CarouselContent>
           </Carousel>
         </CardContent>
-        <CardFooter className="flex justify-center p-4 pt-2">
+        <CardFooter className="flex justify-center p-4">
           <Link href={`/learning/${data.lang}/culture`} passHref>
             <Button variant="outline">
               <ArrowLeft className="mr-2 h-4 w-4" /> {t('backButton')}

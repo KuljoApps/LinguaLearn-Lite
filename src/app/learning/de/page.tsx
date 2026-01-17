@@ -14,7 +14,7 @@ export default function LearningDePage() {
                         <h1 className="text-3xl font-bold tracking-tight">Lernen</h1>
                     </div>
                 </CardHeader>
-                <CardContent className="flex flex-col space-y-4 px-6 pt-4 pb-4">
+                <CardContent className="flex flex-col space-y-4 px-6 pt-4 pb-2">
                     <Link href="/learning/de/questions" passHref>
                         <Button className="w-full h-12 text-lg">
                             <BookCopy className="mr-2 h-5 w-5" />
@@ -45,7 +45,7 @@ export default function LearningDePage() {
                             Wörterbuch
                         </Button>
                     </Link>
-                    <div className="pt-2">
+                    <div className="pt-0">
                         <Separator />
                         <p className="text-center text-sm italic text-muted-foreground my-2">Extras</p>
                         <Link href="/learning/de/culture" passHref>

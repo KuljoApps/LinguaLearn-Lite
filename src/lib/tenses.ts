@@ -44,11 +44,18 @@ export const allTenses: Tense[] = [
   { language: 'de', name: 'Konjunktiv II', usage: 'Tryb łączący II, używany do wyrażania życzeń, nierealnych warunków i uprzejmych próśb (odpowiednik polskiego trybu przypuszczającego).', example: 'Wenn ich reich wäre, würde ich ein Haus kaufen.', example_pl: 'Gdybym był bogaty, kupiłbym dom.' },
 
   // Spanish
-  { language: 'es', name: 'Presente de Indicativo', usage: 'Opisuje czynności teraźniejsze, nawyki i prawdy ogólne.', example: 'Ella habla español.', example_pl: 'Ona mówi po hiszpańsku.' },
-  { language: 'es', name: 'Pretérito Perfecto', usage: 'Używany do opisywania czynności, które wydarzyły się niedawno i mają związek z teraźniejszością.', example: 'Esta mañana he bebido café.', example_pl: 'Dziś rano piłem/am kawę.' },
-  { language: 'es', name: 'Pretérito Indefinido', usage: 'Używany do opisywania zakończonych, jednorazowych czynności w przeszłości.', example: 'Ayer comimos paella.', example_pl: 'Wczoraj zjedliśmy paellę.' },
-  { language: 'es', name: 'Imperfecto', usage: 'Używany do opisywania tła, zwyczajów, czynności powtarzających się i stanów w przeszłości.', example: 'Cuando era niño, jugaba mucho.', example_pl: 'Kiedy byłem dzieckiem, dużo się bawiłem.' },
-  { language: 'es', name: 'Futuro Simple', usage: 'Używany do wyrażania przyszłych czynności, przypuszczeń i obietnic.', example: 'Mañana te llamaré.', example_pl: 'Zadzwonię do ciebie jutro.' },
+  { language: 'es', name: 'Presente (Indicativo)', usage: 'Opisuje czynności teraźniejsze, nawyki i prawdy ogólne.', example: 'Ella habla español.', example_pl: 'Ona mówi po hiszpańsku.' },
+  { language: 'es', name: 'Presente de subjuntivo', usage: 'Wyraża życzenia, wątpliwości, emocje, nierealne sytuacje w teraźniejszości.', example: 'Quiero que vengas a la fiesta.', example_pl: 'Chcę, żebyś przyszedł na imprezę.' },
+  { language: 'es', name: 'Pretérito perfecto (Indicativo)', usage: 'Używany do opisywania czynności, które wydarzyły się niedawno i mają związek z teraźniejszością.', example: 'Esta mañana he bebido café.', example_pl: 'Dziś rano piłem/am kawę.' },
+  { language: 'es', name: 'Pretérito imperfecto (Indicativo)', usage: 'Używany do opisywania tła, zwyczajów, czynności powtarzających się i stanów w przeszłości.', example: 'Cuando era niño, jugaba mucho.', example_pl: 'Kiedy byłem dzieckiem, dużo się bawiłem.' },
+  { language: 'es', name: 'Pretérito indefinido', usage: 'Używany do opisywania zakończonych, jednorazowych czynności w przeszłości.', example: 'Ayer comimos paella.', example_pl: 'Wczoraj zjedliśmy paellę.' },
+  { language: 'es', name: 'Pretérito pluscuamperfecto (Indicativo)', usage: 'Czas zaprzeszły, opisuje czynność zakończoną przed inną czynnością w przeszłości.', example: 'Cuando llegué, la película ya había empezado.', example_pl: 'Kiedy przyszedłem, film już się zaczął.' },
+  { language: 'es', name: 'Pretérito perfecto de subjuntivo', usage: 'Wyraża życzenie lub wątpliwość odnośnie zakończonej czynności w niedalekiej przeszłości.', example: 'Espero que hayas dormido bien.', example_pl: 'Mam nadzieję, że dobrze spałeś.' },
+  { language: 'es', name: 'Pretérito pluscuamperfecto de subjuntivo', usage: 'Wyraża hipotetyczne sytuacje w przeszłości, które się nie wydarzyły (gdybanie o przeszłości).', example: 'Si hubiera sabido, te habría llamado.', example_pl: 'Gdybym wiedział, zadzwoniłbym do ciebie.' },
+  { language: 'es', name: 'Futuro simple (Indicativo)', usage: 'Używany do wyrażania przyszłych czynności, przypuszczeń i obietnic.', example: 'Mañana te llamaré.', example_pl: 'Zadzwonię do ciebie jutro.' },
+  { language: 'es', name: 'Futuro compuesto', usage: 'Wyraża czynność, która zostanie zakończona przed określonym momentem w przyszłości.', example: 'Para las cinco, habré terminado todo.', example_pl: 'Do piątej wszystko skończę.' },
+  { language: 'es', name: 'Condicional simple', usage: 'Tryb przypuszczający, używany do wyrażania życzeń, rad, próśb i hipotetycznych sytuacji.', example: 'Me gustaría viajar más.', example_pl: 'Chciałbym więcej podróżować.' },
+  { language: 'es', name: 'Condicional compuesto', usage: 'Wyraża czynność, która mogłaby się wydarzyć w przeszłości, ale się nie wydarzyła.', example: 'Habría ido, pero estaba enfermo.', example_pl: 'Poszedłbym, ale byłem chory.' },
 
   // Italian
   { language: 'it', name: 'Presente Indicativo', usage: 'Opisuje czynności teraźniejsze, nawyki i prawdy ogólne.', example: 'Lui legge un libro.', example_pl: 'On czyta książkę.' },

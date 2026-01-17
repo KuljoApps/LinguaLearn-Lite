@@ -147,6 +147,33 @@ export default function TensesPage({ title, backHref, tenses, language }: Tenses
         )
     };
 
+    const renderFrenchTenses = () => {
+        const presentTenses = tenses.filter(t => t.name.startsWith('Présent'));
+        const passeTenses = tenses.filter(t => t.name.startsWith('Passé') || t.name.startsWith('Imparfait') || t.name.startsWith('Plus-que-parfait'));
+        const futurTenses = tenses.filter(t => t.name.startsWith('Futur'));
+        const conditionnelTenses = tenses.filter(t => t.name.startsWith('Conditionnel'));
+
+        const groups = [
+            { title: 'Présent', tenses: presentTenses },
+            { title: 'Passé', tenses: passeTenses },
+            { title: 'Futur', tenses: futurTenses },
+            { title: 'Conditionnel', tenses: conditionnelTenses },
+        ].filter(group => group.tenses.length > 0);
+
+        return (
+             <div className="space-y-6">
+                {groups.map((group) => (
+                    <div key={group.title}>
+                        <h3 className="text-2xl font-bold italic tracking-tight mb-2 text-primary">{group.title}</h3>
+                        <div className="pl-2 border-l-2 border-primary/20">
+                            <TenseAccordion tenses={group.tenses} />
+                        </div>
+                    </div>
+                ))}
+            </div>
+        )
+    };
+
     const renderContent = () => {
         switch (language) {
             case 'en':
@@ -157,6 +184,8 @@ export default function TensesPage({ title, backHref, tenses, language }: Tenses
                 return renderSpanishTenses();
             case 'it':
                 return renderItalianTenses();
+            case 'fr':
+                return renderFrenchTenses();
             default:
                 return <TenseAccordion tenses={tenses} />;
         }

@@ -28,10 +28,18 @@ export const allTenses: Tense[] = [
   { language: 'en', name: 'Third Conditional', usage: 'Okres warunkowy III: Opisuje hipotetyczne sytuacje z przeszłości, które się nie wydarzyły i ich hipotetyczne skutki.', example: 'If you had studied harder, you would have passed the exam.', example_pl: 'Gdybyś uczył się pilniej, zdałbyś egzamin.' },
 
   // French
-  { language: 'fr', name: 'Présent de l\'indicatif', usage: 'Opisuje czynności teraźniejsze, nawyki i ogólne prawdy.', example: 'Il parle français.', example_pl: 'On mówi po francusku.' },
-  { language: 'fr', name: 'Passé Composé', usage: 'Główny czas przeszły dokonany, używany do opisywania jednorazowych, zakończonych czynności w przeszłości.', example: 'J\'ai mangé une pomme.', example_pl: 'Zjadłem/am jabłko.' },
-  { language: 'fr', name: 'Imparfait', usage: 'Czas przeszły niedokonany, używany do opisywania tła, nawyków, stanów i czynności trwających w przeszłości.', example: 'Quand j\'étais petit, je jouais au football.', example_pl: 'Kiedy byłem mały, grałem w piłkę nożną.' },
-  { language: 'fr', name: 'Futur Simple', usage: 'Używany do opisywania czynności, które odbędą się w przyszłości.', example: 'Nous voyagerons en Italie.', example_pl: 'Pojedziemy do Włoch.' },
+  { language: 'fr', name: 'Présent (Indicatif)', usage: 'Opisuje czynności teraźniejsze, nawyki i ogólne prawdy.', example: 'Il parle français.', example_pl: 'On mówi po francusku.' },
+  { language: 'fr', name: 'Présent (Subjonctif)', usage: 'Wyraża subiektywne odczucia, wątpliwości, życzenia, konieczność po określonych spójnikach i zwrotach.', example: 'Il faut que tu viennes.', example_pl: 'Trzeba, żebyś przyszedł.' },
+  { language: 'fr', name: 'Passé composé (Indicatif)', usage: 'Główny czas przeszły dokonany, używany do opisywania jednorazowych, zakończonych czynności w przeszłości.', example: 'J\'ai mangé une pomme.', example_pl: 'Zjadłem/am jabłko.' },
+  { language: 'fr', name: 'Imparfait (Indicatif)', usage: 'Czas przeszły niedokonany, używany do opisywania tła, nawyków, stanów i czynności trwających w przeszłości.', example: 'Quand j\'étais petit, je jouais au football.', example_pl: 'Kiedy byłem mały, grałem w piłkę nożną.' },
+  { language: 'fr', name: 'Passé simple (Indicatif)', usage: 'Czas przeszły prosty, używany głównie w języku pisanym (literatura) do opisywania zakończonych, historycznych wydarzeń.', example: 'Le roi mourut en 1715.', example_pl: 'Król umarł w 1715 roku.' },
+  { language: 'fr', name: 'Plus-que-parfait (Indicatif)', usage: 'Czas zaprzeszły, opisuje czynność, która wydarzyła się przed inną czynnością w przeszłości.', example: 'Il avait déjà fini quand je suis arrivé.', example_pl: 'On już skończył, kiedy przybyłem.' },
+  { language: 'fr', name: 'Passé (Subjonctif)', usage: 'Wyraża subiektywne odczucia dotyczące czynności przeszłej, która wydarzyła się przed momentem mówienia.', example: 'Je suis content que tu aies réussi.', example_pl: 'Cieszę się, że ci się udało.' },
+  { language: 'fr', name: 'Plus-que-parfait (Subjonctif)', usage: 'Bardzo formalny i rzadki, używany w literaturze do wyrażania nierealnej przeszłości w zdaniach podrzędnych.', example: 'S\'il l\'eût su, il serait venu.', example_pl: 'Gdyby był to wiedział, byłby przyszedł.' },
+  { language: 'fr', name: 'Futur simple (Indicatif)', usage: 'Używany do opisywania czynności, które odbędą się w przyszłości.', example: 'Nous voyagerons en Italie.', example_pl: 'Pojedziemy do Włoch.' },
+  { language: 'fr', name: 'Futur antérieur (Indicatif)', usage: 'Wyraża czynność przyszłą, która zakończy się przed inną czynnością przyszłą.', example: 'Quand tu arriveras, j\'aurai déjà fini.', example_pl: 'Kiedy przyjedziesz, ja już skończę.' },
+  { language: 'fr', name: 'Conditionnel présent', usage: 'Tryb przypuszczający, używany do wyrażania życzeń, rad, uprzejmych próśb i hipotetycznych sytuacji.', example: 'Je voudrais un café, s\'il vous plaît.', example_pl: 'Chciałbym kawę, proszę.' },
+  { language: 'fr', name: 'Conditionnel passé', usage: 'Wyraża czynność, która mogłaby się wydarzyć w przeszłości (ale się nie wydarzyła), często wyrażając żal lub wyrzut.', example: 'J\'aurais dû étudier plus.', example_pl: 'Powinienem był więcej się uczyć.' },
 
   // German
   { language: 'de', name: 'Präsens', usage: 'Używany do czynności teraźniejszych, nawyków, ogólnych prawd i zaplanowanej przyszłości.', example: 'Er lernt Deutsch.', example_pl: 'On uczy się niemieckiego.' },

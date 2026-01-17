@@ -1,14 +1,20 @@
-import { BookCopy, ArrowLeft, GraduationCap, Clock, FilePenLine, MessageSquareText, BookText, Landmark } from 'lucide-react';
+"use client"
+
+import { BookCopy, ArrowLeft, GraduationCap, Clock, FilePenLine, MessageSquareText, BookText, Landmark, AudioLines, Languages, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { useState } from 'react';
 
 export default function LearningFrPage() {
+    const [isExtrasOpen, setIsExtrasOpen] = useState(false);
+
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-md shadow-2xl">
-                <CardHeader>
+                <CardHeader className="pb-2">
                     <div className="flex items-center justify-center gap-4">
                         <GraduationCap className="h-8 w-8" />
                         <h1 className="text-3xl font-bold tracking-tight">Apprentissage</h1>
@@ -45,16 +51,41 @@ export default function LearningFrPage() {
                             Dictionnaire
                         </Button>
                     </Link>
-                    <div className="pt-0">
-                        <Separator />
-                        <p className="text-center text-sm italic text-muted-foreground my-2">Extras</p>
-                        <Link href="/learning/fr/culture" passHref>
-                            <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
-                                <Landmark className="mr-2 h-5 w-5 text-deep-purple" />
-                                Culture
-                            </Button>
-                        </Link>
-                    </div>
+                    
+                    <Collapsible open={isExtrasOpen} onOpenChange={setIsExtrasOpen} className="w-full space-y-2 pt-0">
+                        <div className="flex items-center justify-center -mb-2">
+                             <Separator className="flex-grow" />
+                            <CollapsibleTrigger asChild>
+                                <Button variant="ghost" className="flex items-center gap-2 px-3">
+                                    <span className="text-sm italic text-muted-foreground">Extras</span>
+                                    <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isExtrasOpen ? 'rotate-180' : ''}`} />
+                                </Button>
+                            </CollapsibleTrigger>
+                             <Separator className="flex-grow" />
+                        </div>
+                        <CollapsibleContent className="space-y-2 animate-in fade-in-0 zoom-in-95">
+                           <div className="grid grid-cols-2 gap-4 pt-2">
+                               <Link href="/learning/fr/culture" passHref>
+                                    <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
+                                        <Landmark className="mr-2 h-5 w-5 text-deep-purple" />
+                                        Culture
+                                    </Button>
+                                </Link>
+                                <Link href="/learning/fr/phonetics" passHref>
+                                    <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
+                                        <AudioLines className="mr-2 h-5 w-5 text-deep-purple" />
+                                        Phonétique
+                                    </Button>
+                                </Link>
+                           </div>
+                           <Link href="/learning/fr/tongue-twisters" passHref>
+                                <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
+                                    <Languages className="mr-2 h-5 w-5 text-deep-purple" />
+                                    Virelangues
+                                </Button>
+                           </Link>
+                        </CollapsibleContent>
+                    </Collapsible>
                 </CardContent>
                 <CardFooter className="flex justify-center p-6 pt-2">
                     <Link href="/" passHref>

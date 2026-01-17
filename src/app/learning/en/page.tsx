@@ -1,4 +1,4 @@
-import { BookCopy, ArrowLeft, GraduationCap, Clock, FilePenLine, MessageSquareText, BookText } from 'lucide-react';
+import { BookCopy, ArrowLeft, GraduationCap, Clock, FilePenLine, MessageSquareText, BookText, Separator, Landmark } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
@@ -44,6 +44,16 @@ export default function LearningEnPage() {
                             Dictionary
                         </Button>
                     </Link>
+                    <div className="pt-2">
+                        <Separator />
+                        <p className="text-center text-sm italic text-muted-foreground my-2">Extras</p>
+                        <Link href="/learning/en/culture" passHref>
+                            <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
+                                <Landmark className="mr-2 h-5 w-5 text-deep-purple" />
+                                Culture
+                            </Button>
+                        </Link>
+                    </div>
                 </CardContent>
                 <CardFooter className="flex justify-center p-6">
                     <Link href="/" passHref>

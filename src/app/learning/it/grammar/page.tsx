@@ -13,7 +13,7 @@ export default function GrammarItPage() {
                         <h1 className="text-3xl font-bold tracking-tight">Grammatica Generale</h1>
                     </div>
                 </CardHeader>
-                <CardContent className="flex flex-col space-y-4 p-6">
+                <CardContent className="flex flex-col space-y-4 p-4">
                     <Link href="/learning/it/grammar/sentence-structure" passHref>
                         <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
                             <Split className="mr-2 h-5 w-5 text-deep-purple" />
@@ -57,7 +57,7 @@ export default function GrammarItPage() {
                         </Button>
                     </Link>
                 </CardContent>
-                <CardFooter className="flex justify-center p-6">
+                <CardFooter className="flex justify-center p-4">
                     <Link href="/learning/it" passHref>
                         <Button variant="outline">
                             <ArrowLeft className="mr-2 h-4 w-4" /> Torna ad Apprendimento

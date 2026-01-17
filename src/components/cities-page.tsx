@@ -12,13 +12,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import type { CitiesPageData } from '@/lib/cities';
 import type { Language } from '@/lib/storage';
 
-const truncateText = (text: string, maxLength: number): string => {
-    if (text.length <= maxLength) {
-        return text;
-    }
-    return `${text.substring(0, maxLength)}...`;
-};
-
 export default function CitiesPage({ data }: { data: CitiesPageData }) {
   const [displayLang, setDisplayLang] = React.useState<'pl' | 'native'>('native');
   const [api, setApi] = React.useState<CarouselApi>()
@@ -53,18 +46,15 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
   }
 
   const renderFactRow = (icon: React.ReactNode, label: string, value: string) => {
-    const isLandmark = label === t('landmark');
-    const displayValue = isLandmark ? truncateText(value, 20) : value;
-
     return (
       <TableRow>
-        <TableCell className="font-medium py-2 px-4">
+        <TableCell className="font-medium p-2.5">
           <div className="flex items-center">
             {React.cloneElement(icon as React.ReactElement, { className: "h-4 w-4 text-deep-purple mr-2 shrink-0" })}
             <span>{label}</span>
           </div>
         </TableCell>
-        <TableCell className="text-right py-2 px-4">{displayValue}</TableCell>
+        <TableCell className="text-right p-2.5">{value}</TableCell>
       </TableRow>
     );
   };
@@ -82,30 +72,30 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4">
       <Card className="w-full max-w-xl shadow-2xl">
-        <CardHeader className="flex flex-row items-center justify-between p-4">
-            <div className="flex items-center gap-4">
-                <Building2 className="h-8 w-8" />
-                <CardTitle className="text-3xl">{t('title')}</CardTitle>
-            </div>
-            <div>
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="h-auto p-1 rounded-md">
-                        <div className="flex items-center justify-center h-8 w-8 rounded-md border border-input bg-background">
-                            <span className="text-xl">{displayedFlag}</span>
-                        </div>
-                    </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => setDisplayLang('native')}>
-                        <span className="mr-2 text-lg">{flagMap[data.lang]}</span> {getNativeLangName(data.lang)}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setDisplayLang('pl')}>
-                        <span className="mr-2 text-lg">🇵🇱</span> Polski
-                    </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            </div>
+        <CardHeader className="flex flex-row items-center justify-between p-4 pb-2">
+          <div className="flex items-center gap-4">
+            <Building2 className="h-8 w-8" />
+            <CardTitle className="text-3xl">{t('title')}</CardTitle>
+          </div>
+          <div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-auto p-1 rounded-md">
+                  <div className="flex items-center justify-center h-8 w-8 rounded-md border border-input bg-background">
+                    <span className="text-xl">{displayedFlag}</span>
+                  </div>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setDisplayLang('native')}>
+                  <span className="mr-2 text-lg">{flagMap[data.lang]}</span> {getNativeLangName(data.lang)}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setDisplayLang('pl')}>
+                  <span className="mr-2 text-lg">🇵🇱</span> Polski
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </CardHeader>
         <Carousel
           setApi={setApi}
@@ -118,7 +108,7 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
           <CarouselContent className="-ml-1">
             {data.cities.map((city, index) => (
               <CarouselItem key={index} className="pl-1">
-                <div className="p-1">
+                <div className="p-1 pb-0">
                   <Card>
                     <CardHeader className="p-4 pb-2">
                         <div className="flex items-center justify-between mb-2">
@@ -131,12 +121,12 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
                         <CardTitle className="text-center">{city.name[displayLang]}</CardTitle>
                     </CardHeader>
                     <CardContent className="flex flex-col items-center gap-4 pt-0 pb-4 px-4">
-                        <ScrollArea className="h-40 w-full pr-4">
+                        <ScrollArea className="h-40 w-full pr-1">
                            <p className="text-sm text-muted-foreground text-justify">
                             {city.description[displayLang].replace(/ ([a-zA-Z])\s/g, ' $1\u00A0')}
                           </p>
                         </ScrollArea>
-                        <div className="w-full"> 
+                        <div className="w-full px-1"> 
                           <Table>
                             <TableBody>
                               {renderFactRow(<Users />, t('population'), city.facts.population)}

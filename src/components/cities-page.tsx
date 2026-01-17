@@ -47,13 +47,13 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
 
   const renderFactRow = (icon: React.ReactNode, label: string, value: string) => (
     <TableRow>
-      <TableCell className="font-medium p-1">
+      <TableCell className="font-medium py-1.5 px-2">
         <div className="flex items-center">
           {React.cloneElement(icon as React.ReactElement, { className: "h-4 w-4 text-deep-purple mr-2 shrink-0" })}
           <span>{label}</span>
         </div>
       </TableCell>
-      <TableCell className="text-right p-1">{value}</TableCell>
+      <TableCell className="text-right py-1.5 px-2">{value}</TableCell>
     </TableRow>
   );
 
@@ -95,14 +95,14 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
                 </DropdownMenu>
             </div>
         </CardHeader>
-        <CardContent className="px-0 sm:px-4 pb-0">
+        <CardContent className="px-4 pb-2">
           <Carousel
             setApi={setApi}
             opts={{
               align: "start",
               loop: true,
             }}
-            className="w-full max-w-lg mx-auto"
+            className="w-full"
           >
             <CarouselContent>
               {data.cities.map((city, index) => (
@@ -120,12 +120,12 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
                         <CardTitle className="text-center">{city.name[displayLang]}</CardTitle>
                       </CardHeader>
                       <CardContent className="flex flex-col items-center gap-2 pt-0 pb-2 px-4">
-                        <ScrollArea className="h-40 w-full">
-                           <p className="text-sm text-muted-foreground text-justify pr-2">
+                        <ScrollArea className="h-40 w-full pr-2">
+                           <p className="text-sm text-muted-foreground text-justify">
                             {city.description[displayLang].replace(/ ([a-zA-Z])\s/g, ' $1\u00A0')}
                           </p>
                         </ScrollArea>
-                        <div className="w-full pr-2">
+                        <div className="w-full pr-[calc(0.5rem+4px)]"> 
                           <Table>
                             <TableBody>
                               {renderFactRow(<Users />, t('population'), city.facts.population)}

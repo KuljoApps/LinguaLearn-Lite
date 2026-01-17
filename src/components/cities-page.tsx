@@ -58,12 +58,12 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4">
       <Card className="w-full max-w-xl shadow-2xl">
-        <CardHeader className="text-center">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                     <Building2 className="h-8 w-8" />
-                    <CardTitle className="text-3xl">{t('title')}</CardTitle>
-                </div>
+        <CardHeader className="relative flex items-center justify-center p-6">
+            <div className="flex items-center gap-4">
+                <Building2 className="h-8 w-8" />
+                <CardTitle className="text-3xl">{t('title')}</CardTitle>
+            </div>
+            <div className="absolute right-6 top-1/2 -translate-y-1/2">
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="h-auto p-1 rounded-md">

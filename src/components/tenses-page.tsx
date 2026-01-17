@@ -66,6 +66,45 @@ export default function TensesPage({ title, backHref, tenses, language }: Tenses
         )
     };
 
+    const renderGermanTenses = () => {
+        const gegenwartTenses = tenses.filter(t => t.name === 'Präsens');
+        const vergangenheitTenses = tenses.filter(t => ['Perfekt', 'Präteritum', 'Plusquamperfekt'].includes(t.name));
+        const zukunftTenses = tenses.filter(t => t.name.startsWith('Futur'));
+        const konjunktivTenses = tenses.filter(t => t.name.startsWith('Konjunktiv'));
+
+        const groups = [
+            { title: 'Gegenwart', tenses: gegenwartTenses },
+            { title: 'Vergangenheit', tenses: vergangenheitTenses },
+            { title: 'Zukunft', tenses: zukunftTenses },
+            { title: 'Konjunktiv', tenses: konjunktivTenses },
+        ].filter(group => group.tenses.length > 0);
+
+        return (
+             <div className="space-y-6">
+                {groups.map((group) => (
+                    <div key={group.title}>
+                        <h3 className="text-2xl font-bold italic tracking-tight mb-2 text-primary">{group.title}</h3>
+                        <div className="pl-2 border-l-2 border-primary/20">
+                            <TenseAccordion tenses={group.tenses} />
+                        </div>
+                    </div>
+                ))}
+            </div>
+        )
+    };
+    
+    const renderContent = () => {
+        switch (language) {
+            case 'en':
+                return renderEnglishTenses();
+            case 'de':
+                return renderGermanTenses();
+            default:
+                return <TenseAccordion tenses={tenses} />;
+        }
+    }
+
+
     return (
         <Card className="w-full max-w-2xl shadow-2xl">
             <CardHeader className="text-center space-y-4">
@@ -76,7 +115,7 @@ export default function TensesPage({ title, backHref, tenses, language }: Tenses
             </CardHeader>
             <CardContent>
                 <ScrollArea className="h-96 w-full pr-4">
-                    {language === 'en' ? renderEnglishTenses() : <TenseAccordion tenses={tenses} />}
+                    {renderContent()}
                 </ScrollArea>
             </CardContent>
             <CardFooter className="flex justify-center p-6 border-t">

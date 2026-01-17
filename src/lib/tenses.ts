@@ -36,8 +36,12 @@ export const allTenses: Tense[] = [
   // German
   { language: 'de', name: 'Präsens', usage: 'Używany do czynności teraźniejszych, nawyków, ogólnych prawd i zaplanowanej przyszłości.', example: 'Er lernt Deutsch.', example_pl: 'On uczy się niemieckiego.' },
   { language: 'de', name: 'Perfekt', usage: 'Najczęściej używany czas przeszły w mowie potocznej do opisywania zakończonych czynności.', example: 'Ich habe ein Buch gelesen.', example_pl: 'Przeczytałem/am książkę.' },
-  { language: 'de', name: 'Präteritum (Imperfekt)', usage: 'Czas przeszły prosty, używany głównie w języku pisanym (książki, gazety) oraz z czasownikami modalnymi i "sein", "haben".', example: 'Er war gestern im Kino.', example_pl: 'On był wczoraj w kinie.' },
+  { language: 'de', name: 'Präteritum', usage: 'Czas przeszły prosty, używany głównie w języku pisanym (książki, gazety) oraz z czasownikami modalnymi i "sein", "haben".', example: 'Er war gestern im Kino.', example_pl: 'On był wczoraj w kinie.' },
+  { language: 'de', name: 'Plusquamperfekt', usage: 'Czas zaprzeszły, opisuje czynność, która zakończyła się przed inną czynnością w przeszłości.', example: 'Nachdem er gegessen hatte, ging er spazieren.', example_pl: 'Po tym, jak zjadł, poszedł na spacer.' },
   { language: 'de', name: 'Futur I', usage: 'Używany do wyrażania przyszłych zamiarów, obietnic i prognoz.', example: 'Wir werden morgen ankommen.', example_pl: 'Przyjedziemy jutro.' },
+  { language: 'de', name: 'Futur II', usage: 'Wyraża czynność, która zostanie zakończona w przyszłości lub przypuszczenie dotyczące przeszłości.', example: 'Bis morgen wird er die Arbeit beendet haben.', example_pl: 'Do jutra on skończy pracę.' },
+  { language: 'de', name: 'Konjunktiv I', usage: 'Tryb łączący I, używany głównie w mowie zależnej (np. w wiadomościach), do wyrażania czyjejś wypowiedzi.', example: 'Der Politiker sagte, er werde zurücktreten.', example_pl: 'Polityk powiedział, że ustąpi.' },
+  { language: 'de', name: 'Konjunktiv II', usage: 'Tryb łączący II, używany do wyrażania życzeń, nierealnych warunków i uprzejmych próśb (odpowiednik polskiego trybu przypuszczającego).', example: 'Wenn ich reich wäre, würde ich ein Haus kaufen.', example_pl: 'Gdybym był bogaty, kupiłbym dom.' },
 
   // Spanish
   { language: 'es', name: 'Presente de Indicativo', usage: 'Opisuje czynności teraźniejsze, nawyki i prawdy ogólne.', example: 'Ella habla español.', example_pl: 'Ona mówi po hiszpańsku.' },

@@ -133,7 +133,7 @@ export default function AboutCountryPage({ data }: AboutCountryPageProps) {
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-auto p-1 rounded-md">
                           <div className="flex items-center gap-2">
-                              <span className="text-sm underline text-muted-foreground">{t('language')}</span>
+                              <span className="text-sm underline text-primary/80">{t('language')}</span>
                               <div className="flex items-center justify-center h-8 w-8 rounded-md border border-input bg-background">
                                   <span className="text-xl">{displayLang === 'native' ? data.flag.native : data.flag.pl}</span>
                               </div>

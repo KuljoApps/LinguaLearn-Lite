@@ -6,10 +6,24 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+const EXTRAS_COLLAPSIBLE_STATE_KEY = 'linguaLearnExtrasOpen';
 
 export default function LearningItPage() {
     const [isExtrasOpen, setIsExtrasOpen] = useState(false);
+
+    useEffect(() => {
+        const savedState = localStorage.getItem(EXTRAS_COLLAPSIBLE_STATE_KEY);
+        if (savedState === 'true') {
+            setIsExtrasOpen(true);
+        }
+    }, []);
+
+    const handleExtrasOpenChange = (open: boolean) => {
+        setIsExtrasOpen(open);
+        localStorage.setItem(EXTRAS_COLLAPSIBLE_STATE_KEY, JSON.stringify(open));
+    }
     
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -52,7 +66,7 @@ export default function LearningItPage() {
                         </Button>
                     </Link>
                     
-                    <Collapsible open={isExtrasOpen} onOpenChange={setIsExtrasOpen} className="w-full space-y-2 pt-0">
+                    <Collapsible open={isExtrasOpen} onOpenChange={handleExtrasOpenChange} className="w-full pt-0">
                         <div className="flex items-center justify-center -mb-2">
                              <Separator className="flex-grow" />
                             <CollapsibleTrigger asChild>
@@ -63,8 +77,8 @@ export default function LearningItPage() {
                             </CollapsibleTrigger>
                              <Separator className="flex-grow" />
                         </div>
-                        <CollapsibleContent className="space-y-2 animate-in fade-in-0 zoom-in-95">
-                           <div className="grid grid-cols-2 gap-4 pt-2">
+                        <CollapsibleContent className="space-y-4 pt-2 animate-in fade-in-0 zoom-in-95">
+                           <div className="grid grid-cols-2 gap-4">
                                <Link href="/learning/it/culture" passHref>
                                     <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
                                         <Landmark className="mr-2 h-5 w-5 text-deep-purple" />

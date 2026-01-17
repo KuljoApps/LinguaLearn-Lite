@@ -8,7 +8,7 @@ import { questions as idiomsQuestions } from './questions-idioms';
 import { questions as frPlQuestions } from './questions-fr-pl';
 import { questions as plFrQuestions } from './questions-pl-fr';
 import { questions as irregularVerbsFrQuestions } from './questions-irregular-verbs-fr';
-import { questions as phrasalVerbsFrQuestions } from './questions-phrasal-verbs-fr';
+import { questions as fauxAmisFrQuestions } from './questions-phrasal-verbs-fr';
 import { questions as idiomsFrQuestions } from './questions-idioms-fr';
 import { questions as dePlQuestions } from './questions-de-pl';
 import { questions as plDeQuestions } from './questions-pl-de';
@@ -77,11 +77,11 @@ export const allAchievements: Achievement[] = [
   { id: 'mastery_idioms', name: 'Idiom Idol (EN)', description: 'Correctly answer every idiom question.', icon: MessagesSquare, goal: idiomsQuestions.length },
 
   // Mastery (French)
-  { id: 'mastery_fr_pl', name: 'French-Polish Scholar', name_fr: 'Érudit Français-Polonais', description: 'Correctly answer every French-Polish question.', description_fr: 'Répondre correctement à chaque question Français-Polonais.', icon: BookMarked, goal: frPlQuestions.length },
-  { id: 'mastery_pl_fr', name: 'Polish-French Scholar', name_fr: 'Érudit Polonais-Français', description: 'Correctly answer every Polish-French question.', description_fr: 'Répondre correctement à chaque question Polonais-Français.', icon: Globe, goal: plFrQuestions.length },
-  { id: 'mastery_irregular_fr', name: 'Verb Virtuoso (FR)', name_fr: 'Virtuose des Verbes (FR)', description: 'Correctly answer every irregular verb question.', description_fr: 'Répondre correctement à chaque question sur les verbes irréguliers.', icon: Webhook, goal: irregularVerbsFrQuestions.length },
-  { id: 'mastery_phrasal_fr', name: 'Participle Fanatic (FR)', name_fr: 'Fan de Verbes à particule (FR)', description: 'Correctly answer every phrasal verb question.', description_fr: 'Répondre correctement à chaque question sur les verbes à particule.', icon: Brain, goal: phrasalVerbsFrQuestions.length },
-  { id: 'mastery_idioms_fr', name: 'Idiom Idol (FR)', name_fr: 'Idole des Idiomes (FR)', description: 'Correctly answer every idiom question.', description_fr: 'Répondre correctement à chaque question sur les idiomes.', icon: MessagesSquare, goal: idiomsFrQuestions.length },
+  { id: 'mastery_fr_pl', name: 'French-Polish Scholar', name_fr: 'Érudit Français-Polonais', description: 'Correctly answer every French-Polish question.', description_fr: 'Répondre correctly à chaque question Français-Polonais.', icon: BookMarked, goal: frPlQuestions.length },
+  { id: 'mastery_pl_fr', name: 'Polish-French Scholar', name_fr: 'Érudit Polonais-Français', description: 'Correctly answer every Polish-French question.', description_fr: 'Répondre correctly à chaque question Polonais-Français.', icon: Globe, goal: plFrQuestions.length },
+  { id: 'mastery_irregular_fr', name: 'Verb Virtuoso (FR)', name_fr: 'Virtuose des Verbes (FR)', description: 'Correctly answer every irregular verb question.', description_fr: 'Répondre correctly à chaque question sur les verbes irréguliers.', icon: Webhook, goal: irregularVerbsFrQuestions.length },
+  { id: 'mastery_phrasal_fr', name: 'Faux Amis Expert (FR)', name_fr: 'Expert des Faux Amis (FR)', description: 'Correctly answer every false friend question.', description_fr: 'Répondre correctly à chaque question sur les faux amis.', icon: Brain, goal: fauxAmisFrQuestions.length },
+  { id: 'mastery_idioms_fr', name: 'Idiom Idol (FR)', name_fr: 'Idole des Idiomes (FR)', description: 'Correctly answer every idiom question.', description_fr: 'Répondre correctly à chaque question sur les idiomes.', icon: MessagesSquare, goal: idiomsFrQuestions.length },
 
   // Mastery (German)
   { id: 'mastery_de_pl', name: 'German-Polish Scholar', name_de: 'Deutsch-Polnisch-Gelehrter', description: 'Correctly answer every German-Polish question.', description_de: 'Beantworte jede Deutsch-Polnisch-Frage richtig.', icon: BookMarked, goal: dePlQuestions.length },

@@ -38,7 +38,7 @@ interface AggregatedError {
     userAnswers: Set<string>;
 }
 
-type QuizFilter = 'all' | 'English - Polish' | 'Polish - English' | 'Irregular Verbs' | 'Phrasal Verbs' | 'Idioms' | 'French - Polish' | 'Polish - French' | 'Irregular Verbs (FR)' | 'Phrasal Verbs (FR)' | 'Idioms (FR)' | 'German - Polish' | 'Polish - German' | 'Irregular Verbs (DE)' | 'Separable Verbs (DE)' | 'Idioms (DE)' | 'Italiano - Polacco' | 'Polacco - Italiano' | 'Verbi Irregolari (IT)' | 'Verbi Frasali (IT)' | 'Modi di dire (IT)' | 'Español - Polaco' | 'Polaco - Español' | 'Verbos Irregulares (ES)' | 'Verbos con Preposición (ES)' | 'Modismos (ES)';
+type QuizFilter = 'all' | 'English - Polish' | 'Polish - English' | 'Irregular Verbs' | 'Phrasal Verbs' | 'Idioms' | 'French - Polish' | 'Polish - French' | 'Irregular Verbs (FR)' | 'Faux Amis (FR)' | 'Idioms (FR)' | 'German - Polish' | 'Polish - German' | 'Irregular Verbs (DE)' | 'Separable Verbs (DE)' | 'Idioms (DE)' | 'Italiano - Polacco' | 'Polacco - Italiano' | 'Verbi Irregolari (IT)' | 'Verbi Frasali (IT)' | 'Modi di dire (IT)' | 'Español - Polaco' | 'Polaco - Español' | 'Verbos Irregulares (ES)' | 'Verbos con Preposición (ES)' | 'Modismos (ES)';
 type SortableKey = keyof ErrorRecord | keyof AggregatedError;
 
 const uiTexts = {
@@ -75,7 +75,7 @@ const quizOptionsByLanguage: Record<Language, { value: string; label: string }[]
         { value: 'French - Polish', label: 'Français - Polonais' },
         { value: 'Polish - French', label: 'Polonais - Français' },
         { value: 'Irregular Verbs (FR)', label: 'Verbes Irréguliers' },
-        { value: 'Phrasal Verbs (FR)', label: 'Verbes à particule' },
+        { value: 'Faux Amis (FR)', label: 'Faux Amis' },
         { value: 'Idioms (FR)', label: 'Idiomes' },
     ],
     de: [

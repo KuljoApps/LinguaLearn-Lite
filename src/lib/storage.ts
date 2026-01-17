@@ -230,7 +230,7 @@ const checkAndUnlockAchievements = (stats: Stats): Achievement[] => {
                 currentProgress = masteryProgress['Irregular Verbs (FR)']?.length || 0;
                 break;
             case 'mastery_phrasal_fr':
-                currentProgress = masteryProgress['Phrasal Verbs (FR)']?.length || 0;
+                currentProgress = masteryProgress['Faux Amis (FR)']?.length || 0;
                 break;
             case 'mastery_idioms_fr':
                 currentProgress = masteryProgress['Idioms (FR)']?.length || 0;

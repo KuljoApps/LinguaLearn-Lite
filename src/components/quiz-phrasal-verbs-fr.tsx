@@ -38,12 +38,12 @@ function shuffleArray<T>(array: T[]): T[] {
 const QUESTION_TIME_LIMIT = 15;
 const PAUSE_PENALTY = 5;
 const MIN_TIME_FOR_PAUSE = 6;
-const QUIZ_NAME = 'Phrasal Verbs (FR)';
+const QUIZ_NAME = 'Faux Amis (FR)';
 const TIME_UPDATE_INTERVAL = 5; // seconds
 const QUIZ_LENGTH = 10;
 
 
-export default function QuizPhrasalVerbsFr() {
+export default function QuizFauxAmisFr() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -66,10 +66,10 @@ export default function QuizPhrasalVerbsFr() {
         title: (
             <div className="flex items-center gap-2">
                 <Trophy className="h-5 w-5 text-amber" />
-                <span className="font-bold">Achievement Unlocked!</span>
+                <span className="font-bold">Succès débloqué !</span>
             </div>
         ),
-        description: `You've earned: "${achievement.name}"`,
+        description: `Vous avez gagné : "${achievement.name_fr || achievement.name}"`,
     });
   }, [toast]);
   
@@ -288,7 +288,7 @@ export default function QuizPhrasalVerbsFr() {
               <LinguaLearnLogo className="h-8 w-8" />
               <CardTitle className="text-3xl font-bold tracking-tight">LinguaLearn</CardTitle>
           </div>
-          <CardDescription>Sélectionnez la bonne traduction du verbe à particule.</CardDescription>
+          <CardDescription>Attention aux faux amis ! Choisissez la bonne traduction.</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center p-6 space-y-8">
             <div className="w-full flex justify-around gap-4 text-center">
@@ -347,7 +347,7 @@ export default function QuizPhrasalVerbsFr() {
         <CardFooter className="flex-col gap-4 p-6 pt-0">
           <div className="flex justify-between w-full items-center">
               <div className="text-sm text-muted-foreground">
-                  Question {currentQuestionIndex + 1} of {questions.length}
+                  Question {currentQuestionIndex + 1} de {questions.length}
               </div>
               <div className="flex items-center gap-2">
                   <span className="text-sm font-medium">Score:</span>

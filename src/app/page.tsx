@@ -60,7 +60,7 @@ export default function Home() {
     }
 
     const getQuizTitle4 = () => {
-        if (isFrench) return "Verbes à particule";
+        if (isFrench) return "Faux Amis";
         if (isGerman) return "Trennbare Verben";
         if (isItalian) return "Verbi Frasali";
         if (isSpanish) return "Verbos con Preposición";

@@ -12,6 +12,13 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import type { CitiesPageData } from '@/lib/cities';
 import type { Language } from '@/lib/storage';
 
+const truncateText = (text: string, maxLength: number): string => {
+    if (text.length <= maxLength) {
+        return text;
+    }
+    return `${text.substring(0, maxLength)}...`;
+};
+
 export default function CitiesPage({ data }: { data: CitiesPageData }) {
   const [displayLang, setDisplayLang] = React.useState<'pl' | 'native'>('native');
   const [api, setApi] = React.useState<CarouselApi>()
@@ -45,17 +52,22 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
     }
   }
 
-  const renderFactRow = (icon: React.ReactNode, label: string, value: string) => (
-    <TableRow>
-      <TableCell className="font-medium py-2 px-4">
-        <div className="flex items-center">
-          {React.cloneElement(icon as React.ReactElement, { className: "h-4 w-4 text-deep-purple mr-2 shrink-0" })}
-          <span>{label}</span>
-        </div>
-      </TableCell>
-      <TableCell className="text-right py-2 px-4">{value}</TableCell>
-    </TableRow>
-  );
+  const renderFactRow = (icon: React.ReactNode, label: string, value: string) => {
+    const isLandmark = label === t('landmark');
+    const displayValue = isLandmark ? truncateText(value, 20) : value;
+
+    return (
+      <TableRow>
+        <TableCell className="font-medium py-2 px-4">
+          <div className="flex items-center">
+            {React.cloneElement(icon as React.ReactElement, { className: "h-4 w-4 text-deep-purple mr-2 shrink-0" })}
+            <span>{label}</span>
+          </div>
+        </TableCell>
+        <TableCell className="text-right py-2 px-4">{displayValue}</TableCell>
+      </TableRow>
+    );
+  };
 
   const flagMap: Record<Language, string> = {
     en: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
@@ -95,21 +107,20 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
                 </DropdownMenu>
             </div>
         </CardHeader>
-        <CardContent className="px-4 pb-2">
-          <Carousel
-            setApi={setApi}
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-            className="w-full"
-          >
-            <CarouselContent>
-              {data.cities.map((city, index) => (
-                <CarouselItem key={index}>
-                  <div className="p-1">
-                    <Card>
-                      <CardHeader className="p-4 pb-2">
+        <Carousel
+          setApi={setApi}
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full px-4"
+        >
+          <CarouselContent className="-ml-1">
+            {data.cities.map((city, index) => (
+              <CarouselItem key={index} className="pl-1">
+                <div className="p-1">
+                  <Card>
+                    <CardHeader className="p-4 pb-2">
                         <div className="flex items-center justify-between mb-2">
                             <CarouselPrevious className="relative translate-x-0 translate-y-0 left-0 top-0 h-8 w-8" />
                             <div className="text-center text-sm text-muted-foreground">
@@ -118,9 +129,9 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
                             <CarouselNext className="relative translate-x-0 translate-y-0 right-0 top-0 h-8 w-8" />
                         </div>
                         <CardTitle className="text-center">{city.name[displayLang]}</CardTitle>
-                      </CardHeader>
-                      <CardContent className="flex flex-col items-center gap-2 pt-0 pb-2 px-4">
-                        <ScrollArea className="h-40 w-full pr-2">
+                    </CardHeader>
+                    <CardContent className="flex flex-col items-center gap-4 pt-0 pb-4 px-4">
+                        <ScrollArea className="h-40 w-full pr-4">
                            <p className="text-sm text-muted-foreground text-justify">
                             {city.description[displayLang].replace(/ ([a-zA-Z])\s/g, ' $1\u00A0')}
                           </p>
@@ -137,13 +148,12 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
                           </Table>
                         </div>
                       </CardContent>
-                    </Card>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
-        </CardContent>
+                  </Card>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
         <CardFooter className="flex justify-center p-4">
           <Link href={`/learning/${data.lang}/culture`} passHref>
             <Button variant="outline">

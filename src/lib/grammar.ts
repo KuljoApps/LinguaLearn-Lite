@@ -86,14 +86,6 @@ export const allGrammar: GrammarContent = {
           ]
         },
         {
-          heading: 'Pytania o podmiot vs. dopełnienie',
-          text: 'W pytaniach o podmiot (kto/co wykonuje czynność) nie używamy operatora "do/does/did". Czasownik występuje w formie twierdzącej. W pytaniach o dopełnienie (na kogo/co skierowana jest czynność) operator jest konieczny.',
-          examples: [
-            { original: 'Who called you? (podmiot) vs. Who did you call? (dopełnienie)', translation: 'Kto do ciebie dzwonił? vs. Do kogo dzwoniłeś?' },
-            { original: 'What happened? (podmiot) vs. What did you see? (dopełnienie)', translation: 'Co się stało? vs. Co zobaczyłeś?' }
-          ]
-        },
-        {
           heading: 'Pytania rozłączne (Question Tags)',
           text: 'To krótkie pytania dodawane na końcu zdania twierdzącego lub przeczącego, aby poprosić o potwierdzenie. Jeśli zdanie jest twierdzące, pytanie jest przeczące, i na odwrót.',
           examples: [
@@ -107,6 +99,14 @@ export const allGrammar: GrammarContent = {
           examples: [
             { original: 'Could you tell me where the station is?', translation: 'Czy mógłbyś mi powiedzieć, gdzie jest stacja?' },
             { original: 'I wonder if she will come to the party.', translation: 'Zastanawiam się, czy ona przyjdzie na imprezę.' }
+          ]
+        },
+        {
+          heading: 'Pytania o podmiot vs. dopełnienie',
+          text: 'W pytaniach o podmiot (kto/co wykonuje czynność) nie używamy operatora "do/does/did". Czasownik występuje w formie twierdzącej. W pytaniach o dopełnienie (na kogo/co skierowana jest czynność) operator jest konieczny.',
+          examples: [
+            { original: 'Who called you? (podmiot) vs. Who did you call? (dopełnienie)', translation: 'Kto do ciebie dzwonił? vs. Do kogo dzwoniłeś?' },
+            { original: 'What happened? (podmiot) vs. What did you see? (dopełnienie)', translation: 'Co się stało? vs. Co zobaczyłeś?' }
           ]
         }
       ],
@@ -151,32 +151,40 @@ export const allGrammar: GrammarContent = {
     'adjectives': {
       title: 'Adjectives',
       content: [
-          { 
-              heading: 'Pozycja przymiotnika', 
-              text: 'Przymiotniki w języku angielskim prawie zawsze występują przed rzeczownikiem, który opisują. To jedna z kluczowych różnic w porównaniu z wieloma językami romańskimi.',
-              examples: [
-                  { original: 'I drive a black car.', translation: 'Jeżdżę czarnym samochodem.' },
-                  { original: 'She is an intelligent woman.', translation: 'Ona jest inteligentną kobietą.' }
-              ]
-          },
-          { 
-              heading: 'Kolejność przymiotników', 
-              text: 'Gdy używamy kilku przymiotników, zazwyczaj układamy je w określonej kolejności: opinia, rozmiar, wiek, kształt, kolor, pochodzenie, materiał, przeznaczenie.',
-              examples: [
-                  { original: 'She has a beautiful small new red Italian leather bag.', translation: 'Ona ma piękną, małą, nową, czerwoną, włoską, skórzaną torbę.' },
-                  { original: 'He is a friendly tall young man.', translation: 'On jest przyjacielskim, wysokim, młodym mężczyzną.' }
-              ]
-          },
-           { 
-              heading: 'Stopniowanie przymiotników', 
-              text: 'Przymiotniki krótkie (jednosylabowe) stopniuje się przez dodanie końcówek "-er" i "-est". Dłuższe przymiotniki stopniuje się opisowo za pomocą "more" i "the most".',
-              examples: [
-                  { original: 'This car is faster than that one.', translation: 'Ten samochód jest szybszy niż tamten.' },
-                  { original: 'This is the most interesting book I have ever read.', translation: 'To jest najciekawsza książka, jaką kiedykolwiek czytałem.' }
-              ]
-          }
+        { 
+          heading: 'Pozycja przymiotnika', 
+          text: 'Przymiotniki w języku angielskim prawie zawsze występują przed rzeczownikiem, który opisują. Jest to jedna z fundamentalnych zasad gramatycznych tego języka.',
+          examples: [
+            { original: 'I drive a black car.', translation: 'Jeżdżę czarnym samochodem.' },
+            { original: 'She is an intelligent woman.', translation: 'Ona jest inteligentną kobietą.' }
+          ]
+        },
+        { 
+          heading: 'Kolejność przymiotników (Royal Order of Adjectives)', 
+          text: 'Gdy używamy kilku przymiotników, zazwyczaj układamy je w określonej kolejności: opinia, rozmiar, wiek, kształt, kolor, pochodzenie, materiał, przeznaczenie.',
+          examples: [
+            { original: 'She has a beautiful small new red Italian leather bag.', translation: 'Ona ma piękną, małą, nową, czerwoną, włoską, skórzaną torbę.' },
+            { original: 'He is a friendly tall young man.', translation: 'On jest przyjacielskim, wysokim, młodym mężczyzną.' }
+          ]
+        },
+        { 
+          heading: 'Stopniowanie przymiotników', 
+          text: 'Przymiotniki krótkie (jednosylabowe) stopniuje się przez dodanie końcówek "-er" i "-est". Dłuższe przymiotniki (zazwyczaj od trzech sylab w górę) stopniuje się opisowo za pomocą "more" i "the most".',
+          examples: [
+            { original: 'This car is faster than that one.', translation: 'Ten samochód jest szybszy niż tamten.' },
+            { original: 'This is the most interesting book I have ever read.', translation: 'To jest najciekawsza książka, jaką kiedykolwiek czytałem.' }
+          ]
+        },
+        { 
+          heading: 'Przymiotniki nieregularne w stopniowaniu', 
+          text: 'Niektóre z najczęściej używanych przymiotników mają nieregularne formy stopniowania, które należy zapamiętać.',
+          examples: [
+            { original: 'Her cooking is better than mine. (good-better-best)', translation: 'Jej gotowanie jest lepsze niż moje.' },
+            { original: 'This is the worst movie I have seen this year. (bad-worse-worst)', translation: 'To najgorszy film, jaki widziałem w tym roku.' }
+          ]
+        }
       ],
-  },
+    },
     'adverbs': {
         title: 'Adverbs',
         content: [],
@@ -288,20 +296,20 @@ export const allGrammar: GrammarContent = {
               { original: 'Mit wem gehst du ins Kino?', translation: 'Z kim idziesz do kina?' }
             ]
           },
-           {
-            heading: 'Pytania rozłączne (Frageanhängsel)',
-            text: 'Są to krótkie zwroty dodawane na końcu zdania, aby poprosić o potwierdzenie, podobnie jak polskie "prawda?". Najczęstsze to "oder?", "nicht wahr?" lub "nicht?".',
-            examples: [
-              { original: 'Du kommst aus Polen, oder?', translation: 'Pochodzisz z Polski, prawda?' },
-              { original: 'Das Wetter ist schön, nicht wahr?', translation: 'Pogoda jest piękna, nieprawdaż?' }
-            ]
-          },
           {
             heading: 'Pytania pośrednie (Indirekte Fragen)',
             text: 'W pytaniach pośrednich, wprowadzanych zwrotem (np. "Ich möchte wissen..."), zdanie pytające staje się zdaniem podrzędnym. Czasownik odmieniony ląduje na końcu zdania.',
             examples: [
               { original: 'Ich möchte wissen, wann der Zug abfährt.', translation: 'Chciałbym wiedzieć, kiedy odjeżdża pociąg.' },
               { original: 'Können Sie mir sagen, wo die Toilette ist?', translation: 'Czy może mi Pan/Pani powiedzieć, gdzie jest toaleta?' }
+            ]
+          },
+          {
+            heading: 'Pytania rozłączne (Frageanhängsel)',
+            text: 'Są to krótkie zwroty dodawane na końcu zdania, aby poprosić o potwierdzenie, podobnie jak polskie "prawda?". Najczęstsze to "oder?", "nicht wahr?" lub "nicht?".',
+            examples: [
+              { original: 'Du kommst aus Polen, oder?', translation: 'Pochodzisz z Polski, prawda?' },
+              { original: 'Das Wetter ist schön, nicht wahr?', translation: 'Pogoda jest piękna, nieprawdaż?' }
             ]
           }
         ],
@@ -346,30 +354,38 @@ export const allGrammar: GrammarContent = {
       'adjectives': {
         title: 'Adjektive',
         content: [
-            { 
-                heading: 'Odmiana przymiotnika', 
-                text: 'Gdy przymiotnik stoi przed rzeczownikiem, musi otrzymać odpowiednią końcówkę. Końcówka ta zależy od rodzajnika (określonego, nieokreślonego lub jego braku), przypadku, rodzaju i liczby rzeczownika.',
-                examples: [
-                    { original: 'Der rote Apfel schmeckt gut.', translation: 'To czerwone jabłko dobrze smakuje (odmiana słaba po rodzajniku określonym).' },
-                    { original: 'Ich habe einen neuen Computer.', translation: 'Mam nowy komputer (odmiana mieszana po rodzajniku nieokreślonym).' }
-                ]
-            },
-            { 
-                heading: 'Przymiotnik jako orzecznik i przysłówek', 
-                text: 'Gdy przymiotnik występuje po czasownikach takich jak "sein" (być), "werden" (stawać się), "bleiben" (pozostawać) lub opisuje czasownik (jako przysłówek), pozostaje w formie podstawowej, nieodmiennej.',
-                examples: [
-                    { original: 'Das Auto ist schnell.', translation: 'Samochód jest szybki.' },
-                    { original: 'Sie fährt schnell.', translation: 'Ona jedzie szybko.' }
-                ]
-            },
-             { 
-                heading: 'Stopniowanie przymiotników', 
-                text: 'Regularne przymiotniki stopniuje się przez dodanie końcówek "-er" (stopień wyższy) i "-(e)st" (stopień najwyższy). Wiele popularnych przymiotników ma formy nieregularne.',
-                examples: [
-                    { original: 'Mein Bruder ist größer als ich.', translation: 'Mój brat jest wyższy ode mnie.' },
-                    { original: 'Das ist der beste Film, den ich je gesehen habe.', translation: 'To jest najlepszy film, jaki kiedykolwiek widziałem (stopniowanie nieregularne: gut-besser-am besten).' }
-                ]
-            }
+          { 
+            heading: 'Odmiana przymiotnika (Adjektivdeklination)', 
+            text: 'Gdy przymiotnik stoi przed rzeczownikiem, musi otrzymać odpowiednią końcówkę. Końcówka zależy od rodzajnika (określony, nieokreślony, brak), przypadku, rodzaju i liczby rzeczownika.',
+            examples: [
+              { original: 'Der rote Apfel schmeckt gut. (odmiana słaba)', translation: 'To czerwone jabłko dobrze smakuje.' },
+              { original: 'Ich habe einen neuen Computer. (odmiana mieszana)', translation: 'Mam nowy komputer.' }
+            ]
+          },
+          { 
+            heading: 'Przymiotnik jako orzecznik i przysłówek', 
+            text: 'Gdy przymiotnik występuje po czasownikach takich jak "sein" (być), "werden" (stawać się), "bleiben" (pozostawać) lub opisuje czasownik (jako przysłówek), pozostaje w formie podstawowej, nieodmiennej.',
+            examples: [
+              { original: 'Das Auto ist schnell.', translation: 'Samochód jest szybki.' },
+              { original: 'Sie fährt schnell.', translation: 'Ona jedzie szybko.' }
+            ]
+          },
+          { 
+            heading: 'Stopniowanie przymiotników (Komparation)', 
+            text: 'Regularne przymiotniki stopniuje się przez dodanie końcówek "-er" (stopień wyższy) i "-(e)st" (stopień najwyższy). Wiele popularnych przymiotników ma formy nieregularne.',
+            examples: [
+              { original: 'Mein Bruder ist größer als ich.', translation: 'Mój brat jest wyższy ode mnie.' },
+              { original: 'Das ist der beste Film, den ich je gesehen habe. (gut - besser - am besten)', translation: 'To jest najlepszy film, jaki kiedykolwiek widziałem.' }
+            ]
+          },
+          { 
+            heading: 'Przysłówki utworzone od przymiotników', 
+            text: 'W języku niemieckim nie ma specjalnej formy przysłówka tworzonej od przymiotnika. Używa się po prostu podstawowej formy przymiotnika.',
+            examples: [
+              { original: 'Er spricht langsam. (langsam - powolny/powoli)', translation: 'On mówi powoli.' },
+              { original: 'Sie singt schön. (schön - piękny/pięknie)', translation: 'Ona pięknie śpiewa.' }
+            ]
+          }
         ],
     },
     'adverbs': {
@@ -484,7 +500,7 @@ export const allGrammar: GrammarContent = {
             ]
           },
           {
-            heading: 'Pytania z "tagami" (tag questions)',
+            heading: 'Pytania rozłączne (tag questions)',
             text: 'Podobnie jak w angielskim, na końcu zdania można dodać krótkie pytanie, aby poprosić o potwierdzenie, np. ¿no?, ¿verdad?',
             examples: [
               { original: 'Hace buen tiempo, ¿verdad?', translation: 'Jest ładna pogoda, prawda?' },
@@ -541,30 +557,38 @@ export const allGrammar: GrammarContent = {
       'adjectives': {
         title: 'Adjetivos',
         content: [
-            { 
-                heading: 'Zgodność rodzaju i liczby', 
-                text: 'Przymiotniki w języku hiszpańskim muszą zgadzać się z rzeczownikiem, który opisują, pod względem rodzaju (męski/żeński) i liczby (pojedyncza/mnoga).',
-                examples: [
-                    { original: 'El coche es rojo.', translation: 'Samochód jest czerwony.' },
-                    { original: 'Las casas son rojas.', translation: 'Domy są czerwone.' }
-                ]
-            },
-            { 
-                heading: 'Pozycja przymiotnika', 
-                text: 'Zazwyczaj przymiotniki umieszcza się po rzeczowniku. Niektóre, zwłaszcza te krótkie i popularne, mogą stać przed rzeczownikiem, co czasem zmienia ich znaczenie.',
-                examples: [
-                    { original: 'Tengo un amigo pobre (biedny).', translation: 'Mam biednego przyjaciela.' },
-                    { original: 'Es un pobre hombre (godny pożałowania).', translation: 'To biedny (godny pożałowania) człowiek.' }
-                ]
-            },
-             { 
-                heading: 'Stopniowanie przymiotników', 
-                text: 'Stopień wyższy tworzy się opisowo za pomocą "más" (bardziej) i "menos" (mniej), a najwyższy przez dodanie rodzajnika określonego przed "más/menos". Istnieją też formy nieregularne.',
-                examples: [
-                    { original: 'Esta casa es más grande que la tuya.', translation: 'Ten dom jest większy niż twój.' },
-                    { original: 'Es el mejor restaurante de la ciudad.', translation: 'To jest najlepsza restauracja w mieście (stopniowanie nieregularne: bueno-mejor-el mejor).' }
-                ]
-            }
+          { 
+            heading: 'Zgodność rodzaju i liczby (Concordancia)', 
+            text: 'Przymiotniki w języku hiszpańskim muszą zgadzać się z rzeczownikiem, który opisują, pod względem rodzaju (męski/żeński) i liczby (pojedyncza/mnoga). Przymiotniki zakończone na -o zmieniają je na -a w rodzaju żeńskim.',
+            examples: [
+              { original: 'El coche es rojo.', translation: 'Samochód jest czerwony.' },
+              { original: 'Las casas son rojas.', translation: 'Domy są czerwone.' }
+            ]
+          },
+          { 
+            heading: 'Pozycja przymiotnika', 
+            text: 'Zazwyczaj przymiotniki umieszcza się po rzeczowniku. Niektóre, zwłaszcza te krótkie i popularne (np. "bueno", "grande"), mogą stać przed rzeczownikiem, co czasem zmienia ich znaczenie.',
+            examples: [
+              { original: 'Tengo un amigo pobre (biedny, w sensie finansowym).', translation: 'Mam biednego przyjaciela.' },
+              { original: 'Es un pobre hombre (godny pożałowania).', translation: 'To biedny (godny pożałowania) człowiek.' }
+            ]
+          },
+          { 
+            heading: 'Skracanie przymiotników (Apócope)', 
+            text: 'Niektóre przymiotniki, takie jak "bueno" i "grande", skracają swoją formę do "buen" i "gran", gdy stoją przed rzeczownikiem rodzaju męskiego w liczbie pojedynczej.',
+            examples: [
+              { original: 'Hace un buen día.', translation: 'Jest ładny dzień.' },
+              { original: 'Es un gran artista.', translation: 'To wielki artysta.' }
+            ]
+          },
+          { 
+            heading: 'Stopniowanie przymiotników (Comparación)', 
+            text: 'Stopień wyższy tworzy się opisowo za pomocą "más" (bardziej) i "menos" (mniej), a najwyższy przez dodanie rodzajnika określonego. Istnieją też ważne formy nieregularne.',
+            examples: [
+              { original: 'Esta casa es más grande que la tuya.', translation: 'Ten dom jest większy niż twój.' },
+              { original: 'Es el mejor restaurante de la ciudad. (bueno-mejor-el mejor)', translation: 'To jest najlepsza restauracja w mieście.' }
+            ]
+          }
         ],
     },
     'adverbs': {
@@ -736,30 +760,38 @@ export const allGrammar: GrammarContent = {
       'adjectives': {
         title: 'Adjectifs',
         content: [
-            { 
-                heading: 'Zgodność rodzaju i liczby', 
-                text: 'Przymiotniki muszą zgadzać się z rzeczownikiem, który opisują, pod względem rodzaju (męski/żeński) i liczby (pojedyncza/mnoga). Zazwyczaj formę żeńską tworzy się przez dodanie "-e", a liczbę mnogą przez dodanie "-s".',
-                examples: [
-                    { original: 'un petit garçon, une petite fille', translation: 'mały chłopiec, mała dziewczynka' },
-                    { original: 'des livres intéressants, des histoires intéressantes', translation: 'interesujące książki, interesujące historie' }
-                ]
-            },
-            { 
-                heading: 'Pozycja przymiotnika', 
-                text: 'Większość przymiotników stoi po rzeczowniku (np. kolory, narodowości). Jednak krótkie i często używane przymiotniki (tzw. BAGS - Beauty, Age, Goodness, Size) stoją przed rzeczownikiem.',
-                examples: [
-                    { original: 'une voiture rouge (po rzeczowniku)', translation: 'czerwony samochód' },
-                    { original: 'une belle journée (przed rzeczownikiem)', translation: 'piękny dzień' }
-                ]
-            },
-             { 
-                heading: 'Stopniowanie przymiotników', 
-                text: 'Stopień wyższy tworzy się za pomocą "plus" (bardziej), a najwyższy za pomocą "le/la/les plus". Istnieją też formy nieregularne, np. dla "bon" (dobry).',
-                examples: [
-                    { original: 'Cette ville est plus grande que la mienne.', translation: 'To miasto jest większe niż moje.' },
-                    { original: 'C\'est le meilleur film de l\'année.', translation: 'To najlepszy film roku (stopniowanie nieregularne: bon-meilleur-le meilleur).' }
-                ]
-            }
+          { 
+            heading: 'Zgodność rodzaju i liczby (Accord)', 
+            text: 'Przymiotniki muszą zgadzać się z rzeczownikiem pod względem rodzaju (męski/żeński) i liczby (pojedyncza/mnoga). Zazwyczaj formę żeńską tworzy się przez dodanie "-e", a liczbę mnogą przez dodanie "-s", choć istnieje wiele wyjątków.',
+            examples: [
+              { original: 'un petit garçon, une petite fille', translation: 'mały chłopiec, mała dziewczynka' },
+              { original: 'des livres intéressants, des histoires intéressantes', translation: 'interesujące książki, interesujące historie' }
+            ]
+          },
+          { 
+            heading: 'Pozycja przymiotnika (Place de l\'adjectif)', 
+            text: 'Większość przymiotników stoi po rzeczowniku (np. kolory, narodowości, kształty). Jednak krótkie i często używane przymiotniki (tzw. BAGS - Beauty, Age, Goodness, Size) stoją przed rzeczownikiem.',
+            examples: [
+              { original: 'une voiture rouge (po rzeczowniku)', translation: 'czerwony samochód' },
+              { original: 'une belle journée (przed rzeczownikiem)', translation: 'piękny dzień' }
+            ]
+          },
+          { 
+            heading: 'Stopniowanie przymiotników (Comparaison)', 
+            text: 'Stopień wyższy tworzy się za pomocą "plus" (bardziej), a najwyższy za pomocą "le/la/les plus". Istnieją też ważne formy nieregularne, np. dla "bon" (dobry).',
+            examples: [
+              { original: 'Cette ville est plus grande que la mienne.', translation: 'To miasto jest większe niż moje.' },
+              { original: 'C\'est le meilleur film de l\'année. (bon - meilleur - le meilleur)', translation: 'To najlepszy film roku.' }
+            ]
+          },
+          { 
+            heading: 'Przymiotniki o zmiennym znaczeniu w zależności od pozycji', 
+            text: 'Niektóre przymiotniki zmieniają znaczenie w zależności od tego, czy stoją przed rzeczownikiem (często znaczenie przenośne), czy po nim (znaczenie dosłowne).',
+            examples: [
+              { original: 'un homme grand (wysoki) vs. un grand homme (wielki)', translation: 'wysoki mężczyzna vs. wielki człowiek' },
+              { original: 'mon propre (własny) stylo vs. un stylo propre (czysty)', translation: 'mój własny długopis vs. czysty długopis' }
+            ]
+          }
         ],
     },
     'adverbs': {
@@ -923,30 +955,38 @@ export const allGrammar: GrammarContent = {
       'adjectives': {
         title: 'Aggettivi',
         content: [
-            { 
-                heading: 'Zgodność rodzaju i liczby', 
-                text: 'Przymiotniki muszą zgadzać się z rzeczownikiem pod względem rodzaju i liczby. Przymiotniki zakończone na "-o" mają cztery formy (-o, -a, -i, -e), a te zakończone na "-e" mają tylko dwie (-e, -i).',
-                examples: [
-                    { original: 'un ragazzo alto, una ragazza alta, dei ragazzi alti, delle ragazze alte', translation: 'wysoki chłopak, wysoka dziewczyna, wysocy chłopcy, wysokie dziewczynki' },
-                    { original: 'un esame difficile, una lezione difficile, degli esami difficili, delle lezioni difficili', translation: 'trudny egzamin, trudna lekcja, trudne egzaminy, trudne lekcje' }
-                ]
-            },
-            { 
-                heading: 'Pozycja przymiotnika', 
-                text: 'Większość przymiotników (kolory, narodowości, kształty) stoi po rzeczowniku. Niektóre powszechne przymiotniki, takie jak "bello", "bravo", "buono", "nuovo", "piccolo", mogą stać przed rzeczownikiem.',
-                examples: [
-                    { original: 'Ho comprato una macchina rossa.', translation: 'Kupiłem czerwony samochód.' },
-                    { original: 'Questa è una bella casa.', translation: 'To jest piękny dom.' }
-                ]
-            },
-             { 
-                heading: 'Stopniowanie przymiotników', 
-                text: 'Stopień wyższy tworzy się za pomocą "più" (bardziej) i "meno" (mniej). Stopień najwyższy absolutny tworzy się przez dodanie końcówki "-issimo/-issima", a względny przez rodzajnik + "più/meno".',
-                examples: [
-                    { original: 'Questa pizza è più buona di quella.', translation: 'Ta pizza jest lepsza od tamtej.' },
-                    { original: 'È un film bellissimo.', translation: 'To jest przepiękny film (stopień najwyższy absolutny).' }
-                ]
-            }
+          { 
+            heading: 'Zgodność rodzaju i liczby (Concordanza)', 
+            text: 'Przymiotniki muszą zgadzać się z rzeczownikiem pod względem rodzaju i liczby. Przymiotniki zakończone na "-o" mają cztery formy (-o, -a, -i, -e), a te zakończone na "-e" mają tylko dwie (-e, -i) dla obu rodzajów.',
+            examples: [
+              { original: 'un ragazzo alto, una ragazza alta, dei ragazzi alti, delle ragazze alte', translation: 'wysoki chłopak, wysoka dziewczyna, wysocy chłopcy, wysokie dziewczynki' },
+              { original: 'un esame difficile, una lezione difficile, degli esami difficili, delle lezioni difficili', translation: 'trudny egzamin, trudna lekcja, trudne egzaminy, trudne lekcje' }
+            ]
+          },
+          { 
+            heading: 'Pozycja przymiotnika (Posizione)', 
+            text: 'Większość przymiotników (kolory, narodowości, kształty) stoi po rzeczowniku. Niektóre powszechne przymiotniki, takie jak "bello", "bravo", "buono", "nuovo", "piccolo", mogą stać przed rzeczownikiem, co czasem może nieznacznie zmienić ich znaczenie.',
+            examples: [
+              { original: 'Ho comprato una macchina rossa.', translation: 'Kupiłem czerwony samochód.' },
+              { original: 'Questa è una bella casa.', translation: 'To jest piękny dom.' }
+            ]
+          },
+          { 
+            heading: 'Stopniowanie przymiotników (Comparazione)', 
+            text: 'Stopień wyższy tworzy się opisowo za pomocą "più" (bardziej) i "meno" (mniej). Stopień najwyższy względny tworzy się przez rodzajnik + "più/meno", a absolutny przez dodanie końcówki "-issimo/-issima".',
+            examples: [
+              { original: 'Questa pizza è più buona di quella. (stopień wyższy)', translation: 'Ta pizza jest lepsza od tamtej.' },
+              { original: 'È un film bellissimo. (stopień najwyższy absolutny)', translation: 'To jest przepiękny film.' }
+            ]
+          },
+          { 
+            heading: 'Specjalne formy przymiotników (Forme speciali)', 
+            text: 'Niektóre przymiotniki, jak "bello", "quello" czy "santo", mają specjalne formy, które zmieniają się w zależności od pierwszej litery następującego po nich słowa, podobnie jak rodzajniki określone.',
+            examples: [
+              { original: 'un bel libro, un bello stadio', translation: 'piękna książka, piękny stadion' },
+              { original: 'quel ragazzo, quello specchio', translation: 'tamten chłopak, tamto lustro' }
+            ]
+          }
         ],
     },
     'adverbs': {
@@ -988,3 +1028,4 @@ export const allGrammar: GrammarContent = {
   },
   },
 };
+

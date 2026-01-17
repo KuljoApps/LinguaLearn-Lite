@@ -1,3 +1,4 @@
+
 "use client";
 
 import PhrasesPage from '@/components/phrases-page';

@@ -19,9 +19,9 @@ export default function GrammarPage({ title, backHref, content }: GrammarPagePro
     return (
         <Card className="w-full max-w-2xl shadow-2xl">
             <CardHeader className="text-center">
-                <div className="inline-flex items-center gap-4">
+                <div className="flex items-center justify-center gap-4">
                     <BookText className="h-8 w-8" />
-                    <CardTitle className="text-3xl text-center">{title}</CardTitle>
+                    <CardTitle className="text-3xl">{title}</CardTitle>
                 </div>
             </CardHeader>
             <CardContent>

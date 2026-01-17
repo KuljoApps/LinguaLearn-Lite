@@ -1,5 +1,5 @@
 
-import { ArrowLeft, Landmark, Building2, Handshake, ScrollText, Globe } from 'lucide-react';
+import { ArrowLeft, Landmark, Building2, Handshake, ScrollText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardFooter, CardTitle } from '@/components/ui/card';
@@ -16,32 +16,32 @@ export default function CultureItPage() {
                 </CardHeader>
                 <CardContent className="flex flex-col space-y-4 px-6 pt-0 pb-4">
                     <Link href="/learning/it/culture/about" passHref>
-                        <Button className="w-full h-12 text-lg">
-                            <Globe className="mr-2 h-5 w-5" />
+                         <Button className="w-full h-16 text-lg flex items-center justify-start px-4">
+                            <span className="text-4xl mr-4">🇮🇹</span>
                             Sull'Italia
                         </Button>
                     </Link>
                     <div className="grid grid-cols-2 gap-4 pt-2">
                          <Link href="/learning/it/culture/cities" passHref>
-                            <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary">
+                            <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary whitespace-normal text-center">
                                 <Building2 className="h-12 w-12 text-deep-purple" />
                                 Città più importanti
                             </Button>
                         </Link>
                         <Link href="/learning/it/culture/monuments" passHref>
-                            <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary">
+                            <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary whitespace-normal text-center">
                                 <Landmark className="h-12 w-12 text-deep-purple" />
                                 Monumenti più importanti
                             </Button>
                         </Link>
                         <Link href="/learning/it/culture/traditions" passHref>
-                            <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary">
+                            <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary whitespace-normal text-center">
                                 <Handshake className="h-12 w-12 text-deep-purple" />
                                 Tradizioni e usanze
                             </Button>
                         </Link>
                         <Link href="/learning/it/culture/history" passHref>
-                            <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary">
+                            <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary whitespace-normal text-center">
                                 <ScrollText className="h-12 w-12 text-deep-purple" />
                                 Storia in breve
                             </Button>

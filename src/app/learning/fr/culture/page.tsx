@@ -23,13 +23,13 @@ export default function CultureFrPage() {
                     </Link>
                     <div className="grid grid-cols-2 gap-4 pt-2">
                          <Link href="/learning/fr/culture/cities" passHref>
-                            <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary whitespace-normal text-center">
+                            <Button variant="outline" className="w-full h-28 flex-col gap-2 text-lg border-2 border-primary whitespace-normal text-center">
                                 <Building2 className="h-12 w-12 text-deep-purple" />
                                 Villes importantes
                             </Button>
                         </Link>
                         <Link href="/learning/fr/culture/monuments" passHref>
-                            <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary whitespace-normal text-center">
+                            <Button variant="outline" className="w-full h-28 flex-col gap-2 text-lg border-2 border-primary whitespace-normal text-center">
                                 <Landmark className="h-12 w-12 text-deep-purple" />
                                 Monuments importants
                             </Button>

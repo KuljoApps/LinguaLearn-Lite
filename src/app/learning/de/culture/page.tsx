@@ -23,13 +23,13 @@ export default function CultureDePage() {
                     </Link>
                     <div className="grid grid-cols-2 gap-4 pt-2">
                          <Link href="/learning/de/culture/cities" passHref>
-                            <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary whitespace-normal text-center">
+                            <Button variant="outline" className="w-full h-28 flex-col gap-2 text-lg border-2 border-primary whitespace-normal text-center">
                                 <Building2 className="h-12 w-12 text-deep-purple" />
                                 Wichtigste Städte
                             </Button>
                         </Link>
                         <Link href="/learning/de/culture/monuments" passHref>
-                            <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary whitespace-normal text-center">
+                            <Button variant="outline" className="w-full h-28 flex-col gap-2 text-lg border-2 border-primary whitespace-normal text-center">
                                 <Landmark className="h-12 w-12 text-deep-purple" />
                                 Wichtigste Denkmäler
                             </Button>

@@ -17,19 +17,19 @@ export default function CultureEnPage() {
                 <CardContent className="flex flex-col space-y-4 px-6 pt-0 pb-4">
                     <Link href="/learning/en/culture/about" passHref>
                          <Button className="w-full h-16 text-lg flex items-center justify-center">
-                            <span className="text-4xl mr-4">🇬🇧</span>
+                            <span className="text-4xl mr-4">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span>
                             About England
                         </Button>
                     </Link>
                     <div className="grid grid-cols-2 gap-4 pt-2">
                          <Link href="/learning/en/culture/cities" passHref>
-                            <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary whitespace-normal text-center">
+                            <Button variant="outline" className="w-full h-28 flex-col gap-2 text-lg border-2 border-primary whitespace-normal text-center">
                                 <Building2 className="h-12 w-12 text-deep-purple" />
                                 Important Cities
                             </Button>
                         </Link>
                         <Link href="/learning/en/culture/monuments" passHref>
-                            <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary whitespace-normal text-center">
+                            <Button variant="outline" className="w-full h-28 flex-col gap-2 text-lg border-2 border-primary whitespace-normal text-center">
                                 <Landmark className="h-12 w-12 text-deep-purple" />
                                 Important Monuments
                             </Button>

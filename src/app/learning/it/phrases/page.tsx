@@ -7,10 +7,10 @@ export default function PhrasesItPage() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-md shadow-2xl">
-                <CardHeader className="text-center">
-                    <div className="flex items-center justify-center gap-4">
-                        <MessageSquareText className="h-8 w-8" />
-                        <h1 className="text-3xl font-bold tracking-tight">Espressioni e Frasi</h1>
+                <CardHeader className="text-center p-4">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
+                        <MessageSquareText className="h-8 w-8 flex-shrink-0" />
+                        <h1 className="text-3xl font-bold tracking-tight text-center sm:text-left break-words">Espressioni e Frasi</h1>
                     </div>
                 </CardHeader>
                 <CardContent className="grid grid-cols-2 gap-4 p-4">

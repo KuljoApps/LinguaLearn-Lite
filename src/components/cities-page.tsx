@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { ArrowLeft, Building2, Users, Map, Landmark, Sparkles, Calendar } from 'lucide-react';
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { ScrollArea } from '@/components/ui/scroll-area';
 import type { CitiesPageData } from '@/lib/cities';
 
 export default function CitiesPage({ data }: { data: CitiesPageData }) {
@@ -68,7 +69,7 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
                     <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="h-auto p-1 rounded-md">
                         <div className="flex items-center justify-center h-8 w-8 rounded-md border border-input bg-background">
-                            <span className="text-xl">{displayLang === 'native' ? {en: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', de: '🇩🇪', fr: '🇫🇷', it: '🇮🇹', es: '🇪🇸'}[data.lang] : '🇵🇱'}</span>
+                            <span className="text-xl">{{en: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', de: '🇩🇪', fr: '🇫🇷', it: '🇮🇹', es: '🇪🇸'}[data.lang] : '🇵🇱'}</span>
                         </div>
                     </Button>
                     </DropdownMenuTrigger>
@@ -83,7 +84,7 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
                 </DropdownMenu>
             </div>
         </CardHeader>
-        <CardContent className="px-0 sm:px-4">
+        <CardContent className="px-0 sm:px-4 pb-0">
           <Carousel
             setApi={setApi}
             opts={{
@@ -107,10 +108,12 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
                         </div>
                         <CardTitle className="text-center">{city.name[displayLang]}</CardTitle>
                       </CardHeader>
-                      <CardContent className="flex flex-col items-center gap-4 p-4 pt-0">
-                        <p className="text-sm text-muted-foreground text-justify h-32 overflow-y-auto">
-                          {city.description[displayLang]}
-                        </p>
+                      <CardContent className="flex flex-col items-center gap-4 px-4 pt-0 pb-2">
+                        <ScrollArea className="h-32 w-full">
+                          <p className="text-sm text-muted-foreground text-justify pr-4">
+                            {city.description[displayLang].replace(/ ([a-zA-Z])\s/g, ' $1\u00A0')}
+                          </p>
+                        </ScrollArea>
                         <Table>
                           <TableBody>
                             {renderFactRow(<Users />, t('population'), city.facts.population)}
@@ -128,7 +131,7 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
             </CarouselContent>
           </Carousel>
         </CardContent>
-        <CardFooter className="flex justify-center p-4 pt-0">
+        <CardFooter className="flex justify-center p-2 pt-0">
           <Link href={`/learning/${data.lang}/culture`} passHref>
             <Button variant="outline">
               <ArrowLeft className="mr-2 h-4 w-4" /> {t('backButton')}

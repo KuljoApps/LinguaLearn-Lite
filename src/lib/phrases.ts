@@ -1,4 +1,3 @@
-
 import type { Language } from './storage';
 
 export interface Phrase {
@@ -205,6 +204,59 @@ export const allPhrases: PhrasesContent = {
             { phrase: 'There is a fire!', translation: 'Pali się!' }
         ]
     },
+    hotel: {
+        title: 'Hotel',
+        phrases: [
+            { phrase: 'I have a reservation.', translation: 'Mam rezerwację.' },
+            { phrase: 'My name is...', translation: 'Nazywam się...' },
+            { phrase: 'Can I check in, please?', translation: 'Czy mogę się zameldować?' },
+            { phrase: 'What time is check-out?', translation: 'O której godzinie jest wymeldowanie?' },
+            { phrase: 'Can I have a room with a view?', translation: 'Czy mogę prosić o pokój z widokiem?' },
+            { phrase: 'Does the room have Wi-Fi?', translation: 'Czy w pokoju jest Wi-Fi?' },
+            { phrase: 'What\'s the Wi-Fi password?', translation: 'Jakie jest hasło do Wi-Fi?' },
+            { phrase: 'Can I have breakfast in my room?', translation: 'Czy mogę prosić o śniadanie do pokoju?' },
+            { phrase: 'What time is breakfast served?', translation: 'O której godzinie podawane jest śniadanie?' },
+            { phrase: 'Where is the restaurant/gym?', translation: 'Gdzie jest restauracja/siłownia?' },
+            { phrase: 'My key card doesn\'t work.', translation: 'Moja karta-klucz nie działa.' },
+            { phrase: 'The air conditioning is not working.', translation: 'Klimatyzacja nie działa.' },
+            { phrase: 'There is no hot water.', translation: 'Nie ma ciepłej wody.' },
+            { phrase: 'Can I have an extra towel?', translation: 'Czy mogę prosić o dodatkowy ręcznik?' },
+            { phrase: 'Can you call a taxi for me?', translation: 'Czy może pan/pani wezwać dla mnie taksówkę?' },
+            { phrase: 'I\'d like to check out.', translation: 'Chciałbym/Chciałabym się wymeldować.' },
+            { phrase: 'Can I pay by credit card?', translation: 'Czy mogę zapłacić kartą kredytową?' },
+            { phrase: 'Can I leave my luggage here?', translation: 'Czy mogę zostawić tutaj bagaż?' },
+            { phrase: 'A wake-up call at 7 AM, please.', translation: 'Poproszę o budzenie o 7 rano.' },
+            { phrase: 'Is there a safe in the room?', translation: 'Czy w pokoju jest sejf?' },
+            { phrase: 'I lost my room key.', translation: 'Zgubiłem/am klucz do pokoju.' },
+            { phrase: 'The room is too noisy.', translation: 'Pokój jest zbyt głośny.' }
+        ]
+    },
+    weather: {
+        title: 'Weather',
+        phrases: [
+            { phrase: 'What\'s the weather like today?', translation: 'Jaka jest dzisiaj pogoda?' },
+            { phrase: 'It\'s sunny.', translation: 'Jest słonecznie.' },
+            { phrase: 'It\'s raining.', translation: 'Pada deszcz.' },
+            { phrase: 'It\'s cloudy.', translation: 'Jest pochmurno.' },
+            { phrase: 'It\'s windy.', translation: 'Jest wietrznie.' },
+            { phrase: 'It\'s snowing.', translation: 'Pada śnieg.' },
+            { phrase: 'It\'s cold.', translation: 'Jest zimno.' },
+            { phrase: 'It\'s hot.', translation: 'Jest gorąco.' },
+            { phrase: 'What\'s the temperature?', translation: 'Jaka jest temperatura?' },
+            { phrase: 'It\'s 20 degrees Celsius.', translation: 'Jest 20 stopni Celsjusza.' },
+            { phrase: 'Is it going to rain tomorrow?', translation: 'Czy jutro będzie padać?' },
+            { phrase: 'What\'s the weather forecast?', translation: 'Jaka jest prognoza pogody?' },
+            { phrase: 'It\'s a beautiful day.', translation: 'To piękny dzień.' },
+            { phrase: 'It\'s freezing.', translation: 'Jest mroźno.' },
+            { phrase: 'There\'s a thunderstorm.', translation: 'Jest burza.' },
+            { phrase: 'It\'s foggy.', translation: 'Jest mgliście.' },
+            { phrase: 'The sun is shining.', translation: 'Słońce świeci.' },
+            { phrase: 'It\'s getting dark.', translation: 'Robi się ciemno.' },
+            { phrase: 'The weather is changing.', translation: 'Pogoda się zmienia.' },
+            { phrase: 'I need an umbrella.', translation: 'Potrzebuję parasola.' },
+            { phrase: 'It\'s humid.', translation: 'Jest wilgotno.' }
+        ]
+    }
   },
   de: {
     restaurant: {
@@ -393,6 +445,59 @@ export const allPhrases: PhrasesContent = {
             { phrase: 'Es brennt!', translation: 'Pali się!' }
         ]
     },
+    hotel: {
+        title: 'Hotel',
+        phrases: [
+            { phrase: 'Ich habe eine Reservierung.', translation: 'Mam rezerwację.' },
+            { phrase: 'Mein Name ist...', translation: 'Nazywam się...' },
+            { phrase: 'Kann ich bitte einchecken?', translation: 'Czy mogę się zameldować?' },
+            { phrase: 'Wann ist der Check-out?', translation: 'O której godzinie jest wymeldowanie?' },
+            { phrase: 'Kann ich ein Zimmer mit Aussicht haben?', translation: 'Czy mogę prosić o pokój z widokiem?' },
+            { phrase: 'Gibt es WLAN im Zimmer?', translation: 'Czy w pokoju jest Wi-Fi?' },
+            { phrase: 'Wie lautet das WLAN-Passwort?', translation: 'Jakie jest hasło do Wi-Fi?' },
+            { phrase: 'Kann ich das Frühstück auf dem Zimmer haben?', translation: 'Czy mogę prosić o śniadanie do pokoju?' },
+            { phrase: 'Wann wird das Frühstück serviert?', translation: 'O której godzinie podawane jest śniadanie?' },
+            { phrase: 'Wo ist das Restaurant/der Fitnessraum?', translation: 'Gdzie jest restauracja/siłownia?' },
+            { phrase: 'Meine Schlüsselkarte funktioniert nicht.', translation: 'Moja karta-klucz nie działa.' },
+            { phrase: 'Die Klimaanlage funktioniert nicht.', translation: 'Klimatyzacja nie działa.' },
+            { phrase: 'Es gibt kein heißes Wasser.', translation: 'Nie ma ciepłej wody.' },
+            { phrase: 'Kann ich ein zusätzliches Handtuch haben?', translation: 'Czy mogę prosić o dodatkowy ręcznik?' },
+            { phrase: 'Können Sie mir ein Taxi rufen?', translation: 'Czy może pan/pani wezwać dla mnie taksówkę?' },
+            { phrase: 'Ich möchte auschecken.', translation: 'Chciałbym/Chciałabym się wymeldować.' },
+            { phrase: 'Kann ich mit Kreditkarte bezahlen?', translation: 'Czy mogę zapłacić kartą kredytową?' },
+            { phrase: 'Kann ich mein Gepäck hier lassen?', translation: 'Czy mogę zostawić tutaj bagaż?' },
+            { phrase: 'Einen Weckruf um 7 Uhr, bitte.', translation: 'Poproszę o budzenie o 7 rano.' },
+            { phrase: 'Gibt es einen Safe im Zimmer?', translation: 'Czy w pokoju jest sejf?' },
+            { phrase: 'Ich habe meinen Zimmerschlüssel verloren.', translation: 'Zgubiłem/am klucz do pokoju.' },
+            { phrase: 'Das Zimmer ist zu laut.', translation: 'Pokój jest zbyt głośny.' }
+        ]
+    },
+    wetter: {
+        title: 'Wetter',
+        phrases: [
+            { phrase: 'Wie ist das Wetter heute?', translation: 'Jaka jest dzisiaj pogoda?' },
+            { phrase: 'Es ist sonnig.', translation: 'Jest słonecznie.' },
+            { phrase: 'Es regnet.', translation: 'Pada deszcz.' },
+            { phrase: 'Es ist bewölkt.', translation: 'Jest pochmurno.' },
+            { phrase: 'Es ist windig.', translation: 'Jest wietrznie.' },
+            { phrase: 'Es schneit.', translation: 'Pada śnieg.' },
+            { phrase: 'Es ist kalt.', translation: 'Jest zimno.' },
+            { phrase: 'Es ist heiß.', translation: 'Jest gorąco.' },
+            { phrase: 'Wie viel Grad haben wir?', translation: 'Jaka jest temperatura?' },
+            { phrase: 'Es sind 20 Grad Celsius.', translation: 'Jest 20 stopni Celsjusza.' },
+            { phrase: 'Wird es morgen regnen?', translation: 'Czy jutro będzie padać?' },
+            { phrase: 'Wie ist die Wettervorhersage?', translation: 'Jaka jest prognoza pogody?' },
+            { phrase: 'Es ist ein schöner Tag.', translation: 'To piękny dzień.' },
+            { phrase: 'Es ist eiskalt.', translation: 'Jest mroźno.' },
+            { phrase: 'Es gibt ein Gewitter.', translation: 'Jest burza.' },
+            { phrase: 'Es ist neblig.', translation: 'Jest mgliście.' },
+            { phrase: 'Die Sonne scheint.', translation: 'Słońce świeci.' },
+            { phrase: 'Es wird dunkel.', translation: 'Robi się ciemno.' },
+            { phrase: 'Das Wetter ändert sich.', translation: 'Pogoda się zmienia.' },
+            { phrase: 'Ich brauche einen Regenschirm.', translation: 'Potrzebuję parasola.' },
+            { phrase: 'Es ist feucht.', translation: 'Jest wilgotno.' }
+        ]
+    }
   },
   fr: {
     restaurant: {
@@ -581,6 +686,59 @@ export const allPhrases: PhrasesContent = {
             { phrase: 'Au feu!', translation: 'Pali się!' }
         ]
     },
+    hotel: {
+        title: 'Hôtel',
+        phrases: [
+            { phrase: 'J\'ai une réservation.', translation: 'Mam rezerwację.' },
+            { phrase: 'Mon nom est...', translation: 'Nazywam się...' },
+            { phrase: 'Je peux m\'enregistrer, s\'il vous plaît?', translation: 'Czy mogę się zameldować?' },
+            { phrase: 'À quelle heure est le départ?', translation: 'O której godzinie jest wymeldowanie?' },
+            { phrase: 'Puis-je avoir une chambre avec vue?', translation: 'Czy mogę prosić o pokój z widokiem?' },
+            { phrase: 'La chambre a-t-elle le Wi-Fi?', translation: 'Czy w pokoju jest Wi-Fi?' },
+            { phrase: 'Quel est le mot de passe du Wi-Fi?', translation: 'Jakie jest hasło do Wi-Fi?' },
+            { phrase: 'Puis-je avoir le petit-déjeuner dans ma chambre?', translation: 'Czy mogę prosić o śniadanie do pokoju?' },
+            { phrase: 'À quelle heure le petit-déjeuner est-il servi?', translation: 'O której godzinie podawane jest śniadanie?' },
+            { phrase: 'Où se trouve le restaurant/la salle de sport?', translation: 'Gdzie jest restauracja/siłownia?' },
+            { phrase: 'Ma carte-clé ne fonctionne pas.', translation: 'Moja karta-klucz nie działa.' },
+            { phrase: 'La climatisation ne fonctionne pas.', translation: 'Klimatyzacja nie działa.' },
+            { phrase: 'Il n\'y a pas d\'eau chaude.', translation: 'Nie ma ciepłej wody.' },
+            { phrase: 'Puis-je avoir une serviette supplémentaire?', translation: 'Czy mogę prosić o dodatkowy ręcznik?' },
+            { phrase: 'Pouvez-vous m\'appeler un taxi?', translation: 'Czy może pan/pani wezwać dla mnie taksówkę?' },
+            { phrase: 'Je voudrais régler ma note.', translation: 'Chciałbym/Chciałabym się wymeldować.' },
+            { phrase: 'Puis-je payer par carte de crédit?', translation: 'Czy mogę zapłacić kartą kredytową?' },
+            { phrase: 'Puis-je laisser mes bagages ici?', translation: 'Czy mogę zostawić tutaj bagaż?' },
+            { phrase: 'Un réveil à 7h, s\'il vous plaît.', translation: 'Poproszę o budzenie o 7 rano.' },
+            { phrase: 'Y a-t-il un coffre-fort dans la chambre?', translation: 'Czy w pokoju jest sejf?' },
+            { phrase: 'J\'ai perdu ma clé de chambre.', translation: 'Zgubiłem/am klucz do pokoju.' },
+            { phrase: 'La chambre est trop bruyante.', translation: 'Pokój jest zbyt głośny.' }
+        ]
+    },
+    meteo: {
+        title: 'Météo',
+        phrases: [
+            { phrase: 'Quel temps fait-il aujourd\'hui?', translation: 'Jaka jest dzisiaj pogoda?' },
+            { phrase: 'Il fait beau.', translation: 'Jest słonecznie.' },
+            { phrase: 'Il pleut.', translation: 'Pada deszcz.' },
+            { phrase: 'Le ciel est nuageux.', translation: 'Jest pochmurno.' },
+            { phrase: 'Il y a du vent.', translation: 'Jest wietrznie.' },
+            { phrase: 'Il neige.', translation: 'Pada śnieg.' },
+            { phrase: 'Il fait froid.', translation: 'Jest zimno.' },
+            { phrase: 'Il fait chaud.', translation: 'Jest gorąco.' },
+            { phrase: 'Quelle est la température?', translation: 'Jaka jest temperatura?' },
+            { phrase: 'Il fait 20 degrés Celsius.', translation: 'Jest 20 stopni Celsjusza.' },
+            { phrase: 'Va-t-il pleuvoir demain?', translation: 'Czy jutro będzie padać?' },
+            { phrase: 'Quelles sont les prévisions météo?', translation: 'Jaka jest prognoza pogody?' },
+            { phrase: 'C\'est une belle journée.', translation: 'To piękny dzień.' },
+            { phrase: 'Il gèle.', translation: 'Jest mroźno.' },
+            { phrase: 'Il y a un orage.', translation: 'Jest burza.' },
+            { phrase: 'Il y a du brouillard.', translation: 'Jest mgliście.' },
+            { phrase: 'Le soleil brille.', translation: 'Słońce świeci.' },
+            { phrase: 'Il commence à faire nuit.', translation: 'Robi się ciemno.' },
+            { phrase: 'Le temps change.', translation: 'Pogoda się zmienia.' },
+            { phrase: 'J\'ai besoin d\'un parapluie.', translation: 'Potrzebuję parasola.' },
+            { phrase: 'C\'est humide.', translation: 'Jest wilgotno.' }
+        ]
+    }
   },
   es: {
     restaurant: {
@@ -769,6 +927,59 @@ export const allPhrases: PhrasesContent = {
             { phrase: '¡Fuego!', translation: 'Pali się!' }
         ]
     },
+    hotel: {
+        title: 'Hotel',
+        phrases: [
+            { phrase: 'Tengo una reserva.', translation: 'Mam rezerwację.' },
+            { phrase: 'Mi nombre es...', translation: 'Nazywam się...' },
+            { phrase: '¿Puedo registrarme, por favor?', translation: 'Czy mogę się zameldować?' },
+            { phrase: '¿A qué hora es el check-out?', translation: 'O której godzinie jest wymeldowanie?' },
+            { phrase: '¿Puedo tener una habitación con vistas?', translation: 'Czy mogę prosić o pokój z widokiem?' },
+            { phrase: '¿La habitación tiene Wi-Fi?', translation: 'Czy w pokoju jest Wi-Fi?' },
+            { phrase: '¿Cuál es la contraseña del Wi-Fi?', translation: 'Jakie jest hasło do Wi-Fi?' },
+            { phrase: '¿Puedo pedir el desayuno en la habitación?', translation: 'Czy mogę prosić o śniadanie do pokoju?' },
+            { phrase: '¿A qué hora se sirve el desayuno?', translation: 'O której godzinie podawane jest śniadanie?' },
+            { phrase: '¿Dónde está el restaurante/gimnasio?', translation: 'Gdzie jest restauracja/siłownia?' },
+            { phrase: 'Mi tarjeta de la habitación no funciona.', translation: 'Moja karta-klucz nie działa.' },
+            { phrase: 'El aire acondicionado no funciona.', translation: 'Klimatyzacja nie działa.' },
+            { phrase: 'No hay agua caliente.', translation: 'Nie ma ciepłej wody.' },
+            { phrase: '¿Puedo tener una toalla extra?', translation: 'Czy mogę prosić o dodatkowy ręcznik?' },
+            { phrase: '¿Puede llamarme un taxi?', translation: 'Czy może pan/pani wezwać dla mnie taksówkę?' },
+            { phrase: 'Quisiera hacer el check-out.', translation: 'Chciałbym/Chciałabym się wymeldować.' },
+            { phrase: '¿Puedo pagar con tarjeta de crédito?', translation: 'Czy mogę zapłacić kartą kredytową?' },
+            { phrase: '¿Puedo dejar mi equipaje aquí?', translation: 'Czy mogę zostawić tutaj bagaż?' },
+            { phrase: 'Una llamada de despertador a las 7, por favor.', translation: 'Poproszę o budzenie o 7 rano.' },
+            { phrase: '¿Hay caja fuerte en la habitación?', translation: 'Czy w pokoju jest sejf?' },
+            { phrase: 'He perdido la llave de mi habitación.', translation: 'Zgubiłem/am klucz do pokoju.' },
+            { phrase: 'La habitación es demasiado ruidosa.', translation: 'Pokój jest zbyt głośny.' }
+        ]
+    },
+    tiempo: {
+        title: 'Tiempo',
+        phrases: [
+            { phrase: '¿Qué tiempo hace hoy?', translation: 'Jaka jest dzisiaj pogoda?' },
+            { phrase: 'Hace sol.', translation: 'Jest słonecznie.' },
+            { phrase: 'Está lloviendo.', translation: 'Pada deszcz.' },
+            { phrase: 'Está nublado.', translation: 'Jest pochmurno.' },
+            { phrase: 'Hace viento.', translation: 'Jest wietrznie.' },
+            { phrase: 'Está nevando.', translation: 'Pada śnieg.' },
+            { phrase: 'Hace frío.', translation: 'Jest zimno.' },
+            { phrase: 'Hace calor.', translation: 'Jest gorąco.' },
+            { phrase: '¿Qué temperatura hace?', translation: 'Jaka jest temperatura?' },
+            { phrase: 'Estamos a 20 grados centígrados.', translation: 'Jest 20 stopni Celsjusza.' },
+            { phrase: '¿Va a llover mañana?', translation: 'Czy jutro będzie padać?' },
+            { phrase: '¿Cuál es el pronóstico del tiempo?', translation: 'Jaka jest prognoza pogody?' },
+            { phrase: 'Hace un día precioso.', translation: 'To piękny dzień.' },
+            { phrase: 'Hace un frío que pela.', translation: 'Jest mroźno.' },
+            { phrase: 'Hay una tormenta.', translation: 'Jest burza.' },
+            { phrase: 'Hay niebla.', translation: 'Jest mgliście.' },
+            { phrase: 'El sol brilla.', translation: 'Słońce świeci.' },
+            { phrase: 'Está anocheciendo.', translation: 'Robi się ciemno.' },
+            { phrase: 'El tiempo está cambiando.', translation: 'Pogoda się zmienia.' },
+            { phrase: 'Necesito un paraguas.', translation: 'Potrzebuję parasola.' },
+            { phrase: 'Hay humedad.', translation: 'Jest wilgotno.' }
+        ]
+    }
   },
   it: {
     restaurant: {
@@ -957,5 +1168,58 @@ export const allPhrases: PhrasesContent = {
             { phrase: 'Al fuoco!', translation: 'Pali się!' }
         ]
     },
+    hotel: {
+        title: 'Hotel',
+        phrases: [
+            { phrase: 'Ho una prenotazione.', translation: 'Mam rezerwację.' },
+            { phrase: 'Il mio nome è...', translation: 'Nazywam się...' },
+            { phrase: 'Posso fare il check-in, per favore?', translation: 'Czy mogę się zameldować?' },
+            { phrase: 'A che ora è il check-out?', translation: 'O której godzinie jest wymeldowanie?' },
+            { phrase: 'Posso avere una camera con vista?', translation: 'Czy mogę prosić o pokój z widokiem?' },
+            { phrase: 'La camera ha il Wi-Fi?', translation: 'Czy w pokoju jest Wi-Fi?' },
+            { phrase: 'Qual è la password del Wi-Fi?', translation: 'Jakie jest hasło do Wi-Fi?' },
+            { phrase: 'Posso avere la colazione in camera?', translation: 'Czy mogę prosić o śniadanie do pokoju?' },
+            { phrase: 'A che ora viene servita la colazione?', translation: 'O której godzinie podawane jest śniadanie?' },
+            { phrase: 'Dov\'è il ristorante/la palestra?', translation: 'Gdzie jest restauracja/siłownia?' },
+            { phrase: 'La mia chiave elettronica non funziona.', translation: 'Moja karta-klucz nie działa.' },
+            { phrase: 'L\'aria condizionata non funziona.', translation: 'Klimatyzacja nie działa.' },
+            { phrase: 'Non c\'è acqua calda.', translation: 'Nie ma ciepłej wody.' },
+            { phrase: 'Posso avere un asciugamano in più?', translation: 'Czy mogę prosić o dodatkowy ręcznik?' },
+            { phrase: 'Può chiamarmi un taxi?', translation: 'Czy może pan/pani wezwać dla mnie taksówkę?' },
+            { phrase: 'Vorrei fare il check-out.', translation: 'Chciałbym/Chciałabym się wymeldować.' },
+            { phrase: 'Posso pagare con la carta di credito?', translation: 'Czy mogę zapłacić kartą kredytową?' },
+            { phrase: 'Posso lasciare qui i miei bagagli?', translation: 'Czy mogę zostawić tutaj bagaż?' },
+            { phrase: 'Una sveglia alle 7, per favore.', translation: 'Poproszę o budzenie o 7 rano.' },
+            { phrase: 'C\'è una cassaforte in camera?', translation: 'Czy w pokoju jest sejf?' },
+            { phrase: 'Ho perso la chiave della camera.', translation: 'Zgubiłem/am klucz do pokoju.' },
+            { phrase: 'La camera è troppo rumorosa.', translation: 'Pokój jest zbyt głośny.' }
+        ]
+    },
+    meteo: {
+        title: 'Meteo',
+        phrases: [
+            { phrase: 'Che tempo fa oggi?', translation: 'Jaka jest dzisiaj pogoda?' },
+            { phrase: 'C\'è il sole.', translation: 'Jest słonecznie.' },
+            { phrase: 'Piove.', translation: 'Pada deszcz.' },
+            { phrase: 'È nuvoloso.', translation: 'Jest pochmurno.' },
+            { phrase: 'C\'è vento.', translation: 'Jest wietrznie.' },
+            { phrase: 'Nevica.', translation: 'Pada śnieg.' },
+            { phrase: 'Fa freddo.', translation: 'Jest zimno.' },
+            { phrase: 'Fa caldo.', translation: 'Jest gorąco.' },
+            { phrase: 'Che temperatura c\'è?', translation: 'Jaka jest temperatura?' },
+            { phrase: 'Ci sono 20 gradi Celsius.', translation: 'Jest 20 stopni Celsjusza.' },
+            { phrase: 'Pioverà domani?', translation: 'Czy jutro będzie padać?' },
+            { phrase: 'Quali sono le previsioni del tempo?', translation: 'Jaka jest prognoza pogody?' },
+            { phrase: 'È una bella giornata.', translation: 'To piękny dzień.' },
+            { phrase: 'Si gela.', translation: 'Jest mroźno.' },
+            { phrase: 'C\'è un temporale.', translation: 'Jest burza.' },
+            { phrase: 'C\'è nebbia.', translation: 'Jest mgliście.' },
+            { phrase: 'Il sole splende.', translation: 'Słońce świeci.' },
+            { phrase: 'Sta facendo buio.', translation: 'Robi się ciemno.' },
+            { phrase: 'Il tempo sta cambiando.', translation: 'Pogoda się zmienia.' },
+            { phrase: 'Ho bisogno di un ombrello.', translation: 'Potrzebuję parasola.' },
+            { phrase: 'È umido.', translation: 'Jest wilgotno.' }
+        ]
+    }
   },
 };

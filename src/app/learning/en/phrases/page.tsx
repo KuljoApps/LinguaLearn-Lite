@@ -1,4 +1,4 @@
-import { ArrowLeft, Utensils, Plane, ShoppingCart, Train, PartyPopper, Siren, MessageSquareText } from 'lucide-react';
+import { ArrowLeft, Utensils, Plane, ShoppingCart, Train, PartyPopper, Siren, MessageSquareText, Hotel, CloudSun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
@@ -48,6 +48,18 @@ export default function PhrasesEnPage() {
                         <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary">
                             <Siren className="h-12 w-12" />
                             Emergency
+                        </Button>
+                    </Link>
+                    <Link href="/learning/en/phrases/hotel" passHref>
+                        <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary">
+                            <Hotel className="h-12 w-12" />
+                            Hotel
+                        </Button>
+                    </Link>
+                    <Link href="/learning/en/phrases/weather" passHref>
+                        <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary">
+                            <CloudSun className="h-12 w-12" />
+                            Weather
                         </Button>
                     </Link>
                 </CardContent>

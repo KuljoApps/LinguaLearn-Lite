@@ -38,7 +38,7 @@ interface AggregatedError {
     userAnswers: Set<string>;
 }
 
-type QuizFilter = 'all' | 'English - Polish' | 'Polish - English' | 'Irregular Verbs' | 'Phrasal Verbs' | 'Idioms' | 'French - Polish' | 'Polish - French' | 'Irregular Verbs (FR)' | 'Faux Amis (FR)' | 'Idioms (FR)' | 'German - Polish' | 'Polish - German' | 'Irregular Verbs (DE)' | 'Separable Verbs (DE)' | 'Idioms (DE)' | 'Italiano - Polacco' | 'Polacco - Italiano' | 'Verbi Irregolari (IT)' | 'Verbi Frasali (IT)' | 'Modi di dire (IT)' | 'Español - Polaco' | 'Polaco - Español' | 'Verbos Irregulares (ES)' | 'Falsos Amigos (ES)' | 'Modismos (ES)';
+type QuizFilter = 'all' | 'English - Polish' | 'Polish - English' | 'Irregular Verbs' | 'Phrasal Verbs' | 'Idioms' | 'French - Polish' | 'Polish - French' | 'Irregular Verbs (FR)' | 'Faux Amis (FR)' | 'Idioms (FR)' | 'German - Polish' | 'Polish - German' | 'Irregular Verbs (DE)' | 'Separable Verbs (DE)' | 'Idioms (DE)' | 'Italiano - Polacco' | 'Polacco - Italiano' | 'Verbi Irregolari (IT)' | 'Falsi Amici (IT)' | 'Modi di dire (IT)' | 'Español - Polaco' | 'Polaco - Español' | 'Verbos Irregulares (ES)' | 'Falsos Amigos (ES)' | 'Modismos (ES)';
 type SortableKey = keyof ErrorRecord | keyof AggregatedError;
 
 const uiTexts = {
@@ -89,7 +89,7 @@ const quizOptionsByLanguage: Record<Language, { value: string; label: string }[]
         { value: 'Italiano - Polacco', label: 'Italiano - Polacco' },
         { value: 'Polacco - Italiano', label: 'Polacco - Italiano' },
         { value: 'Verbi Irregolari (IT)', label: 'Verbi Irregolari' },
-        { value: 'Verbi Frasali (IT)', label: 'Verbi Frasali' },
+        { value: 'Falsi Amici (IT)', label: 'Falsi Amici' },
         { value: 'Modi di dire (IT)', label: 'Modi di dire' },
     ],
     es: [

@@ -62,7 +62,7 @@ export default function Home() {
     const getQuizTitle4 = () => {
         if (isFrench) return "Faux Amis";
         if (isGerman) return "Trennbare Verben";
-        if (isItalian) return "Verbi Frasali";
+        if (isItalian) return "Falsi Amici";
         if (isSpanish) return "Falsos Amigos";
         return "Phrasal Verbs";
     }

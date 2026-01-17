@@ -1,10 +1,10 @@
 
-import QuizPhrasalVerbsIt from '@/components/quiz-phrasal-verbs-it';
+import QuizFalsiAmiciIt from '@/components/quiz-phrasal-verbs-it';
 
-export default function QuizPhrasalVerbsItPage() {
+export default function QuizFalsiAmiciItPage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4">
-      <QuizPhrasalVerbsIt />
+      <QuizFalsiAmiciIt />
     </main>
   );
 }

@@ -38,12 +38,12 @@ function shuffleArray<T>(array: T[]): T[] {
 const QUESTION_TIME_LIMIT = 15;
 const PAUSE_PENALTY = 5;
 const MIN_TIME_FOR_PAUSE = 6;
-const QUIZ_NAME = 'Verbi Frasali (IT)';
+const QUIZ_NAME = 'Falsi Amici (IT)';
 const TIME_UPDATE_INTERVAL = 5; // seconds
 const QUIZ_LENGTH = 10;
 
 
-export default function QuizPhrasalVerbsIt() {
+export default function QuizFalsiAmiciIt() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -288,7 +288,7 @@ export default function QuizPhrasalVerbsIt() {
               <LinguaLearnLogo className="h-8 w-8" />
               <CardTitle className="text-3xl font-bold tracking-tight">LinguaLearn</CardTitle>
           </div>
-          <CardDescription>Seleziona la traduzione corretta del verbo frasale.</CardDescription>
+          <CardDescription>Attenzione ai falsi amici! Scegli la traduzione corretta.</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center p-6 space-y-8">
             <div className="w-full flex justify-around gap-4 text-center">
@@ -309,7 +309,7 @@ export default function QuizPhrasalVerbsIt() {
             <Progress value={questionTimeProgress} className="w-full h-2" />
 
           <div className="text-center space-y-2">
-              <p className="text-muted-foreground">Qual è il significato polacco del verbo frasale</p>
+              <p className="text-muted-foreground">Qual è il significato polacco di</p>
               <p className="text-4xl font-headline font-bold text-card-foreground">"{currentQuestion.word}"?</p>
           </div>
 

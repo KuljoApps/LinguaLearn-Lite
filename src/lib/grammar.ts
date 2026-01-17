@@ -3,8 +3,10 @@ import type { Language } from './storage';
 export interface GrammarRule {
   heading: string;
   text: string;
-  example?: string;
-  example_pl?: string;
+  examples?: {
+    original: string;
+    translation: string;
+  }[];
 }
 
 export interface GrammarContent {
@@ -21,270 +23,450 @@ export const allGrammar: GrammarContent = {
     'sentence-structure': {
       title: 'Sentence Structure',
       content: [
-        { heading: 'Podstawowy szyk zdania (SVO)', text: 'W języku angielskim domyślnym szykiem zdania oznajmującego jest Podmiot (Subject) + Orzeczenie (Verb) + Dopełnienie (Object).', example: 'She (S) loves (V) pizza (O).', example_pl: 'Ona kocha pizzę.' },
-        { heading: 'Przysłówki miejsca i czasu', text: 'Określenia miejsca i czasu zazwyczaj umieszcza się na końcu zdania, w kolejności: sposób, miejsce, czas (Manner, Place, Time).', example: 'He read the book quietly in the library yesterday.', example_pl: 'On wczoraj w ciszy czytał książkę w bibliotece.' },
-        { heading: 'Inwersja w pytaniach', text: 'Pytania tworzy się przez inwersję, czyli zamianę miejscami podmiotu i czasownika posiłkowego (do, be, have).', example: 'Do you like coffee?', example_pl: 'Czy lubisz kawę?' },
-        { heading: 'Szyk zdania przeczącego', text: 'Przeczenie "not" umieszcza się po czasowniku posiłkowym.', example: 'They have not finished their homework.', example_pl: 'Oni nie skończyli swojego zadania domowego.' },
+        { 
+          heading: 'Zdanie oznajmujące (SVO)', 
+          text: 'Podstawowy szyk zdania w języku angielskim to SVO: Podmiot (Subject) + Orzeczenie (Verb) + Dopełnienie (Object). Ten porządek jest stosunkowo sztywny.',
+          examples: [
+            { original: 'She (S) reads (V) books (O).', translation: 'Ona czyta książki.' },
+            { original: 'The students (S) finished (V) their homework (O).', translation: 'Uczniowie skończyli swoje zadanie domowe.' }
+          ]
+        },
+        { 
+          heading: 'Pytania ogólne (Yes/No)', 
+          text: 'Podstawowe pytania tworzy się przez inwersję, czyli postawienie czasownika posiłkowego (do, does, is, are, have) przed podmiotem.',
+          examples: [
+            { original: 'Do you like music?', translation: 'Czy lubisz muzykę?' },
+            { original: 'Is he a doctor?', translation: 'Czy on jest lekarzem?' }
+          ]
+        },
+        { 
+          heading: 'Przeczenia', 
+          text: 'Przeczenie tworzy się dodając "not" po czasowniku posiłkowym. W czasie Present Simple i Past Simple dodaje się "do not" (don\'t) / "does not" (doesn\'t) lub "did not" (didn\'t).',
+          examples: [
+            { original: 'They are not from Canada.', translation: 'Oni nie są z Kanady.' },
+            { original: 'I do not understand the question.', translation: 'Nie rozumiem tego pytania.' }
+          ]
+        },
+        { 
+          heading: 'Zdania z dopełnieniem', 
+          text: 'Dopełnienie (kogo? co? komu? czemu?) zazwyczaj występuje po czasowniku. Jeśli używamy zaimków dopełnienia (me, you, him, her, it, us, them), również stoją one po czasowniku.',
+          examples: [
+            { original: 'He called me yesterday.', translation: 'On zadzwonił do mnie wczoraj.' },
+            { original: 'She gave them the keys.', translation: 'Ona dała im klucze.' }
+          ]
+        },
+        { 
+          heading: 'Okoliczniki miejsca i czasu', 
+          text: 'Określenia miejsca i czasu zazwyczaj umieszcza się na końcu zdania. Standardowa kolejność to: miejsce, a następnie czas.',
+          examples: [
+            { original: 'We went to the cinema yesterday.', translation: 'Poszliśmy wczoraj do kina.' },
+            { original: 'She will be here in an hour.', translation: 'Ona będzie tutaj za godzinę.' }
+          ]
+        }
       ],
     },
     questions: {
       title: 'Questions',
       content: [
-        { heading: 'Pytania ogólne (Yes/No)', text: 'Tworzy się je przez inwersję, czyli zamianę miejscami podmiotu i czasownika posiłkowego (auxiliary verb) jak "be", "have", "will" lub dodanie "do/does/did".', example: 'Is she a doctor? / Do you like coffee?', example_pl: 'Czy ona jest lekarką? / Czy lubisz kawę?' },
-        { heading: 'Pytania szczegółowe (Wh-questions)', text: 'Zaczynają się od zaimków pytających (what, where, when, who, why, how) i zazwyczaj zachowują szyk zdania pytającego (zaimek + czasownik posiłkowy + podmiot + reszta).', example: 'Where did you go yesterday?', example_pl: 'Gdzie wczoraj poszedłeś?' },
+        { heading: 'Pytania ogólne (Yes/No)', text: 'Tworzy się je przez inwersję, czyli zamianę miejscami podmiotu i czasownika posiłkowego (auxiliary verb) jak "be", "have", "will" lub dodanie "do/does/did".', examples: [{original: 'Is she a doctor? / Do you like coffee?', translation: 'Czy ona jest lekarką? / Czy lubisz kawę?'}] },
+        { heading: 'Pytania szczegółowe (Wh-questions)', text: 'Zaczynają się od zaimków pytających (what, where, when, who, why, how) i zazwyczaj zachowują szyk zdania pytającego (zaimek + czasownik posiłkowy + podmiot + reszta).', examples: [{original: 'Where did you go yesterday?', translation: 'Gdzie wczoraj poszedłeś?'}] },
       ],
     },
     negations: {
       title: 'Negations',
       content: [
-        { heading: 'Przeczenia z "not"', text: 'Przeczenia tworzy się przez dodanie słówka "not" po czasowniku posiłkowym. W czasie Present Simple i Past Simple używa się operatora "do/does/did" z "not".', example: 'She is not here. / I do not like spinach.', example_pl: 'Nie ma jej tutaj. / Nie lubię szpinaku.' },
-        { heading: 'Skróty', text: 'W mowie potocznej często używa się form skróconych, np. "isn\'t", "don\'t", "can\'t".', example: 'He can\'t swim.', example_pl: 'On nie umie pływać.' },
+        { heading: 'Przeczenia z "not"', text: 'Przeczenia tworzy się przez dodanie słówka "not" po czasowniku posiłkowym. W czasie Present Simple i Past Simple używa się operatora "do/does/did" z "not".', examples: [{original: 'She is not here. / I do not like spinach.', translation: 'Nie ma jej tutaj. / Nie lubię szpinaku.'}] },
+        { heading: 'Skróty', text: 'W mowie potocznej często używa się form skróconych, np. "isn\'t", "don\'t", "can\'t".', examples: [{original: 'He can\'t swim.', translation: 'On nie umie pływać.'}] },
       ],
     },
     'adjectives': {
         title: 'Adjectives',
         content: [
-            { heading: 'Position', text: 'Adjectives in English almost always come before the noun they describe.', example: 'A beautiful cat', example_pl: 'Piękny kot' },
-            { heading: 'Order of Adjectives', text: 'When using multiple adjectives, they usually follow a specific order: opinion, size, age, shape, color, origin, material, purpose.', example: 'A lovely small old round black Italian leather riding boot.', example_pl: 'Uroczy mały stary okrągły czarny włoski skórzany but do jazdy konnej.' },
+            { heading: 'Position', text: 'Adjectives in English almost always come before the noun they describe.', examples: [{original: 'A beautiful cat', translation: 'Piękny kot'}] },
+            { heading: 'Order of Adjectives', text: 'When using multiple adjectives, they usually follow a specific order: opinion, size, age, shape, color, origin, material, purpose.', examples: [{original: 'A lovely small old round black Italian leather riding boot.', translation: 'Uroczy mały stary okrągły czarny włoski skórzany but do jazdy konnej.'}] },
         ],
     },
     'adverbs': {
         title: 'Adverbs',
         content: [
-            { heading: 'Adverbs of Manner', text: 'Describe how an action is performed. They often end in "-ly" and are placed after the verb or object.', example: 'She sings beautifully.', example_pl: 'Ona pięknie śpiewa.' },
-            { heading: 'Adverbs of Frequency', text: 'Describe how often an action happens (always, sometimes, never). They are usually placed before the main verb.', example: 'I always drink coffee in the morning.', example_pl: 'Zawsze piję kawę rano.' },
+            { heading: 'Adverbs of Manner', text: 'Describe how an action is performed. They often end in "-ly" and are placed after the verb or object.', examples: [{original: 'She sings beautifully.', translation: 'Ona pięknie śpiewa.'}] },
+            { heading: 'Adverbs of Frequency', text: 'Describe how often an action happens (always, sometimes, never). They are usually placed before the main verb.', examples: [{original: 'I always drink coffee in the morning.', translation: 'Zawsze piję kawę rano.'}] },
         ],
     },
     'pronouns': {
         title: 'Pronouns',
         content: [
-            { heading: 'Subject Pronouns', text: 'Replace the noun that is the subject of the sentence (I, you, he, she, it, we, they).', example: 'She is my sister.', example_pl: 'Ona jest moją siostrą.' },
-            { heading: 'Object Pronouns', text: 'Replace the noun that is the object of the sentence (me, you, him, her, it, us, them).', example: 'He gave me the book.', example_pl: 'On dał mi książkę.' },
+            { heading: 'Subject Pronouns', text: 'Replace the noun that is the subject of the sentence (I, you, he, she, it, we, they).', examples: [{original: 'She is my sister.', translation: 'Ona jest moją siostrą.'}] },
+            { heading: 'Object Pronouns', text: 'Replace the noun that is the object of the sentence (me, you, him, her, it, us, them).', examples: [{original: 'He gave me the book.', translation: 'On dał mi książkę.'}] },
         ],
     },
     'articles': {
       title: 'Articles',
       content: [
-          { heading: 'Definite Article (the)', text: 'The definite article "the" is used to refer to specific, known nouns.', example: 'The dog is friendly.', example_pl: '(Ten konkretny) pies jest przyjazny.' },
-          { heading: 'Indefinite Articles (a/an)', text: '"A" is used before words starting with a consonant sound, and "an" before words starting with a vowel sound. They refer to a non-specific noun.', example: 'I saw a cat. / He wants an apple.', example_pl: 'Widziałem (jakiegoś) kota. / On chce (jakieś) jabłko.' },
-          { heading: 'Zero Article', text: 'No article is used with plural countable nouns or uncountable nouns when speaking generally.', example: 'Cats are independent. / I like music.', example_pl: 'Koty są niezależne. / Lubię muzykę.' },
+          { heading: 'Definite Article (the)', text: 'The definite article "the" is used to refer to specific, known nouns.', examples: [{original: 'The dog is friendly.', translation: '(Ten konkretny) pies jest przyjazny.'}] },
+          { heading: 'Indefinite Articles (a/an)', text: '"A" is used before words starting with a consonant sound, and "an" before words starting with a vowel sound. They refer to a non-specific noun.', examples: [{original: 'I saw a cat. / He wants an apple.', translation: 'Widziałem (jakiegoś) kota. / On chce (jakieś) jabłko.'}] },
+          { heading: 'Zero Article', text: 'No article is used with plural countable nouns or uncountable nouns when speaking generally.', examples: [{original: 'Cats are independent. / I like music.', translation: 'Koty są niezależne. / Lubię muzykę.'}] },
       ],
   },
   },
   de: {
     'sentence-structure': {
-        title: 'Satzbau',
-        content: [
-          { heading: 'Szyk prosty (V2)', text: 'W niemieckim zdaniu oznajmującym odmieniony czasownik (orzeczenie) zawsze zajmuje drugą pozycję.', example: 'Ich lerne heute Deutsch.', example_pl: 'Uczę się dzisiaj niemieckiego.' },
-          { heading: 'Szyk przestawny (Inwersja)', text: 'Jeśli na pierwszej pozycji w zdaniu umieścimy inny element niż podmiot (np. przysłówek czasu), podmiot przesuwa się za orzeczenie.', example: 'Heute lerne ich Deutsch.', example_pl: 'Dzisiaj uczę się niemieckiego.' },
-          { heading: 'Ramowa konstrukcja zdania (Satzklammer)', text: 'W czasach złożonych (np. Perfekt) lub z czasownikami modalnymi, druga część orzeczenia (Partizip II lub bezokolicznik) wędruje na sam koniec zdania.', example: 'Ich habe das Buch gelesen. / Ich will Deutsch lernen.', example_pl: 'Przeczytałem tę książkę. / Chcę uczyć się niemieckiego.' },
-          { heading: 'Szyk końcowy w zdaniach podrzędnych', text: 'W zdaniach podrzędnych, wprowadzanych przez spójniki takie jak "weil" (ponieważ), "dass" (że), "wenn" (kiedy, jeśli), odmieniony czasownik przenosi się na koniec zdania.', example: 'Ich bleibe zu Hause, weil es regnet.', example_pl: 'Zostaję w domu, ponieważ pada deszcz.' },
-        ],
-      },
+      title: 'Satzbau',
+      content: [
+        { 
+          heading: 'Zdanie oznajmujące (Szyk V2)', 
+          text: 'W niemieckim zdaniu oznajmującym odmieniony czasownik (orzeczenie) zawsze zajmuje drugą pozycję. Na pierwszej pozycji może stać podmiot lub inny element zdania (np. określenie czasu).',
+          examples: [
+            { original: 'Ich lerne heute Deutsch.', translation: 'Uczę się dzisiaj niemieckiego. (szyk prosty)' },
+            { original: 'Heute lerne ich Deutsch.', translation: 'Dzisiaj uczę się niemieckiego. (szyk przestawny)' }
+          ]
+        },
+        { 
+          heading: 'Pytania ogólne (Ja/Nein-Fragen)', 
+          text: 'Podstawowe pytania, na które można odpowiedzieć "tak" lub "nie", tworzy się przez postawienie odmienionego czasownika na pierwszym miejscu.',
+          examples: [
+            { original: 'Lernst du Deutsch?', translation: 'Czy uczysz się niemieckiego?' },
+            { original: 'Hast du einen Hund?', translation: 'Czy masz psa?' }
+          ]
+        },
+        { 
+          heading: 'Przeczenia (nicht / kein)', 
+          text: 'Przeczenie "nicht" neguje czasownik lub całe zdanie i zazwyczaj stoi na końcu. Przeczenie "kein" neguje rzeczownik i stoi przed nim, odmieniając się jak rodzajnik nieokreślony.',
+          examples: [
+            { original: 'Ich spiele nicht gern Tennis.', translation: 'Nie lubię grać w tenisa.' },
+            { original: 'Er hat kein Auto.', translation: 'On nie ma samochodu.' }
+          ]
+        },
+        { 
+          heading: 'Zdania z dopełnieniem (Akkusativ / Dativ)', 
+          text: 'W niemieckim ważny jest przypadek (case). Dopełnienie w bierniku (Akkusativ) odpowiada na pytanie "kogo? co?", a w celowniku (Dativ) na "komu? czemu?". Standardowa kolejność to: Dativ przed Akkusativ.',
+          examples: [
+            { original: 'Der Lehrer gibt dem Schüler (Dativ) ein Buch (Akkusativ).', translation: 'Nauczyciel daje uczniowi książkę.' },
+            { original: 'Ich sehe ihn (Akkusativ) im Park.', translation: 'Widzę go w parku.' }
+          ]
+        },
+        { 
+          heading: 'Okoliczniki czasu i miejsca (TeKaMoLo)', 
+          text: 'Określenia w zdaniu często podążają za regułą TeKaMoLo: Temporal (kiedy?), Kausal (dlaczego?), Modal (jak?), Lokal (gdzie?). Czas zazwyczaj występuje przed miejscem.',
+          examples: [
+            { original: 'Ich fahre morgen (Zeit) nach Berlin (Ort).', translation: 'Jadę jutro do Berlina.' },
+            { original: 'Wir treffen uns um 18 Uhr (Zeit) vor dem Kino (Ort).', translation: 'Spotykamy się o 18:00 przed kinem.' }
+          ]
+        }
+      ],
+    },
       questions: {
         title: 'Fragen',
         content: [
-          { heading: 'Pytania rozstrzygnięcia (Ja/Nein-Fragen)', text: 'Tworzy się je przez postawienie orzeczenia na pierwszym miejscu w zdaniu (inwersja).', example: 'Lernst du Deutsch?', example_pl: 'Czy uczysz się niemieckiego?' },
-          { heading: 'Pytania szczegółowe (W-Fragen)', text: 'Zaczynają się od zaimka pytającego (Was, Wer, Wo, Wann, Warum, Wie), po którym na drugim miejscu stoi orzeczenie.', example: 'Warum lernst du Deutsch?', example_pl: 'Dlaczego uczysz się niemieckiego?' },
+          { heading: 'Pytania rozstrzygnięcia (Ja/Nein-Fragen)', text: 'Tworzy się je przez postawienie orzeczenia na pierwszym miejscu w zdaniu (inwersja).', examples: [{original: 'Lernst du Deutsch?', translation: 'Czy uczysz się niemieckiego?'}] },
+          { heading: 'Pytania szczegółowe (W-Fragen)', text: 'Zaczynają się od zaimka pytającego (Was, Wer, Wo, Wann, Warum, Wie), po którym na drugim miejscu stoi orzeczenie.', examples: [{original: 'Warum lernst du Deutsch?', translation: 'Dlaczego uczysz się niemieckiego?'}] },
         ],
       },
       negations: {
         title: 'Verneinung',
         content: [
-          { heading: 'Przeczenie "nicht"', text: '"Nicht" służy do negowania czasowników, przymiotników, przysłówków i całych zdań. Zazwyczaj stoi na końcu zdania lub przed częścią, którą neguje.', example: 'Ich lerne nicht. / Das ist nicht gut.', example_pl: 'Ja się nie uczę. / To nie jest dobre.' },
-          { heading: 'Przeczenie "kein"', text: '"Kein" służy do negowania rzeczowników z rodzajnikiem nieokreślonym lub bez rodzajnika. Odmienia się jak rodzajnik nieokreślony.', example: 'Ich habe keinen Hund.', example_pl: 'Nie mam (żadnego) psa.' },
+          { heading: 'Przeczenie "nicht"', text: '"Nicht" służy do negowania czasowników, przymiotników, przysłówków i całych zdań. Zazwyczaj stoi na końcu zdania lub przed częścią, którą neguje.', examples: [{original: 'Ich lerne nicht. / Das ist nicht gut.', translation: 'Ja się nie uczę. / To nie jest dobre.'}] },
+          { heading: 'Przeczenie "kein"', text: '"Kein" służy do negowania rzeczowników z rodzajnikiem nieokreślonym lub bez rodzajnika. Odmienia się jak rodzajnik nieokreślony.', examples: [{original: 'Ich habe keinen Hund.', translation: 'Nie mam (żadnego) psa.'}] },
         ],
     },
     'adjectives': {
         title: 'Adjektive',
         content: [
-            { heading: 'Odmiana przymiotnika', text: 'W niemieckim przymiotniki odmieniają się, gdy stoją przed rzeczownikiem. Końcówka zależy od rodzajnika, przypadku i liczby.', example: 'Ein guter Mann (mieszana), der gute Mann (słaba), guter Mann (mocna).', example_pl: 'Dobry mężczyzna.' },
-            { heading: 'Przymiotnik jako orzecznik', text: 'Gdy przymiotnik występuje po czasownikach "sein", "werden", "bleiben" (jako orzecznik), pozostaje nieodmienny.', example: 'Der Mann ist gut.', example_pl: 'Mężczyzna jest dobry.' },
+            { heading: 'Odmiana przymiotnika', text: 'W niemieckim przymiotniki odmieniają się, gdy stoją przed rzeczownikiem. Końcówka zależy od rodzajnika, przypadku i liczby.', examples: [{original: 'Ein guter Mann (mieszana), der gute Mann (słaba), guter Mann (mocna).', translation: 'Dobry mężczyzna.'}] },
+            { heading: 'Przymiotnik jako orzecznik', text: 'Gdy przymiotnik występuje po czasownikach "sein", "werden", "bleiben" (jako orzecznik), pozostaje nieodmienny.', examples: [{original: 'Der Mann ist gut.', translation: 'Mężczyzna jest dobry.'}] },
         ],
     },
     'adverbs': {
         title: 'Adverbien',
         content: [
-            { heading: 'Tworzenie przysłówków', text: 'Wiele przysłówków w języku niemieckim ma taką samą formę jak nieodmieniony przymiotnik.', example: 'Er fährt schnell (szybko). Das schnelle Auto (szybki samochód).', example_pl: 'On jedzie szybko. Szybki samochód.' },
-            { heading: 'Pozycja w zdaniu', text: 'Przysłówki czasu, przyczyny, sposobu i miejsca często występują w określonej kolejności (TeKaMoLo: Temporal, Kausal, Modal, Lokal).', example: 'Ich fahre heute (Te) wegen des Wetters (Ka) langsam (Mo) nach Hause (Lo).', example_pl: 'Jadę dzisiaj z powodu pogody powoli do domu.' },
+            { heading: 'Tworzenie przysłówków', text: 'Wiele przysłówków w języku niemieckim ma taką samą formę jak nieodmieniony przymiotnik.', examples: [{original: 'Er fährt schnell (szybko). Das schnelle Auto (szybki samochód).', translation: 'On jedzie szybko. Szybki samochód.'}] },
+            { heading: 'Pozycja w zdaniu', text: 'Przysłówki czasu, przyczyny, sposobu i miejsca często występują w określonej kolejności (TeKaMoLo: Temporal, Kausal, Modal, Lokal).', examples: [{original: 'Ich fahre heute (Te) wegen des Wetters (Ka) langsam (Mo) nach Hause (Lo).', translation: 'Jadę dzisiaj z powodu pogody powoli do domu.'}] },
         ],
     },
     'pronouns': {
         title: 'Pronomen',
         content: [
-            { heading: 'Zaimki osobowe', text: 'Zastępują osoby lub rzeczy i odmieniają się przez przypadki (Nominativ, Akkusativ, Dativ).', example: 'Ich sehe ihn (Akk). Er gibt mir (Dat) das Buch.', example_pl: 'Widzę go. On daje mi książkę.' },
-            { heading: 'Zaimki dzierżawcze', text: 'Określają przynależność (mein, dein, sein, ihr...). Odmieniają się jak rodzajnik nieokreślony i zależą od rodzaju i liczby rzeczownika.', example: 'Das ist mein Hund.', example_pl: 'To jest mój pies.' },
+            { heading: 'Zaimki osobowe', text: 'Zastępują osoby lub rzeczy i odmieniają się przez przypadki (Nominativ, Akkusativ, Dativ).', examples: [{original: 'Ich sehe ihn (Akk). Er gibt mir (Dat) das Buch.', translation: 'Widzę go. On daje mi książkę.'}] },
+            { heading: 'Zaimki dzierżawcze', text: 'Określają przynależność (mein, dein, sein, ihr...). Odmieniają się jak rodzajnik nieokreślony i zależą od rodzaju i liczby rzeczownika.', examples: [{original: 'Das ist mein Hund.', translation: 'To jest mój pies.'}] },
         ],
     },
     'articles': {
       title: 'Artikel',
       content: [
-          { heading: 'Bestimmte Artikel (der, die, das)', text: 'Rodzajniki określone odnoszą się do konkretnych, znanych osób lub rzeczy.', example: 'Der Hund ist groß.', example_pl: '(Ten konkretny) pies jest duży.' },
-          { heading: 'Unbestimmte Artikel (ein, eine)', text: 'Rodzajniki nieokreślone odnoszą się do nieokreślonej, jednej osoby lub rzeczy. Nie mają formy liczby mnogiej.', example: 'Ich sehe einen Hund.', example_pl: 'Widzę (jakiegoś) psa.' },
-          { heading: 'Nullartikel (brak rodzajnika)', text: 'Rodzajnika nie używa się m.in. przed nazwami własnymi, materiałami, rzeczownikami w liczbie mnogiej (gdy mowa ogólnie) i po określeniach miary.', example: 'Ich trinke Milch. / Das sind Äpfel.', example_pl: 'Piję mleko. / To są jabłka.' },
+          { heading: 'Bestimmte Artikel (der, die, das)', text: 'Rodzajniki określone odnoszą się do konkretnych, znanych osób lub rzeczy.', examples: [{original: 'Der Hund ist groß.', translation: '(Ten konkretny) pies jest duży.'}] },
+          { heading: 'Unbestimmte Artikel (ein, eine)', text: 'Rodzajniki nieokreślone odnoszą się do nieokreślonej, jednej osoby lub rzeczy. Nie mają formy liczby mnogiej.', examples: [{original: 'Ich sehe einen Hund.', translation: 'Widzę (jakiegoś) psa.'}] },
+          { heading: 'Nullartikel (brak rodzajnika)', text: 'Rodzajnika nie używa się m.in. przed nazwami własnymi, materiałami, rzeczownikami w liczbie mnogiej (gdy mowa ogólnie) i po określeniach miary.', examples: [{original: 'Ich trinke Milch. / Das sind Äpfel.', translation: 'Piję mleko. / To są jabłka.'}] },
       ],
   },
   },
   es: {
     'sentence-structure': {
-        title: 'Estructura de la Oración',
-        content: [
-          { heading: 'Elastyczny szyk SVO', text: 'Podstawowy szyk to Podmiot-Orzeczenie-Dopełnienie (SVO), ale jest on bardzo elastyczny. Często pomija się zaimek osobowy, ponieważ forma czasownika go wskazuje.', example: '(Yo) como una manzana.', example_pl: '(Ja) jem jabłko.' },
-          { heading: 'Pozycja przymiotnika', text: 'W przeciwieństwie do polskiego, przymiotniki zazwyczaj umieszcza się PO rzeczowniku.', example: 'Tengo un coche rojo.', example_pl: 'Mam czerwony samochód.' },
-          { heading: 'Szyk zdania przeczącego', text: 'Przeczenie "no" zawsze stawia się bezpośrednio PRZED odmienionym czasownikiem.', example: 'Ella no habla inglés.', example_pl: 'Ona nie mówi po angielsku.' },
-          { heading: 'Szyk w pytaniach', text: 'Pytania najczęściej tworzy się przez inwersję (zamianę miejscami czasownika i podmiotu) lub po prostu przez zmianę intonacji.', example: '¿Vives tú en Madrid? / ¿Tú vives en Madrid?', example_pl: 'Czy mieszkasz w Madrycie?' },
-        ],
-      },
+      title: 'Estructura de la Oración',
+      content: [
+        { 
+          heading: 'Zdanie oznajmujące (Elastyczny SVO)', 
+          text: 'Podstawowy szyk to Podmiot-Orzeczenie-Dopełnienie (SVO), ale jest on bardzo elastyczny. Często pomija się podmiot (zaimek osobowy), ponieważ forma czasownika jasno go wskazuje.',
+          examples: [
+            { original: '(Yo) como una manzana.', translation: '(Ja) jem jabłko.' },
+            { original: 'Mi amigo lee un libro en la biblioteca.', translation: 'Mój przyjaciel czyta książkę w bibliotece.' }
+          ]
+        },
+        { 
+          heading: 'Pytania ogólne', 
+          text: 'Najprostszym sposobem jest zmiana intonacji zdania twierdzącego na pytającą. W piśmie zdanie otacza się znakami zapytania (¿...?). Możliwa jest też inwersja (zamiana miejscami czasownika i podmiotu).',
+          examples: [
+            { original: '¿Hablas español?', translation: 'Mówisz po hiszpańsku? (przez intonację)' },
+            { original: '¿Viene Juan a la fiesta?', translation: 'Czy Juan przychodzi na imprezę? (przez inwersję)' }
+          ]
+        },
+        { 
+          heading: 'Przeczenia (z "no")', 
+          text: 'Przeczenie tworzy się bardzo prosto, stawiając słówko "no" bezpośrednio przed odmienionym czasownikiem.',
+          examples: [
+            { original: 'No quiero ir al cine.', translation: 'Nie chcę iść do kina.' },
+            { original: 'Ellos no tienen coche.', translation: 'Oni nie mają samochodu.' }
+          ]
+        },
+        { 
+          heading: 'Zdania z zaimkami dopełnienia', 
+          text: 'Zaimki dopełnienia (me, te, lo, la, le...) stoją zazwyczaj przed odmienionym czasownikiem lub są "doklejone" na końcu bezokolicznika.',
+          examples: [
+            { original: 'Lo veo todos los días.', translation: 'Widzę go codziennie.' },
+            { original: 'Quiero comprarlo.', translation: 'Chcę to kupić.' }
+          ]
+        },
+        { 
+          heading: 'Okoliczniki miejsca i czasu', 
+          text: 'Mają dużą swobodę w zdaniu. Najczęściej umieszcza się je na początku lub na końcu zdania.',
+          examples: [
+            { original: 'Ayer fuimos a la playa.', translation: 'Wczoraj poszliśmy na plażę.' },
+            { original: 'Mi hermana vive en Madrid desde hace cinco años.', translation: 'Moja siostra mieszka w Madrycie od pięciu lat.' }
+          ]
+        }
+      ],
+    },
       questions: {
         title: 'Preguntas',
         content: [
-          { heading: 'Pytania przez intonację', text: 'Najprostszym sposobem jest zmiana intonacji zdania oznajmującego na pytającą. W piśmie stosuje się odwrócone znaki zapytania na początku (¿) i normalne na końcu (?).', example: '¿Hablas español?', example_pl: 'Mówisz po hiszpańsku?' },
-          { heading: 'Pytania przez inwersję', text: 'Można również zamienić miejscami podmiot i orzeczenie, choć nie jest to tak częste jak w angielskim.', example: '¿Viene Juan a la fiesta?', example_pl: 'Czy Juan przychodzi na imprezę?' },
-          { heading: 'Pytania z zaimkami pytającymi', text: 'Pytania szczegółowe zaczynają się od zaimków takich jak Qué, Quién, Dónde, Cuándo, Por qué, Cómo.', example: '¿Dónde vives?', example_pl: 'Gdzie mieszkasz?' },
+          { heading: 'Pytania przez intonację', text: 'Najprostszym sposobem jest zmiana intonacji zdania oznajmującego na pytającą. W piśmie stosuje się odwrócone znaki zapytania na początku (¿) i normalne na końcu (?).', examples: [{original: '¿Hablas español?', translation: 'Mówisz po hiszpańsku?'}] },
+          { heading: 'Pytania przez inwersję', text: 'Można również zamienić miejscami podmiot i orzeczenie, choć nie jest to tak częste jak w angielskim.', examples: [{original: '¿Viene Juan a la fiesta?', translation: 'Czy Juan przychodzi na imprezę?'}] },
+          { heading: 'Pytania z zaimkami pytającymi', text: 'Pytania szczegółowe zaczynają się od zaimków takich jak Qué, Quién, Dónde, Cuándo, Por qué, Cómo.', examples: [{original: '¿Dónde vives?', translation: 'Gdzie mieszkasz?'}] },
         ],
       },
       negations: {
         title: 'Negaciones',
         content: [
-          { heading: 'Przeczenie "no"', text: 'Przeczenia tworzy się bardzo prosto, stawiając słówko "no" bezpośrednio przed odmienionym czasownikiem.', example: 'No hablo español.', example_pl: 'Nie mówię po hiszpańsku.' },
-          { heading: 'Podwójne przeczenie', text: 'W języku hiszpańskim podwójne przeczenie jest poprawne i konieczne, np. przy użyciu "nadie" (nikt), "nada" (nic), "nunca" (nigdy).', example: 'No veo a nadie.', example_pl: 'Nikogo nie widzę (dosł. Nie widzę nikogo).' },
+          { heading: 'Przeczenie "no"', text: 'Przeczenia tworzy się bardzo prosto, stawiając słówko "no" bezpośrednio przed odmienionym czasownikiem.', examples: [{original: 'No hablo español.', translation: 'Nie mówię po hiszpańsku.'}] },
+          { heading: 'Podwójne przeczenie', text: 'W języku hiszpańskim podwójne przeczenie jest poprawne i konieczne, np. przy użyciu "nadie" (nikt), "nada" (nic), "nunca" (nigdy).', examples: [{original: 'No veo a nadie.', translation: 'Nikogo nie widzę (dosł. Nie widzę nikogo).'}] },
         ],
     },
     'adjectives': {
         title: 'Adjetivos',
         content: [
-            { heading: 'Pozycja przymiotnika', text: 'Zazwyczaj przymiotnik stoi po rzeczowniku, który opisuje. Zmiana pozycji może zmienić znaczenie.', example: 'Un coche grande (duży samochód) vs un gran coche (wspaniały samochód).', example_pl: 'Duży samochód vs wspaniały samochód.' },
-            { heading: 'Zgodność rodzaju i liczby', text: 'Przymiotniki muszą zgadzać się co do rodzaju (męski/żeński) i liczby (pojedyncza/mnoga) z rzeczownikiem.', example: 'La casa es bonita. Los coches son bonitos.', example_pl: 'Dom jest ładny. Samochody są ładne.' },
+            { heading: 'Pozycja przymiotnika', text: 'Zazwyczaj przymiotnik stoi po rzeczowniku, który opisuje. Zmiana pozycji może zmienić znaczenie.', examples: [{original: 'Un coche grande (duży samochód) vs un gran coche (wspaniały samochód).', translation: 'Duży samochód vs wspaniały samochód.'}] },
+            { heading: 'Zgodność rodzaju i liczby', text: 'Przymiotniki muszą zgadzać się co do rodzaju (męski/żeński) i liczby (pojedyncza/mnoga) z rzeczownikiem.', examples: [{original: 'La casa es bonita. Los coches son bonitos.', translation: 'Dom jest ładny. Samochody są ładne.'}] },
         ],
     },
     'adverbs': {
         title: 'Adverbios',
         content: [
-            { heading: 'Tworzenie z przymiotników', text: 'Wiele przysłówków tworzy się, dodając końcówkę "-mente" do żeńskiej formy przymiotnika.', example: 'rápido -> rápida -> rápidamente', example_pl: 'szybki -> szybko' },
-            { heading: 'Pozycja w zdaniu', text: 'Przysłówki zazwyczaj stoją blisko słowa, które modyfikują (czasownika, przymiotnika lub innego przysłówka).', example: 'Él corre muy rápido.', example_pl: 'On biega bardzo szybko.' },
+            { heading: 'Tworzenie z przymiotników', text: 'Wiele przysłówków tworzy się, dodając końcówkę "-mente" do żeńskiej formy przymiotnika.', examples: [{original: 'rápido -> rápida -> rápidamente', translation: 'szybki -> szybko'}] },
+            { heading: 'Pozycja w zdaniu', text: 'Przysłówki zazwyczaj stoją blisko słowa, które modyfikują (czasownika, przymiotnika lub innego przysłówka).', examples: [{original: 'Él corre muy rápido.', translation: 'On biega bardzo szybko.'}] },
         ],
     },
     'pronouns': {
         title: 'Pronombres',
         content: [
-            { heading: 'Pominięcie zaimka podmiotowego', text: 'Zaimki podmiotowe (yo, tú, él...) są często pomijane, ponieważ forma czasownika jasno wskazuje, o kogo chodzi.', example: '(Yo) hablo español.', example_pl: 'Mówię po hiszpańsku.' },
-            { heading: 'Zaimki dopełnienia', text: 'Zaimki dopełnienia bliższego (lo, la, los, las) i dalszego (le, les) stoją przed odmienionym czasownikiem lub są dołączone do bezokolicznika/gerundio.', example: 'Lo veo. / Quiero verlo.', example_pl: 'Widzę go. / Chcę go zobaczyć.' },
+            { heading: 'Pominięcie zaimka podmiotowego', text: 'Zaimki podmiotowe (yo, tú, él...) są często pomijane, ponieważ forma czasownika jasno wskazuje, o kogo chodzi.', examples: [{original: '(Yo) hablo español.', translation: 'Mówię po hiszpańsku.'}] },
+            { heading: 'Zaimki dopełnienia', text: 'Zaimki dopełnienia bliższego (lo, la, los, las) i dalszego (le, les) stoją przed odmienionym czasownikiem lub są dołączone do bezokolicznika/gerundio.', examples: [{original: 'Lo veo. / Quiero verlo.', translation: 'Widzę go. / Chcę go zobaczyć.'}] },
         ],
     },
     'articles': {
       title: 'Artículos',
       content: [
-          { heading: 'Artículos Determinados (el, la, los, las)', text: 'Rodzajniki określone odnoszą się do konkretnych, znanych rzeczowników.', example: 'El coche es rojo.', example_pl: '(Ten konkretny) samochód jest czerwony.' },
-          { heading: 'Artículos Indeterminados (un, una, unos, unas)', text: 'Rodzajniki nieokreślone odnoszą się do niesprecyzowanych, jakichkolwiek rzeczowników.', example: 'Veo un coche.', example_pl: 'Widzę (jakiś) samochód.' },
-          { heading: 'Kontrakcje (al, del)', text: 'Przyimki "a" i "de" łączą się z rodzajnikiem "el", tworząc formy "al" (a + el) i "del" (de + el).', example: 'Voy al cine. / Vengo del trabajo.', example_pl: 'Idę do kina. / Wracam z pracy.' },
+          { heading: 'Artículos Determinados (el, la, los, las)', text: 'Rodzajniki określone odnoszą się do konkretnych, znanych rzeczowników.', examples: [{original: 'El coche es rojo.', translation: '(Ten konkretny) samochód jest czerwony.'}] },
+          { heading: 'Artículos Indeterminados (un, una, unos, unas)', text: 'Rodzajniki nieokreślone odnoszą się do niesprecyzowanych, jakichkolwiek rzeczowników.', examples: [{original: 'Veo un coche.', translation: 'Widzę (jakiś) samochód.'}] },
+          { heading: 'Kontrakcje (al, del)', text: 'Przyimki "a" i "de" łączą się z rodzajnikiem "el", tworząc formy "al" (a + el) i "del" (de + el).', examples: [{original: 'Voy al cine. / Vengo del trabajo.', translation: 'Idę do kina. / Wracam z pracy.'}] },
       ],
   },
   },
   fr: {
     'sentence-structure': {
-        title: 'Structure de la Phrase',
-        content: [
-          { heading: 'Podstawowy szyk zdania (SVO)', text: 'Standardowy szyk zdania to Podmiot (Sujet) + Orzeczenie (Verbe) + Dopełnienie (Objet).', example: 'Le chat mange la souris.', example_pl: 'Kot je mysz.' },
-          { heading: 'Szyk przeczenia "ne...pas"', text: 'Cząstki przeczące "ne" i "pas" otaczają odmieniony czasownik w czasach prostych. W potocznej mowie "ne" jest często pomijane.', example: 'Je ne comprends pas. / Je comprends pas.', example_pl: 'Nie rozumiem.' },
-          { heading: 'Pozycja zaimków dopełnienia', text: 'Zaimki dopełnienia (np. le, la, lui, leur) zawsze stoją PRZED czasownikiem, którego dotyczą.', example: 'Je le vois. (Widzę go) / Elle lui parle. (Ona do niego/niej mówi).', example_pl: 'Widzę go. / Ona do niego/niej mówi.' },
-          { heading: 'Inwersja w pytaniach (formalna)', text: 'W formalnych pytaniach następuje inwersja podmiotu z orzeczeniem, połączona myślnikiem.', example: 'Parlez-vous français?', example_pl: 'Czy mówi Pan/Pani po francusku?' },
-        ],
-      },
+      title: 'Structure de la Phrase',
+      content: [
+        { 
+          heading: 'Zdanie oznajmujące (SVO)', 
+          text: 'Podstawowy szyk zdania to Podmiot (Sujet) + Orzeczenie (Verbe) + Dopełnienie (Objet). Jest on dość rygorystyczny.',
+          examples: [
+            { original: 'Le chat (S) mange (V) la souris (O).', translation: 'Kot je mysz.' },
+            { original: 'Mon ami (S) regarde (V) un film (O).', translation: 'Mój przyjaciel ogląda film.' }
+          ]
+        },
+        { 
+          heading: 'Pytania (Est-ce que)', 
+          text: 'Standardowy i neutralny sposób tworzenia pytań to dodanie "Est-ce que" na początku zdania twierdzącego.',
+          examples: [
+            { original: 'Est-ce que tu parles français?', translation: 'Czy mówisz po francusku?' },
+            { original: 'Est-ce qu\'il vient à la fête?', translation: 'Czy on przychodzi na imprezę?' }
+          ]
+        },
+        { 
+          heading: 'Przeczenia (ne ... pas)', 
+          text: 'Przeczenie tworzy się za pomocą dwóch części: "ne" i "pas", które "otaczają" odmieniony czasownik. W języku mówionym "ne" jest często pomijane.',
+          examples: [
+            { original: 'Je ne comprends pas la question.', translation: 'Nie rozumiem pytania.' },
+            { original: 'Elle n\'est pas ici aujourd\'hui.', translation: 'Jej tu dzisiaj nie ma.' }
+          ]
+        },
+        { 
+          heading: 'Zdania z zaimkami dopełnienia', 
+          text: 'Zaimki dopełnienia (np. le, la, lui, me, te) zawsze stoją bezpośrednio przed czasownikiem (lub czasownikiem posiłkowym w czasach złożonych).',
+          examples: [
+            { original: 'Je le vois.', translation: 'Widzę go.' },
+            { original: 'Tu me donnes le livre.', translation: 'Dajesz mi książkę.' }
+          ]
+        },
+        { 
+          heading: 'Okoliczniki miejsca i czasu', 
+          text: 'Zwykle umieszcza się je na końcu zdania, ale mogą też stać na początku dla emfazy.',
+          examples: [
+            { original: 'Nous allons au cinéma ce soir.', translation: 'Idziemy dziś wieczorem do kina.' },
+            { original: 'Hier, il a beaucoup plu.', translation: 'Wczoraj mocno padało.' }
+          ]
+        }
+      ],
+    },
       questions: {
         title: 'Les Questions',
         content: [
-          { heading: 'Pytania przez "Est-ce que"', text: 'Najprostszy i najczęstszy sposób tworzenia pytań to dodanie "Est-ce que" na początku zdania oznajmującego.', example: 'Est-ce que tu parles français?', example_pl: 'Czy mówisz po francusku?' },
-          { heading: 'Pytania przez inwersję', text: 'Bardziej formalny sposób to inwersja, czyli zamiana miejscami podmiotu i orzeczenia.', example: 'Parles-tu français?', example_pl: 'Czy mówisz po francusku?' },
-          { heading: 'Pytania przez intonację', text: 'W mowie potocznej najczęściej zadaje się pytanie po prostu zmieniając intonację zdania oznajmującego na wznoszącą.', example: 'Tu parles français?', example_pl: 'Mówisz po francusku?' },
+          { heading: 'Pytania przez "Est-ce que"', text: 'Najprostszy i najczęstszy sposób tworzenia pytań to dodanie "Est-ce que" na początku zdania oznajmującego.', examples: [{original: 'Est-ce que tu parles français?', translation: 'Czy mówisz po francusku?'}] },
+          { heading: 'Pytania przez inwersję', text: 'Bardziej formalny sposób to inwersja, czyli zamiana miejscami podmiotu i orzeczenia.', examples: [{original: 'Parles-tu français?', translation: 'Czy mówisz po francusku?'}] },
+          { heading: 'Pytania przez intonację', text: 'W mowie potocznej najczęściej zadaje się pytanie po prostu zmieniając intonację zdania oznajmującego na wznoszącą.', examples: [{original: 'Tu parles français?', translation: 'Mówisz po francusku?'}] },
         ],
       },
       negations: {
         title: 'La Négation',
         content: [
-          { heading: 'Konstrukcja "ne ... pas"', text: 'Podstawowe przeczenie tworzy się za pomocą dwóch słów: "ne" i "pas", które otaczają odmieniony czasownik.', example: 'Je ne parle pas français.', example_pl: 'Nie mówię po francusku.' },
-          { heading: 'Skracanie w mowie', text: 'W języku mówionym bardzo często pomija się "ne", pozostawiając tylko "pas".', example: 'Je parle pas français.', example_pl: '(Potocznie) Nie mówię po francusku.' },
+          { heading: 'Konstrukcja "ne ... pas"', text: 'Podstawowe przeczenie tworzy się za pomocą dwóch słów: "ne" i "pas", które otaczają odmieniony czasownik.', examples: [{original: 'Je ne parle pas français.', translation: 'Nie mówię po francusku.'}] },
+          { heading: 'Skracanie w mowie', text: 'W języku mówionym bardzo często pomija się "ne", pozostawiając tylko "pas".', examples: [{original: 'Je parle pas français.', translation: '(Potocznie) Nie mówię po francusku.'}] },
         ],
     },
     'adjectives': {
         title: 'Adjectifs',
         content: [
-            { heading: 'Pozycja przymiotnika', text: 'Większość przymiotników stoi po rzeczowniku. Krótkie i powszechne przymiotniki (jak beau, grand, petit, bon) stoją przed rzeczownikiem.', example: 'Une voiture rouge (czerwony samochód) vs une belle voiture (piękny samochód).', example_pl: 'Czerwony samochód vs piękny samochód.' },
-            { heading: 'Zgodność rodzaju i liczby', text: 'Przymiotniki muszą zgadzać się co do rodzaju (męski/żeński) i liczby (pojedyncza/mnoga) z rzeczownikiem, który opisują.', example: 'Un petit garçon, une petite fille, de petits garçons, de petites filles.', example_pl: 'Mały chłopiec, mała dziewczynka, mali chłopcy, małe dziewczynki.' },
+            { heading: 'Pozycja przymiotnika', text: 'Większość przymiotników stoi po rzeczowniku. Krótkie i powszechne przymiotniki (jak beau, grand, petit, bon) stoją przed rzeczownikiem.', examples: [{original: 'Une voiture rouge (czerwony samochód) vs une belle voiture (piękny samochód).', translation: 'Czerwony samochód vs piękny samochód.'}] },
+            { heading: 'Zgodność rodzaju i liczby', text: 'Przymiotniki muszą zgadzać się co do rodzaju (męski/żeński) i liczby (pojedyncza/mnoga) z rzeczownikiem, który opisują.', examples: [{original: 'Un petit garçon, une petite fille, de petits garçons, de petites filles.', translation: 'Mały chłopiec, mała dziewczynka, mali chłopcy, małe dziewczynki.'}] },
         ],
     },
     'adverbs': {
         title: 'Adverbes',
         content: [
-            { heading: 'Tworzenie z przymiotników', text: 'Wiele przysłówków tworzy się, dodając końcówkę "-ment" do żeńskiej formy przymiotnika.', example: 'lent -> lente -> lentement', example_pl: 'wolny -> wolno' },
-            { heading: 'Pozycja w zdaniu', text: 'W czasach prostych przysłówek stoi po czasowniku. W czasach złożonych (np. Passé Composé) krótki przysłówek stoi między czasownikiem posiłkowym a Participe Passé.', example: 'Il parle lentement. / Il a bien mangé.', example_pl: 'On mówi powoli. / On dobrze zjadł.' },
+            { heading: 'Tworzenie z przymiotników', text: 'Wiele przysłówków tworzy się, dodając końcówkę "-ment" do żeńskiej formy przymiotnika.', examples: [{original: 'lent -> lente -> lentement', translation: 'wolny -> wolno'}] },
+            { heading: 'Pozycja w zdaniu', text: 'W czasach prostych przysłówek stoi po czasowniku. W czasach złożonych (np. Passé Composé) krótki przysłówek stoi między czasownikiem posiłkowym a Participe Passé.', examples: [{original: 'Il parle lentement. / Il a bien mangé.', translation: 'On mówi powoli. / On dobrze zjadł.'}] },
         ],
     },
     'pronouns': {
         title: 'Pronoms',
         content: [
-            { heading: 'Zaimki dopełnienia (COD/COI)', text: 'Stoją zawsze przed czasownikiem (lub czasownikiem posiłkowym w czasach złożonych).', example: 'Je te vois. (Widzę cię) / Je lui parle. (Mówię do niego/niej).', example_pl: 'Widzę cię. / Mówię do niego/niej.' },
-            { heading: 'Zaimki "en" i "y"', text: '"En" zastępuje rzeczowniki z "de" (np. de la, du, des), a "y" zastępuje rzeczowniki z "à" lub określenia miejsca.', example: 'Tu as des frères? Oui, j\'en ai. / Tu vas à Paris? Oui, j\'y vais.', example_pl: 'Masz braci? Tak, mam. / Jedziesz do Paryża? Tak, jadę.' },
+            { heading: 'Zaimki dopełnienia (COD/COI)', text: 'Stoją zawsze przed czasownikiem (lub czasownikiem posiłkowym w czasach złożonych).', examples: [{original: 'Je te vois. (Widzę cię) / Je lui parle. (Mówię do niego/niej).', translation: 'Widzę cię. / Mówię do niego/niej.'}] },
+            { heading: 'Zaimki "en" i "y"', text: '"En" zastępuje rzeczowniki z "de" (np. de la, du, des), a "y" zastępuje rzeczowniki z "à" lub określenia miejsca.', examples: [{original: 'Tu as des frères? Oui, j\'en ai. / Tu vas à Paris? Oui, j\'y vais.', translation: 'Masz braci? Tak, mam. / Jedziesz do Paryża? Tak, jadę.'}] },
         ],
     },
     'articles': {
       title: 'Les Articles',
       content: [
-          { heading: 'Articles Définis (le, la, l\', les)', text: 'Rodzajniki określone używane są przed rzeczownikami, które są konkretne lub już znane.', example: 'J\'aime le chocolat.', example_pl: 'Lubię (tę konkretną, ogólnie znaną) czekoladę.' },
-          { heading: 'Articles Indéfinis (un, une, des)', text: 'Rodzajniki nieokreślone wprowadzają nowy, nieokreślony rzeczownik.', example: 'J\'ai acheté un livre.', example_pl: 'Kupiłem/am (jakąś) książkę.' },
-          { heading: 'Articles Partitifs (du, de la, de l\', des)', text: 'Używane do określenia niepoliczalnej ilości czegoś (trochę, część).', example: 'Je voudrais de l\'eau.', example_pl: 'Chciałbym/Chciałabym (trochę) wody.' },
+          { heading: 'Articles Définis (le, la, l\', les)', text: 'Rodzajniki określone używane są przed rzeczownikami, które są konkretne lub już znane.', examples: [{original: 'J\'aime le chocolat.', translation: 'Lubię (tę konkretną, ogólnie znaną) czekoladę.'}] },
+          { heading: 'Articles Indéfinis (un, une, des)', text: 'Rodzajniki nieokreślone wprowadzają nowy, nieokreślony rzeczownik.', examples: [{original: 'J\'ai acheté un livre.', translation: 'Kupiłem/am (jakąś) książkę.'}] },
+          { heading: 'Articles Partitifs (du, de la, de l\', des)', text: 'Używane do określenia niepoliczalnej ilości czegoś (trochę, część).', examples: [{original: 'Je voudrais de l\'eau.', translation: 'Chciałbym/Chciałabym (trochę) wody.'}] },
       ],
   },
   },
   it: {
     'sentence-structure': {
-        title: 'Struttura della Frase',
-        content: [
-          { heading: 'Elastyczny szyk SVO', text: 'Podstawowy szyk to Podmiot-Orzeczenie-Dopełnienie (SVO), ale jest bardzo elastyczny. Podmiot jest często pomijany, gdyż forma czasownika go wskazuje.', example: '(Io) mangio la pasta.', example_pl: '(Ja) jem makaron.' },
-          { heading: 'Pozycja przymiotnika', text: 'Przymiotniki zazwyczaj umieszcza się PO rzeczowniku, który opisują. Umieszczenie ich przed rzeczownikiem często zmienia znaczenie lub dodaje emfazę.', example: 'una casa grande (duży dom) vs una grande casa (wspaniały dom).', example_pl: 'duży dom vs wspaniały dom.' },
-          { heading: 'Szyk zdania przeczącego', text: 'Przeczenie "non" umieszcza się zawsze bezpośrednio PRZED odmienionym czasownikiem.', example: 'Lui non capisce la domanda.', example_pl: 'On nie rozumie pytania.' },
-          { heading: 'Pozycja przysłówka', text: 'Przysłówki zazwyczaj stoją po czasowniku, który modyfikują. Mogą też stać na początku lub końcu zdania dla emfazy.', example: 'Parla lentamente. / Lentamente, lui parla.', example_pl: 'On mówi powoli. / Powoli, on mówi.' },
-        ],
-      },
+      title: 'Struttura della Frase',
+      content: [
+        { 
+          heading: 'Zdanie oznajmujące (Elastyczny SVO)', 
+          text: 'Podstawowy szyk zdania to Podmiot-Orzeczenie-Dopełnienie (SVO), ale jest on bardzo elastyczny. Podmiot (zaimek osobowy) jest często pomijany, ponieważ forma czasownika go wskazuje.',
+          examples: [
+            { original: '(Io) mangio la pasta.', translation: '(Ja) jem makaron.' },
+            { original: 'Mia sorella legge un libro.', translation: 'Moja siostra czyta książkę.' }
+          ]
+        },
+        { 
+          heading: 'Pytania ogólne', 
+          text: 'Najprostszym i najczęstszym sposobem tworzenia pytań jest zmiana intonacji zdania twierdzącego na wznoszącą na końcu.',
+          examples: [
+            { original: 'Parli italiano?', translation: 'Mówisz po włosku?' },
+            { original: 'Vieni alla festa stasera?', translation: 'Idziesz dziś wieczorem na imprezę?' }
+          ]
+        },
+        { 
+          heading: 'Przeczenia (z "non")', 
+          text: 'Przeczenia tworzy się bardzo prosto, umieszczając słówko "non" bezpośrednio przed odmienionym czasownikiem.',
+          examples: [
+            { original: 'Non capisco la lezione.', translation: 'Nie rozumiem lekcji.' },
+            { original: 'Lui non ha una macchina.', translation: 'On nie ma samochodu.' }
+          ]
+        },
+        { 
+          heading: 'Zdania z zaimkami dopełnienia', 
+          text: 'Zaimki dopełnienia (mi, ti, lo, la...) zazwyczaj stoją przed odmienionym czasownikiem.',
+          examples: [
+            { original: 'La vedo ogni giorno.', translation: 'Widzę ją codziennie.' },
+            { original: 'Ti ho dato il mio numero.', translation: 'Dałem/am ci mój numer.' }
+          ]
+        },
+        { 
+          heading: 'Okoliczniki miejsca i czasu', 
+          text: 'Mają dużą swobodę w zdaniu, ale najczęściej występują na początku lub na końcu zdania.',
+          examples: [
+            { original: 'Domani andiamo al mare.', translation: 'Jutro jedziemy nad morze.' },
+            { original: 'Lavoro in ufficio ogni giorno.', translation: 'Pracuję w biurze każdego dnia.' }
+          ]
+        }
+      ],
+    },
       questions: {
         title: 'Domande',
         content: [
-          { heading: 'Pytania przez intonację', text: 'Najczęstszym sposobem zadawania pytań w mowie jest zmiana intonacji zdania oznajmującego na pytającą (wznoszącą na końcu).', example: 'Parli italiano?', example_pl: 'Mówisz po włosku?' },
-          { heading: 'Pytania z zaimkami pytającymi', text: 'Pytania szczegółowe tworzy się za pomocą zaimków pytających, takich jak "Che cosa?", "Chi?", "Dove?", "Quando?", "Perché?".', example: 'Dove abiti?', example_pl: 'Gdzie mieszkasz?' },
+          { heading: 'Pytania przez intonację', text: 'Najczęstszym sposobem zadawania pytań w mowie jest zmiana intonacji zdania oznajmującego na pytającą (wznoszącą na końcu).', examples: [{original: 'Parli italiano?', translation: 'Mówisz po włosku?'}] },
+          { heading: 'Pytania z zaimkami pytającymi', text: 'Pytania szczegółowe tworzy się za pomocą zaimków pytających, takich jak "Che cosa?", "Chi?", "Dove?", "Quando?", "Perché?".', examples: [{original: 'Dove abiti?', translation: 'Gdzie mieszkasz?'}] },
         ],
       },
       negations: {
         title: 'Negazioni',
         content: [
-          { heading: 'Przeczenie "non"', text: 'Przeczenia tworzy się poprzez umieszczenie słówka "non" bezpośrednio przed odmienionym czasownikiem.', example: 'Non parlo italiano.', example_pl: 'Nie mówię po włosku.' },
-          { heading: 'Inne słowa przeczące', text: 'Podobnie jak w hiszpańskim, słowa takie jak "niente" (nic) czy "nessuno" (nikt) wymagają "non" przed czasownikiem, jeśli stoją po nim.', example: 'Non ho visto nessuno.', example_pl: 'Nikogo nie widziałem.' },
+          { heading: 'Przeczenie "non"', text: 'Przeczenia tworzy się poprzez umieszczenie słówka "non" bezpośrednio przed odmienionym czasownikiem.', examples: [{original: 'Non parlo italiano.', translation: 'Nie mówię po włosku.'}] },
+          { heading: 'Inne słowa przeczące', text: 'Podobnie jak w hiszpańskim, słowa takie jak "niente" (nic) czy "nessuno" (nikt) wymagają "non" przed czasownikiem, jeśli stoją po nim.', examples: [{original: 'Non ho visto nessuno.', translation: 'Nikogo nie widziałem.'}] },
         ],
     },
     'adjectives': {
         title: 'Aggettivi',
         content: [
-            { heading: 'Pozycja przymiotnika', text: 'Podobnie jak w hiszpańskim, przymiotniki zazwyczaj stoją po rzeczowniku. Niektóre, jak "bello" czy "bravo", mogą stać przed.', example: 'Una macchina rossa (czerwony samochód) vs una bella macchina (piękny samochód).', example_pl: 'Czerwony samochód vs piękny samochód.' },
-            { heading: 'Zgodność', text: 'Przymiotniki muszą zgadzać się co do rodzaju i liczby z rzeczownikiem, który opisują. Mają różne końcówki w zależności od grupy.', example: 'un ragazzo alto, una ragazza alta, due ragazzi alti, due ragazze alte.', example_pl: 'wysoki chłopak, wysoka dziewczyna, wysocy chłopcy, wysokie dziewczyny.' },
+            { heading: 'Pozycja przymiotnika', text: 'Podobnie jak w hiszpańskim, przymiotniki zazwyczaj stoją po rzeczowniku. Niektóre, jak "bello" czy "bravo", mogą stać przed.', examples: [{original: 'Una macchina rossa (czerwony samochód) vs una bella macchina (piękny samochód).', translation: 'Czerwony samochód vs piękny samochód.'}] },
+            { heading: 'Zgodność', text: 'Przymiotniki muszą zgadzać się co do rodzaju i liczby z rzeczownikiem, który opisują. Mają różne końcówki w zależności od grupy.', examples: [{original: 'un ragazzo alto, una ragazza alta, due ragazzi alti, due ragazze alte.', translation: 'wysoki chłopak, wysoka dziewczyna, wysocy chłopcy, wysokie dziewczyny.'}] },
         ],
     },
     'adverbs': {
         title: 'Avverbi',
         content: [
-            { heading: 'Tworzenie z przymiotników', text: 'Podobnie jak w hiszpańskim i francuskim, przysłówki tworzy się dodając końcówkę "-mente" do żeńskiej formy przymiotnika.', example: 'lento -> lenta -> lentamente', example_pl: 'wolny -> wolno' },
-            { heading: 'Pozycja w zdaniu', text: 'Przysłówki zazwyczaj umieszcza się po czasowniku, który modyfikują.', example: 'Lui parla lentamente.', example_pl: 'On mówi powoli.' },
+            { heading: 'Tworzenie z przymiotników', text: 'Podobnie jak w hiszpańskim i francuskim, przysłówki tworzy się dodając końcówkę "-mente" do żeńskiej formy przymiotnika.', examples: [{original: 'lento -> lenta -> lentamente', translation: 'wolny -> wolno'}] },
+            { heading: 'Pozycja w zdaniu', text: 'Przysłówki zazwyczaj umieszcza się po czasowniku, który modyfikują.', examples: [{original: 'Lui parla lentamente.', translation: 'On mówi powoli.'}] },
         ],
     },
     'pronouns': {
         title: 'Pronomi',
         content: [
-            { heading: 'Pominięcie zaimka podmiotowego', text: 'Zaimki podmiotowe (io, tu, lui...) są bardzo często pomijane, ponieważ forma czasownika jest wystarczająca do identyfikacji podmiotu.', example: '(Io) sono polacco.', example_pl: 'Jestem Polakiem.' },
-            { heading: 'Połączone zaimki dopełnienia', text: 'Zaimki dopełnienia bliższego i dalszego mogą się łączyć, tworząc jedną formę (np. me lo, te la). Zawsze stoją przed odmienionym czasownikiem.', example: 'Me lo dai?', example_pl: 'Dasz mi to?' },
+            { heading: 'Pominięcie zaimka podmiotowego', text: 'Zaimki podmiotowe (io, tu, lui...) są bardzo często pomijane, ponieważ forma czasownika jest wystarczająca do identyfikacji podmiotu.', examples: [{original: '(Io) sono polacco.', translation: 'Jestem Polakiem.'}] },
+            { heading: 'Połączone zaimki dopełnienia', text: 'Zaimki dopełnienia bliższego i dalszego mogą się łączyć, tworząc jedną formę (np. me lo, te la). Zawsze stoją przed odmienionym czasownikiem.', examples: [{original: 'Me lo dai?', translation: 'Dasz mi to?'}] },
         ],
     },
     'articles': {
       title: 'Articoli',
       content: [
-          { heading: 'Articoli Determinativi (il, lo, la...)', text: 'Rodzajniki określone używane są przed znanymi, specyficznymi rzeczownikami. Ich forma zależy od rodzaju, liczby i pierwszej litery rzeczownika.', example: 'Il cane, lo studente, la casa, l\'amica.', example_pl: 'Pies, student, dom, przyjaciółka.' },
-          { heading: 'Articoli Indeterminativi (un, uno, una...)', text: 'Rodzajniki nieokreślone wprowadzają nowy rzeczownik. Ich forma również zależy od rodzaju i pierwszej litery rzeczownika.', example: 'un cane, uno studente, una casa, un\'amica.', example_pl: '(jakiś) pies, (jakiś) student, (jakiś) dom, (jakaś) przyjaciółka.' },
+          { heading: 'Articoli Determinativi (il, lo, la...)', text: 'Rodzajniki określone używane są przed znanymi, specyficznymi rzeczownikami. Ich forma zależy od rodzaju, liczby i pierwszej litery rzeczownika.', examples: [{original: 'Il cane, lo studente, la casa, l\'amica.', translation: 'Pies, student, dom, przyjaciółka.'}] },
+          { heading: 'Articoli Indeterminativi (un, uno, una...)', text: 'Rodzajniki nieokreślone wprowadzają nowy rzeczownik. Ich forma również zależy od rodzaju i pierwszej litery rzeczownika.', examples: [{original: 'un cane, uno studente, una casa, un\'amica.', translation: '(jakiś) pies, (jakiś) student, (jakiś) dom, (jakaś) przyjaciółka.'}] },
       ],
   },
   },

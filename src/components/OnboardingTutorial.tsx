@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { Button } from './ui/button';
 import { saveTutorialState, clearTutorialState, getTutorialState } from '@/lib/storage';
-import LinguaLearnLogo from './LinguaLearnLogo';
 
 interface Step {
     elementId?: string;
@@ -49,45 +48,15 @@ const initialSteps: Step[] = [
 const extendedSteps: Step[] = [
     {
         path: '/settings',
-        elementId: 'settings-card',
-        title: 'Ustawienia Aplikacji',
-        description: 'Tutaj spersonalizujesz swoje doświadczenie. Włącz dźwięki, dostosuj filtr ochrony wzroku i\u00A0zarządzaj danymi aplikacji.',
+        elementId: 'settings-switches',
+        title: 'Dźwięki i\u00A0Wibracje',
+        description: 'Włącz lub wyłącz efekty dźwiękowe i\u00A0haptyczne. Możesz też dostosować głośność, aby nauka była komfortowa.',
     },
     {
-        path: '/stats',
-        elementId: 'stats-card',
-        title: 'Śledzenie Statystyk',
-        description: 'Na tym ekranie możesz śledzić swoje postępy, w\u00A0tym ogólną skuteczność, najdłuższą serię i\u00A0ostatnie wyniki w\u00A0quizach.',
-    },
-    {
-        path: '/errors',
-        elementId: 'errors-card',
-        title: 'Analiza Błędów',
-        description: 'Sekcja Błędów to Twój osobisty trener. Zapisuje pytania, na które odpowiedziałeś niepoprawnie, abyś mógł je łatwo powtórzyć.',
-    },
-    {
-        path: '/achievements',
-        elementId: 'achievements-card',
-        title: 'Twoje Osiągnięcia',
-        description: 'Zdobywaj osiągnięcia za swoje postępy! Odblokuj je wszystkie, aby udowodnić swoje mistrzostwo w\u00A0nauce języków.',
-    },
-    {
-        path: '/learning/en',
-        elementId: 'learning-card',
-        title: 'Centrum Nauki',
-        description: 'To Twoja baza wiedzy. Znajdziesz tu moduły do nauki gramatyki, słownictwa, fonetyki i\u00A0kultury danego kraju.',
-    },
-    {
-        path: '/learning/en/dictionary',
-        elementId: 'dictionary-grid',
-        title: 'Słownik Tematyczny',
-        description: 'W Słowniku słówka pogrupowane są tematycznie. Wybierz kategorię, która Cię interesuje, aby rozpocząć naukę.',
-    },
-    {
-        path: '/learning/en/dictionary/colors',
-        elementId: 'dictionary-word-list',
-        title: 'Nauka Słówek',
-        description: 'Tutaj możesz przeglądać słówka. Użyj gwiazdki, aby dodać najtrudniejsze z\u00A0nich do ulubionych i\u00A0mieć je zawsze na górze listy.',
+        path: '/settings',
+        elementId: 'settings-eyecare',
+        title: 'Ochrona Wzroku',
+        description: 'Uczysz się wieczorem? Użyj tego suwaka, aby nałożyć na aplikację ciepły filtr, który zmniejszy zmęczenie oczu.',
     },
 ];
 
@@ -137,6 +106,7 @@ export default function OnboardingTutorial() {
                     top: `${rect.top - padding / 2}px`,
                     left: `${rect.left - padding / 2}px`,
                     opacity: 1,
+                    position: 'fixed'
                 });
 
                 const bubbleHeight = 150; // Estimation
@@ -159,6 +129,7 @@ export default function OnboardingTutorial() {
                     top: `${bubbleTop}px`,
                     left: `${bubbleLeft}px`,
                     opacity: 1,
+                    position: 'fixed',
                 });
 
             } else {
@@ -168,10 +139,12 @@ export default function OnboardingTutorial() {
                 }
             }
         };
-
+        
+        // Hide elements before finding the new position to avoid flickering
         setSpotlightStyle({ opacity: 0, transition: 'none' });
         setBubbleStyle({ opacity: 0, transition: 'none' });
         
+        // Delay finding to ensure DOM is ready after potential navigation
         const timeoutId = setTimeout(findAndPosition, 150);
 
         window.addEventListener('resize', findAndPosition);
@@ -293,9 +266,9 @@ export default function OnboardingTutorial() {
                         <p className="text-sm text-muted-foreground mb-4">{currentStep.description}</p>
                         <div className="flex justify-between items-center">
                             <span className="text-xs text-muted-foreground">
-                                {stage === 'initial' ? currentStepIndex : initialSteps.length - 1 + currentStepIndex} / {initialSteps.length - 1 + extendedSteps.length}
+                                {stage === 'initial' ? currentStepIndex + 1 : initialSteps.length + currentStepIndex} / {initialSteps.length + extendedSteps.length}
                             </span>
-                             <Button onClick={stage === 'extended' && isLastStep ? handleNext : handleNext} size="sm">
+                             <Button onClick={handleNext} size="sm">
                                 {stage === 'extended' && isLastStep ? uiTexts.finish : uiTexts.next}
                             </Button>
                         </div>

@@ -1,5 +1,4 @@
-
-import { ArrowLeft, AudioLines } from 'lucide-react';
+import { ArrowLeft, AudioLines, CaseUpper } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -15,7 +14,12 @@ export default function PhoneticsEnPage() {
                     </div>
                 </CardHeader>
                 <CardContent className="p-6">
-                    <p className="text-center text-muted-foreground">Content coming soon...</p>
+                    <Link href="/learning/en/phonetics/alphabet" passHref>
+                        <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary">
+                            <CaseUpper className="h-12 w-12 text-deep-purple" />
+                            Alphabet
+                        </Button>
+                    </Link>
                 </CardContent>
                 <CardFooter className="flex justify-center p-4">
                     <Link href="/learning/en" passHref>

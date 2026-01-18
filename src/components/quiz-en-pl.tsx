@@ -301,7 +301,15 @@ export default function QuizEnPl() {
         <CardHeader className="text-center pb-2">
           <div className="flex items-center justify-center gap-2">
               <LinguaLearnLogo className="h-8 w-8" />
-              <CardTitle className="text-3xl font-bold tracking-tight">LinguaLearn</CardTitle>
+              <CardTitle className="text-3xl font-bold tracking-tight">
+                  Lingua
+                  <span className="relative inline-block">
+                      Learn
+                      <span className="absolute -right-0.5 -bottom-3 text-sm font-semibold tracking-normal text-amber">
+                      Lite
+                      </span>
+                  </span>
+              </CardTitle>
           </div>
           <CardDescription className="pt-2">Select the correct translation</CardDescription>
         </CardHeader>

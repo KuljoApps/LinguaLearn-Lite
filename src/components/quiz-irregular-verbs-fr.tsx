@@ -377,7 +377,15 @@ export default function QuizIrregularVerbsFr() {
         <CardHeader className="text-center pb-4">
           <div className="flex items-center justify-center gap-2">
               <LinguaLearnLogo className="h-8 w-8" />
-              <CardTitle className="text-3xl font-bold tracking-tight">LinguaLearn</CardTitle>
+              <CardTitle className="text-3xl font-bold tracking-tight">
+                  Lingua
+                  <span className="relative inline-block">
+                      Learn
+                      <span className="absolute -right-0.5 -bottom-3 text-sm font-semibold tracking-normal text-amber">
+                      Lite
+                      </span>
+                  </span>
+              </CardTitle>
           </div>
           <CardDescription className="pt-2">Sélectionnez la traduction et remplissez les formes du verbe</CardDescription>
         </CardHeader>

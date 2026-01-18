@@ -70,7 +70,7 @@ export default function QuestionBase({ uiTexts, questionSets, backHref }: Questi
 
     return (
         <Card className="w-full max-w-2xl shadow-2xl">
-            <CardHeader className="text-center space-y-6">
+            <CardHeader className="text-center space-y-10">
                 <div className="flex items-center justify-center gap-4">
                     <BookCopy className="h-8 w-8" />
                     <CardTitle className="text-3xl">{uiTexts.title}</CardTitle>

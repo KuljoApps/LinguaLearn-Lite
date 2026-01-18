@@ -99,7 +99,15 @@ export default function Home() {
                 <CardHeader>
                     <div className="flex items-center justify-center gap-4 mb-4">
                         <LinguaLearnLogo width="48" height="48" />
-                        <h1 className="text-4xl font-bold tracking-tight">LinguaLearn</h1>
+                        <h1 className="text-4xl font-bold tracking-tight">
+                            Lingua
+                            <span className="relative inline-block">
+                                Learn
+                                <span className="absolute -right-1 -bottom-2 text-sm font-semibold tracking-normal text-amber">
+                                Lite
+                                </span>
+                            </span>
+                        </h1>
                     </div>
                     <p className="text-muted-foreground">
                         {getWelcomeMessage()}

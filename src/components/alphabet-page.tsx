@@ -8,6 +8,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { ArrowLeft, Volume2, AudioLines } from 'lucide-react';
 import type { AlphabetData } from '@/lib/alphabet';
 import { cn } from '@/lib/utils';
+import { getSettings } from '@/lib/storage';
 
 interface AlphabetPageProps {
   data: AlphabetData;
@@ -40,9 +41,14 @@ export default function AlphabetPage({ data }: AlphabetPageProps) {
         activeAudio.currentTime = 0;
     }
 
+    const settings = getSettings();
+    if (!settings.soundsEnabled) return;
+
     const audioUrl = `/audio/phonetics/${data.lang}/${letter.toLowerCase()}.mp3`;
     const newAudio = new Audio(audioUrl);
     
+    newAudio.volume = settings.volume / 100;
+
     newAudio.play().catch(error => {
       console.error(`Error playing audio for letter "${letter}":`, error);
     });
@@ -52,7 +58,7 @@ export default function AlphabetPage({ data }: AlphabetPageProps) {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4">
-      <Card className="w-full max-w-2xl shadow-2xl">
+      <Card className="w-full max-w-xl shadow-2xl">
         <CardHeader className="text-center">
             <div className="flex items-center justify-center gap-4">
                 <AudioLines className="h-8 w-8" />
@@ -61,7 +67,7 @@ export default function AlphabetPage({ data }: AlphabetPageProps) {
         </CardHeader>
         <CardContent>
           <ScrollArea className="h-96 w-full pr-1">
-            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4 pr-3">
               {data.alphabet.map((item, index) => (
                 <Button
                   key={`${item.letter}-${index}`}

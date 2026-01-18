@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
@@ -286,10 +284,27 @@ export default function QuizIrregularVerbsFr() {
         ? "bg-success text-success-foreground disabled:opacity-100"
         : "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
     }
-    if (!translationStatus) return "bg-primary text-primary-foreground hover:bg-primary/90";
-    if (isCorrectAnswer) return "bg-success text-success-foreground disabled:opacity-100";
-    if (isSelectedAnswer && !isCorrectAnswer) return "bg-destructive text-destructive-foreground disabled:opacity-100";
-    return "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
+    
+    if (answerStatus) {
+        if (isCorrectAnswer) {
+            return "bg-success text-success-foreground disabled:opacity-100";
+        }
+        if (isSelectedAnswer) {
+            return "bg-destructive text-destructive-foreground disabled:opacity-100";
+        }
+        return "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
+    }
+
+    if (translationStatus && isSelectedAnswer) {
+      return translationStatus === 'correct' 
+          ? "bg-success text-success-foreground disabled:opacity-100" 
+          : "bg-destructive text-destructive-foreground disabled:opacity-100";
+    }
+    if (translationStatus && !isSelectedAnswer) {
+      return "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
+    }
+
+    return "bg-primary text-primary-foreground hover:bg-primary/90";
   };
   
   const getAuxiliaryButtonClass = (choice: 'avoir' | 'être') => {
@@ -360,8 +375,8 @@ export default function QuizIrregularVerbsFr() {
           <Progress value={questionTimeProgress} className="w-full h-2" />
 
           <div className="text-center space-y-2">
-              <p className="text-muted-foreground">Verbe irrégulier:</p>
-              <p className="text-4xl font-headline font-bold">{`"${currentQuestion.verb}"`}</p>
+              <p className="text-muted-foreground">Verbe irrégulier</p>
+              <p className="text-4xl font-headline font-bold">{currentQuestion.verb}</p>
           </div>
 
           <div className="w-full space-y-4">
@@ -393,8 +408,8 @@ export default function QuizIrregularVerbsFr() {
                 })}
             </div>
             
-            <div className={cn("transition-opacity duration-300", translationStatus === 'correct' ? 'opacity-100' : 'opacity-50 pointer-events-none')}>
-              <p className="text-center text-muted-foreground pt-4">2. Choisissez l'auxiliaire correct pour le Passé Composé</p>
+            <div className={cn("transition-opacity duration-300", translationStatus === null && "opacity-50 pointer-events-none")}>
+              <p className="text-center text-muted-foreground pt-2">2. Choisissez l'auxiliaire correct pour le Passé Composé</p>
               <div className="grid grid-cols-2 gap-4 w-full mt-4">
                 <Button
                   onClick={() => handleAuxiliaryClick('avoir')}
@@ -470,6 +485,3 @@ export default function QuizIrregularVerbsFr() {
     </>
   );
 }
-
-
-

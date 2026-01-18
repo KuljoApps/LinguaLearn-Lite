@@ -28,7 +28,7 @@ export default function ProPromotionDialog({ open, onOpenChange }: ProPromotionD
             </div>
             <div>
               <h4 className="font-semibold">Wszystkie przyszłe języki</h4>
-              <p className="text-sm text-muted-foreground">Uzyskaj dostęp do wszystkich nowych języków dodawanych do aplikacji.</p>
+              <p className="text-sm text-muted-foreground">Uzyskajjjj dostęp do wszystkich nowych języków dodawanych do aplikacji.</p>
             </div>
           </div>
           <div className="flex items-center gap-4">

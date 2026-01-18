@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
@@ -28,6 +26,7 @@ import LinguaLearnLogo from '@/components/LinguaLearnLogo';
 import { vibrate } from "@/lib/vibrations";
 import { useToast } from "@/hooks/use-toast";
 import QuizResults from "./quiz-results";
+import { Label } from "./ui/label";
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
@@ -427,56 +426,54 @@ export default function QuizIrregularVerbs() {
                 isLongText ? "grid-cols-2" : "grid-cols-3"
             )}>
                 {shuffledTranslationOptions.map((option, index) => {
-                    if (isLongText && index === 2) {
-                        return (
-                            <div key={option} className="col-span-2 flex justify-center">
-                                <Button
-                                    onClick={() => handleTranslationClick(option)}
-                                    disabled={!!answerStatus || isPaused || translationStatus !== null}
-                                    className={cn(
-                                        "h-auto text-base p-2 whitespace-normal transition-all duration-300 w-full max-w-xs",
-                                        getTranslationButtonClass(option)
-                                    )}
-                                >
-                                    {option}
-                                </Button>
-                            </div>
-                        );
-                    }
-                    return (
+                    const button = (
                         <Button
                             key={option}
                             onClick={() => handleTranslationClick(option)}
                             disabled={!!answerStatus || isPaused || translationStatus !== null}
                             className={cn(
                                 "h-auto text-base p-2 whitespace-normal transition-all duration-300",
-                                getTranslationButtonClass(option)
+                                getTranslationButtonClass(option),
+                                isLongText && index === 2 ? 'col-span-2' : ''
                             )}
                         >
                             {option}
                         </Button>
                     );
+
+                    if (isLongText && index === 2) {
+                        return <div key={option} className="col-span-2 flex justify-center">{button}</div>
+                    }
+                    return button;
                 })}
             </div>
 
             <p className="text-center text-muted-foreground pt-4">2. Type the Past Simple & Past Participle forms</p>
-            <div className="grid grid-cols-3 gap-2 w-full items-center text-center">
-              <Input value={currentQuestion.verb} readOnly className="text-center font-bold bg-muted" />
-              <Input
-                ref={form2InputRef}
-                value={form2Input}
-                onChange={(e) => setForm2Input(e.target.value)}
-                placeholder="Past Simple"
-                disabled={!!answerStatus || isPaused || translationStatus !== 'correct'}
-                className={cn("text-center transition-colors duration-300", getInputClass(form2Input, currentQuestion.form2))}
-              />
-              <Input
-                value={form3Input}
-                onChange={(e) => setForm3Input(e.target.value)}
-                placeholder="Past Participle"
-                disabled={!!answerStatus || isPaused || translationStatus !== 'correct'}
-                className={cn("text-center transition-colors duration-300", getInputClass(form3Input, currentQuestion.form3))}
-              />
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 w-full text-center">
+                <div>
+                    <Label htmlFor="form2" className="text-sm font-medium text-muted-foreground">Past Simple</Label>
+                    <Input
+                        id="form2"
+                        ref={form2InputRef}
+                        value={form2Input}
+                        onChange={(e) => setForm2Input(e.target.value)}
+                        disabled={!!answerStatus || isPaused || translationStatus !== 'correct'}
+                        className={cn("text-center transition-colors duration-300 mt-1", getInputClass(form2Input, currentQuestion.form2))}
+                    />
+                </div>
+                <div>
+                    <Label htmlFor="form3" className="text-sm font-medium text-muted-foreground">Past Participle</Label>
+                    <Input
+                        id="form3"
+                        value={form3Input}
+                        onChange={(e) => setForm3Input(e.target.value)}
+                        disabled={!!answerStatus || isPaused || translationStatus !== 'correct'}
+                        className={cn(
+                            "text-center transition-colors duration-300 mt-1",
+                            getInputClass(form3Input, currentQuestion.form3)
+                        )}
+                    />
+                </div>
             </div>
             {(answerStatus === 'incorrect' || (answerStatus === 'timeout' && (!form2Input || !form3Input))) && (
               <div className="text-center text-success font-medium animate-in fade-in">
@@ -565,5 +562,6 @@ export default function QuizIrregularVerbs() {
     </>
   );
 }
+
 
 

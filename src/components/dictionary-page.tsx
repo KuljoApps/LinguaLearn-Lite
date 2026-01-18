@@ -54,16 +54,26 @@ export default function DictionaryPage({ title, backHref, words, children }: Dic
         const favoriteWords = words.filter(w => !w.isHeader && favorites.includes(w.word));
         const nonFavoritedWords = words.filter(w => w.isHeader || !favorites.includes(w.word));
 
+        const colorPageTitles = new Set(['Colors', 'Farben', 'Colores', 'Couleurs', 'Colori']);
+        const isColorsPage = colorPageTitles.has(title);
+
         if (favoriteWords.length > 0) {
-            const favoritesHeader: DictionaryWord = { word: favoritesTitle[lang], translation: '', isHeader: true, special: 'favorites-header' };
-            return [
-                favoritesHeader,
-                ...favoriteWords,
-                ...nonFavoritedWords
-            ];
+            if (isColorsPage) {
+                // For the colors page, just reorder: favorites first, then the rest. No headers.
+                return [...favoriteWords, ...nonFavoritedWords];
+            } else {
+                // For other pages, create the "Favorites" section at the top.
+                const favoritesHeader: DictionaryWord = { word: favoritesTitle[lang], translation: '', isHeader: true, special: 'favorites-header' };
+                return [
+                    favoritesHeader,
+                    ...favoriteWords,
+                    ...nonFavoritedWords
+                ];
+            }
         }
-        return words;
-    }, [words, favorites, lang, favoritesTitle]);
+        
+        return words; // Return original if no favorites
+    }, [words, favorites, lang, favoritesTitle, title]);
 
 
     return (
@@ -79,9 +89,9 @@ export default function DictionaryPage({ title, backHref, words, children }: Dic
                     <div className="flex flex-col">
                         {sortedWords.map((w, index) => {
                             if (w.isHeader) {
-                                const isFavoritesHeader = w.word === favoritesTitle[lang];
+                                const isFavoritesHeader = w.special === 'favorites-header';
                                 return (
-                                    <div key={`header-${index}`} className={cn("pt-6 pb-2", isFavoritesHeader && "pt-0")}>
+                                    <div key={`header-${w.word}-${index}`} className={cn("pt-6 pb-2", isFavoritesHeader && "pt-0")}>
                                         <h3 className="text-xl font-bold italic tracking-tight text-primary">{w.word}</h3>
                                     </div>
                                 );

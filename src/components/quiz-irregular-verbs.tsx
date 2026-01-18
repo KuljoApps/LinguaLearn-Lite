@@ -416,14 +416,14 @@ export default function QuizIrregularVerbs() {
 
           <div className="text-center space-y-2">
               <p className="text-muted-foreground">Irregular verb:</p>
-              <p className="text-4xl font-headline font-bold text-card-foreground">"{currentQuestion.verb}"?</p>
+              <p className="text-4xl font-headline font-bold text-card-foreground">"{currentQuestion.verb}"</p>
           </div>
 
           <div className="w-full space-y-4">
             <p className="text-center text-muted-foreground">1. Select the correct translation</p>
             <div className={cn(
-                "grid gap-2 w-full",
-                isLongText ? "grid-cols-2" : "grid-cols-3"
+                "grid grid-cols-3 gap-2 w-full",
+                isLongText && "grid-cols-2"
             )}>
                 {shuffledTranslationOptions.map((option, index) => {
                     const button = (
@@ -457,6 +457,7 @@ export default function QuizIrregularVerbs() {
                         ref={form2InputRef}
                         value={form2Input}
                         onChange={(e) => setForm2Input(e.target.value)}
+                        placeholder=""
                         disabled={!!answerStatus || isPaused || translationStatus !== 'correct'}
                         className={cn("text-center transition-colors duration-300 mt-1", getInputClass(form2Input, currentQuestion.form2))}
                     />
@@ -467,6 +468,7 @@ export default function QuizIrregularVerbs() {
                         id="form3"
                         value={form3Input}
                         onChange={(e) => setForm3Input(e.target.value)}
+                        placeholder=""
                         disabled={!!answerStatus || isPaused || translationStatus !== 'correct'}
                         className={cn(
                             "text-center transition-colors duration-300 mt-1",
@@ -562,6 +564,3 @@ export default function QuizIrregularVerbs() {
     </>
   );
 }
-
-
-

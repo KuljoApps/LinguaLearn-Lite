@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
@@ -233,7 +234,7 @@ export default function QuizIrregularVerbsFr() {
     } else if (translationStatus === 'correct' && !isCorrect) { // Log error only if translation was right but auxiliary was wrong
       const errorRecord = {
         word: currentQuestion.verb,
-        userAnswer: `Auxiliaire: ${choice}`,
+        userAnswer: `auxiliaire: ${choice}`,
         correctAnswer: `auxiliaire: ${currentQuestion.auxiliary}`,
         quiz: QUIZ_NAME,
       };
@@ -277,16 +278,17 @@ export default function QuizIrregularVerbsFr() {
   }
 
   const getTranslationButtonClass = (option: string) => {
+    const isCorrectAnswer = option === currentQuestion.correctTranslation;
+    const isSelectedAnswer = option === selectedTranslation;
+
     if (answerStatus === 'timeout') {
-      return option === currentQuestion.correctTranslation
+      return isCorrectAnswer
         ? "bg-success text-success-foreground disabled:opacity-100"
         : "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
     }
     if (!translationStatus) return "bg-primary text-primary-foreground hover:bg-primary/90";
-    const isCorrect = option === currentQuestion.correctTranslation;
-    const isSelected = option === selectedTranslation;
-    if (isCorrect) return "bg-success text-success-foreground disabled:opacity-100";
-    if (isSelected && !isCorrect) return "bg-destructive text-destructive-foreground disabled:opacity-100";
+    if (isCorrectAnswer) return "bg-success text-success-foreground disabled:opacity-100";
+    if (isSelectedAnswer && !isCorrectAnswer) return "bg-destructive text-destructive-foreground disabled:opacity-100";
     return "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
   };
   
@@ -369,32 +371,25 @@ export default function QuizIrregularVerbsFr() {
                 isLongText && "grid-cols-2"
             )}>
                 {shuffledTranslationOptions.map((option, index) => {
-                    if (isLongText && index === 2) {
-                        return (
-                            <div key={option} className="col-span-2 flex justify-center">
-                                <Button
-                                    onClick={() => handleTranslationClick(option)}
-                                    disabled={!!translationStatus || !!answerStatus || isPaused}
-                                    className={cn(
-                                        "h-auto text-base p-2 whitespace-normal transition-all duration-300 w-full max-w-xs",
-                                        getTranslationButtonClass(option)
-                                    )}
-                                >
-                                    {option}
-                                </Button>
-                            </div>
-                        );
-                    }
-                    return (
+                    const button = (
                         <Button
                             key={option}
                             onClick={() => handleTranslationClick(option)}
                             disabled={!!translationStatus || !!answerStatus || isPaused}
-                            className={cn("h-auto text-base p-2 whitespace-normal transition-all duration-300", getTranslationButtonClass(option))}
+                            className={cn(
+                                "h-auto text-base p-2 whitespace-normal transition-all duration-300",
+                                getTranslationButtonClass(option),
+                                isLongText && index === 2 ? 'col-span-2' : ''
+                            )}
                         >
                             {option}
                         </Button>
                     );
+
+                    if (isLongText && index === 2) {
+                        return <div key={option} className="col-span-2 flex justify-center">{button}</div>
+                    }
+                    return button;
                 })}
             </div>
             
@@ -475,5 +470,6 @@ export default function QuizIrregularVerbsFr() {
     </>
   );
 }
+
 
 

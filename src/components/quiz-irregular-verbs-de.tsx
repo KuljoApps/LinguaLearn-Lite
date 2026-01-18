@@ -416,45 +416,35 @@ export default function QuizIrregularVerbsDe() {
 
           <div className="text-center space-y-2">
               <p className="text-muted-foreground">Unregelmäßiges Verb:</p>
-              <p className="text-4xl font-headline font-bold text-card-foreground">"{currentQuestion.verb}"?</p>
+              <p className="text-4xl font-headline font-bold text-card-foreground">"{currentQuestion.verb}"</p>
           </div>
 
           <div className="w-full space-y-4">
             <p className="text-center text-muted-foreground">1. Wähle die richtige Übersetzung</p>
             <div className={cn(
-                "grid gap-2 w-full",
-                isLongText ? "grid-cols-2" : "grid-cols-3"
+                "grid grid-cols-3 gap-2 w-full",
+                isLongText && "grid-cols-2"
             )}>
                 {shuffledTranslationOptions.map((option, index) => {
-                    if (isLongText && index === 2) {
-                        return (
-                            <div key={option} className="col-span-2 flex justify-center">
-                                <Button
-                                    onClick={() => handleTranslationClick(option)}
-                                    disabled={!!answerStatus || isPaused || translationStatus !== null}
-                                    className={cn(
-                                        "h-auto text-base p-2 whitespace-normal transition-all duration-300 w-full max-w-xs",
-                                        getTranslationButtonClass(option)
-                                    )}
-                                >
-                                    {option}
-                                </Button>
-                            </div>
-                        );
-                    }
-                    return (
+                    const button = (
                         <Button
                             key={option}
                             onClick={() => handleTranslationClick(option)}
                             disabled={!!answerStatus || isPaused || translationStatus !== null}
                             className={cn(
                                 "h-auto text-base p-2 whitespace-normal transition-all duration-300",
-                                getTranslationButtonClass(option)
+                                getTranslationButtonClass(option),
+                                isLongText && index === 2 ? 'col-span-2' : ''
                             )}
                         >
                             {option}
                         </Button>
                     );
+
+                    if (isLongText && index === 2) {
+                        return <div key={option} className="col-span-2 flex justify-center">{button}</div>
+                    }
+                    return button;
                 })}
             </div>
 
@@ -474,21 +464,22 @@ export default function QuizIrregularVerbsDe() {
                 </div>
                 <div>
                     <Label htmlFor="form3" className="text-sm font-medium text-muted-foreground">Partizip II</Label>
-                    <Input
-                        id="form3"
-                        value={form3Input}
-                        onChange={(e) => setForm3Input(e.target.value)}
-                        placeholder=""
-                        disabled={!!answerStatus || isPaused || translationStatus !== 'correct'}
-                        className={cn(
-                            "text-center transition-colors duration-300 mt-1",
-                            getInputClass(form3Input, currentQuestion.form3)
-                        )}
-                    />
-                    <div className="text-xs text-muted-foreground mt-1">Hilfsverb: <span className="font-semibold">{currentQuestion.auxiliary}</span></div>
+                    <div className="flex items-center gap-2 mt-1">
+                        <span className="text-sm font-medium text-muted-foreground">{currentQuestion.auxiliary}</span>
+                        <Input
+                            id="form3"
+                            value={form3Input}
+                            onChange={(e) => setForm3Input(e.target.value)}
+                            placeholder=""
+                            disabled={!!answerStatus || isPaused || translationStatus !== 'correct'}
+                            className={cn(
+                                "text-center transition-colors duration-300",
+                                getInputClass(form3Input, currentQuestion.form3)
+                            )}
+                        />
+                    </div>
                 </div>
             </div>
-
             {(answerStatus === 'incorrect' || (answerStatus === 'timeout' && (!form2Input || !form3Input))) && (
               <div className="text-center text-success font-medium animate-in fade-in">
                   Korrekte Formen: {currentQuestion.form2}, {currentQuestion.auxiliary} {currentQuestion.form3}

@@ -14,8 +14,9 @@ import type { Language } from '@/lib/storage';
 type StandardQuestion = { id: number; word: string; correctAnswer: string; options?: string[] };
 type StandardIrregularVerb = { id: number; verb: string; form2: string; form3: string; correctTranslation: string; translationOptions?: string[] };
 type FrenchIrregularVerb = { id: number; verb: string; participle: string; auxiliary: 'avoir' | 'être'; translationOptions: string[]; correctTranslation: string };
+type GermanIrregularVerb = { id: number; verb: string; form2: string; form3: string; auxiliary: 'hat' | 'ist'; translationOptions: string[]; correctTranslation: string; }
 
-type AnyQuestion = StandardQuestion | StandardIrregularVerb | FrenchIrregularVerb;
+type AnyQuestion = StandardQuestion | StandardIrregularVerb | FrenchIrregularVerb | GermanIrregularVerb;
 
 
 interface QuestionBaseProps {
@@ -33,13 +34,18 @@ interface QuestionBaseProps {
     backHref: string;
 }
 
-function isStandardIrregularVerb(q: AnyQuestion): q is StandardIrregularVerb {
-    return 'verb' in q && 'form2' in q;
+function isGermanIrregularVerb(q: AnyQuestion): q is GermanIrregularVerb {
+    return 'verb' in q && ('auxiliary' in q) && ('form2' in q);
 }
 
 function isFrenchIrregularVerb(q: AnyQuestion): q is FrenchIrregularVerb {
     return 'verb' in q && 'participle' in q;
 }
+
+function isStandardIrregularVerb(q: AnyQuestion): q is StandardIrregularVerb {
+    return 'verb' in q && 'form2' in q && !('auxiliary' in q);
+}
+
 
 export default function QuestionBase({ uiTexts, questionSets, backHref }: QuestionBaseProps) {
     const [searchTerm, setSearchTerm] = useState('');
@@ -53,17 +59,9 @@ export default function QuestionBase({ uiTexts, questionSets, backHref }: Questi
 
         return questionSets.map(set => {
             const filteredQuestions = set.questions.filter(q => {
-                if (isStandardIrregularVerb(q)) {
+                if (isGermanIrregularVerb(q) || isStandardIrregularVerb(q) || isFrenchIrregularVerb(q)) {
                     return (
                         q.verb.toLowerCase().includes(lowerCaseSearch) ||
-                        q.form2.toLowerCase().includes(lowerCaseSearch) ||
-                        q.form3.toLowerCase().includes(lowerCaseSearch) ||
-                        q.correctTranslation.toLowerCase().includes(lowerCaseSearch)
-                    );
-                } else if (isFrenchIrregularVerb(q)) {
-                     return (
-                        q.verb.toLowerCase().includes(lowerCaseSearch) ||
-                        q.participle.toLowerCase().includes(lowerCaseSearch) ||
                         q.correctTranslation.toLowerCase().includes(lowerCaseSearch)
                     );
                 }
@@ -111,15 +109,20 @@ export default function QuestionBase({ uiTexts, questionSets, backHref }: Questi
                                             {set.questions.map((q, index) => (
                                                 <React.Fragment key={q.id}>
                                                     <div className="text-sm">
-                                                        {isStandardIrregularVerb(q) ? (
+                                                        {isGermanIrregularVerb(q) ? (
                                                             <>
                                                                 <p><span className="font-bold">{q.verb}</span> - {q.correctTranslation}</p>
-                                                                <p className="text-muted-foreground">{q.form2}, {q.form3}</p>
+                                                                <p className="text-muted-foreground">{q.form2}, {q.auxiliary} {q.form3}</p>
                                                             </>
                                                         ) : isFrenchIrregularVerb(q) ? (
                                                              <>
                                                                 <p><span className="font-bold">{q.verb}</span> - {q.correctTranslation}</p>
                                                                 <p className="text-muted-foreground">Participe: {q.participle}, Auxiliaire: {q.auxiliary}</p>
+                                                            </>
+                                                        ) : isStandardIrregularVerb(q) ? (
+                                                            <>
+                                                                <p><span className="font-bold">{q.verb}</span> - {q.correctTranslation}</p>
+                                                                <p className="text-muted-foreground">{q.form2}, {q.form3}</p>
                                                             </>
                                                         ) : (
                                                             <p><span className="font-bold">{(q as StandardQuestion).word}</span> - {(q as StandardQuestion).correctAnswer}</p>

@@ -85,7 +85,7 @@ export default function DictionaryPage({ title, backHref, words, children }: Dic
                 </div>
             </CardHeader>
             <CardContent>
-                <ScrollArea className="h-96 w-full pr-4">
+                <ScrollArea className="h-96 w-full pr-4" data-tutorial-id="dictionary-word-list">
                     <div className="flex flex-col">
                         {sortedWords.map((w, index) => {
                             if (w.isHeader) {

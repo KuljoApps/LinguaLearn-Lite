@@ -65,7 +65,7 @@ export default function DictionaryEnPage() {
                         </DropdownMenu>
                     </div>
                 </CardHeader>
-                <CardContent className="grid grid-cols-2 gap-4 p-4">
+                <CardContent className="grid grid-cols-2 gap-4 p-4" data-tutorial-id="dictionary-grid">
                     <Link href="/learning/en/dictionary/numbers" passHref>
                         <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary">
                             <Hash className="h-12 w-12 text-deep-purple" />

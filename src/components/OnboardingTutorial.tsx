@@ -17,7 +17,7 @@ interface Step {
 const initialSteps: Step[] = [
     {
         isModal: true,
-        title: 'Witaj w\u00A0LinguaLearn!',
+        title: 'Witaj w',
         description: 'Pozwól, że w\u00A0kilku krokach pokażę Ci najważniejsze funkcje.',
     },
     {
@@ -51,31 +51,43 @@ const extendedSteps: Step[] = [
         path: '/settings',
         elementId: 'settings-card',
         title: 'Ustawienia Aplikacji',
-        description: 'W\u00A0Ustawieniach możesz włączyć/wyłączyć dźwięki, wibracje oraz dostosować filtr ochrony wzroku, aby nauka była bardziej komfortowa.',
+        description: 'Tutaj spersonalizujesz swoje doświadczenie. Włącz dźwięki, dostosuj filtr ochrony wzroku i\u00A0zarządzaj danymi aplikacji.',
     },
     {
         path: '/stats',
         elementId: 'stats-card',
         title: 'Śledzenie Statystyk',
-        description: 'Na ekranie Statystyk możesz śledzić swoje postępy, w\u00A0tym ogólną skuteczność, najdłuższą serię i\u00A0ostatnie 50 wyników.',
+        description: 'Na tym ekranie możesz śledzić swoje postępy, w\u00A0tym ogólną skuteczność, najdłuższą serię i\u00A0ostatnie wyniki w\u00A0quizach.',
     },
     {
         path: '/errors',
         elementId: 'errors-card',
-        title: 'Twoje Błędy',
+        title: 'Analiza Błędów',
         description: 'Sekcja Błędów to Twój osobisty trener. Zapisuje pytania, na które odpowiedziałeś niepoprawnie, abyś mógł je łatwo powtórzyć.',
     },
     {
         path: '/achievements',
         elementId: 'achievements-card',
-        title: 'Osiągnięcia',
-        description: 'Zdobywaj Osiągnięcia za swoje postępy! Odblokuj je wszystkie, aby udowodnić swoje mistrzostwo.',
+        title: 'Twoje Osiągnięcia',
+        description: 'Zdobywaj osiągnięcia za swoje postępy! Odblokuj je wszystkie, aby udowodnić swoje mistrzostwo w\u00A0nauce języków.',
     },
     {
         path: '/learning/en',
         elementId: 'learning-card',
-        title: 'Moduł Nauki',
-        description: 'W\u00A0module nauki znajdziesz słowniki, zasady gramatyczne i\u00A0wiele więcej. To świetne miejsce, aby odświeżyć wiedzę przed quizem.',
+        title: 'Centrum Nauki',
+        description: 'To Twoja baza wiedzy. Znajdziesz tu moduły do nauki gramatyki, słownictwa, fonetyki i\u00A0kultury danego kraju.',
+    },
+    {
+        path: '/learning/en/dictionary',
+        elementId: 'dictionary-grid',
+        title: 'Słownik Tematyczny',
+        description: 'W Słowniku słówka pogrupowane są tematycznie. Wybierz kategorię, która Cię interesuje, aby rozpocząć naukę.',
+    },
+    {
+        path: '/learning/en/dictionary/colors',
+        elementId: 'dictionary-word-list',
+        title: 'Nauka Słówek',
+        description: 'Tutaj możesz przeglądać słówka. Użyj gwiazdki, aby dodać najtrudniejsze z\u00A0nich do ulubionych i\u00A0mieć je zawsze na górze listy.',
     },
 ];
 
@@ -283,7 +295,7 @@ export default function OnboardingTutorial() {
                             <span className="text-xs text-muted-foreground">
                                 {stage === 'initial' ? currentStepIndex : initialSteps.length - 1 + currentStepIndex} / {initialSteps.length - 1 + extendedSteps.length}
                             </span>
-                             <Button onClick={stage === 'extended' && isLastStep ? handleFinish : handleNext} size="sm">
+                             <Button onClick={stage === 'extended' && isLastStep ? handleNext : handleNext} size="sm">
                                 {stage === 'extended' && isLastStep ? uiTexts.finish : uiTexts.next}
                             </Button>
                         </div>

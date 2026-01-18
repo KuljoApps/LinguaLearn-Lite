@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -16,19 +16,42 @@ interface AlphabetPageProps {
 export default function AlphabetPage({ data }: AlphabetPageProps) {
   const [loadingLetter, setLoadingLetter] = useState<string | null>(null);
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
+  const [audioCache, setAudioCache] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    // This effect is currently not used but can be a place
+    // for pre-loading or other initializations if needed in the future.
+  }, []);
 
   const handlePlaySound = async (letter: string) => {
     if (loadingLetter) return;
 
-    setLoadingLetter(letter);
     if (audio) {
         audio.pause();
         audio.currentTime = 0;
     }
 
+    const cacheKey = `audio-${data.lang}-${letter}`;
+    
+    // Check cache first
+    const cachedAudio = localStorage.getItem(cacheKey);
+    if (cachedAudio) {
+      const newAudio = new Audio(cachedAudio);
+      setAudio(newAudio);
+      newAudio.play();
+      return;
+    }
+
+    // If not in cache, fetch from API
+    setLoadingLetter(letter);
+
     try {
         const promptText = `Please pronounce the letter: ${letter}`;
         const response = await textToSpeech({ text: promptText });
+        
+        // Save to cache
+        localStorage.setItem(cacheKey, response.media);
+        
         const newAudio = new Audio(response.media);
         setAudio(newAudio);
         newAudio.play();

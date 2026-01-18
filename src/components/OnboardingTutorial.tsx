@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
 import { Language, getLanguage, setTutorialCompleted } from '@/lib/storage';
-import LinguaLearnLogo from './LinguaLearnLogo';
 
 interface OnboardingTutorialProps {
     open: boolean;
@@ -43,7 +42,7 @@ const steps: Step[] = [
 const uiTexts = {
     next: 'Dalej',
     finish: 'Zakończ',
-    welcomeTitle: 'Witaj w LinguaLearn!',
+    welcomeTitle: 'Witaj w',
     welcomeDesc: 'Pozwól, że w kilku krokach pokażę Ci najważniejsze funkcje.'
 }
 
@@ -123,22 +122,19 @@ export default function OnboardingTutorial({ open, onOpenChange }: OnboardingTut
             
             {/* Content */}
             {currentStep === -1 ? (
-                <div className="fixed inset-0 flex items-center justify-center p-4">
+                 <div className="fixed inset-0 flex items-center justify-center p-4">
                     <div className="bg-background p-6 rounded-lg shadow-xl text-center max-w-sm w-full">
-                        <div className="flex items-center justify-center gap-4 mb-4">
-                            <LinguaLearnLogo width="48" height="48" />
-                            <h1 className="text-4xl font-bold tracking-tight whitespace-nowrap">
-                                Lingua
-                                <span className="relative inline-block">
-                                    Learn
-                                    <span className="absolute -right-1 -bottom-4 text-lg font-semibold tracking-normal text-amber">
-                                    Lite
-                                    </span>
+                        <h2 className="text-2xl font-bold">{uiTexts.welcomeTitle}</h2>
+                        <h1 className="text-4xl font-bold tracking-tight whitespace-nowrap mt-2">
+                            Lingua
+                            <span className="relative inline-block">
+                                Learn
+                                <span className="absolute -right-1 -bottom-4 text-lg font-semibold tracking-normal text-amber">
+                                Lite
                                 </span>
-                            </h1>
-                        </div>
-                        <h2 className="text-2xl font-bold mt-4 mb-2">{uiTexts.welcomeTitle}</h2>
-                        <p className="text-muted-foreground mb-4">{uiTexts.welcomeDesc}</p>
+                            </span>
+                        </h1>
+                        <p className="text-muted-foreground my-6">{uiTexts.welcomeDesc}</p>
                         <Button onClick={handleNext}>{uiTexts.next}</Button>
                     </div>
                 </div>

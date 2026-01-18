@@ -27,6 +27,7 @@ import LinguaLearnLogo from '@/components/LinguaLearnLogo';
 import { vibrate } from "@/lib/vibrations";
 import { useToast } from "@/hooks/use-toast";
 import QuizResults from "./quiz-results";
+import { Label } from "./ui/label";
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
@@ -142,7 +143,7 @@ export default function QuizIrregularVerbsDe() {
             const errorRecord = {
               word: questions[currentQuestionIndex].verb,
               userAnswer: 'No answer',
-              correctAnswer: `${questions[currentQuestionIndex].correctTranslation}, ${questions[currentQuestionIndex].form2}, ${questions[currentQuestionIndex].form3}`,
+              correctAnswer: `${questions[currentQuestionIndex].correctTranslation}, ${questions[currentQuestionIndex].form2}, ${questions[currentQuestionIndex].auxiliary} ${questions[currentQuestionIndex].form3}`,
               quiz: QUIZ_NAME,
             };
             addError(errorRecord);
@@ -420,12 +421,10 @@ export default function QuizIrregularVerbsDe() {
 
           <div className="w-full space-y-4">
             <p className="text-center text-muted-foreground">1. Wähle die richtige Übersetzung</p>
-            <div
-                className={cn(
-                    "grid gap-2 w-full",
-                    isLongText ? "grid-cols-2" : "grid-cols-3"
-                )}
-            >
+            <div className={cn(
+                "grid gap-4 w-full",
+                isLongText ? "grid-cols-2" : "grid-cols-3"
+            )}>
                 {shuffledTranslationOptions.map((option, index) => {
                     if (isLongText && index === 2) {
                         return (
@@ -460,32 +459,36 @@ export default function QuizIrregularVerbsDe() {
             </div>
 
             <p className="text-center text-muted-foreground pt-4">2. Gib die Formen für Präteritum & Partizip II ein</p>
-            <div className="grid grid-cols-3 gap-2 w-full items-center text-center">
-              <Input value={currentQuestion.verb} readOnly className="text-center font-bold bg-muted" />
-              <Input
-                ref={form2InputRef}
-                value={form2Input}
-                onChange={(e) => setForm2Input(e.target.value)}
-                placeholder="Präteritum"
-                disabled={!!answerStatus || isPaused || translationStatus !== 'correct'}
-                className={cn("text-center transition-colors duration-300", getInputClass(form2Input, currentQuestion.form2))}
-              />
-              <div className="flex">
-                <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-input bg-muted text-muted-foreground text-sm">
-                  {currentQuestion.auxiliary}
-                </span>
-                <Input
-                  value={form3Input}
-                  onChange={(e) => setForm3Input(e.target.value)}
-                  placeholder="Partizip II"
-                  disabled={!!answerStatus || isPaused || translationStatus !== 'correct'}
-                  className={cn(
-                    "text-center transition-colors duration-300 rounded-l-none",
-                    getInputClass(form3Input, currentQuestion.form3)
-                  )}
-                />
-              </div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 w-full text-center">
+                <div>
+                    <Label htmlFor="form2" className="text-sm font-medium text-muted-foreground">Präteritum</Label>
+                    <Input
+                        id="form2"
+                        ref={form2InputRef}
+                        value={form2Input}
+                        onChange={(e) => setForm2Input(e.target.value)}
+                        placeholder={currentQuestion.verb}
+                        disabled={!!answerStatus || isPaused || translationStatus !== 'correct'}
+                        className={cn("text-center transition-colors duration-300 mt-1", getInputClass(form2Input, currentQuestion.form2))}
+                    />
+                </div>
+                <div>
+                    <Label htmlFor="form3" className="text-sm font-medium text-muted-foreground">Partizip II</Label>
+                    <Input
+                        id="form3"
+                        value={form3Input}
+                        onChange={(e) => setForm3Input(e.target.value)}
+                        placeholder="ge..."
+                        disabled={!!answerStatus || isPaused || translationStatus !== 'correct'}
+                        className={cn(
+                            "text-center transition-colors duration-300 mt-1",
+                            getInputClass(form3Input, currentQuestion.form3)
+                        )}
+                    />
+                    <div className="text-xs text-muted-foreground mt-1">Hilfsverb: <span className="font-semibold">{currentQuestion.auxiliary}</span></div>
+                </div>
             </div>
+
             {(answerStatus === 'incorrect' || (answerStatus === 'timeout' && (!form2Input || !form3Input))) && (
               <div className="text-center text-success font-medium animate-in fade-in">
                   Korrekte Formen: {currentQuestion.form2}, {currentQuestion.auxiliary} {currentQuestion.form3}
@@ -573,7 +576,3 @@ export default function QuizIrregularVerbsDe() {
     </>
   );
 }
-
-
-
-

@@ -51,8 +51,8 @@ export default function AlphabetPage({ data }: AlphabetPageProps) {
             </div>
         </CardHeader>
         <CardContent>
-          <ScrollArea className="h-96 w-full pr-4">
-            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4">
+          <ScrollArea className="h-96 w-full">
+            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4 pr-3">
               {data.alphabet.map((item, index) => (
                 <Button
                   key={`${item.letter}-${index}`}

@@ -7,8 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, Star } from 'lucide-react';
-import type { DictionaryWord } from '@/lib/types';
-import type { Language } from '@/lib/storage';
+import type { DictionaryWord, Language } from '@/lib/types';
 import { getFavorites, toggleFavorite } from '@/lib/storage';
 import { cn } from '@/lib/utils';
 

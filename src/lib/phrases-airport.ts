@@ -1,7 +1,4 @@
-
-import type { PhrasesContent } from './phrases';
-
-export const airportPhrases: PhrasesContent = {
+export const airportPhrases = {
   en: {
     airport: {
       title: 'Airport',

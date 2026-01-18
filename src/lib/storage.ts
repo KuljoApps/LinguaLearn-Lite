@@ -1,7 +1,7 @@
 'use client';
 
 import { allAchievements } from './achievements';
-import type { Achievement } from './achievements';
+import type { Language, Achievement } from './types';
 
 export type { Achievement };
 
@@ -50,8 +50,6 @@ export interface AchievementStatus {
     progress: number;
     unlockedAt: number | null;
 }
-
-export type Language = 'en' | 'fr' | 'de' | 'it' | 'es';
 
 const LANGUAGE_KEY = 'linguaLearnLanguage';
 const SETTINGS_KEY = 'linguaLearnSettings_v2';

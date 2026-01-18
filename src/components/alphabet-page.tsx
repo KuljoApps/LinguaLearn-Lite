@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { ArrowLeft, Volume2 } from 'lucide-react';
+import { ArrowLeft, Volume2, AudioLines } from 'lucide-react';
 import type { AlphabetData } from '@/lib/alphabet';
 
 interface AlphabetPageProps {
@@ -45,16 +45,19 @@ export default function AlphabetPage({ data }: AlphabetPageProps) {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4">
-      <Card className="w-full max-w-4xl shadow-2xl">
+      <Card className="w-full max-w-2xl shadow-2xl">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl">{data.ui.title}</CardTitle>
+            <div className="flex items-center justify-center gap-4">
+                <AudioLines className="h-8 w-8" />
+                <CardTitle className="text-3xl">{data.ui.title}</CardTitle>
+            </div>
         </CardHeader>
         <CardContent>
           <ScrollArea className="h-96 w-full pr-4">
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
-              {data.alphabet.map((item) => (
+              {data.alphabet.map((item, index) => (
                 <Button
-                  key={`${item.letter}-${item.phonetic}`}
+                  key={`${item.letter}-${index}`}
                   variant="outline"
                   className="h-28 flex flex-col p-2 text-lg border-2 border-primary"
                   onClick={() => handlePlaySound(item.letter)}

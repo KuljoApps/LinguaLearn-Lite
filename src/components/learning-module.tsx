@@ -11,11 +11,12 @@ import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, Search, BookCopy } from 'lucide-react';
 import type { Language } from '@/lib/storage';
 
-// A union type for all possible question structures
-type AnyQuestion = (
-    { id: number; word: string; correctAnswer: string; options?: string[] } |
-    { id: number; verb: string; form2: string; form3: string; correctTranslation: string; translationOptions?: string[] }
-);
+type StandardQuestion = { id: number; word: string; correctAnswer: string; options?: string[] };
+type StandardIrregularVerb = { id: number; verb: string; form2: string; form3: string; correctTranslation: string; translationOptions?: string[] };
+type FrenchIrregularVerb = { id: number; verb: string; participle: string; auxiliary: 'avoir' | 'être'; translationOptions: string[]; correctTranslation: string };
+
+type AnyQuestion = StandardQuestion | StandardIrregularVerb | FrenchIrregularVerb;
+
 
 interface QuestionBaseProps {
     language: Language;
@@ -32,9 +33,12 @@ interface QuestionBaseProps {
     backHref: string;
 }
 
-// Type guard to differentiate between question types
-function isIrregularVerb(q: AnyQuestion): q is { id: number; verb: string; form2: string; form3: string; correctTranslation: string } {
-    return 'verb' in q;
+function isStandardIrregularVerb(q: AnyQuestion): q is StandardIrregularVerb {
+    return 'verb' in q && 'form2' in q;
+}
+
+function isFrenchIrregularVerb(q: AnyQuestion): q is FrenchIrregularVerb {
+    return 'verb' in q && 'participle' in q;
 }
 
 export default function QuestionBase({ uiTexts, questionSets, backHref }: QuestionBaseProps) {
@@ -49,14 +53,21 @@ export default function QuestionBase({ uiTexts, questionSets, backHref }: Questi
 
         return questionSets.map(set => {
             const filteredQuestions = set.questions.filter(q => {
-                if (isIrregularVerb(q)) {
+                if (isStandardIrregularVerb(q)) {
                     return (
                         q.verb.toLowerCase().includes(lowerCaseSearch) ||
                         q.form2.toLowerCase().includes(lowerCaseSearch) ||
                         q.form3.toLowerCase().includes(lowerCaseSearch) ||
                         q.correctTranslation.toLowerCase().includes(lowerCaseSearch)
                     );
-                } else {
+                } else if (isFrenchIrregularVerb(q)) {
+                     return (
+                        q.verb.toLowerCase().includes(lowerCaseSearch) ||
+                        q.participle.toLowerCase().includes(lowerCaseSearch) ||
+                        q.correctTranslation.toLowerCase().includes(lowerCaseSearch)
+                    );
+                }
+                else { // StandardQuestion
                     return (
                         q.word.toLowerCase().includes(lowerCaseSearch) ||
                         q.correctAnswer.toLowerCase().includes(lowerCaseSearch)
@@ -100,13 +111,18 @@ export default function QuestionBase({ uiTexts, questionSets, backHref }: Questi
                                             {set.questions.map((q, index) => (
                                                 <React.Fragment key={q.id}>
                                                     <div className="text-sm">
-                                                        {isIrregularVerb(q) ? (
+                                                        {isStandardIrregularVerb(q) ? (
                                                             <>
                                                                 <p><span className="font-bold">{q.verb}</span> - {q.correctTranslation}</p>
                                                                 <p className="text-muted-foreground">{q.form2}, {q.form3}</p>
                                                             </>
+                                                        ) : isFrenchIrregularVerb(q) ? (
+                                                             <>
+                                                                <p><span className="font-bold">{q.verb}</span> - {q.correctTranslation}</p>
+                                                                <p className="text-muted-foreground">Participe: {q.participle}, Auxiliaire: {q.auxiliary}</p>
+                                                            </>
                                                         ) : (
-                                                            <p><span className="font-bold">{q.word}</span> - {q.correctAnswer}</p>
+                                                            <p><span className="font-bold">{(q as StandardQuestion).word}</span> - {(q as StandardQuestion).correctAnswer}</p>
                                                         )}
                                                     </div>
                                                     {index < set.questions.length - 1 && <Separator />}

@@ -97,7 +97,7 @@ export default function Home() {
     };
     
     const getQuizTitle3 = () => {
-        if (isFrench) return "Verbes Irréguliers";
+        if (isFrench) return "Verbes & Aux.";
         if (isGerman) return "Unregelmäßige Verben";
         if (isItalian) return "Verbi Irregolari";
         if (isSpanish) return "Verbos Irregulares";

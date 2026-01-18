@@ -58,8 +58,7 @@ const GLOBAL_STATS_KEY = 'linguaLearnGlobalStats_v2';
 export interface GlobalStats {
     uniqueDaysPlayed: number;
     lastPlayTimestamp: number | null;
-    quizCompletionCountForPromo?: number;
-    lastPromoShownDate?: string | null;
+    quizCompletionCount: number;
 }
 
 
@@ -129,8 +128,7 @@ const getGlobalStats = (): GlobalStats => {
     const defaultGlobalStats: GlobalStats = { 
         uniqueDaysPlayed: 0, 
         lastPlayTimestamp: null,
-        quizCompletionCountForPromo: 0,
-        lastPromoShownDate: null,
+        quizCompletionCount: 0,
     };
     if (typeof window === 'undefined') return defaultGlobalStats;
 
@@ -341,7 +339,7 @@ export const checkSessionAchievements = (isPerfect: boolean): Achievement[] => {
     if (typeof window === 'undefined') return [];
 
     const globalStats = getGlobalStats();
-    globalStats.quizCompletionCountForPromo = (globalStats.quizCompletionCountForPromo || 0) + 1;
+    globalStats.quizCompletionCount = (globalStats.quizCompletionCount || 0) + 1;
     saveGlobalStats(globalStats);
 
     const stats = getStats();
@@ -361,28 +359,23 @@ export const checkSessionAchievements = (isPerfect: boolean): Achievement[] => {
 // --- Promo Functions ---
 export const shouldShowProPromo = (): boolean => {
     if (typeof window === 'undefined') return false;
-
     const globalStats = getGlobalStats();
-    
-    if ((globalStats.quizCompletionCountForPromo || 0) >= 15) {
-        return true;
-    }
+    const count = globalStats.quizCompletionCount || 0;
+    // Show after 15, 45, 75... completed quizzes
+    return count > 0 && (count - 15) % 30 === 0;
+}
 
-    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-    if (globalStats.lastPromoShownDate !== today) {
-        return true;
-    }
-    
-    return false;
+export const shouldShowRateAppDialog = (): boolean => {
+    if (typeof window === 'undefined') return false;
+    const globalStats = getGlobalStats();
+    const count = globalStats.quizCompletionCount || 0;
+    // Show after 30, 60, 90... completed quizzes
+    return count > 0 && count % 30 === 0;
 }
 
 export const recordProPromoShown = () => {
-    if (typeof window === 'undefined') return;
-
-    const globalStats = getGlobalStats();
-    globalStats.quizCompletionCountForPromo = 0;
-    globalStats.lastPromoShownDate = new Date().toISOString().split('T')[0];
-    saveGlobalStats(globalStats);
+    // This is now a no-op for production logic, but might be used for other promo types.
+    // The quiz count logic handles display frequency.
 }
 
 

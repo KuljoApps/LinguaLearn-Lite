@@ -5,52 +5,61 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import LinguaLearnLogo from '@/components/LinguaLearnLogo';
-import { getLanguage, setLanguage, shouldShowProPromo, recordProPromoShown } from '@/lib/storage';
+import { getLanguage, setLanguage, shouldShowProPromo, shouldShowRateAppDialog } from '@/lib/storage';
 import { useState, useEffect } from 'react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import ProPromotionDialog from '@/components/ProPromotionDialog';
+import RateAppDialog from '@/components/RateAppDialog';
 
 
 export default function Home() {
     const [language, setCurrentLanguage] = useState<'en' | 'fr' | 'de' | 'it' | 'es'>('en');
     const [showPromo, setShowPromo] = useState(false);
+    const [showRateDialog, setShowRateDialog] = useState(false);
 
     useEffect(() => {
         setCurrentLanguage(getLanguage());
         
         // --- TEMPORARY FOR DEVELOPMENT ---
         // This logic shows the promo dialog every 5 visits for easier testing.
-        // It should be removed and the production logic below should be uncommented for release.
         try {
-            const devCounter = parseInt(sessionStorage.getItem('dev_promo_counter') || '0');
-            const newCount = devCounter + 1;
-            if (newCount >= 5) {
+            const devPromoCounter = parseInt(sessionStorage.getItem('dev_promo_counter') || '0');
+            const newPromoCount = devPromoCounter + 1;
+            if (newPromoCount >= 5) {
                 setShowPromo(true);
-                sessionStorage.removeItem('dev_promo_counter');
+                sessionStorage.setItem('dev_promo_counter', '0');
             } else {
-                sessionStorage.setItem('dev_promo_counter', newCount.toString());
+                sessionStorage.setItem('dev_promo_counter', newPromoCount.toString());
             }
         } catch (e) {
-            // sessionStorage might not be available, do nothing.
             sessionStorage.removeItem('dev_promo_counter');
+        }
+
+        // This logic shows the rate dialog every 10 visits for easier testing.
+        try {
+            const devRateCounter = parseInt(sessionStorage.getItem('dev_rate_counter') || '0');
+            const newRateCount = devRateCounter + 1;
+            if (newRateCount >= 10 && !showPromo) { // !showPromo to avoid overlap
+                setShowRateDialog(true);
+                sessionStorage.setItem('dev_rate_counter', '0');
+            } else {
+                sessionStorage.setItem('dev_rate_counter', newRateCount.toString());
+            }
+        } catch (e) {
+            sessionStorage.removeItem('dev_rate_counter');
         }
         // --- END TEMPORARY LOGIC ---
         
         /* --- PRODUCTION LOGIC ---
         if (shouldShowProPromo()) {
             setShowPromo(true);
+        } else if (shouldShowRateAppDialog()) {
+            setShowRateDialog(true);
         }
         */
 
     }, []);
-
-    const handlePromoClose = (open: boolean) => {
-        if (!open) {
-            recordProPromoShown();
-            setShowPromo(false);
-        }
-    };
 
 
     const handleLanguageChange = (lang: 'en' | 'fr' | 'de' | 'it' | 'es') => {
@@ -130,7 +139,8 @@ export default function Home() {
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
-            <ProPromotionDialog open={showPromo} onOpenChange={handlePromoClose} />
+            <ProPromotionDialog open={showPromo} onOpenChange={setShowPromo} />
+            <RateAppDialog open={showRateDialog} onOpenChange={setShowRateDialog} />
             <Card className="w-full max-w-md shadow-2xl text-center">
                 <CardHeader>
                     <div className="flex items-center justify-center gap-4 mb-4">

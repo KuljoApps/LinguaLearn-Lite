@@ -85,7 +85,7 @@ export default function MonumentsPage({ data }: { data: MonumentsPageData }) {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4">
       <Card className="w-full max-w-xl shadow-2xl">
-        <CardHeader className="flex flex-row items-center justify-between p-4 pb-2">
+        <CardHeader className="flex flex-row items-center justify-between p-4 pb-4">
           <div className="flex items-center gap-4">
             <Landmark className="h-8 w-8" />
             <CardTitle className="text-3xl">{t('title')}</CardTitle>

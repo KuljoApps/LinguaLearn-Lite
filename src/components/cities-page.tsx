@@ -59,7 +59,7 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
   ) => {
     return (
       <TableRow>
-        <TableCell className="font-medium py-2 pr-2 pl-0">
+        <TableCell className="font-medium py-2.5 pr-2 pl-0">
           <div className="flex items-center">
             {React.cloneElement(icon, {
               className: "h-4 w-4 text-deep-purple mr-2 shrink-0",
@@ -67,7 +67,7 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
             <span>{label}</span>
           </div>
         </TableCell>
-        <TableCell className="text-right py-2 pr-0.5 pl-0">
+        <TableCell className="text-right py-2.5 pr-0.5 pl-0">
           {value}
         </TableCell>
       </TableRow>
@@ -75,7 +75,7 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
   };
 
   const flagMap: Record<Language, string> = {
-    en: '🏴',
+    en: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
     de: '🇩🇪',
     fr: '🇫🇷',
     it: '🇮🇹',
@@ -123,7 +123,7 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
             {data.cities.map((city, index) => (
               <CarouselItem key={index} className="pl-1">
                 <div className="p-1 pb-0">
-                  <Card className="h-[420px]">
+                  <Card>
                     <CardHeader className="p-4 pb-2">
                       <div className="flex items-center justify-between mb-2">
                         <CarouselPrevious className="relative translate-x-0 translate-y-0 left-0 top-0 h-8 w-8" />
@@ -138,7 +138,7 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
                     </CardHeader>
 
                     <CardContent className="flex flex-col items-center gap-4 pt-0 pb-4 px-4">
-                       <ScrollArea className="h-40 w-full pr-4">
+                      <ScrollArea className="h-40 w-full pr-4">
                         <p className="text-sm text-muted-foreground text-justify">
                           {city.description[displayLang].replace(
                             / ([a-zA-Z])\s/g,
@@ -147,7 +147,7 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
                         </p>
                       </ScrollArea>
 
-                      <div className="w-full px-2">
+                      <div className="w-full pl-0.5 pr-1">
                         <Table>
                           <TableBody>
                             {renderFactRow(<Users />, t('population'), city.facts.population)}

@@ -180,8 +180,8 @@ export default function QuizIrregularVerbsDe() {
     if (currentQuestion) {
       const options = shuffleArray(currentQuestion.translationOptions);
       setShuffledTranslationOptions(options);
-
-      const hasLongOption = options.some(option => option.length > 15);
+      
+      const hasLongOption = options.some(option => option.length > 10);
       setIsLongText(hasLongOption);
     }
   }, [currentQuestion]);
@@ -420,13 +420,17 @@ export default function QuizIrregularVerbsDe() {
 
           <div className="w-full space-y-4">
             <p className="text-center text-muted-foreground">1. Wähle die richtige Übersetzung</p>
-            <div className={cn("grid gap-2 w-full", isLongText ? "grid-cols-2" : "grid-cols-3")}>
+            <div className="flex flex-wrap justify-center gap-2">
               {shuffledTranslationOptions.map((option) => (
                 <Button
                   key={option}
                   onClick={() => handleTranslationClick(option)}
                   disabled={!!answerStatus || isPaused || translationStatus !== null}
-                  className={cn("h-auto text-base p-2 whitespace-normal transition-all duration-300", getTranslationButtonClass(option))}
+                  className={cn(
+                      "h-auto text-base p-2 whitespace-normal transition-all duration-300 grow",
+                      isLongText ? 'basis-[48%]' : 'basis-[31%]',
+                      getTranslationButtonClass(option)
+                  )}
                 >
                   {option}
                 </Button>
@@ -539,3 +543,4 @@ export default function QuizIrregularVerbsDe() {
     </>
   );
 }
+

@@ -17,24 +17,24 @@ export default function HistoryPage({ data }: { data: HistoryPageData }) {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4">
       <Card className="w-full max-w-2xl shadow-2xl">
-        <CardHeader className="flex flex-row items-center justify-center p-4 pb-2">
-          <div className="flex items-center gap-4">
+        <CardHeader className="text-center p-4 pb-2">
+          <div className="flex items-center justify-center gap-4">
             <ScrollText className="h-8 w-8" />
             <CardTitle className="text-3xl">{t('title')}</CardTitle>
           </div>
         </CardHeader>
         <CardContent className="p-4 pt-2">
-          <ScrollArea className="h-[70vh] w-full pr-4">
-            <Accordion type="multiple" collapsible className="w-full">
+          <ScrollArea className="h-[70vh] w-full pr-1">
+            <Accordion type="multiple" className="w-full">
               {data.events.map((event, index) => (
                 <AccordionItem value={`item-${index}`} key={index}>
                   <AccordionTrigger className="text-lg font-semibold hover:no-underline text-left">
                     <div className="flex items-center gap-4 w-full">
                         <span className="font-bold text-primary tabular-nums w-24 text-right">{event.date}</span>
-                        <span className="flex-1">{event.name.native}</span>
+                        <span className="flex-1 text-center">{event.name.native}</span>
                     </div>
                   </AccordionTrigger>
-                  <AccordionContent className="space-y-3 px-4 pt-2">
+                  <AccordionContent className="space-y-3 px-2 pt-2">
                     <p className="text-muted-foreground text-justify">{event.description.native}</p>
                     <hr className="my-2 border-border" />
                     <p className="text-sm text-justify">{event.description.pl}</p>

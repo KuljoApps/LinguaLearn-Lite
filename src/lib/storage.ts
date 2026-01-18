@@ -121,6 +121,40 @@ const saveGlobalStats = (globalStats: GlobalStats) => {
     }
 }
 
+// --- Favorites Functions ---
+const getFavoritesKey = (lang: Language, category: string) => `linguaLearnFavorites_${lang}_${category}`;
+
+export const getFavorites = (lang: Language, category: string): string[] => {
+    if (typeof window === 'undefined') return [];
+    try {
+        const favoritesJson = localStorage.getItem(getFavoritesKey(lang, category));
+        return favoritesJson ? JSON.parse(favoritesJson) : [];
+    } catch (error) {
+        console.error("Failed to parse favorites from localStorage", error);
+        return [];
+    }
+}
+
+export const saveFavorites = (lang: Language, category: string, favorites: string[]) => {
+    if (typeof window === 'undefined') return;
+    try {
+        localStorage.setItem(getFavoritesKey(lang, category), JSON.stringify(favorites));
+    } catch (error) {
+        console.error("Failed to save favorites to localStorage", error);
+    }
+}
+
+export const toggleFavorite = (lang: Language, category: string, word: string): void => {
+    if (typeof window === 'undefined') return;
+    const currentFavorites = getFavorites(lang, category);
+    const newFavoritesSet = new Set(currentFavorites);
+    if (newFavoritesSet.has(word)) {
+        newFavoritesSet.delete(word);
+    } else {
+        newFavoritesSet.add(word);
+    }
+    saveFavorites(lang, category, Array.from(newFavoritesSet));
+}
 
 // --- Mastery Functions ---
 

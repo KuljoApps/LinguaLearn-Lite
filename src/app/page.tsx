@@ -103,7 +103,7 @@ export default function Home() {
                             Lingua
                             <span className="relative inline-block">
                                 Learn
-                                <span className="absolute -right-1 -bottom-2 text-sm font-semibold tracking-normal text-amber">
+                                <span className="absolute -right-1 -bottom-3 text-base font-semibold tracking-normal text-amber">
                                 Lite
                                 </span>
                             </span>

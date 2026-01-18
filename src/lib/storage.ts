@@ -54,6 +54,8 @@ export type Language = 'en' | 'fr' | 'de' | 'it' | 'es';
 const LANGUAGE_KEY = 'linguaLearnLanguage';
 const SETTINGS_KEY = 'linguaLearnSettings_v2';
 const GLOBAL_STATS_KEY = 'linguaLearnGlobalStats_v2';
+const TUTORIAL_KEY = 'linguaLearnTutorialCompleted_v1';
+
 
 export interface GlobalStats {
     uniqueDaysPlayed: number;
@@ -66,6 +68,18 @@ const getKey = (baseKey: string): string => {
     const lang = getLanguage();
     return `${baseKey}_${lang}`;
 }
+
+// --- Tutorial Functions ---
+export const isTutorialCompleted = (): boolean => {
+    if (typeof window === 'undefined') return true; // Assume completed on server
+    return localStorage.getItem(TUTORIAL_KEY) === 'true';
+}
+
+export const setTutorialCompleted = () => {
+    if (typeof window === 'undefined') return;
+    localStorage.setItem(TUTORIAL_KEY, 'true');
+}
+
 
 // --- Language Functions ---
 export const getLanguage = (): Language => {
@@ -258,7 +272,7 @@ const checkAndUnlockAchievements = (stats: Stats): Achievement[] => {
                 currentProgress = masteryProgress['Polish - French']?.length || 0;
                 break;
             case 'mastery_irregular_fr':
-                currentProgress = masteryProgress['Irregular Verbs (FR)']?.length || 0;
+                currentProgress = masteryProgress['Verbes & Aux.']?.length || 0;
                 break;
             case 'mastery_phrasal_fr':
                 currentProgress = masteryProgress['Faux Amis (FR)']?.length || 0;

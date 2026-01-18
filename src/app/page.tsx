@@ -5,60 +5,65 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import LinguaLearnLogo from '@/components/LinguaLearnLogo';
-import { getLanguage, setLanguage, shouldShowProPromo, shouldShowRateAppDialog } from '@/lib/storage';
+import { getLanguage, setLanguage, shouldShowProPromo, shouldShowRateAppDialog, isTutorialCompleted, setTutorialCompleted } from '@/lib/storage';
 import { useState, useEffect } from 'react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import ProPromotionDialog from '@/components/ProPromotionDialog';
 import RateAppDialog from '@/components/RateAppDialog';
+import OnboardingTutorial from '@/components/OnboardingTutorial';
 
 
 export default function Home() {
     const [language, setCurrentLanguage] = useState<'en' | 'fr' | 'de' | 'it' | 'es'>('en');
     const [showPromo, setShowPromo] = useState(false);
     const [showRateDialog, setShowRateDialog] = useState(false);
+    const [showTutorial, setShowTutorial] = useState(false);
 
     useEffect(() => {
         setCurrentLanguage(getLanguage());
         
-        // --- TEMPORARY FOR DEVELOPMENT ---
-        // This logic shows the promo dialog every 5 visits for easier testing.
-        try {
-            const devPromoCounter = parseInt(sessionStorage.getItem('dev_promo_counter') || '0');
-            const newPromoCount = devPromoCounter + 1;
-            if (newPromoCount >= 15) {
+        if (!isTutorialCompleted()) {
+            setShowTutorial(true);
+        } else {
+            // --- TEMPORARY FOR DEVELOPMENT ---
+            // This logic shows the promo dialog every 5 visits for easier testing.
+            try {
+                const devPromoCounter = parseInt(sessionStorage.getItem('dev_promo_counter') || '0');
+                const newPromoCount = devPromoCounter + 1;
+                if (newPromoCount >= 15) {
+                    setShowPromo(true);
+                    sessionStorage.setItem('dev_promo_counter', '0');
+                } else {
+                    sessionStorage.setItem('dev_promo_counter', newPromoCount.toString());
+                }
+            } catch (e) {
+                sessionStorage.removeItem('dev_promo_counter');
+            }
+
+            // This logic shows the rate dialog every 10 visits for easier testing.
+            try {
+                const devRateCounter = parseInt(sessionStorage.getItem('dev_rate_counter') || '0');
+                const newRateCount = devRateCounter + 1;
+                if (newRateCount >= 10 && !showPromo) { // !showPromo to avoid overlap
+                    setShowRateDialog(true);
+                    sessionStorage.setItem('dev_rate_counter', '0');
+                } else {
+                    sessionStorage.setItem('dev_rate_counter', newRateCount.toString());
+                }
+            } catch (e) {
+                sessionStorage.removeItem('dev_rate_counter');
+            }
+            // --- END TEMPORARY LOGIC ---
+            
+            /* --- PRODUCTION LOGIC ---
+            if (shouldShowProPromo()) {
                 setShowPromo(true);
-                sessionStorage.setItem('dev_promo_counter', '0');
-            } else {
-                sessionStorage.setItem('dev_promo_counter', newPromoCount.toString());
-            }
-        } catch (e) {
-            sessionStorage.removeItem('dev_promo_counter');
-        }
-
-        // This logic shows the rate dialog every 10 visits for easier testing.
-        try {
-            const devRateCounter = parseInt(sessionStorage.getItem('dev_rate_counter') || '0');
-            const newRateCount = devRateCounter + 1;
-            if (newRateCount >= 10 && !showPromo) { // !showPromo to avoid overlap
+            } else if (shouldShowRateAppDialog()) {
                 setShowRateDialog(true);
-                sessionStorage.setItem('dev_rate_counter', '0');
-            } else {
-                sessionStorage.setItem('dev_rate_counter', newRateCount.toString());
             }
-        } catch (e) {
-            sessionStorage.removeItem('dev_rate_counter');
+            */
         }
-        // --- END TEMPORARY LOGIC ---
-        
-        /* --- PRODUCTION LOGIC ---
-        if (shouldShowProPromo()) {
-            setShowPromo(true);
-        } else if (shouldShowRateAppDialog()) {
-            setShowRateDialog(true);
-        }
-        */
-
     }, []);
 
 
@@ -141,6 +146,7 @@ export default function Home() {
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <ProPromotionDialog open={showPromo} onOpenChange={setShowPromo} />
             <RateAppDialog open={showRateDialog} onOpenChange={setShowRateDialog} />
+            <OnboardingTutorial open={showTutorial} onOpenChange={setShowTutorial} />
             <Card className="w-full max-w-md shadow-2xl text-center">
                 <CardHeader>
                     <div className="flex items-center justify-center gap-4 mb-4">
@@ -159,7 +165,7 @@ export default function Home() {
                         {getWelcomeMessage()}
                     </p>
                 </CardHeader>
-                <CardContent className="flex flex-col space-y-4 p-6 pt-0 pb-4">
+                <CardContent data-tutorial-id="quiz-buttons" className="flex flex-col space-y-4 p-6 pt-0 pb-4">
                     <Link href={isFrench ? "/quiz/fr-pl" : isGerman ? "/quiz/de-pl" : isItalian ? "/quiz/it-pl" : isSpanish ? "/quiz/es-pl" : "/quiz/en-pl"} passHref>
                         <Button className="w-full h-12 text-lg" size="lg">
                             <BookOpen className="mr-2 h-5 w-5" />
@@ -191,7 +197,7 @@ export default function Home() {
                         </Button>
                     </Link>
                 </CardContent>
-                <div className="px-6 pb-2">
+                <div data-tutorial-id="learning-button" className="px-6 pb-2">
                     <Separator className="mb-2"/>
                     <Link href={isFrench ? "/learning/fr" : isGerman ? "/learning/de" : isItalian ? "/learning/it" : isSpanish ? "/learning/es" : "/learning/en"} passHref>
                         <Button variant="outline" className="w-full h-12 text-lg mt-2 border-2 border-primary">
@@ -200,10 +206,10 @@ export default function Home() {
                         </Button>
                     </Link>
                 </div>
-                <CardFooter className="flex justify-center gap-4 p-6 pt-4">
+                <CardFooter data-tutorial-id="toolbar" className="flex justify-center gap-4 p-6 pt-4">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="outline" size="icon" title="Change language">
+                            <Button data-tutorial-id="language-switcher" variant="outline" size="icon" title="Change language">
                                 <span className="text-2xl">{getFlag()}</span>
                             </Button>
                         </DropdownMenuTrigger>

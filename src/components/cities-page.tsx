@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { ArrowLeft, Building2, Users, Map, Sparkles, Calendar } from 'lucide-react';
 import {
   Carousel,
@@ -38,17 +37,6 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
   const t = (key: keyof CitiesPageData['ui']) => {
     const texts = data.ui[key];
     return texts[displayLang];
-  };
-
-  const getNativeLangName = (code: string) => {
-    switch (code) {
-      case 'en': return 'English';
-      case 'de': return 'Deutsch';
-      case 'fr': return 'Français';
-      case 'it': return 'Italiano';
-      case 'es': return 'Español';
-      default: return 'Language';
-    }
   };
 
   const renderFactRow = (
@@ -90,25 +78,11 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
             <CardTitle className="text-3xl">{t('title')}</CardTitle>
           </div>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-auto p-1 rounded-md">
-                <div className="flex items-center justify-center h-8 w-8 rounded-md border border-input bg-background">
-                  <span className="text-xl">{displayedFlag}</span>
-                </div>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setDisplayLang('native')}>
-                <span className="mr-2 text-lg">{flagMap[data.lang]}</span>
-                {getNativeLangName(data.lang)}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setDisplayLang('pl')}>
-                <span className="mr-2 text-lg">🇵🇱</span>
-                Polski
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Button variant="ghost" className="h-auto p-1 rounded-md" onClick={() => setDisplayLang(prev => prev === 'native' ? 'pl' : 'native')}>
+            <div className="flex items-center justify-center h-8 w-8 rounded-md border border-input bg-background">
+              <span className="text-xl">{displayedFlag}</span>
+            </div>
+          </Button>
         </CardHeader>
 
         <Carousel
@@ -138,7 +112,7 @@ export default function CitiesPage({ data }: { data: CitiesPageData }) {
                       <p className="text-sm text-muted-foreground text-justify mb-3 flex-grow">
                         {city.description[displayLang].replace(
                           / ([a-zA-Z])\s/g,
-                          ' $1\u00A0'
+                          ' $1 '
                         )}
                       </p>
 

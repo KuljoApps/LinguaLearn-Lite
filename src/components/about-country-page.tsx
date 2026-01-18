@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { ArrowLeft, Map, Users, Wallet, Landmark, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -79,20 +78,10 @@ export default function AboutCountryPage({ data }: AboutCountryPageProps) {
     </TableRow>
   );
 
-  const description = t('description').replace(/ ([a-zA-Z])\s/g, ' $1\u00A0');
+  const description = t('description').replace(/ ([a-zA-Z]) /g, ' $1 ');
   const sentences = description.match(/[^.!?]+[.!?]+/g) || [description];
   const previewText = sentences.slice(0, 2).join(' ');
   const restOfText = sentences.length > 2 ? sentences.slice(2).join(' ') : null;
-
-  const getNativeLangName = (code: 'en' | 'de' | 'fr' | 'it' | 'es') => {
-    switch(code) {
-        case 'en': return 'English';
-        case 'de': return 'Deutsch';
-        case 'fr': return 'Français';
-        case 'it': return 'Italiano';
-        case 'es': return 'Español';
-    }
-  }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -129,26 +118,14 @@ export default function AboutCountryPage({ data }: AboutCountryPageProps) {
                         </Button>
                       </CollapsibleTrigger>
                     ) : <div />}
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-auto p-1 rounded-md">
-                          <div className="flex items-center gap-2">
-                              <span className="text-sm underline text-primary/80">{t('language')}</span>
-                              <div className="flex items-center justify-center h-8 w-8 rounded-md border border-input bg-background">
-                                  <span className="text-xl">{displayLang === 'native' ? data.flag.native : data.flag.pl}</span>
-                              </div>
+                    <Button variant="ghost" className="h-auto p-1 rounded-md" onClick={() => setDisplayLang(prev => prev === 'native' ? 'pl' : 'native')}>
+                      <div className="flex items-center gap-2">
+                          <span className="text-sm underline text-primary/80">{t('language')}</span>
+                          <div className="flex items-center justify-center h-8 w-8 rounded-md border border-input bg-background">
+                              <span className="text-xl">{displayLang === 'native' ? data.flag.native : data.flag.pl}</span>
                           </div>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => setDisplayLang('native')}>
-                          <span className="mr-2 text-lg">{data.flag.native}</span> {getNativeLangName(data.nativeLangCode)}
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setDisplayLang('pl')}>
-                          <span className="mr-2 text-lg">{data.flag.pl}</span> Polski
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                      </div>
+                    </Button>
                   </div>
                 </Collapsible>
               </div>
@@ -169,9 +146,9 @@ export default function AboutCountryPage({ data }: AboutCountryPageProps) {
 
           <div className="space-y-2">
             <h3 className="text-center text-lg font-semibold">{t('funFactsTitle')}</h3>
-            <ul className="list-inside list-disc space-y-1 pl-4 text-sm text-muted-foreground">
+            <ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">
               {getFunFacts().map((fact, index) => (
-                <li key={index}>{fact.replace(/ ([a-zA-Z])\s/g, ' $1\u00A0')}</li>
+                <li key={index}>{fact.replace(/ ([a-zA-Z]) /g, ' $1 ')}</li>
               ))}
             </ul>
           </div>

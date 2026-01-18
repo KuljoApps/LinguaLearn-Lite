@@ -135,7 +135,7 @@ export default function Home() {
                 <CardHeader>
                     <div className="flex items-center justify-center gap-4 mb-4">
                         <LinguaLearnLogo width="48" height="48" />
-                        <h1 className="text-4xl font-bold tracking-tight">
+                        <h1 className="text-4xl font-bold tracking-tight whitespace-nowrap">
                             Lingua
                             <span className="relative inline-block">
                                 Learn

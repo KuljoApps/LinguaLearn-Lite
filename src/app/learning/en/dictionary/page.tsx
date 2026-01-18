@@ -41,7 +41,7 @@ export default function DictionaryEnPage() {
                     <div className="absolute right-6 top-1/2 -translate-y-1/2">
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button variant="outline" size="icon" title="Change language">
+                                <Button variant="outline" size="icon" title="Change language" data-tutorial-id="dictionary-language-switcher">
                                     <span className="text-2xl">{getFlag()}</span>
                                 </Button>
                             </DropdownMenuTrigger>
@@ -65,7 +65,7 @@ export default function DictionaryEnPage() {
                         </DropdownMenu>
                     </div>
                 </CardHeader>
-                <CardContent className="grid grid-cols-2 gap-4 p-4" data-tutorial-id="dictionary-grid">
+                <CardContent className="grid grid-cols-2 gap-4 p-4" data-tutorial-id="dictionary-categories">
                     <Link href="/learning/en/dictionary/numbers" passHref>
                         <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary">
                             <Hash className="h-12 w-12 text-deep-purple" />
@@ -97,13 +97,13 @@ export default function DictionaryEnPage() {
                         </Button>
                     </Link>
                     <Link href="/learning/en/dictionary/food" passHref>
-                        <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary">
+                        <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary" data-tutorial-id="dictionary-food-category">
                             <Utensils className="h-12 w-12 text-deep-purple" />
                             Food
                         </Button>
                     </Link>
                     <Link href="/learning/en/dictionary/home" passHref>
-                        <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary">
+                        <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary" data-tutorial-id="dictionary-home-category">
                             <Home className="h-12 w-12 text-deep-purple" />
                             Home
                         </Button>

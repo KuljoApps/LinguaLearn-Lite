@@ -85,14 +85,26 @@ export default function SettingsPage() {
                     <CardTitle className="text-center text-3xl">{getUIText('title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between">
-                        <Label htmlFor="sounds-switch" className="text-lg">{getUIText('sounds')}</Label>
-                        <Switch
-                            id="sounds-switch"
-                            checked={settings.soundsEnabled}
-                            onCheckedChange={(checked) => handleSettingChange('soundsEnabled', checked)}
-                            suppressHydrationWarning
-                        />
+                    <div data-tutorial-id="settings-switches">
+                        <div className="flex items-center justify-between">
+                            <Label htmlFor="sounds-switch" className="text-lg">{getUIText('sounds')}</Label>
+                            <Switch
+                                id="sounds-switch"
+                                checked={settings.soundsEnabled}
+                                onCheckedChange={(checked) => handleSettingChange('soundsEnabled', checked)}
+                                suppressHydrationWarning
+                            />
+                        </div>
+                        <Separator className="my-4"/>
+                        <div className="flex items-center justify-between">
+                            <Label htmlFor="vibrations-switch" className="text-lg">{getUIText('vibrations')}</Label>
+                            <Switch
+                                id="vibrations-switch"
+                                checked={settings.vibrationsEnabled}
+                                onCheckedChange={(checked) => handleSettingChange('vibrationsEnabled', checked)}
+                                suppressHydrationWarning
+                            />
+                        </div>
                     </div>
                     <Separator />
                     <div className="space-y-2">
@@ -109,17 +121,7 @@ export default function SettingsPage() {
                         />
                     </div>
                     <Separator />
-                    <div className="flex items-center justify-between">
-                        <Label htmlFor="vibrations-switch" className="text-lg">{getUIText('vibrations')}</Label>
-                        <Switch
-                            id="vibrations-switch"
-                            checked={settings.vibrationsEnabled}
-                            onCheckedChange={(checked) => handleSettingChange('vibrationsEnabled', checked)}
-                            suppressHydrationWarning
-                        />
-                    </div>
-                    <Separator />
-                     <div className="space-y-2">
+                     <div className="space-y-2" data-tutorial-id="settings-eyecare">
                         <Label htmlFor="eyecare-slider" className="text-lg">{getUIText('eyeCare')}</Label>
                         <Slider
                             id="eyecare-slider"
@@ -139,7 +141,7 @@ export default function SettingsPage() {
                                 {getUIText('aboutDesc')}
                             </p>
                             <Link href="/settings/about" passHref>
-                                <Button variant="outline" size="sm">{getUIText('more')}</Button>
+                                <Button variant="outline" size="sm" data-tutorial-id="settings-about">{getUIText('more')}</Button>
                             </Link>
                         </div>
                     </div>

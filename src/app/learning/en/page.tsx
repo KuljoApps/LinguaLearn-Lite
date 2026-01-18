@@ -55,40 +55,45 @@ export default function LearningEnPage() {
                 </CardHeader>
 
                 <CardContent className="flex flex-col space-y-4 px-6 pt-2 pb-2">
-                    <Link href="/learning/en/questions">
-                        <Button className="w-full h-12 text-lg">
-                            <BookCopy className="mr-2 h-5 w-5" />
-                            Question Base
-                        </Button>
-                    </Link>
+                    <div data-tutorial-id="learning-top-buttons" className="flex flex-col space-y-4">
+                        <Link href="/learning/en/questions">
+                            <Button className="w-full h-12 text-lg">
+                                <BookCopy className="mr-2 h-5 w-5" />
+                                Question Base
+                            </Button>
+                        </Link>
 
-                    <Link href="/learning/en/tenses">
-                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
-                            <Clock className="mr-2 h-5 w-5 text-deep-purple" />
-                            Tenses
-                        </Button>
-                    </Link>
+                        <Link href="/learning/en/tenses">
+                            <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
+                                <Clock className="mr-2 h-5 w-5 text-deep-purple" />
+                                Tenses
+                            </Button>
+                        </Link>
 
-                    <Link href="/learning/en/grammar">
-                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
-                            <FilePenLine className="mr-2 h-5 w-5 text-deep-purple" />
-                            General Grammar
-                        </Button>
-                    </Link>
+                        <Link href="/learning/en/grammar">
+                            <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
+                                <FilePenLine className="mr-2 h-5 w-5 text-deep-purple" />
+                                General Grammar
+                            </Button>
+                        </Link>
+                    </div>
+                    
+                    <div data-tutorial-id="learning-bottom-buttons" className="flex flex-col space-y-4">
+                         <Link href="/learning/en/phrases">
+                            <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
+                                <MessageSquareText className="mr-2 h-5 w-5 text-deep-purple" />
+                                Expressions & Phrases
+                            </Button>
+                        </Link>
 
-                    <Link href="/learning/en/phrases">
-                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
-                            <MessageSquareText className="mr-2 h-5 w-5 text-deep-purple" />
-                            Expressions & Phrases
-                        </Button>
-                    </Link>
+                        <Link href="/learning/en/dictionary">
+                            <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
+                                <BookText className="mr-2 h-5 w-5 text-deep-purple" />
+                                Dictionary
+                            </Button>
+                        </Link>
+                    </div>
 
-                    <Link href="/learning/en/dictionary">
-                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
-                            <BookText className="mr-2 h-5 w-5 text-deep-purple" />
-                            Dictionary
-                        </Button>
-                    </Link>
 
                     <Collapsible
                         open={isExtrasOpen}

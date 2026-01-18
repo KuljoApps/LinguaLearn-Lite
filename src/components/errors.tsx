@@ -357,7 +357,7 @@ export default function ErrorsPage() {
             <Card className="w-full max-w-4xl shadow-2xl" data-tutorial-id="errors-card">
                 <CardHeader className="flex flex-col items-center gap-4 p-6 sm:flex-row sm:justify-between">
                     <CardTitle className="text-3xl">{getUIText('title')}</CardTitle>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2" data-tutorial-id="errors-filters">
                         <Select value={quizFilter} onValueChange={(value) => handleFilterChange(value as QuizFilter)}>
                             <SelectTrigger>
                                 <SelectValue placeholder={getUIText('filterPlaceholder')} />
@@ -375,7 +375,7 @@ export default function ErrorsPage() {
                         </Button>
                     </div>
                 </CardHeader>
-                <CardContent className="h-96 w-full p-0">
+                <CardContent className="h-96 w-full p-0" data-tutorial-id="errors-table">
                     {renderTable()}
                 </CardContent>
                 <CardFooter className="flex justify-center p-6">

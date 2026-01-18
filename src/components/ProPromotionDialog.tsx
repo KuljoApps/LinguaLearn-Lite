@@ -12,9 +12,11 @@ interface ProPromotionDialogProps {
 export default function ProPromotionDialog({ open, onOpenChange }: ProPromotionDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md [&>button]:hidden">
         <DialogHeader>
-          <DialogTitle className="text-2xl text-center font-bold">Przejdź na LinguaLearn PRO!</DialogTitle>
+          <DialogTitle className="text-2xl text-center font-bold">
+            Przejdź na LinguaLearn <span className="text-deep-purple">PRO</span>!
+          </DialogTitle>
           <DialogDescription className="text-center pt-2">
             Więcej treści, więcej korzyści, jednorazowa opłata.
           </DialogDescription>
@@ -34,8 +36,8 @@ export default function ProPromotionDialog({ open, onOpenChange }: ProPromotionD
               <Zap className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h4 className="font-semibold">Zaawansowane statystyki</h4>
-              <p className="text-sm text-muted-foreground">Śledź swoje postępy dzięki szczegółowym analizom i wykresom.</p>
+              <h4 className="font-semibold">Zaawansowane statystyki i misje</h4>
+              <p className="text-sm text-muted-foreground">Śledź swoje postępy dzięki szczegółowym analizom, wykresom i codziennym misjom.</p>
             </div>
           </div>
           <div className="flex items-center gap-4">

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { BookOpen, Dumbbell, Sparkles, Settings, BarChart, ShieldX, MessageSquareQuote, Layers, Trophy, GraduationCap } from 'lucide-react';
@@ -19,9 +18,31 @@ export default function Home() {
 
     useEffect(() => {
         setCurrentLanguage(getLanguage());
+        
+        // --- TEMPORARY FOR DEVELOPMENT ---
+        // This logic shows the promo dialog every 5 visits for easier testing.
+        // It should be removed and the production logic below should be uncommented for release.
+        try {
+            const devCounter = parseInt(sessionStorage.getItem('dev_promo_counter') || '0');
+            const newCount = devCounter + 1;
+            if (newCount >= 5) {
+                setShowPromo(true);
+                sessionStorage.removeItem('dev_promo_counter');
+            } else {
+                sessionStorage.setItem('dev_promo_counter', newCount.toString());
+            }
+        } catch (e) {
+            // sessionStorage might not be available, do nothing.
+            sessionStorage.removeItem('dev_promo_counter');
+        }
+        // --- END TEMPORARY LOGIC ---
+        
+        /* --- PRODUCTION LOGIC ---
         if (shouldShowProPromo()) {
             setShowPromo(true);
         }
+        */
+
     }, []);
 
     const handlePromoClose = (open: boolean) => {

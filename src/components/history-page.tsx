@@ -25,7 +25,7 @@ export default function HistoryPage({ data }: { data: HistoryPageData }) {
         </CardHeader>
         <CardContent className="p-4 pt-2">
           <ScrollArea className="h-[70vh] w-full pr-4">
-            <Accordion type="single" collapsible className="w-full">
+            <Accordion type="multiple" collapsible className="w-full">
               {data.events.map((event, index) => (
                 <AccordionItem value={`item-${index}`} key={index}>
                   <AccordionTrigger className="text-lg font-semibold hover:no-underline text-left">
@@ -34,7 +34,7 @@ export default function HistoryPage({ data }: { data: HistoryPageData }) {
                         <span className="flex-1">{event.name.native}</span>
                     </div>
                   </AccordionTrigger>
-                  <AccordionContent className="space-y-3 pl-4 ml-28 border-l-2 border-primary/20">
+                  <AccordionContent className="space-y-3 px-4 pt-2">
                     <p className="text-muted-foreground text-justify">{event.description.native}</p>
                     <hr className="my-2 border-border" />
                     <p className="text-sm text-justify">{event.description.pl}</p>

@@ -48,11 +48,11 @@ export default function QuizIrregularVerbsFr() {
   const [score, setScore] = useState(0);
   const [sessionErrors, setSessionErrors] = useState<Omit<ErrorRecord, 'id'>[]>([]);
 
-  const [stage, setStage] = useState<'translation' | 'auxiliary'>('translation');
   const [selectedTranslation, setSelectedTranslation] = useState<string | null>(null);
   const [translationStatus, setTranslationStatus] = useState<"correct" | "incorrect" | null>(null);
-  const [auxiliaryStatus, setAuxiliaryStatus] = useState<"correct" | "incorrect" | null>(null);
   const [selectedAuxiliary, setSelectedAuxiliary] = useState<'avoir' | 'être' | null>(null);
+  const [auxiliaryStatus, setAuxiliaryStatus] = useState<"correct" | "incorrect" | null>(null);
+  
   const [answerStatus, setAnswerStatus] = useState<"correct" | "incorrect" | "timeout" | null>(null);
   
   const [isRestartAlertOpen, setIsRestartAlertOpen] = useState(false);
@@ -81,7 +81,6 @@ export default function QuizIrregularVerbsFr() {
   }, [toast]);
   
   const resetQuestionState = useCallback(() => {
-    setStage('translation');
     setAnswerStatus(null);
     setSelectedTranslation(null);
     setTranslationStatus(null);
@@ -145,8 +144,8 @@ export default function QuizIrregularVerbsFr() {
 
             const errorRecord = {
               word: questions[currentQuestionIndex].verb,
-              userAnswer: 'No answer',
-              correctAnswer: `Tłumaczenie: ${questions[currentQuestionIndex].correctTranslation}, Czasownik posiłkowy: ${questions[currentQuestionIndex].auxiliary}`,
+              userAnswer: 'Pas de réponse',
+              correctAnswer: `${questions[currentQuestionIndex].correctTranslation}, auxiliaire: ${questions[currentQuestionIndex].auxiliary}`,
               quiz: QUIZ_NAME,
             };
             addError(errorRecord);
@@ -193,7 +192,6 @@ export default function QuizIrregularVerbsFr() {
       setTranslationStatus('correct');
       playSound('correct');
       vibrate('correct');
-      setTimeout(() => setStage('auxiliary'), 500);
     } else {
       setTranslationStatus('incorrect');
       setAnswerStatus('incorrect');
@@ -205,8 +203,8 @@ export default function QuizIrregularVerbsFr() {
 
       const errorRecord = {
         word: currentQuestion.verb,
-        userAnswer: `Tłumaczenie: ${option}`,
-        correctAnswer: `Tłumaczenie: ${currentQuestion.correctTranslation}`,
+        userAnswer: option,
+        correctAnswer: currentQuestion.correctTranslation,
         quiz: QUIZ_NAME,
       };
       addError(errorRecord);
@@ -221,17 +219,16 @@ export default function QuizIrregularVerbsFr() {
     const isCorrect = choice === currentQuestion.auxiliary;
     setAuxiliaryStatus(isCorrect ? 'correct' : 'incorrect');
     
-    // This is the final step, so now we set the main answerStatus
     const overallCorrect = translationStatus === 'correct' && isCorrect;
     setAnswerStatus(overallCorrect ? 'correct' : 'incorrect');
 
     if (overallCorrect) {
       setScore(prev => prev + 1);
-    } else if (!isCorrect) { // Log error only for the wrong auxiliary part
+    } else if (translationStatus === 'correct' && !isCorrect) { // Log error only if translation was right but auxiliary was wrong
       const errorRecord = {
         word: currentQuestion.verb,
-        userAnswer: `Czasownik posiłkowy: ${choice}`,
-        correctAnswer: `Czasownik posiłkowy: ${currentQuestion.auxiliary}`,
+        userAnswer: `Auxiliaire: ${choice}`,
+        correctAnswer: `Auxiliaire: ${currentQuestion.auxiliary}`,
         quiz: QUIZ_NAME,
       };
       addError(errorRecord);
@@ -274,6 +271,11 @@ export default function QuizIrregularVerbsFr() {
   }
 
   const getTranslationButtonClass = (option: string) => {
+    if (answerStatus === 'timeout') {
+      return option === currentQuestion.correctTranslation
+        ? "bg-success text-success-foreground"
+        : "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
+    }
     if (!translationStatus) return "bg-primary text-primary-foreground hover:bg-primary/90";
     const isCorrect = option === currentQuestion.correctTranslation;
     const isSelected = option === selectedTranslation;
@@ -283,6 +285,11 @@ export default function QuizIrregularVerbsFr() {
   };
   
   const getAuxiliaryButtonClass = (choice: 'avoir' | 'être') => {
+    if (answerStatus === 'timeout') {
+      return choice === currentQuestion.auxiliary
+        ? "bg-success text-success-foreground"
+        : "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
+    }
     if (!auxiliaryStatus) return "bg-primary text-primary-foreground hover:bg-primary/90";
     const isCorrect = choice === currentQuestion.auxiliary;
     const isSelected = choice === selectedAuxiliary;
@@ -314,33 +321,43 @@ export default function QuizIrregularVerbsFr() {
   return (
     <>
       <Card className="w-full max-w-lg shadow-2xl">
-        <CardHeader className="text-center pb-4">
-          <div className="flex items-center justify-center gap-2">
-              <LinguaLearnLogo className="h-8 w-8" />
-              <CardTitle className="text-3xl font-bold tracking-tight">LinguaLearn Lite</CardTitle>
-          </div>
-          <CardDescription className="pt-2">Wybierz tłumaczenie i poprawny czasownik posiłkowy</CardDescription>
+        <CardHeader className="text-center pb-2">
+            <div className="flex items-center justify-center gap-2">
+                <LinguaLearnLogo className="h-8 w-8" />
+                <CardTitle className="text-3xl font-bold tracking-tight">
+                    Lingua
+                    <span className="relative inline-block">
+                        Learn
+                        <span className="absolute -right-0.5 -bottom-3 text-sm font-semibold tracking-normal text-amber">
+                        Lite
+                        </span>
+                    </span>
+                </CardTitle>
+            </div>
+          <CardDescription className="pt-2">Sélectionnez la traduction et l'auxiliaire correct</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center p-6 space-y-6">
-          <div className="w-full flex justify-around gap-4 text-center">
-            <div className="flex items-center gap-2">
-              <Clock className="h-6 w-6" />
-              <span className={cn("text-2xl font-bold", showTimePenalty && "text-destructive")}>{questionTimer}s</span>
+            <div className="w-full flex justify-around gap-4 text-center">
+                <div className="flex items-center gap-2">
+                    <Clock className="h-6 w-6" />
+                    <span className={cn("text-2xl font-bold transition-colors duration-300 text-card-foreground", showTimePenalty && "text-destructive animate-in fade-in-0 shake-sm")}>
+                        {questionTimer}s
+                    </span>
+                </div>
+                <div className="flex items-center gap-2">
+                    <Clock className="h-6 w-6" />
+                    <span className="text-2xl font-bold text-card-foreground">{formatTime(totalTime)}</span>
+                </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Clock className="h-6 w-6" />
-              <span className="text-2xl font-bold">{formatTime(totalTime)}</span>
-            </div>
-          </div>
           <Progress value={questionTimeProgress} className="w-full h-2" />
 
           <div className="text-center space-y-2">
               <p className="text-muted-foreground">Verbe irrégulier:</p>
-              <p className="text-4xl font-headline font-bold">"{currentQuestion.verb}"</p>
+              <p className="text-4xl font-headline font-bold">{`"${currentQuestion.verb}"`}</p>
           </div>
 
           <div className="w-full space-y-4">
-            <p className="text-center text-muted-foreground">1. Wybierz poprawne tłumaczenie</p>
+            <p className="text-center text-muted-foreground">1. Choisissez la bonne traduction</p>
             <div className="grid grid-cols-3 gap-2 w-full">
               {shuffledTranslationOptions.map((option) => (
                 <Button
@@ -354,36 +371,29 @@ export default function QuizIrregularVerbsFr() {
               ))}
             </div>
 
-            {stage === 'auxiliary' && (
-              <div className="animate-in fade-in-50 duration-500">
-                <p className="text-center text-muted-foreground pt-4">2. Wybierz poprawny czasownik posiłkowy dla Passé Composé</p>
-                <div className="grid grid-cols-2 gap-4 w-full mt-4">
-                  <Button
-                    onClick={() => handleAuxiliaryClick('avoir')}
-                    disabled={!!answerStatus || isPaused}
-                    className={cn("h-16 text-lg", getAuxiliaryButtonClass('avoir'))}
-                  >
-                    Avoir
-                  </Button>
-                  <Button
-                    onClick={() => handleAuxiliaryClick('être')}
-                    disabled={!!answerStatus || isPaused}
-                    className={cn("h-16 text-lg", getAuxiliaryButtonClass('être'))}
-                  >
-                    Être
-                  </Button>
-                </div>
+            <div className="animate-in fade-in-50 duration-500">
+              <p className="text-center text-muted-foreground pt-4">2. Choisissez l'auxiliaire correct pour le Passé Composé</p>
+              <div className="grid grid-cols-2 gap-4 w-full mt-4">
+                <Button
+                  onClick={() => handleAuxiliaryClick('avoir')}
+                  disabled={translationStatus !== 'correct' || !!answerStatus || isPaused}
+                  className={cn("h-16 text-lg", getAuxiliaryButtonClass('avoir'))}
+                >
+                  Avoir
+                </Button>
+                <Button
+                  onClick={() => handleAuxiliaryClick('être')}
+                  disabled={translationStatus !== 'correct' || !!answerStatus || isPaused}
+                  className={cn("h-16 text-lg", getAuxiliaryButtonClass('être'))}
+                >
+                  Être
+                </Button>
               </div>
-            )}
+            </div>
             
-            {answerStatus === 'incorrect' && (
-              <div className="text-center text-destructive font-medium animate-in fade-in">
-                Błędna odpowiedź. Poprawnie: {currentQuestion.correctTranslation}, {currentQuestion.auxiliary}
-              </div>
-            )}
-            {answerStatus === 'timeout' && (
-              <div className="text-center text-destructive font-medium animate-in fade-in">
-                Czas minął! Poprawna odpowiedź: {currentQuestion.correctTranslation}, {currentQuestion.auxiliary}
+            {(answerStatus === 'incorrect' || answerStatus === 'timeout') && (
+              <div className="text-center text-success font-medium animate-in fade-in">
+                Réponse correcte: {currentQuestion.correctTranslation}, auxiliaire: {currentQuestion.auxiliary}
               </div>
             )}
           </div>
@@ -398,9 +408,9 @@ export default function QuizIrregularVerbsFr() {
         </CardContent>
         <CardFooter className="flex-col gap-4 p-6 pt-0">
           <div className="flex justify-between w-full items-center">
-              <div className="text-sm text-muted-foreground">Pytanie {currentQuestionIndex + 1} z {questions.length}</div>
+              <div className="text-sm text-muted-foreground">Question {currentQuestionIndex + 1} sur {questions.length}</div>
               <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium">Wynik:</span>
+                  <span className="text-sm font-medium">Score :</span>
                   <div key={score} className="text-2xl font-bold text-primary animate-in fade-in zoom-in-125 duration-300">
                       {score}
                   </div>

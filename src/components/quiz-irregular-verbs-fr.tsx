@@ -183,7 +183,7 @@ export default function QuizIrregularVerbsFr() {
       const options = shuffleArray(currentQuestion.translationOptions);
       setShuffledTranslationOptions(options);
 
-      const hasLongOption = options.some(option => option.length > 15);
+      const hasLongOption = options.some(option => option.length > 10);
       setIsLongText(hasLongOption);
     }
   }, [currentQuestion]);
@@ -364,19 +364,40 @@ export default function QuizIrregularVerbsFr() {
 
           <div className="w-full space-y-4">
             <p className="text-center text-muted-foreground">1. Choisissez la bonne traduction</p>
-            <div className={cn("grid gap-2 w-full", isLongText ? "grid-cols-2" : "grid-cols-3")}>
-              {shuffledTranslationOptions.map((option) => (
-                <Button
-                  key={option}
-                  onClick={() => handleTranslationClick(option)}
-                  disabled={!!translationStatus || !!answerStatus || isPaused}
-                  className={cn("h-auto text-base p-2 whitespace-normal", getTranslationButtonClass(option))}
-                >
-                  {option}
-                </Button>
-              ))}
+             <div className={cn(
+                "grid gap-2 w-full",
+                isLongText ? "grid-cols-2" : "grid-cols-3"
+            )}>
+                {shuffledTranslationOptions.map((option, index) => {
+                    if (isLongText && index === 2) {
+                        return (
+                            <div key={option} className="col-span-2 flex justify-center">
+                                <Button
+                                    onClick={() => handleTranslationClick(option)}
+                                    disabled={!!translationStatus || !!answerStatus || isPaused}
+                                    className={cn(
+                                        "h-auto text-base p-2 whitespace-normal transition-all duration-300 w-full max-w-xs",
+                                        getTranslationButtonClass(option)
+                                    )}
+                                >
+                                    {option}
+                                </Button>
+                            </div>
+                        );
+                    }
+                    return (
+                        <Button
+                            key={option}
+                            onClick={() => handleTranslationClick(option)}
+                            disabled={!!translationStatus || !!answerStatus || isPaused}
+                            className={cn("h-auto text-base p-2 whitespace-normal transition-all duration-300", getTranslationButtonClass(option))}
+                        >
+                            {option}
+                        </Button>
+                    );
+                })}
             </div>
-
+            
             <div className="animate-in fade-in-50 duration-500">
               <p className="text-center text-muted-foreground pt-4">2. Choisissez l'auxiliaire correct pour le Passé Composé</p>
               <div className="grid grid-cols-2 gap-4 w-full mt-4">
@@ -454,3 +475,4 @@ export default function QuizIrregularVerbsFr() {
     </>
   );
 }
+

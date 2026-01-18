@@ -420,21 +420,41 @@ export default function QuizIrregularVerbsEs() {
 
           <div className="w-full space-y-4">
             <p className="text-center text-muted-foreground">1. Selecciona la traducción correcta</p>
-            <div className="flex flex-wrap justify-center gap-2">
-              {shuffledTranslationOptions.map((option) => (
-                <Button
-                  key={option}
-                  onClick={() => handleTranslationClick(option)}
-                  disabled={!!answerStatus || isPaused || translationStatus !== null}
-                  className={cn(
-                      "h-auto text-base p-2 whitespace-normal transition-all duration-300 grow",
-                      isLongText ? 'basis-[48%]' : 'basis-[31%]',
-                      getTranslationButtonClass(option)
-                  )}
-                >
-                  {option}
-                </Button>
-              ))}
+            <div className={cn(
+                "grid gap-2 w-full",
+                isLongText ? "grid-cols-2" : "grid-cols-3"
+            )}>
+                {shuffledTranslationOptions.map((option, index) => {
+                    if (isLongText && index === 2) {
+                        return (
+                            <div key={option} className="col-span-2 flex justify-center">
+                                <Button
+                                    onClick={() => handleTranslationClick(option)}
+                                    disabled={!!answerStatus || isPaused || translationStatus !== null}
+                                    className={cn(
+                                        "h-auto text-base p-2 whitespace-normal transition-all duration-300 w-full max-w-xs",
+                                        getTranslationButtonClass(option)
+                                    )}
+                                >
+                                    {option}
+                                </Button>
+                            </div>
+                        );
+                    }
+                    return (
+                        <Button
+                            key={option}
+                            onClick={() => handleTranslationClick(option)}
+                            disabled={!!answerStatus || isPaused || translationStatus !== null}
+                            className={cn(
+                                "h-auto text-base p-2 whitespace-normal transition-all duration-300",
+                                getTranslationButtonClass(option)
+                            )}
+                        >
+                            {option}
+                        </Button>
+                    );
+                })}
             </div>
 
             <p className="text-center text-muted-foreground pt-4">2. Escribe las formas de Pretérito y Participio</p>
@@ -543,4 +563,5 @@ export default function QuizIrregularVerbsEs() {
     </>
   );
 }
+
 

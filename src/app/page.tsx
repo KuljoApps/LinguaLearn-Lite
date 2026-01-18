@@ -23,7 +23,10 @@ export default function Home() {
     useEffect(() => {
         setCurrentLanguage(getLanguage());
         
-        if (!isTutorialCompleted()) {
+        // For testing purposes, we always show the tutorial.
+        const showTutorialForTesting = true;
+
+        if (showTutorialForTesting || !isTutorialCompleted()) {
             setShowTutorial(true);
         } else {
             // --- TEMPORARY FOR DEVELOPMENT ---

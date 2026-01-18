@@ -161,7 +161,7 @@ export default function StatisticsPage() {
 
     return (
         <>
-            <Card className="w-full max-w-md shadow-2xl">
+            <Card className="w-full max-w-md shadow-2xl" data-tutorial-id="stats-card">
                 <CardHeader>
                     <CardTitle className="text-center text-3xl">{getUIText('title')}</CardTitle>
                 </CardHeader>

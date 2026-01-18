@@ -354,7 +354,7 @@ export default function ErrorsPage() {
 
     return (
         <>
-            <Card className="w-full max-w-4xl shadow-2xl">
+            <Card className="w-full max-w-4xl shadow-2xl" data-tutorial-id="errors-card">
                 <CardHeader className="flex flex-col items-center gap-4 p-6 sm:flex-row sm:justify-between">
                     <CardTitle className="text-3xl">{getUIText('title')}</CardTitle>
                     <div className="flex flex-col gap-2">

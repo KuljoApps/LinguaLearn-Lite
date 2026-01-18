@@ -5,29 +5,32 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import LinguaLearnLogo from '@/components/LinguaLearnLogo';
-import { getLanguage, setLanguage, shouldShowProPromo, shouldShowRateAppDialog, isTutorialCompleted, setTutorialCompleted } from '@/lib/storage';
+import { getLanguage, setLanguage, shouldShowProPromo, shouldShowRateAppDialog, isTutorialCompleted, setTutorialCompleted, saveTutorialState } from '@/lib/storage';
 import { useState, useEffect } from 'react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import ProPromotionDialog from '@/components/ProPromotionDialog';
 import RateAppDialog from '@/components/RateAppDialog';
-import OnboardingTutorial from '@/components/OnboardingTutorial';
 
 
 export default function Home() {
     const [language, setCurrentLanguage] = useState<'en' | 'fr' | 'de' | 'it' | 'es'>('en');
     const [showPromo, setShowPromo] = useState(false);
     const [showRateDialog, setShowRateDialog] = useState(false);
-    const [showTutorial, setShowTutorial] = useState(false);
 
     useEffect(() => {
         setCurrentLanguage(getLanguage());
         
+        // --- TUTORIAL LOGIC ---
         // For testing purposes, we always show the tutorial.
         const showTutorialForTesting = true;
+        // To use production logic (show only once), change the line above to:
+        // const showTutorialForTesting = false;
 
         if (showTutorialForTesting || !isTutorialCompleted()) {
-            setShowTutorial(true);
+            saveTutorialState({ isActive: true, stage: 'initial', step: 0 });
+            // Set tutorial as completed for production logic, but `showTutorialForTesting` overrides this for testing.
+            setTutorialCompleted();
         } else {
             // --- TEMPORARY FOR DEVELOPMENT ---
             // This logic shows the promo dialog every 5 visits for easier testing.
@@ -149,7 +152,6 @@ export default function Home() {
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <ProPromotionDialog open={showPromo} onOpenChange={setShowPromo} />
             <RateAppDialog open={showRateDialog} onOpenChange={setShowRateDialog} />
-            <OnboardingTutorial open={showTutorial} onOpenChange={setShowTutorial} />
             <Card className="w-full max-w-md shadow-2xl text-center">
                 <CardHeader>
                     <div className="flex items-center justify-center gap-4 mb-4">

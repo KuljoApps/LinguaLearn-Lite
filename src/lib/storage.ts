@@ -54,13 +54,48 @@ export type Language = 'en' | 'fr' | 'de' | 'it' | 'es';
 const LANGUAGE_KEY = 'linguaLearnLanguage';
 const SETTINGS_KEY = 'linguaLearnSettings_v2';
 const GLOBAL_STATS_KEY = 'linguaLearnGlobalStats_v2';
-const TUTORIAL_KEY = 'linguaLearnTutorialCompleted_v1';
+const TUTORIAL_COMPLETED_KEY = 'linguaLearnTutorialCompleted_v2';
 
 
 export interface GlobalStats {
     uniqueDaysPlayed: number;
     lastPlayTimestamp: number | null;
     quizCompletionCount: number;
+}
+
+// --- Tutorial State ---
+export interface TutorialState {
+  isActive: boolean;
+  stage: 'initial' | 'decision' | 'extended';
+  step: number;
+}
+
+const TUTORIAL_STATE_KEY = 'linguaLearnTutorialState';
+
+export const getTutorialState = (): TutorialState | null => {
+    if (typeof window === 'undefined') return null;
+    try {
+        const stateJson = sessionStorage.getItem(TUTORIAL_STATE_KEY);
+        return stateJson ? JSON.parse(stateJson) : null;
+    } catch (e) {
+        return null;
+    }
+}
+
+export const saveTutorialState = (state: TutorialState) => {
+    if (typeof window === 'undefined') return;
+    try {
+        sessionStorage.setItem(TUTORIAL_STATE_KEY, JSON.stringify(state));
+        window.dispatchEvent(new CustomEvent('tutorial-state-changed'));
+    } catch(e) {
+        console.error("Failed to save tutorial state", e)
+    }
+}
+
+export const clearTutorialState = () => {
+    if (typeof window === 'undefined') return;
+    sessionStorage.removeItem(TUTORIAL_STATE_KEY);
+    window.dispatchEvent(new CustomEvent('tutorial-state-changed'));
 }
 
 
@@ -72,12 +107,12 @@ const getKey = (baseKey: string): string => {
 // --- Tutorial Functions ---
 export const isTutorialCompleted = (): boolean => {
     if (typeof window === 'undefined') return true; // Assume completed on server
-    return localStorage.getItem(TUTORIAL_KEY) === 'true';
+    return localStorage.getItem(TUTORIAL_COMPLETED_KEY) === 'true';
 }
 
 export const setTutorialCompleted = () => {
     if (typeof window === 'undefined') return;
-    localStorage.setItem(TUTORIAL_KEY, 'true');
+    localStorage.setItem(TUTORIAL_COMPLETED_KEY, 'true');
 }
 
 

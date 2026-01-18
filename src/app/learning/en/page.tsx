@@ -44,7 +44,7 @@ export default function LearningEnPage() {
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
-            <Card className="w-full max-w-md shadow-2xl">
+            <Card className="w-full max-w-md shadow-2xl" data-tutorial-id="learning-card">
                 <CardHeader className="pb-2">
                     <div className="flex items-center justify-center gap-4">
                         <GraduationCap className="h-8 w-8" />

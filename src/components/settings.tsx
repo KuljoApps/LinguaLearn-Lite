@@ -80,7 +80,7 @@ export default function SettingsPage() {
 
     return (
         <>
-            <Card className="w-full max-w-md shadow-2xl">
+            <Card className="w-full max-w-md shadow-2xl" data-tutorial-id="settings-card">
                 <CardHeader>
                     <CardTitle className="text-center text-3xl">{getUIText('title')}</CardTitle>
                 </CardHeader>

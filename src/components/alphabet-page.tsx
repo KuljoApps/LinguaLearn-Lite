@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ArrowLeft, Volume2, AudioLines } from 'lucide-react';
 import type { AlphabetData } from '@/lib/alphabet';
+import { cn } from '@/lib/utils';
 
 interface AlphabetPageProps {
   data: AlphabetData;
@@ -14,9 +15,18 @@ interface AlphabetPageProps {
 
 export default function AlphabetPage({ data }: AlphabetPageProps) {
   const [activeAudio, setActiveAudio] = useState<HTMLAudioElement | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    // Cleanup function to pause audio when the component unmounts
+    const interval = setInterval(() => {
+      setActiveIndex(prevIndex => (prevIndex + 1) % data.alphabet.length);
+    }, 150); 
+
+    return () => clearInterval(interval);
+  }, [data.alphabet.length]);
+
+
+  useEffect(() => {
     return () => {
       if (activeAudio) {
         activeAudio.pause();
@@ -25,7 +35,6 @@ export default function AlphabetPage({ data }: AlphabetPageProps) {
   }, [activeAudio]);
 
   const handlePlaySound = (letter: string) => {
-    // If there's an audio playing, stop it.
     if (activeAudio) {
         activeAudio.pause();
         activeAudio.currentTime = 0;
@@ -43,7 +52,7 @@ export default function AlphabetPage({ data }: AlphabetPageProps) {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4">
-      <Card className="w-full max-w-xl shadow-2xl">
+      <Card className="w-full max-w-2xl shadow-2xl">
         <CardHeader className="text-center">
             <div className="flex items-center justify-center gap-4">
                 <AudioLines className="h-8 w-8" />
@@ -51,8 +60,8 @@ export default function AlphabetPage({ data }: AlphabetPageProps) {
             </div>
         </CardHeader>
         <CardContent>
-          <ScrollArea className="h-96 w-full">
-            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4 pr-3">
+          <ScrollArea className="h-96 w-full pr-1">
+            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4">
               {data.alphabet.map((item, index) => (
                 <Button
                   key={`${item.letter}-${index}`}
@@ -65,7 +74,10 @@ export default function AlphabetPage({ data }: AlphabetPageProps) {
                   </div>
                   <div className="flex flex-col items-center">
                       <span className="text-xs text-muted-foreground">{item.phonetic}</span>
-                      <Volume2 className="h-5 w-5 mt-1" />
+                      <Volume2 className={cn(
+                        "h-5 w-5 mt-1 transition-colors duration-150", 
+                        index === activeIndex ? "text-deep-purple" : "text-muted-foreground/60"
+                      )} />
                   </div>
                 </Button>
               ))}

@@ -234,7 +234,7 @@ export default function QuizIrregularVerbsFr() {
       const errorRecord = {
         word: currentQuestion.verb,
         userAnswer: `Auxiliaire: ${choice}`,
-        correctAnswer: `Auxiliaire: ${currentQuestion.auxiliary}`,
+        correctAnswer: `auxiliaire: ${currentQuestion.auxiliary}`,
         quiz: QUIZ_NAME,
       };
       addError(errorRecord);
@@ -279,14 +279,14 @@ export default function QuizIrregularVerbsFr() {
   const getTranslationButtonClass = (option: string) => {
     if (answerStatus === 'timeout') {
       return option === currentQuestion.correctTranslation
-        ? "bg-success text-success-foreground"
+        ? "bg-success text-success-foreground disabled:opacity-100"
         : "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
     }
     if (!translationStatus) return "bg-primary text-primary-foreground hover:bg-primary/90";
     const isCorrect = option === currentQuestion.correctTranslation;
     const isSelected = option === selectedTranslation;
-    if (isCorrect) return "bg-success text-success-foreground";
-    if (isSelected && !isCorrect) return "bg-destructive text-destructive-foreground";
+    if (isCorrect) return "bg-success text-success-foreground disabled:opacity-100";
+    if (isSelected && !isCorrect) return "bg-destructive text-destructive-foreground disabled:opacity-100";
     return "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
   };
   
@@ -365,8 +365,8 @@ export default function QuizIrregularVerbsFr() {
           <div className="w-full space-y-4">
             <p className="text-center text-muted-foreground">1. Choisissez la bonne traduction</p>
              <div className={cn(
-                "grid gap-2 w-full",
-                isLongText ? "grid-cols-2" : "grid-cols-3"
+                "grid grid-cols-3 gap-2 w-full",
+                isLongText && "grid-cols-2"
             )}>
                 {shuffledTranslationOptions.map((option, index) => {
                     if (isLongText && index === 2) {
@@ -398,7 +398,7 @@ export default function QuizIrregularVerbsFr() {
                 })}
             </div>
             
-            <div className="animate-in fade-in-50 duration-500">
+            <div className={cn("transition-opacity duration-300", translationStatus === 'correct' ? 'opacity-100' : 'opacity-50 pointer-events-none')}>
               <p className="text-center text-muted-foreground pt-4">2. Choisissez l'auxiliaire correct pour le Passé Composé</p>
               <div className="grid grid-cols-2 gap-4 w-full mt-4">
                 <Button
@@ -475,4 +475,5 @@ export default function QuizIrregularVerbsFr() {
     </>
   );
 }
+
 

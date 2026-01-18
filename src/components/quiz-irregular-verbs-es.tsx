@@ -314,23 +314,23 @@ export default function QuizIrregularVerbsEs() {
 
     if (answerStatus) {
         if (answerStatus === 'timeout') {
-            if(isCorrectAnswer) return "bg-success text-success-foreground hover:bg-success/90";
+            if(isCorrectAnswer) return "bg-success text-success-foreground hover:bg-success/90 disabled:opacity-100";
             return "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
         }
 
         if (isCorrectAnswer) {
-          return "bg-success text-success-foreground hover:bg-success/90";
+          return "bg-success text-success-foreground hover:bg-success/90 disabled:opacity-100";
         }
         if (isSelectedAnswer && !isCorrectAnswer) {
-          return "bg-destructive text-destructive-foreground hover:bg-destructive/90";
+          return "bg-destructive text-destructive-foreground hover:bg-destructive/90 disabled:opacity-100";
         }
         return "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
     }
 
     if (translationStatus && isSelectedAnswer) {
       return translationStatus === 'correct' 
-          ? "bg-success text-success-foreground" 
-          : "bg-destructive text-destructive-foreground";
+          ? "bg-success text-success-foreground disabled:opacity-100" 
+          : "bg-destructive text-destructive-foreground disabled:opacity-100";
     }
     if (translationStatus && !isSelectedAnswer) {
       return "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
@@ -563,5 +563,6 @@ export default function QuizIrregularVerbsEs() {
     </>
   );
 }
+
 
 

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, Star } from 'lucide-react';
-import type { DictionaryWord } from '@/lib/dictionary';
+import type { DictionaryWord } from '@/lib/types';
 import type { Language } from '@/lib/storage';
 import { getFavorites, toggleFavorite } from '@/lib/storage';
 import { cn } from '@/lib/utils';
@@ -46,7 +46,7 @@ const WordItem = ({ word, isFavorite, onToggleFavorite }: { word: DictionaryWord
         >
             <Star
                 className={cn(
-                    "h-[1.125rem] w-[1.125rem] transition-colors", // 18px (~10% smaller than 20px)
+                    "h-[1.125rem] w-[1.125rem] transition-colors",
                     isFavorite
                         ? "fill-amber text-amber"
                         : "text-muted-foreground hover:fill-amber/50 hover:text-amber/80"
@@ -56,15 +56,14 @@ const WordItem = ({ word, isFavorite, onToggleFavorite }: { word: DictionaryWord
     </div>
 );
 
-
-export default function DictionaryPage({ title, backHref, words, children }: DictionaryPageProps) {
+export default function DictionaryPage({ title, backHref, words = [], children }: DictionaryPageProps) {
     
     const { lang, category, backText } = useMemo(() => {
         const pathParts = backHref.split('/');
         const lang = pathParts[2] as Language;
         const categoryFromFile = pathParts[pathParts.length - 1]; 
         
-        const backButtonTexts = {
+        const backButtonTexts: Record<string, string> = {
             en: 'Back to Dictionary',
             de: 'Zurück zum Wörterbuch',
             es: 'Volver al Diccionario',

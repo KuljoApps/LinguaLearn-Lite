@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ArrowLeft, BookText } from 'lucide-react';
-import type { GrammarRule } from '@/lib/grammar';
+import type { GrammarRule } from '@/lib/types';
 import type { Language } from '@/lib/storage';
 
 interface GrammarPageProps {

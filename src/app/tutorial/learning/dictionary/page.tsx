@@ -15,43 +15,43 @@ export default function FakeDictionaryEnPage() {
                     </div>
                 </CardHeader>
                 <CardContent className="grid grid-cols-2 gap-4 p-4" data-tutorial-id="dictionary-grid">
-                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary" disabled>
+                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary pointer-events-none">
                         <Hash className="h-12 w-12 text-deep-purple" />
                         Numbers
                     </Button>
                     <div data-tutorial-id="dictionary-colors">
-                        <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary" disabled>
+                        <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary pointer-events-none">
                             <Palette className="h-12 w-12 text-deep-purple" />
                             Colors
                         </Button>
                     </div>
-                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary" disabled>
+                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary pointer-events-none">
                         <Clock className="h-12 w-12 text-deep-purple" />
                         Time
                     </Button>
-                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary" disabled>
+                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary pointer-events-none">
                         <Users className="h-12 w-12 text-deep-purple" />
                         Family
                     </Button>
-                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary" disabled>
+                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary pointer-events-none">
                         <PersonStanding className="h-16 w-16 text-deep-purple" />
                         Body Parts
                     </Button>
-                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary" disabled>
+                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary pointer-events-none">
                         <Utensils className="h-12 w-12 text-deep-purple" />
                         Food
                     </Button>
-                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary" disabled>
+                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary pointer-events-none">
                         <Home className="h-12 w-12 text-deep-purple" />
                         Home
                     </Button>
-                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary" disabled>
+                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary pointer-events-none">
                         <Briefcase className="h-14 w-14 text-deep-purple" />
                         Work
                     </Button>
                 </CardContent>
                 <CardFooter className="flex justify-center p-4">
-                    <Button variant="outline" disabled>
+                    <Button variant="outline" className="pointer-events-none">
                         <ArrowLeft className="mr-2 h-4 w-4" /> Back to Learning
                     </Button>
                 </CardFooter>

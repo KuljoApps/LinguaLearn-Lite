@@ -14,12 +14,12 @@ export default function FakeErrorsPage() {
                 <CardHeader className="flex flex-col items-center gap-4 p-6 sm:flex-row sm:justify-between">
                     <CardTitle className="text-3xl">Common Errors</CardTitle>
                     <div className="flex flex-col gap-2" data-tutorial-id="errors-controls">
-                        <Select disabled>
-                            <SelectTrigger>
+                        <Select open={false}>
+                            <SelectTrigger className="pointer-events-none">
                                 <SelectValue placeholder="Filter by quiz" />
                             </SelectTrigger>
                         </Select>
-                        <Button variant="outline" disabled>
+                        <Button variant="outline" className="pointer-events-none">
                             <ArrowUpDown className="mr-2 h-4 w-4" />
                             View Most Frequent
                         </Button>
@@ -90,10 +90,10 @@ export default function FakeErrorsPage() {
                 </CardContent>
                 <CardFooter className="flex justify-center p-6">
                     <div className="flex flex-wrap justify-center gap-4">
-                        <Button variant="outline" disabled>
+                        <Button variant="outline" className="pointer-events-none">
                             <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
                         </Button>
-                        <Button variant="destructive" disabled>
+                        <Button variant="destructive" className="pointer-events-none">
                             <Trash2 className="mr-2 h-4 w-4" /> Clear Errors
                         </Button>
                     </div>

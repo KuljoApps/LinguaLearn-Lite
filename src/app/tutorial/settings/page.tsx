@@ -21,23 +21,23 @@ export default function FakeSettingsPage() {
                     <div data-tutorial-id="settings-switches" className="space-y-4">
                         <div className="flex items-center justify-between">
                             <Label htmlFor="sounds-switch" className="text-lg">Sounds</Label>
-                            <Switch id="sounds-switch" checked={true} disabled />
+                            <Switch id="sounds-switch" checked={true} className="pointer-events-none" />
                         </div>
                         <Separator/>
                         <div className="space-y-2">
                             <Label htmlFor="volume-slider" className="text-lg">Volume</Label>
-                            <Slider id="volume-slider" defaultValue={[50]} disabled />
+                            <Slider id="volume-slider" defaultValue={[50]} className="pointer-events-none" />
                         </div>
                         <Separator/>
                         <div className="flex items-center justify-between">
                             <Label htmlFor="vibrations-switch" className="text-lg">Vibrations</Label>
-                            <Switch id="vibrations-switch" checked={true} disabled />
+                            <Switch id="vibrations-switch" checked={true} className="pointer-events-none" />
                         </div>
                     </div>
                     <Separator />
                     <div className="space-y-2 py-2" data-tutorial-id="settings-eyecare">
                         <Label htmlFor="eyecare-slider" className="text-lg">Eye Care</Label>
-                        <Slider id="eyecare-slider" defaultValue={[20]} disabled />
+                        <Slider id="eyecare-slider" defaultValue={[20]} className="pointer-events-none" />
                     </div>
                     <Separator />
                     <div>
@@ -46,16 +46,16 @@ export default function FakeSettingsPage() {
                             <p className="text-sm text-muted-foreground pr-4">
                                 This application builds your language skills with quick fun quizzes.
                             </p>
-                            <Button variant="outline" size="sm" disabled>More</Button>
+                            <Button variant="outline" size="sm" className="pointer-events-none">More</Button>
                         </div>
                     </div>
                 </CardContent>
                 <CardFooter className="flex justify-center p-6 pt-2">
                     <div className="flex flex-wrap justify-center gap-4">
-                        <Button variant="outline" disabled>
+                        <Button variant="outline" className="pointer-events-none">
                             <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
                         </Button>
-                        <Button variant="destructive" disabled>
+                        <Button variant="destructive" className="pointer-events-none">
                             <Trash2 className="mr-2 h-4 w-4" /> Reset Settings
                         </Button>
                     </div>

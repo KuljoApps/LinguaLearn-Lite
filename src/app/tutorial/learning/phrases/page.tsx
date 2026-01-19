@@ -15,43 +15,43 @@ export default function FakePhrasesEnPage() {
                     </div>
                 </CardHeader>
                 <CardContent className="grid grid-cols-2 gap-4 p-4">
-                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary" disabled>
+                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary pointer-events-none">
                         <Utensils className="h-12 w-12 text-deep-purple" />
                         Restaurant
                     </Button>
                     <div data-tutorial-id="phrases-airport">
-                        <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary" disabled>
+                        <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary pointer-events-none">
                             <Plane className="h-12 w-12 text-deep-purple" />
                             Airport
                         </Button>
                     </div>
-                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary" disabled>
+                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary pointer-events-none">
                         <ShoppingCart className="h-12 w-12 text-deep-purple" />
                         Shop
                     </Button>
-                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary" disabled>
+                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary pointer-events-none">
                         <Train className="h-12 w-12 text-deep-purple" />
                         Station
                     </Button>
-                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary" disabled>
+                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary pointer-events-none">
                         <PartyPopper className="h-12 w-12 text-deep-purple" />
                         Party
                     </Button>
-                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary" disabled>
+                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary pointer-events-none">
                         <Siren className="h-12 w-12 text-deep-purple" />
                         Emergency
                     </Button>
-                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary" disabled>
+                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary pointer-events-none">
                         <Hotel className="h-12 w-12 text-deep-purple" />
                         Hotel
                     </Button>
-                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary" disabled>
+                    <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary pointer-events-none">
                         <CloudSun className="h-12 w-12 text-deep-purple" />
                         Weather
                     </Button>
                 </CardContent>
                 <CardFooter className="flex justify-center p-4">
-                    <Button variant="outline" disabled>
+                    <Button variant="outline" className="pointer-events-none">
                         <ArrowLeft className="mr-2 h-4 w-4" /> Back to Learning
                     </Button>
                 </CardFooter>

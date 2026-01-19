@@ -38,25 +38,25 @@ export default function FakeLearningEnPage() {
 
                 <CardContent className="flex flex-col space-y-4 px-6 pt-2 pb-2">
                     <div data-tutorial-id="learning-question-base">
-                        <Button className="w-full h-12 text-lg" disabled>
+                        <Button className="w-full h-12 text-lg pointer-events-none">
                             <BookCopy className="mr-2 h-5 w-5" />
                             Question Base
                         </Button>
                     </div>
                     <div className="flex flex-col space-y-4" data-tutorial-id="learning-main-modules">
-                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary" disabled>
+                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary pointer-events-none">
                             <Clock className="mr-2 h-5 w-5 text-deep-purple" />
                             Tenses
                         </Button>
-                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary" disabled>
+                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary pointer-events-none">
                             <FilePenLine className="mr-2 h-5 w-5 text-deep-purple" />
                             General Grammar
                         </Button>
-                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary" disabled>
+                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary pointer-events-none">
                             <MessageSquareText className="mr-2 h-5 w-5 text-deep-purple" />
                             Expressions & Phrases
                         </Button>
-                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary" disabled>
+                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary pointer-events-none">
                             <BookText className="mr-2 h-5 w-5 text-deep-purple" />
                             Dictionary
                         </Button>
@@ -67,7 +67,7 @@ export default function FakeLearningEnPage() {
                             <div className="flex items-center justify-center -mb-2">
                                 <Separator className="flex-grow" />
                                 <CollapsibleTrigger asChild>
-                                    <Button variant="ghost" className="flex items-center gap-2 px-3" data-tutorial-id="extras-trigger" disabled>
+                                    <Button variant="ghost" className="flex items-center gap-2 px-3 pointer-events-none" data-tutorial-id="extras-trigger">
                                         <span className="text-sm italic text-muted-foreground">
                                             Extras
                                         </span>
@@ -79,17 +79,17 @@ export default function FakeLearningEnPage() {
 
                             <CollapsibleContent>
                                 <div className="grid grid-cols-2 gap-2">
-                                    <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary" disabled>
+                                    <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary pointer-events-none">
                                         <Landmark className="mr-1 h-5 w-5 text-deep-purple" />
                                         Culture
                                     </Button>
-                                    <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary" disabled>
+                                    <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary pointer-events-none">
                                         <AudioLines className="mr-1 h-5 w-5 text-deep-purple" />
                                         Phonetics
                                     </Button>
                                 </div>
                                 <div className="mt-4">
-                                    <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary" disabled>
+                                    <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary pointer-events-none">
                                         <Languages className="mr-2 h-5 w-5 text-deep-purple" />
                                         Tongue Twisters
                                     </Button>
@@ -100,7 +100,7 @@ export default function FakeLearningEnPage() {
                 </CardContent>
 
                 <CardFooter className="flex justify-center p-6 pt-2">
-                    <Button variant="outline" disabled>
+                    <Button variant="outline" className="pointer-events-none">
                         <ArrowLeft className="mr-2 h-4 w-4" />
                         Back to Home
                     </Button>

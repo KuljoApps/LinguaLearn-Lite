@@ -46,7 +46,7 @@ export default function FakeAirportPhrasesPage() {
                     </ScrollArea>
                 </CardContent>
                 <CardFooter className="flex justify-center p-6 border-t">
-                    <Button variant="outline" disabled>
+                    <Button variant="outline" className="pointer-events-none">
                         <ArrowLeft className="mr-2 h-4 w-4" /> Back to Expressions
                     </Button>
                 </CardFooter>

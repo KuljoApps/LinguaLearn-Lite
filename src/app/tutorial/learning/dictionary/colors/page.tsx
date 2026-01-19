@@ -9,6 +9,9 @@ import { cn } from '@/lib/utils';
 // This is a static, non-interactive "fake" page for the tutorial.
 
 const fakeWords = [
+    { word: 'navy blue', translation: 'granatowy', colorCode: '#000080' },
+    { word: 'apricot', translation: 'morelowy', colorCode: '#FBCEB1' },
+    { word: 'olive', translation: 'oliwkowy', colorCode: '#808000' },
     { word: 'white', translation: 'biały', colorCode: '#FFFFFF' },
     { word: 'black', translation: 'czarny', colorCode: '#000000' },
     { word: 'red', translation: 'czerwony', colorCode: '#FF0000' },
@@ -20,11 +23,11 @@ const fakeWords = [
     { word: 'brown', translation: 'brązowy', colorCode: '#A52A2A' },
     { word: 'purple', translation: 'fioletowy', colorCode: '#800080' },
     { word: 'pink', translation: 'różowy', colorCode: '#FFC0CB' },
-    { word: 'navy blue', translation: 'granatowy', colorCode: '#000080' },
+    { word: 'beige', translation: 'beżowy', colorCode: '#F5F5DC' },
 ];
 
 export default function FakeColorsDictionaryPage() {
-    const favorites = ['blue']; // Simulate one favorited item
+    const favorites = ['navy blue', 'apricot', 'olive'];
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -53,7 +56,7 @@ export default function FakeColorsDictionaryPage() {
                                                 <p className="text-muted-foreground">{w.translation}</p>
                                             </div>
                                         </div>
-                                        <button disabled className="p-2 -m-2 rounded-full">
+                                        <button className="p-2 -m-2 rounded-full pointer-events-none">
                                             <Star className={cn(
                                                 "h-3.5 w-3.5 transition-all",
                                                 favorites.includes(w.word)
@@ -69,7 +72,7 @@ export default function FakeColorsDictionaryPage() {
                     </ScrollArea>
                 </CardContent>
                 <CardFooter className="flex justify-center p-6 border-t">
-                    <Button variant="outline" disabled>
+                    <Button variant="outline" className="pointer-events-none">
                         <ArrowLeft className="mr-2 h-4 w-4" /> Back to Dictionary
                     </Button>
                 </CardFooter>

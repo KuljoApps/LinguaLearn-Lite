@@ -34,7 +34,7 @@ export default function FakeBasicExpressionsPage() {
                         <Accordion type="single" collapsible className="w-full" value="item-0">
                             {fakePhrases.map((item, index) => (
                                 <AccordionItem value={`item-${index}`} key={index} data-tutorial-id={index === 0 ? 'phonetics-first-item' : undefined}>
-                                    <AccordionTrigger className="text-lg font-semibold hover:no-underline text-left" disabled>
+                                    <AccordionTrigger className="text-lg font-semibold hover:no-underline text-left pointer-events-none">
                                         {item.phrase}
                                     </AccordionTrigger>
                                     <AccordionContent className="space-y-3 pt-2">
@@ -43,7 +43,7 @@ export default function FakeBasicExpressionsPage() {
                                                 <p className="text-muted-foreground font-mono text-sm">{item.phonetic}</p>
                                                 <p className="text-sm">{item.translation}</p>
                                             </div>
-                                            <Button variant="ghost" size="icon" disabled>
+                                            <Button variant="ghost" size="icon" className="pointer-events-none">
                                                 <Volume2 className={cn("h-6 w-6 text-deep-purple", index === 0 && "animate-pulse-strong")} />
                                             </Button>
                                         </div>
@@ -54,7 +54,7 @@ export default function FakeBasicExpressionsPage() {
                     </ScrollArea>
                 </CardContent>
                 <CardFooter className="flex justify-center p-6 border-t">
-                    <Button variant="outline" disabled>
+                    <Button variant="outline" className="pointer-events-none">
                         <ArrowLeft className="mr-2 h-4 w-4" />
                         Back to Phonetics
                     </Button>

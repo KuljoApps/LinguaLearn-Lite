@@ -79,10 +79,10 @@ export default function FakeAchievementsPage() {
                 </CardContent>
                 <CardFooter className="flex justify-center p-6 border-t">
                      <div className="flex flex-wrap justify-center gap-4">
-                        <Button variant="outline" disabled>
+                        <Button variant="outline" className="pointer-events-none">
                             <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
                         </Button>
-                        <Button variant="destructive" disabled>
+                        <Button variant="destructive" className="pointer-events-none">
                             <Trash2 className="mr-2 h-4 w-4" /> Reset Achievements
                         </Button>
                     </div>

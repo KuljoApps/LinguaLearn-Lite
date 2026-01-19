@@ -25,19 +25,29 @@ export default function DictionaryPage({ title, backHref, words, children }: Dic
     const [favorites, setFavorites] = useState<string[]>([]);
     
     useEffect(() => {
+        let timeouts: NodeJS.Timeout[] = [];
+
         const handleStateUpdate = () => {
+            timeouts.forEach(clearTimeout);
+            timeouts = [];
+
+            const realFavorites = getFavorites(categorySlug);
             const tutorialState = getTutorialState();
-            // The step index in the extended array is 13, which corresponds to the user-facing step 19.
             const isWordListTutorialActive =
                 tutorialState?.isActive &&
                 tutorialState.stage === 'extended' &&
                 tutorialState.step === 13;
 
-            const realFavorites = getFavorites(categorySlug);
             if (isWordListTutorialActive) {
-                const fakeFavoriteWord = 'navy blue';
-                const favoriteSet = new Set([fakeFavoriteWord, ...realFavorites]);
-                setFavorites(Array.from(favoriteSet));
+                setFavorites(Array.from(new Set([...realFavorites, 'navy blue'])));
+                
+                timeouts.push(setTimeout(() => {
+                    setFavorites(current => Array.from(new Set([...current, 'apricot'])));
+                }, 1000));
+                
+                timeouts.push(setTimeout(() => {
+                    setFavorites(current => Array.from(new Set([...current, 'olive'])));
+                }, 2000));
             } else {
                 setFavorites(realFavorites);
             }
@@ -49,10 +59,12 @@ export default function DictionaryPage({ title, backHref, words, children }: Dic
         window.addEventListener('language-changed', handleStateUpdate);
 
         return () => {
+            timeouts.forEach(clearTimeout);
             window.removeEventListener('tutorial-state-changed', handleStateUpdate);
             window.removeEventListener('language-changed', handleStateUpdate);
         };
     }, [categorySlug]);
+
 
     const handleFavoriteToggle = (word: string) => {
         const newFavorites = toggleFavorite(categorySlug, word);
@@ -150,11 +162,8 @@ export default function DictionaryPage({ title, backHref, words, children }: Dic
             </CardHeader>
             <CardContent>
                 <ScrollArea className="h-96 w-full pr-4">
-                    <div className="flex flex-col">
-                        <div data-tutorial-id="dictionary-word-list">
-                            {renderedItems.slice(0, 3)}
-                        </div>
-                        {renderedItems.slice(3)}
+                    <div className="flex flex-col" data-tutorial-id="dictionary-word-list">
+                       {renderedItems}
                     </div>
                 </ScrollArea>
             </CardContent>

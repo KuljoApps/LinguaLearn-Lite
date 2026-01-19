@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -62,7 +61,7 @@ const extendedSteps: Step[] = [
         description: 'Uczysz się wieczorem? Użyj tego suwaka, aby nałożyć na aplikację ciepły filtr, który zmniejszy zmęczenie oczu.',
         bubblePosition: 'bottom',
     },
-    {
+     {
         path: '/stats',
         elementId: 'stats-cards',
         title: 'Ogólne statystyki',
@@ -196,49 +195,49 @@ const extendedSteps: Step[] = [
 
 const quizSteps: Step[] = [
   {
-    path: '/quiz/en-pl?tutorial=true',
+    path: '/quiz/demo',
     elementId: 'quiz-timer',
     title: 'Licznik czasu',
     description: 'Na każdą odpowiedź masz określoną ilość czasu. Uważaj, bo szybko ucieka!',
     bubblePosition: 'bottom',
   },
   {
-    path: '/quiz/en-pl?tutorial=true',
+    path: '/quiz/demo',
     elementId: 'quiz-pause-button',
     title: 'Pauza',
     description: 'Potrzebujesz chwili? Możesz zatrzymać czas, ale uważaj – wznowienie quizu kosztuje kilka cennych sekund!',
     bubblePosition: 'top',
   },
   {
-    path: '/quiz/en-pl?tutorial=true',
+    path: '/quiz/demo',
     elementId: 'quiz-answer-correct',
     title: 'Poprawna odpowiedź',
     description: 'Brawo! Tak wygląda poprawna odpowiedź. Przycisk podświetla się na zielono, aby utrwalić wiedzę.',
     bubblePosition: 'bottom',
   },
   {
-    path: '/quiz/en-pl?tutorial=true',
+    path: '/quiz/demo',
     elementId: 'quiz-answer-incorrect',
     title: 'Błędna odpowiedź',
     description: 'Gdy odpowiesz źle, Twój wybór podświetli się na czerwono, a poprawna odpowiedź na zielono, abyś mógł się uczyć na błędach.',
     bubblePosition: 'bottom',
   },
   {
-    path: '/quiz/en-pl?tutorial=true',
+    path: '/quiz/demo',
     elementId: 'quiz-results-summary',
     title: 'Podsumowanie wyników',
     description: 'Po każdym quizie zobaczysz swoje statystyki: wynik, skuteczność, liczbę błędów oraz całkowity czas.',
     bubblePosition: 'bottom',
   },
   {
-    path: '/quiz/en-pl?tutorial=true',
+    path: '/quiz/demo',
     elementId: 'quiz-results-errors',
     title: 'Przejrzyj swoje błędy',
     description: 'Wszystkie błędne odpowiedzi z sesji są tu zebrane. To świetny sposób, aby szybko powtórzyć materiał.',
     bubblePosition: 'top',
   },
   {
-    path: '/quiz/en-pl?tutorial=true',
+    path: '/quiz/demo',
     elementId: 'quiz-results-buttons',
     title: 'Co dalej?',
     description: 'Możesz zagrać jeszcze raz, wrócić do menu głównego lub przejrzeć wszystkie swoje błędy na dedykowanym ekranie.',
@@ -414,7 +413,7 @@ export default function OnboardingTutorial() {
     }
     
     const handleStartQuiz = () => {
-        router.push('/quiz/en-pl?tutorial=true');
+        router.push('/quiz/demo');
         saveTutorialState({ isActive: true, stage: 'quiz', step: 0 });
     }
 
@@ -503,4 +502,3 @@ export default function OnboardingTutorial() {
         </div>
     );
 }
-

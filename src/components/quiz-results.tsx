@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useMemo, useState, useEffect } from 'react';
@@ -9,7 +8,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Brain, ThumbsUp, Trophy, Clock, CheckCircle, ShieldX } from 'lucide-react';
 import type { ErrorRecord, Language } from '@/lib/storage';
-import { getLanguage } from '@/lib/storage';
+import { getLanguage, getTutorialState, saveTutorialState } from '@/lib/storage';
 
 interface QuizResultsProps {
     score: number;
@@ -48,11 +47,14 @@ export default function QuizResults({ score, totalQuestions, totalTime, quizName
     const [lang, setLang] = useState<Language>('en');
 
     useEffect(() => {
+        if(isTutorialMode) {
+          saveTutorialState({ isActive: true, stage: 'quiz', step: 4 });
+        }
         const updateLang = () => setLang(getLanguage());
         updateLang(); // Set on mount
         window.addEventListener('language-changed', updateLang);
         return () => window.removeEventListener('language-changed', updateLang);
-    }, []);
+    }, [isTutorialMode]);
 
     const successRate = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
     
@@ -188,4 +190,3 @@ export default function QuizResults({ score, totalQuestions, totalTime, quizName
         </Card>
     );
 }
-

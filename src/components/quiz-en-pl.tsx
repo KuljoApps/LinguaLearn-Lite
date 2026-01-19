@@ -1,9 +1,7 @@
-
 "use client";
 
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { Home, RefreshCw, Pause, Play, Clock, Trophy } from "lucide-react";
-import { useSearchParams } from 'next/navigation';
 import { questions as initialQuestions, type Question } from "@/lib/questions-en-pl";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,7 +19,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { updateStats, addError, updateTimeSpent, checkSessionAchievements, type Achievement, type ErrorRecord, getTutorialState } from "@/lib/storage";
+import { updateStats, addError, updateTimeSpent, checkSessionAchievements, type Achievement, type ErrorRecord } from "@/lib/storage";
 import { playSound } from "@/lib/sounds";
 import LinguaLearnLogo from '@/components/LinguaLearnLogo';
 import { vibrate } from "@/lib/vibrations";
@@ -44,17 +42,8 @@ const QUIZ_NAME = 'English - Polish';
 const TIME_UPDATE_INTERVAL = 5;
 const QUIZ_LENGTH = 10;
 
-const tutorialQuestions: Question[] = [
-  { id: 999, language: 'English', word: 'Hello', options: ['Cześć', 'Do widzenia', 'Dziękuję', 'Przepraszam'], correctAnswer: 'Cześć' },
-  { id: 998, language: 'English', word: 'Reliable', options: ['Religijny', 'Niezawodny', 'Niepewny', 'Zmienny'], correctAnswer: 'Niezawodny' },
-  { id: 997, language: 'English', word: 'Conscientious', options: ['Sumienny', 'Niedbały', 'Leniwy', 'Powierzchowny'], correctAnswer: 'Sumienny' },
-];
-
 
 export default function QuizEnPl() {
-  const searchParams = useSearchParams();
-  const isTutorialMode = useMemo(() => searchParams.get('tutorial') === 'true', [searchParams]);
-  
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -73,19 +62,6 @@ export default function QuizEnPl() {
   const router = useRouter();
   const { toast } = useToast();
 
-  const [tutorialStep, setTutorialStep] = useState<number | null>(null);
-
-    useEffect(() => {
-        if (!isTutorialMode) return;
-        const handleStateUpdate = () => {
-            const state = getTutorialState();
-            setTutorialStep(state?.stage === 'quiz' ? state.step : null);
-        };
-        window.addEventListener('tutorial-state-changed', handleStateUpdate);
-        handleStateUpdate();
-        return () => window.removeEventListener('tutorial-state-changed', handleStateUpdate);
-    }, [isTutorialMode]);
-
   const showAchievementToast = useCallback((achievement: Achievement) => {
     playSound('achievement');
     toast({
@@ -100,29 +76,24 @@ export default function QuizEnPl() {
   }, [toast]);
   
   useEffect(() => {
-    if (isTutorialMode) {
-      setQuestions(tutorialQuestions);
-    } else {
-      const newQuestions = shuffleArray(initialQuestions).slice(0, QUIZ_LENGTH);
-      setQuestions(newQuestions);
-    }
+    const newQuestions = shuffleArray(initialQuestions).slice(0, QUIZ_LENGTH);
+    setQuestions(newQuestions);
     timeoutFiredRef.current = false;
-  }, [isTutorialMode]);
+  }, []);
 
   useEffect(() => {
       timeoutFiredRef.current = false;
   }, [currentQuestionIndex]);
 
   useEffect(() => {
-      if (!isTutorialMode && currentQuestionIndex >= questions.length && questions.length > 0) {
+      if (currentQuestionIndex >= questions.length && questions.length > 0) {
           const isPerfect = score === questions.length;
           const unlocked = checkSessionAchievements(isPerfect);
           unlocked.forEach(showAchievementToast);
       }
-  }, [isTutorialMode, currentQuestionIndex, questions.length, score, showAchievementToast]);
+  }, [currentQuestionIndex, questions.length, score, showAchievementToast]);
 
   useEffect(() => {
-    if (isTutorialMode) return;
     let timer: NodeJS.Timeout;
     if (answerStatus) {
       timer = setTimeout(() => {
@@ -133,10 +104,10 @@ export default function QuizEnPl() {
       }, 1500);
     }
     return () => clearTimeout(timer);
-  }, [answerStatus, isTutorialMode]);
+  }, [answerStatus]);
 
   useEffect(() => {
-    if (isTutorialMode || isPaused || !!answerStatus || currentQuestionIndex >= questions.length) {
+    if (isPaused || !!answerStatus || currentQuestionIndex >= questions.length) {
       return;
     }
 
@@ -169,10 +140,10 @@ export default function QuizEnPl() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isTutorialMode, isPaused, answerStatus, currentQuestionIndex, questions, showAchievementToast]);
+  }, [isPaused, answerStatus, currentQuestionIndex, questions, showAchievementToast]);
 
   useEffect(() => {
-    if (isTutorialMode || currentQuestionIndex >= questions.length || isPaused) {
+    if (currentQuestionIndex >= questions.length || isPaused) {
       return;
     }
 
@@ -185,49 +156,19 @@ export default function QuizEnPl() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isTutorialMode, currentQuestionIndex, questions.length, isPaused, totalTime, showAchievementToast]);
+  }, [currentQuestionIndex, questions.length, isPaused, totalTime, showAchievementToast]);
 
 
-  const {
-    question: displayQuestion,
-    answerStatus: displayAnswerStatus,
-    selectedAnswer: displaySelectedAnswer,
-    isFinished: isTutorialFinished
-  } = useMemo(() => {
-      if (!isTutorialMode || tutorialStep === null || questions.length === 0) {
-          return { question: questions[currentQuestionIndex], answerStatus, selectedAnswer, isFinished: false };
-      }
-  
-      if (tutorialStep >= 4) {
-          return { question: questions[2], answerStatus: null, selectedAnswer: null, isFinished: true };
-      }
-      
-      const questionIndex = tutorialStep < 2 ? 0 : tutorialStep === 2 ? 0 : 1;
-      const question = questions[questionIndex];
-  
-      let status: typeof answerStatus = null;
-      let selAnswer: string | null = null;
-      
-      if (tutorialStep === 2) {
-          status = 'correct';
-          selAnswer = question.correctAnswer;
-      } else if (tutorialStep === 3) {
-          status = 'incorrect';
-          selAnswer = question.options.find(o => o !== question.correctAnswer)!;
-      }
-  
-      return { question, answerStatus: status, selectedAnswer: selAnswer, isFinished: false };
-  
-  }, [isTutorialMode, tutorialStep, questions, currentQuestionIndex, answerStatus, selectedAnswer]);
+  const currentQuestion = useMemo(() => questions[currentQuestionIndex], [questions, currentQuestionIndex]);
 
   useEffect(() => {
-    if (displayQuestion) {
-      setShuffledOptions(shuffleArray(displayQuestion.options));
+    if (currentQuestion) {
+      setShuffledOptions(shuffleArray(currentQuestion.options));
     }
-  }, [displayQuestion]);
+  }, [currentQuestion]);
   
   const handleAnswerClick = (answer: string) => {
-    if (displayAnswerStatus || isPaused || isTutorialMode) return;
+    if (answerStatus || isPaused) return;
 
     setSelectedAnswer(answer);
     const isCorrect = answer === currentQuestion.correctAnswer;
@@ -264,7 +205,7 @@ export default function QuizEnPl() {
   };
   
   const handleHomeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (currentQuestionIndex > 0 && !isTutorialMode) {
+    if (currentQuestionIndex > 0) {
       e.preventDefault();
       setIsHomeAlertOpen(true);
     }
@@ -283,7 +224,7 @@ export default function QuizEnPl() {
   }
 
   const restartTest = () => {
-    setQuestions(isTutorialMode ? tutorialQuestions : shuffleArray(initialQuestions).slice(0, QUIZ_LENGTH));
+    setQuestions(shuffleArray(initialQuestions).slice(0, QUIZ_LENGTH));
     setCurrentQuestionIndex(0);
     setScore(0);
     setSelectedAnswer(null);
@@ -302,14 +243,14 @@ export default function QuizEnPl() {
   }
 
   const getButtonClass = (option: string) => {
-    if (!displayAnswerStatus) {
+    if (!answerStatus) {
       return "bg-primary text-primary-foreground hover:bg-primary/90";
     }
     
-    const isCorrectAnswer = option === displayQuestion.correctAnswer;
-    const isSelectedAnswer = option === displaySelectedAnswer;
+    const isCorrectAnswer = option === currentQuestion.correctAnswer;
+    const isSelectedAnswer = option === selectedAnswer;
 
-    if (displayAnswerStatus === 'timeout') {
+    if (answerStatus === 'timeout') {
         if(isCorrectAnswer) return "bg-success text-success-foreground hover:bg-success/90";
         return "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
     }
@@ -325,16 +266,15 @@ export default function QuizEnPl() {
   
   if (questions.length === 0) return null;
 
-  if (isTutorialFinished || (!isTutorialMode && currentQuestionIndex >= questions.length)) {
+  if (currentQuestionIndex >= questions.length) {
     return (
         <QuizResults
-            score={isTutorialMode ? 1 : score}
-            totalQuestions={isTutorialMode ? 2 : questions.length}
+            score={score}
+            totalQuestions={questions.length}
             totalTime={totalTime}
-            sessionErrors={isTutorialMode ? [{ word: tutorialQuestions[1].word, userAnswer: tutorialQuestions[1].options.find(o => o !== tutorialQuestions[1].correctAnswer)!, correctAnswer: tutorialQuestions[1].correctAnswer, quiz: QUIZ_NAME }] : sessionErrors}
+            sessionErrors={sessionErrors}
             quizName={QUIZ_NAME}
             onRestart={restartTest}
-            isTutorialMode={isTutorialMode}
         />
     );
   }
@@ -345,7 +285,7 @@ export default function QuizEnPl() {
     return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
   };
 
-  const progressValue = ((currentQuestionIndex + 1) / (isTutorialMode ? 3 : questions.length)) * 100;
+  const progressValue = ((currentQuestionIndex + 1) / questions.length) * 100;
   const questionTimeProgress = (questionTimer / QUESTION_TIME_LIMIT) * 100;
 
   return (
@@ -368,7 +308,7 @@ export default function QuizEnPl() {
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center p-6 space-y-8">
             <div className="w-full flex justify-around gap-4 text-center">
-                <div className="flex items-center gap-2" data-tutorial-id="quiz-timer">
+                <div className="flex items-center gap-2">
                     <Clock className="h-6 w-6" />
                     <span className={cn(
                         "text-2xl font-bold transition-colors duration-300 text-card-foreground",
@@ -388,28 +328,17 @@ export default function QuizEnPl() {
               <p className="text-muted-foreground">What is the Polish meaning of</p>
               <p className={cn(
                   "font-headline font-bold text-card-foreground",
-                  displayQuestion.word.length > 20 ? "text-3xl" : "text-4xl"
-              )}>"{displayQuestion.word}"?</p>
+                  currentQuestion.word.length > 20 ? "text-3xl" : "text-4xl"
+              )}>"{currentQuestion.word}"?</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
             {shuffledOptions.map((option) => {
-              const isCorrectForTutorial = isTutorialMode && tutorialStep === 2 && option === displayQuestion.correctAnswer;
-              const isIncorrectForTutorial = isTutorialMode && tutorialStep === 3 && (option === displaySelectedAnswer || option === displayQuestion.correctAnswer);
-              
-              let tutorialId = undefined;
-              if (isCorrectForTutorial) {
-                tutorialId = 'quiz-answer-correct';
-              } else if (isIncorrectForTutorial) {
-                tutorialId = 'quiz-answer-incorrect';
-              }
-
               return (
                 <Button
                   key={option}
-                  data-tutorial-id={tutorialId}
                   onClick={() => handleAnswerClick(option)}
-                  disabled={!!displayAnswerStatus || isPaused}
+                  disabled={!!answerStatus || isPaused}
                   className={cn("h-auto text-lg p-4 whitespace-normal transition-all duration-300", getButtonClass(option))}
                 >
                   {option}
@@ -418,26 +347,19 @@ export default function QuizEnPl() {
             })}
           </div>
           <div className="flex justify-center gap-4 w-full pt-4 border-t">
-            {isTutorialMode ? (
-              <Button variant="outline" size="icon" disabled>
-                <Home />
-              </Button>
-            ) : (
-              <Link href="/" passHref>
+            <Link href="/" passHref>
                 <Button variant="outline" size="icon" onClick={handleHomeClick}>
                   <Home />
                 </Button>
-              </Link>
-            )}
+            </Link>
             <Button variant="outline" size="icon" onClick={handleRestartClick}>
               <RefreshCw />
             </Button>
             <Button 
-                data-tutorial-id="quiz-pause-button"
                 variant="outline" 
                 size="icon" 
                 onClick={handlePauseClick}
-                disabled={isTutorialMode || (!isPaused && questionTimer < MIN_TIME_FOR_PAUSE)}
+                disabled={!isPaused && questionTimer < MIN_TIME_FOR_PAUSE}
             >
               {isPaused ? <Play /> : <Pause />}
             </Button>
@@ -446,7 +368,7 @@ export default function QuizEnPl() {
         <CardFooter className="flex-col gap-4 p-6 pt-0">
           <div className="flex justify-between w-full items-center">
               <div className="text-sm text-muted-foreground">
-                  Question {isTutorialMode ? (tutorialStep! < 3 ? 1 : 2) : currentQuestionIndex + 1} of {isTutorialMode ? 2 : questions.length}
+                  Question {currentQuestionIndex + 1} of {questions.length}
               </div>
               <div className="flex items-center gap-2">
                   <span className="text-sm font-medium">Score:</span>
@@ -454,7 +376,7 @@ export default function QuizEnPl() {
                       key={score}
                       className="text-2xl font-bold text-primary animate-in fade-in zoom-in-125 duration-300"
                   >
-                      {isTutorialMode ? (tutorialStep! >=2 ? 1 : 0) : score}
+                      {score}
                   </div>
               </div>
           </div>
@@ -494,4 +416,3 @@ export default function QuizEnPl() {
     </>
   );
 }
-

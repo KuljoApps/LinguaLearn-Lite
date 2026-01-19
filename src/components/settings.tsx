@@ -85,41 +85,41 @@ export default function SettingsPage() {
                     <CardTitle className="text-center text-3xl">{getUIText('title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between">
-                        <Label htmlFor="sounds-switch" className="text-lg">{getUIText('sounds')}</Label>
-                        <Switch
-                            id="sounds-switch"
-                            checked={settings.soundsEnabled}
-                            onCheckedChange={(checked) => handleSettingChange('soundsEnabled', checked)}
-                            suppressHydrationWarning
-                        />
+                    <div data-tutorial-id="settings-switches" className="space-y-4">
+                        <div className="flex items-center justify-between">
+                            <Label htmlFor="sounds-switch" className="text-lg">{getUIText('sounds')}</Label>
+                            <Switch
+                                id="sounds-switch"
+                                checked={settings.soundsEnabled}
+                                onCheckedChange={(checked) => handleSettingChange('soundsEnabled', checked)}
+                                suppressHydrationWarning
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="volume-slider" className="text-lg">{getUIText('volume')}</Label>
+                            <Slider
+                                id="volume-slider"
+                                min={0}
+                                max={100}
+                                step={1}
+                                value={[settings.volume]}
+                                onValueChange={(value) => handleSettingChange('volume', value[0])}
+                                disabled={!settings.soundsEnabled}
+                                suppressHydrationWarning
+                            />
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <Label htmlFor="vibrations-switch" className="text-lg">{getUIText('vibrations')}</Label>
+                            <Switch
+                                id="vibrations-switch"
+                                checked={settings.vibrationsEnabled}
+                                onCheckedChange={(checked) => handleSettingChange('vibrationsEnabled', checked)}
+                                suppressHydrationWarning
+                            />
+                        </div>
                     </div>
                     <Separator />
-                    <div className="space-y-2">
-                        <Label htmlFor="volume-slider" className="text-lg">{getUIText('volume')}</Label>
-                        <Slider
-                            id="volume-slider"
-                            min={0}
-                            max={100}
-                            step={1}
-                            value={[settings.volume]}
-                            onValueChange={(value) => handleSettingChange('volume', value[0])}
-                            disabled={!settings.soundsEnabled}
-                            suppressHydrationWarning
-                        />
-                    </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                        <Label htmlFor="vibrations-switch" className="text-lg">{getUIText('vibrations')}</Label>
-                        <Switch
-                            id="vibrations-switch"
-                            checked={settings.vibrationsEnabled}
-                            onCheckedChange={(checked) => handleSettingChange('vibrationsEnabled', checked)}
-                            suppressHydrationWarning
-                        />
-                    </div>
-                    <Separator />
-                     <div className="space-y-2">
+                    <div className="space-y-2" data-tutorial-id="settings-eyecare">
                         <Label htmlFor="eyecare-slider" className="text-lg">{getUIText('eyeCare')}</Label>
                         <Slider
                             id="eyecare-slider"

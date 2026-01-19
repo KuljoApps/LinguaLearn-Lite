@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,8 +8,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Brain, ThumbsUp, Trophy, Clock, CheckCircle, ShieldX } from 'lucide-react';
 import type { ErrorRecord, Language } from '@/lib/storage';
-import { getLanguage } from '@/lib/storage';
-import { cn } from '@/lib/utils';
 
 interface QuizResultsProps {
     score: number;
@@ -20,7 +18,7 @@ interface QuizResultsProps {
     onRestart: () => void;
 }
 
-const uiTexts: { [key: string]: Record<Language, string> } = {
+const uiTexts: { [key: string]: Record<Language | 'pl', string> } = {
     perfectTitle: { en: 'Perfect Score!', pl: 'Bezbłędny test!', fr: 'Score Parfait !', de: 'Perfektes Ergebnis!', it: 'Punteggio Perfetto!', es: '¡Puntuación Perfecta!' },
     perfectDesc: { en: 'Excellent! All answers were correct. You are a champion!', pl: 'Doskonale! Wszystkie odpowiedzi były poprawne. Jesteś mistrzem!', fr: 'Excellent ! Toutes les réponses étaient correctes. Vous êtes un champion !', de: 'Ausgezeichnet! Alle Antworten waren richtig. Du bist ein Champion!', it: 'Eccellente! Tutte le risposte erano corrette. Sei un campione!', es: '¡Excelente! Todas las respuestas fueron correctas. ¡Eres un campeón!' },
     greatTitle: { en: 'Great Job!', pl: 'Świetna robota!', fr: 'Excellent Travail !', de: 'Tolle Arbeit!', it: 'Ottimo Lavoro!', es: '¡Gran Trabajo!' },
@@ -43,21 +41,12 @@ const uiTexts: { [key: string]: Record<Language, string> } = {
     seeAllErrors: { en: 'See all errors', pl: 'Zobacz wszystkie błędy', fr: 'Voir toutes les erreurs', de: 'Alle Fehler ansehen', it: 'Vedi tutti gli errori', es: 'Ver todos los errores' }
 };
 
-export default function QuizResults({ score, totalQuestions, totalTime, quizName, sessionErrors, onRestart }: QuizResultsProps) {
-    const [lang, setLang] = useState<Language>('pl'); // Default to Polish
-
-    useEffect(() => {
-        const updateLang = () => setLang(getLanguage());
-        updateLang();
-        window.addEventListener('language-changed', updateLang);
-        return () => window.removeEventListener('language-changed', updateLang);
-    }, []);
-
+export default function QuizResults({ score, totalQuestions, totalTime, sessionErrors, onRestart }: QuizResultsProps) {
+    const lang: Language = 'pl';
     const successRate = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
     
     const getUIText = (key: keyof typeof uiTexts) => {
-        const texts = uiTexts[key];
-        return (lang in texts ? texts[lang] : texts['pl']);
+        return uiTexts[key][lang] || uiTexts[key]['pl'];
     };
 
     const formatTime = (seconds: number) => {
@@ -105,7 +94,7 @@ export default function QuizResults({ score, totalQuestions, totalTime, quizName
             </CardHeader>
 
             <CardContent className="space-y-4">
-                <Card className="bg-muted/50">
+                <Card className="bg-muted/50" data-tutorial-id="quiz-results-summary">
                     <CardHeader className="pb-2">
                         <CardTitle className="text-xl text-center">{getUIText('summary')}</CardTitle>
                     </CardHeader>
@@ -143,7 +132,7 @@ export default function QuizResults({ score, totalQuestions, totalTime, quizName
                 </Card>
 
                 {sessionErrors.length > 0 && (
-                    <div className="space-y-2">
+                    <div className="space-y-2" data-tutorial-id="quiz-results-errors">
                         <h3 className="text-center font-semibold">{getUIText('worthRepeating')}</h3>
                         <ScrollArea className="h-32 w-full rounded-md border p-2">
                              <div className="space-y-2">
@@ -163,7 +152,7 @@ export default function QuizResults({ score, totalQuestions, totalTime, quizName
                 )}
             </CardContent>
 
-            <CardFooter className="flex-col gap-4 pt-4">
+            <CardFooter className="flex-col gap-4 pt-4" data-tutorial-id="quiz-results-actions">
                  <div className="flex w-full gap-4">
                     <Button onClick={onRestart} className="w-full">{getUIText('playAgain')}</Button>
                     <Link href="/" passHref className="w-full">

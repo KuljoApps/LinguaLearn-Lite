@@ -56,6 +56,7 @@ export default function LearningEnPage() {
 
                 <CardContent className="flex flex-col space-y-4 px-6 pt-2 pb-2">
                     <Link href="/learning/en/questions" data-tutorial-id="learning-question-base">
+                        {/* TUTORIAL FOCUS SIZE: This button's dimensions (h-12) define the focus area for the 'Question Base' step. */}
                         <Button className="w-full h-12 text-lg">
                             <BookCopy className="mr-2 h-5 w-5" />
                             Question Base
@@ -63,6 +64,7 @@ export default function LearningEnPage() {
                     </Link>
 
                     <Link href="/learning/en/tenses" data-tutorial-id="learning-main-modules">
+                        {/* TUTORIAL FOCUS SIZE: This button's dimensions (h-12) define the focus area for the 'Main Modules' step. */}
                         <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
                             <Clock className="mr-2 h-5 w-5 text-deep-purple" />
                             Tenses
@@ -90,6 +92,7 @@ export default function LearningEnPage() {
                         </Button>
                     </Link>
                     
+                    {/* TUTORIAL FOCUS SIZE: This div's padding (py-2) defines the focus area for the 'Extras' step. */}
                     <div className="py-2" data-tutorial-id="learning-extras">
                         <Collapsible
                             open={isExtrasOpen}

@@ -29,14 +29,14 @@ const initialSteps: Step[] = [
         title: 'Zmiana języka',
         description: 'Najpierw wybierz język, którego chcesz się uczyć. Możesz to zmienić w\u00A0każdej chwili.',
         path: '/',
-        bubbleOffset: 10,
+        bubbleOffset: 12,
     },
     {
         elementId: 'quiz-buttons',
         title: 'Główne quizy',
         description: 'To serce aplikacji. Wybierz jeden z\u00A0pięciu trybów, aby sprawdzić swoją wiedzę w\u00A0różnych kategoriach.',
         path: '/',
-        bubbleOffset: 5,
+        bubbleOffset: 7,
     },
     {
         elementId: 'learning-button',
@@ -50,7 +50,7 @@ const initialSteps: Step[] = [
         title: 'Narzędzia i postępy',
         description: 'Tutaj możesz dostosować ustawienia, śledzić swoje statystyki, przeglądać błędy i\u00A0sprawdzać swoje osiągnięcia.',
         path: '/',
-        bubbleOffset: 10,
+        bubbleOffset: 12,
     },
 ];
 
@@ -224,20 +224,6 @@ const quizSteps: Step[] = [
         title: 'Poprawna odpowiedź',
         description: 'Świetnie! Poprawna odpowiedź zostanie podświetlona na zielono. Po chwili automatycznie przejdziesz do następnego pytania.',
         bubblePosition: 'bottom',
-    },
-    {
-        path: '/tutorial/quiz-demo',
-        elementId: 'quiz-iv-translation',
-        title: 'Pytania wieloetapowe',
-        description: 'Niektóre pytania, jak te o czasowniki nieregularne, mają dwa etapy. Najpierw wybierz poprawne tłumaczenie.',
-        bubblePosition: 'top'
-    },
-     {
-        path: '/tutorial/quiz-demo',
-        elementId: 'quiz-iv-forms',
-        title: 'Uzupełnianie form',
-        description: 'Następnie wpisz brakujące formy czasownika i kliknij "Potwierdź", aby sprawdzić swoją odpowiedź.',
-        bubblePosition: 'bottom'
     },
     {
         path: '/tutorial/quiz-demo',

@@ -66,7 +66,7 @@ export interface GlobalStats {
 // --- Tutorial State ---
 export interface TutorialState {
   isActive: boolean;
-  stage: 'initial' | 'decision' | 'extended';
+  stage: 'initial' | 'decision' | 'extended' | 'quiz';
   step: number;
 }
 

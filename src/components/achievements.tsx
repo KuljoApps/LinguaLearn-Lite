@@ -111,7 +111,7 @@ export default function AchievementsPage() {
 
     return (
         <>
-            <Card className="w-full max-w-2xl shadow-2xl">
+            <Card className="w-full max-w-2xl shadow-2xl" data-tutorial-id="achievements-card">
                 <CardHeader>
                     <CardTitle className="text-center text-3xl">{getUIText('title')}</CardTitle>
                 </CardHeader>
@@ -200,4 +200,5 @@ export default function AchievementsPage() {
         </>
     );
 }
+
 

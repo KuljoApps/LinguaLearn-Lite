@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/componen
 import LinguaLearnLogo from '@/components/LinguaLearnLogo';
 import { getLanguage, setLanguage, shouldShowProPromo, shouldShowRateAppDialog, isTutorialCompleted, setTutorialCompleted, saveTutorialState } from '@/lib/storage';
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import ProPromotionDialog from '@/components/ProPromotionDialog';
@@ -17,6 +18,7 @@ export default function Home() {
     const [language, setCurrentLanguage] = useState<'en' | 'fr' | 'de' | 'it' | 'es'>('en');
     const [showPromo, setShowPromo] = useState(false);
     const [showRateDialog, setShowRateDialog] = useState(false);
+    const pathname = usePathname();
 
     useEffect(() => {
         setCurrentLanguage(getLanguage());
@@ -67,7 +69,7 @@ export default function Home() {
             }
             */
         }
-    }, []);
+    }, [pathname]);
 
 
     const handleLanguageChange = (lang: 'en' | 'fr' | 'de' | 'it' | 'es') => {

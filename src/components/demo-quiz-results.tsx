@@ -63,6 +63,9 @@ export default function DemoQuizResults({ score, totalQuestions, totalTime, sess
         { word: 'Accomplish', userAnswer: 'Akompaniować', correctAnswer: 'Osiągnąć', quiz: 'Demo Quiz' },
         { word: 'Conscious', userAnswer: 'Sumienny', correctAnswer: 'Świadomy', quiz: 'Demo Quiz' },
     ];
+    
+    const errorsToDisplay = sessionErrors.length > 0 ? sessionErrors : fakeSessionErrors;
+
 
     return (
         <Card className="w-full max-w-lg shadow-2xl">
@@ -96,7 +99,7 @@ export default function DemoQuizResults({ score, totalQuestions, totalTime, sess
                         <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background">
                             <div className="flex items-center gap-2">
                                 <ShieldX className="h-4 w-4 text-destructive"/>
-                                <span className="text-2xl font-bold">{fakeSessionErrors.length}</span>
+                                <span className="text-2xl font-bold">{errorsToDisplay.length}</span>
                             </div>
                             <span className="text-xs text-muted-foreground">Błędne</span>
                         </div>
@@ -114,14 +117,14 @@ export default function DemoQuizResults({ score, totalQuestions, totalTime, sess
                     <h3 className="text-center font-semibold">Warto to powtórzyć</h3>
                     <ScrollArea className="h-32 w-full rounded-md border p-2">
                          <div className="space-y-2">
-                            {fakeSessionErrors.map((error, index) => (
+                            {errorsToDisplay.map((error, index) => (
                                 <React.Fragment key={index}>
                                     <div className="text-sm p-2 bg-muted/30 rounded-md">
                                         <p><span className="font-semibold">{error.word}</span></p>
                                         <p className="text-destructive">Twoja odp: <span className="font-medium">{error.userAnswer}</span></p>
                                         <p className="text-success">Poprawna: <span className="font-medium">{error.correctAnswer}</span></p>
                                     </div>
-                                    {index < fakeSessionErrors.length - 1 && <Separator />}
+                                    {index < errorsToDisplay.length - 1 && <Separator />}
                                 </React.Fragment>
                             ))}
                         </div>
@@ -132,11 +135,11 @@ export default function DemoQuizResults({ score, totalQuestions, totalTime, sess
             <CardFooter className="flex-col gap-4 pt-4" data-tutorial-id="quiz-results-actions">
                  <div className="flex w-full gap-4">
                     <Button onClick={onRestart} className="w-full">Zagraj ponownie</Button>
-                    <Button asChild variant="outline" className="w-full">
-                        <Link href="/">Wróć do menu</Link>
-                    </Button>
+                    <Link href="/" passHref className="w-full">
+                        <Button variant="outline" className="w-full">Wróć do menu</Button>
+                    </Link>
                 </div>
-                <Button variant="link" className="text-muted-foreground pointer-events-none">
+                <Button variant="link" className="text-muted-foreground pointer-events-none opacity-50">
                     Zobacz wszystkie błędy
                 </Button>
             </CardFooter>

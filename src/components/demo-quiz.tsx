@@ -16,7 +16,7 @@ import { vibrate } from '@/lib/vibrations';
 const demoQuestions = [
     { id: 1, word: 'Hello', options: ['Do widzenia', 'Cześć', 'Dziękuję', 'Przepraszam'], correctAnswer: 'Cześć' },
     { id: 2, word: 'Throughout', options: ['Na zewnątrz', 'Pod spodem', 'Wewnątrz', 'Przez cały (czas)'], correctAnswer: 'Przez cały (czas)' },
-    { id: 3, word: 'Impeccable', options: ['Niedbały', 'Zwykły', 'Nieskazitelny', 'Brudny'], correctAnswer: 'Nieskazitelny' },
+    { id: 3, word: 'Impeccable', options: ['Zwykły', 'Nieskazitelny', 'Brudny', 'Niedbały'], correctAnswer: 'Nieskazitelny' },
 ];
 
 const QUESTION_TIME_LIMIT = 15;
@@ -43,9 +43,11 @@ export default function DemoQuiz() {
     const [activeTutorialStep, setActiveTutorialStep] = useState<number | null>(null);
     const prevActiveTutorialStep = usePrevious(activeTutorialStep);
     
-    const currentQuestion = useMemo(() => demoQuestions[currentQuestionIndex], [currentQuestionIndex]);
-    const isQuizActive = activeTutorialStep === 2;
+    const [isQuizActive, setIsQuizActive] = useState(false);
 
+    const currentQuestion = useMemo(() => demoQuestions[currentQuestionIndex], [currentQuestionIndex]);
+    const shuffledOptions = useMemo(() => currentQuestion ? shuffleArray(currentQuestion.options) : [], [currentQuestion]);
+    
     const resetQuestionState = useCallback(() => {
         setSelectedAnswer(null);
         setAnswerStatus(null);
@@ -57,10 +59,11 @@ export default function DemoQuiz() {
         if (nextIndex < demoQuestions.length) {
             setCurrentQuestionIndex(nextIndex);
             resetQuestionState();
-            saveTutorialState({ isActive: true, stage: 'quiz', step: 2 });
+            setIsQuizActive(true);
         } else {
             setCurrentQuestionIndex(demoQuestions.length);
-            saveTutorialState({ isActive: true, stage: 'quiz', step: 5 });
+            setIsQuizActive(false);
+            saveTutorialState({ isActive: true, stage: 'quiz', step: 30 });
         }
     }, [currentQuestionIndex, resetQuestionState]);
 
@@ -71,7 +74,8 @@ export default function DemoQuiz() {
         setIsPaused(false);
         setSessionErrors([]);
         resetQuestionState();
-        saveTutorialState({ isActive: true, stage: 'quiz', step: 0 });
+        setIsQuizActive(false);
+        saveTutorialState({ isActive: true, stage: 'quiz', step: 26 });
     }, [resetQuestionState]);
 
     useEffect(() => {
@@ -79,25 +83,22 @@ export default function DemoQuiz() {
             const state = getTutorialState();
             if (state?.stage === 'quiz') {
                 const newStep = state.step;
-                const prevStep = prevActiveTutorialStep;
-
-                if (prevStep && newStep > prevStep) {
-                    if (newStep === 2) { 
-                        // This is the interactive step, quiz starts.
-                    } else if (newStep > 2) {
-                        handleNextQuestion();
-                    }
+                
+                if (prevActiveTutorialStep === 27 && newStep === 28) {
+                    setIsQuizActive(true);
+                } else if ((prevActiveTutorialStep === 28 && newStep === 29) || (prevActiveTutorialStep === 29 && newStep === 30)) {
+                    handleNextQuestion();
+                } else {
+                    setIsQuizActive(false);
                 }
                  setActiveTutorialStep(newStep);
-            } else {
-                 setActiveTutorialStep(null);
             }
         };
 
         handleStateUpdate();
         window.addEventListener('tutorial-state-changed', handleStateUpdate);
         return () => window.removeEventListener('tutorial-state-changed', handleStateUpdate);
-    }, [activeTutorialStep, handleNextQuestion, prevActiveTutorialStep]);
+    }, [prevActiveTutorialStep, handleNextQuestion]);
 
     useEffect(() => {
         if (!isQuizActive || isPaused || !!answerStatus) {
@@ -109,12 +110,8 @@ export default function DemoQuiz() {
                 if (prev <= 1) {
                     clearInterval(interval);
                     if (!answerStatus) {
-                        setAnswerStatus("timeout");
-                        if (currentQuestionIndex === 0) {
-                            saveTutorialState({ isActive: true, stage: 'quiz', step: 3 });
-                        } else {
-                            saveTutorialState({ isActive: true, stage: 'quiz', step: 4 });
-                        }
+                         setAnswerStatus("timeout");
+                         handleAnswerClick(null);
                     }
                     return 0;
                 }
@@ -123,53 +120,65 @@ export default function DemoQuiz() {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [isQuizActive, isPaused, answerStatus, currentQuestionIndex]);
-
+    }, [isQuizActive, isPaused, answerStatus]);
+    
     useEffect(() => {
-        if (!isQuizActive || isPaused || currentQuestionIndex >= demoQuestions.length) {
-            return;
+        if (isQuizActive && !isPaused && currentQuestionIndex < demoQuestions.length && !answerStatus) {
+            const interval = setInterval(() => {
+                setTotalTime(prev => prev + 1);
+            }, 1000);
+            return () => clearInterval(interval);
         }
-        const interval = setInterval(() => {
-            setTotalTime(prev => prev + 1);
-        }, 1000);
-        return () => clearInterval(interval);
-    }, [isQuizActive, isPaused, currentQuestionIndex]);
+    }, [isQuizActive, isPaused, currentQuestionIndex, answerStatus]);
 
 
-    const handleAnswerClick = (answer: string) => {
-        if (answerStatus || !isQuizActive) return;
-
-        if (currentQuestionIndex === 0 && answer !== currentQuestion.correctAnswer) {
-            return;
-        }
-
-        setSelectedAnswer(answer);
-        const isCorrect = answer === currentQuestion.correctAnswer;
+    const handleAnswerClick = (answer: string | null) => {
+        if (answerStatus) return;
         
+        if (currentQuestionIndex === 0 && answer !== currentQuestion.correctAnswer && answer !== null) {
+            return;
+        }
+        
+        setIsQuizActive(false);
+        setSelectedAnswer(answer);
+
+        let isCorrect = answer === currentQuestion.correctAnswer;
+        
+        // Force incorrect answer on Q3 if Q2 was correct
+        if (currentQuestionIndex === 2 && isCorrect && sessionErrors.length === 0) {
+            const wrongAnswer = currentQuestion.options.find(o => o !== currentQuestion.correctAnswer)!;
+            setSelectedAnswer(wrongAnswer);
+            isCorrect = false;
+        }
+
         if (isCorrect) {
             setAnswerStatus("correct");
             playSound('correct');
             vibrate('correct');
             setScore(prev => prev + 1);
-            saveTutorialState({ isActive: true, stage: 'quiz', step: 3 });
+            saveTutorialState({ isActive: true, stage: 'quiz', step: 28 });
         } else {
             setAnswerStatus("incorrect");
             playSound('incorrect');
             vibrate('incorrect');
-            if (currentQuestionIndex === 2 && isCorrect) {
-                const wrongAnswer = currentQuestion.options.find(o => o !== currentQuestion.correctAnswer)!;
-                setSelectedAnswer(wrongAnswer);
-            }
-            saveTutorialState({ isActive: true, stage: 'quiz', step: 4 });
+            const errorRecord = {
+                word: currentQuestion.word,
+                userAnswer: answer || "Brak odpowiedzi",
+                correctAnswer: currentQuestion.correctAnswer,
+                quiz: 'Demo Quiz',
+            };
+            setSessionErrors(prev => [...prev, errorRecord]);
+            saveTutorialState({ isActive: true, stage: 'quiz', step: 29 });
         }
     };
 
 
     const handlePauseClick = () => {
-        if (!isQuizActive) return;
-        setIsPaused(prev => !prev);
-        if (isPaused && questionTimer > PAUSE_PENALTY) {
-            setQuestionTimer(prev => Math.max(0, prev - PAUSE_PENALTY));
+        if (isQuizActive) {
+            setIsPaused(prev => !prev);
+            if (isPaused && questionTimer > PAUSE_PENALTY) {
+                setQuestionTimer(prev => Math.max(0, prev - PAUSE_PENALTY));
+            }
         }
     };
 
@@ -210,9 +219,6 @@ export default function DemoQuiz() {
     const overallProgress = ((currentQuestionIndex + 1) / demoQuestions.length) * 100;
     const questionTimeProgress = (questionTimer / QUESTION_TIME_LIMIT) * 100;
 
-    const isCorrectAnswerStep = activeTutorialStep === 3;
-    const isIncorrectAnswerStep = activeTutorialStep === 4;
-
     return (
         <>
             <Card className="w-full max-w-lg shadow-2xl">
@@ -230,14 +236,14 @@ export default function DemoQuiz() {
                         <div className="w-full flex justify-around gap-4 text-center">
                             <div className="flex items-center gap-2">
                                 <Clock className="h-6 w-6" />
-                                <span className="text-2xl font-bold">{isQuizActive ? questionTimer : QUESTION_TIME_LIMIT}s</span>
+                                <span className="text-2xl font-bold">{questionTimer}s</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <Clock className="h-6 w-6" />
                                 <span className="text-2xl font-bold">{formatTime(totalTime)}</span>
                             </div>
                         </div>
-                        <Progress value={isQuizActive ? questionTimeProgress : 100} className="w-full h-2" />
+                        <Progress value={questionTimeProgress} className="w-full h-2" />
                     </div>
 
                     <div className="text-center space-y-2">
@@ -250,15 +256,15 @@ export default function DemoQuiz() {
                     
                     <div
                         data-tutorial-id={
-                            isCorrectAnswerStep
+                           answerStatus === "correct"
                                 ? 'quiz-correct-answer'
-                                : isIncorrectAnswerStep
+                                : answerStatus === 'incorrect' || answerStatus === 'timeout'
                                 ? 'quiz-incorrect-answer'
                                 : undefined
                         }
                         className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full"
                     >
-                        {currentQuestion.options.map((option) => (
+                        {shuffledOptions.map((option) => (
                             <Button
                                 key={option}
                                 onClick={() => handleAnswerClick(option)}
@@ -266,7 +272,6 @@ export default function DemoQuiz() {
                                     "h-auto text-lg p-4 whitespace-normal transition-all duration-300", 
                                     getButtonClass(option)
                                 )}
-                                disabled={!!answerStatus || isPaused || (currentQuestionIndex === 0 && option !== currentQuestion.correctAnswer && isQuizActive)}
                             >
                                 {option}
                             </Button>
@@ -276,7 +281,7 @@ export default function DemoQuiz() {
                         <Button variant="outline" size="icon" className="pointer-events-none opacity-50"><Home /></Button>
                         <Button variant="outline" size="icon" className="pointer-events-none opacity-50"><RefreshCw /></Button>
                         <div data-tutorial-id="quiz-pause-button">
-                            <Button variant="outline" size="icon" onClick={handlePauseClick} disabled={!isQuizActive}>
+                            <Button variant="outline" size="icon" onClick={handlePauseClick}>
                                 {isPaused ? <Play /> : <Pause />}
                             </Button>
                         </div>

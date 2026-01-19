@@ -58,12 +58,10 @@ export default function DemoQuiz() {
         if (nextIndex < demoQuestions.length) {
             setCurrentQuestionIndex(nextIndex);
             resetQuestionState();
-            // Go back to interactive step for the next question
             saveTutorialState({ isActive: true, stage: 'quiz', step: 2 });
         } else {
             setCurrentQuestionIndex(demoQuestions.length);
             setIsQuizInteractive(false);
-            // Go to the results summary step
             saveTutorialState({ isActive: true, stage: 'quiz', step: 5 });
         }
     }, [currentQuestionIndex, resetQuestionState]);
@@ -85,14 +83,12 @@ export default function DemoQuiz() {
                 const newStep = state.step;
                 setActiveTutorialStep(newStep);
                 
-                // Step 2 is the interactive step
                 if (newStep === 2) { 
                     setIsQuizInteractive(true);
                 } else {
                     setIsQuizInteractive(false);
                 }
 
-                // If a feedback bubble was just shown and now we are back to interactive state
                 if (newStep === 2 && (activeTutorialStep === 3 || activeTutorialStep === 4)) {
                    handleNextQuestion();
                 }
@@ -103,37 +99,6 @@ export default function DemoQuiz() {
         handleStateUpdate();
         return () => window.removeEventListener('tutorial-state-changed', handleStateUpdate);
     }, [activeTutorialStep, handleNextQuestion]);
-
-    useEffect(() => {
-        if (!isQuizInteractive || isPaused || !!answerStatus) {
-            return;
-        }
-        
-        const interval = setInterval(() => {
-            setQuestionTimer((prev) => {
-                if (prev <= 1) {
-                    clearInterval(interval);
-                    if (!answerStatus) {
-                         handleAnswerClick(null);
-                    }
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [isQuizInteractive, isPaused, answerStatus, handleAnswerClick]);
-    
-    useEffect(() => {
-        if (isQuizInteractive && !isPaused && currentQuestionIndex < demoQuestions.length && !answerStatus) {
-            const interval = setInterval(() => {
-                setTotalTime(prev => prev + 1);
-            }, 1000);
-            return () => clearInterval(interval);
-        }
-    }, [isQuizInteractive, isPaused, currentQuestionIndex, answerStatus]);
-
 
     const handleAnswerClick = useCallback((answer: string | null) => {
         if (answerStatus || !isQuizInteractive) return;
@@ -173,6 +138,36 @@ export default function DemoQuiz() {
             saveTutorialState({ isActive: true, stage: 'quiz', step: 4 });
         }
     }, [answerStatus, isQuizInteractive, currentQuestionIndex, currentQuestion, sessionErrors]);
+
+    useEffect(() => {
+        if (!isQuizInteractive || isPaused || !!answerStatus) {
+            return;
+        }
+        
+        const interval = setInterval(() => {
+            setQuestionTimer((prev) => {
+                if (prev <= 1) {
+                    clearInterval(interval);
+                    if (!answerStatus) {
+                         handleAnswerClick(null);
+                    }
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [isQuizInteractive, isPaused, answerStatus, handleAnswerClick]);
+    
+    useEffect(() => {
+        if (isQuizInteractive && !isPaused && currentQuestionIndex < demoQuestions.length && !answerStatus) {
+            const interval = setInterval(() => {
+                setTotalTime(prev => prev + 1);
+            }, 1000);
+            return () => clearInterval(interval);
+        }
+    }, [isQuizInteractive, isPaused, currentQuestionIndex, answerStatus]);
 
 
     const handlePauseClick = () => {

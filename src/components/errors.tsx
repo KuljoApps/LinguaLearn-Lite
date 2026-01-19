@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Link from "next/link";
 import { ArrowLeft, Trash2, ArrowUpDown, Trophy } from "lucide-react";
-import { getErrors, clearErrors, type ErrorRecord, type Achievement, getLanguage, type Language } from '@/lib/storage';
+import { getErrors, clearErrors, type ErrorRecord, type Achievement, getLanguage, type Language, getTutorialState } from '@/lib/storage';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -110,18 +110,29 @@ export default function ErrorsPage() {
     const [expandedRows, setExpandedRows] = useState<Set<string | number>>(new Set());
     const [sortConfig, setSortConfig] = useState<{ key: SortableKey; direction: 'ascending' | 'descending' } | null>(null);
     const [language, setLanguageState] = useState<Language>('en');
+    const [isTutorialActive, setIsTutorialActive] = useState(false);
     const { toast } = useToast();
 
     useEffect(() => {
-        const handleLanguageChange = () => {
+        const handleStateUpdate = () => {
             const currentLang = getLanguage();
             setLanguageState(currentLang);
             setErrors(getErrors()); // Reload errors for the current language
             setQuizFilter('all');
+
+            const tutorialState = getTutorialState();
+            const isOnErrorsStep = tutorialState?.isActive &&
+                                   tutorialState.stage === 'extended' &&
+                                   tutorialState.step >= 4 && tutorialState.step <= 6;
+            setIsTutorialActive(isOnErrorsStep);
         };
-        handleLanguageChange(); // Initial load
-        window.addEventListener('language-changed', handleLanguageChange);
-        return () => window.removeEventListener('language-changed', handleLanguageChange);
+        handleStateUpdate();
+        window.addEventListener('language-changed', handleStateUpdate);
+        window.addEventListener('tutorial-state-changed', handleStateUpdate);
+        return () => {
+            window.removeEventListener('language-changed', handleStateUpdate);
+            window.removeEventListener('tutorial-state-changed', handleStateUpdate);
+        };
     }, []);
 
     const getUIText = (key: keyof typeof uiTexts) => {
@@ -140,6 +151,16 @@ export default function ErrorsPage() {
             description: `You've earned: "${achievement.name}"`,
         });
     };
+
+    const fakeErrors: ErrorRecord[] = [
+        { id: 1, quiz: 'English - Polish', word: 'Accomplish', userAnswer: 'Akompaniować', correctAnswer: 'Osiągnąć' },
+        { id: 2, quiz: 'Polish - English', word: 'Wytrwać', userAnswer: 'Survive', correctAnswer: 'Persevere' },
+        { id: 3, quiz: 'English - Polish', word: 'Reliable', userAnswer: 'Religijny', correctAnswer: 'Niezawodny' },
+        { id: 4, quiz: 'Irregular Verbs', word: 'write', userAnswer: 'writed, written', correctAnswer: 'wrote, written' },
+        { id: 5, quiz: 'English - Polish', word: 'Accomplish', userAnswer: 'Kompletny', correctAnswer: 'Osiągnąć' },
+    ];
+
+    const displayErrors = isTutorialActive && errors.length === 0 ? fakeErrors : errors;
 
     const requestSort = (key: SortableKey) => {
         let direction: 'ascending' | 'descending' = 'ascending';
@@ -180,10 +201,10 @@ export default function ErrorsPage() {
 
     const filteredErrors = useMemo(() => {
         if (quizFilter === 'all') {
-            return errors;
+            return displayErrors;
         }
-        return errors.filter(error => error.quiz === quizFilter);
-    }, [errors, quizFilter]);
+        return displayErrors.filter(error => error.quiz === quizFilter);
+    }, [displayErrors, quizFilter]);
 
     const handleClearErrors = () => {
         const unlockedAchievements = clearErrors();
@@ -357,7 +378,7 @@ export default function ErrorsPage() {
             <Card className="w-full max-w-4xl shadow-2xl" data-tutorial-id="errors-card">
                 <CardHeader className="flex flex-col items-center gap-4 p-6 sm:flex-row sm:justify-between">
                     <CardTitle className="text-3xl">{getUIText('title')}</CardTitle>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2" data-tutorial-id="errors-controls">
                         <Select value={quizFilter} onValueChange={(value) => handleFilterChange(value as QuizFilter)}>
                             <SelectTrigger>
                                 <SelectValue placeholder={getUIText('filterPlaceholder')} />
@@ -375,7 +396,7 @@ export default function ErrorsPage() {
                         </Button>
                     </div>
                 </CardHeader>
-                <CardContent className="h-96 w-full p-0">
+                <CardContent className="h-96 w-full p-0" data-tutorial-id="errors-table">
                     {renderTable()}
                 </CardContent>
                 <CardFooter className="flex justify-center p-6">

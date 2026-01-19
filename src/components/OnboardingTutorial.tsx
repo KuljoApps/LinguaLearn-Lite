@@ -75,7 +75,19 @@ const extendedSteps: Step[] = [
         path: '/errors',
         elementId: 'errors-card',
         title: 'Analiza błędów',
-        description: 'Przejdźmy teraz do Twoich błędów, aby zobaczyć, jak sobie radzisz. Zaraz wszystko Ci wyjaśnię.',
+        description: 'To centrum Twoich błędów. Zobaczmy, jakie masz tu możliwości analizy i\u00A0nauki.',
+    },
+    {
+        path: '/errors',
+        elementId: 'errors-controls',
+        title: 'Filtrowanie i\u00A0widoki',
+        description: 'Możesz filtrować błędy według quizu lub przełączać się między widokiem najnowszych i\u00A0najczęściej popełnianych błędów.',
+    },
+    {
+        path: '/errors',
+        elementId: 'errors-table',
+        title: 'Interaktywna tabela',
+        description: 'Klikaj nagłówki, aby sortować błędy. Jeśli tabela jest za szeroka, możesz ją przewijać w\u00A0poziomie. Kliknij wiersz, by rozwinąć pełną treść.',
     },
 ];
 

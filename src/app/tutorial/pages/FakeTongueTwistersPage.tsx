@@ -1,11 +1,11 @@
+"use client";
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, Languages } from 'lucide-react';
-
-// This is a static, non-interactive "fake" page for the tutorial.
 
 const fakePhrases = [
     { phrase: 'Peter Piper picked a peck of pickled peppers.', translation: 'Piotr Piper zebrał miarkę marynowanej papryki.' },

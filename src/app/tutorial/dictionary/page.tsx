@@ -1,5 +1,7 @@
-import FakeDictionaryEnPage from '../pages/FakeDictionaryPage';
+"use client";
+
+import FakeDictionaryPage from '../pages/FakeDictionaryPage';
 
 export default function DictionaryTutorialPage() {
-    return <FakeDictionaryEnPage />;
+    return <FakeDictionaryPage />;
 }

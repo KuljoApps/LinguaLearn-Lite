@@ -1,3 +1,5 @@
+"use client";
+
 import {
     BookCopy,
     ArrowLeft,
@@ -19,11 +21,8 @@ import {
     CollapsibleContent,
     CollapsibleTrigger
 } from "@/components/ui/collapsible";
-import { cn } from "@/lib/utils";
 
-// This is a static, non-interactive "fake" page for the tutorial.
-
-export default function FakeLearningEnPage() {
+export default function FakeLearningPage() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-md shadow-2xl" data-tutorial-id="learning-card">

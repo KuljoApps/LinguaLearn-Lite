@@ -481,7 +481,6 @@ export default function OnboardingTutorial() {
                   <div className="flex flex-col sm:flex-row gap-2 justify-center">
                       <Button onClick={handleStartTest}>{uiTexts.startTest}</Button>
                       <Button variant="secondary" onClick={handleFinish}>{uiTexts.exit}</Button>
-                      <Button variant="outline" disabled={true}>Zacznij od nowa</Button>
                   </div>
               </>
           );

@@ -7,8 +7,6 @@ import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, Plane } from 'lucide-react';
 import React from "react";
 
-// This is a static, non-interactive "fake" page for the tutorial.
-
 const fakePhrases = [
     { phrase: 'I\'d like to check in for my flight to Warsaw.', translation: 'Chciałbym/Chciałabym odprawić się na lot do Warszawy.' },
     { phrase: 'I have a connecting flight.', translation: 'Mam lot z przesiadką.' },
@@ -22,7 +20,7 @@ const fakePhrases = [
     { phrase: 'Please take out your laptops and liquids.', translation: 'Proszę wyjąć laptopy i płyny.' },
 ];
 
-export default function FakeAirportPhrasesPage() {
+export default function FakePhrasesAirportPage() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-2xl shadow-2xl">
@@ -35,13 +33,13 @@ export default function FakeAirportPhrasesPage() {
                 <CardContent>
                     <ScrollArea className="h-96 w-full pr-4">
                         <div className="flex flex-col gap-3">
-                            <div data-tutorial-id="airport-first-phrases" className="flex flex-col gap-3">
-                                <div className="text-sm">
+                            <div data-tutorial-id="airport-first-phrases" className="flex flex-col">
+                                <div className="text-sm py-1">
                                     <p className="font-bold">{fakePhrases[0].phrase}</p>
                                     <p className="text-muted-foreground">{fakePhrases[0].translation}</p>
                                 </div>
-                                <Separator />
-                                <div className="text-sm">
+                                <Separator className="my-1.5" />
+                                <div className="text-sm py-1">
                                     <p className="font-bold">{fakePhrases[1].phrase}</p>
                                     <p className="text-muted-foreground">{fakePhrases[1].translation}</p>
                                 </div>
@@ -50,7 +48,7 @@ export default function FakeAirportPhrasesPage() {
                             {fakePhrases.slice(2).map((p, index) => (
                                  <React.Fragment key={index + 2}>
                                     <Separator />
-                                    <div className="text-sm">
+                                    <div className="text-sm py-1.5">
                                         <p className="font-bold">{p.phrase}</p>
                                         <p className="text-muted-foreground">{p.translation}</p>
                                     </div>

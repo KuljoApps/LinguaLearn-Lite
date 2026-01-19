@@ -1,10 +1,10 @@
+"use client";
+
 import { ArrowLeft, AudioLines, CaseUpper, HelpCircle, MessageSquareText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 
-// This is a static, non-interactive "fake" page for the tutorial.
-
-export default function FakePhoneticsEnPage() {
+export default function FakePhoneticsPage() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-lg shadow-2xl">

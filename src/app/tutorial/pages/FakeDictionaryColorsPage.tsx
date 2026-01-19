@@ -8,8 +8,6 @@ import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, Star, Palette } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-// This is a static, non-interactive "fake" page for the tutorial.
-
 const fakeWords = [
     { word: 'navy blue', translation: 'granatowy', colorCode: '#000080' },
     { word: 'apricot', translation: 'morelowy', colorCode: '#FBCEB1' },
@@ -28,7 +26,7 @@ const fakeWords = [
     { word: 'beige', translation: 'beżowy', colorCode: '#F5F5DC' },
 ];
 
-export default function FakeColorsDictionaryPage() {
+export default function FakeDictionaryColorsPage() {
     const favorites = ['navy blue', 'apricot', 'olive'];
 
     const renderWord = (w: (typeof fakeWords)[0]) => (

@@ -1,5 +1,7 @@
-import FakePhrasesEnPage from '../pages/FakePhrasesPage';
+"use client";
+
+import FakePhrasesPage from '../pages/FakePhrasesPage';
 
 export default function PhrasesTutorialPage() {
-    return <FakePhrasesEnPage />;
+    return <FakePhrasesPage />;
 }

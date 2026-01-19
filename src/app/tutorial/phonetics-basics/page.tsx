@@ -1,5 +1,7 @@
-import FakeBasicExpressionsPage from '../pages/FakePhoneticsBasicsPage';
+"use client";
+
+import FakePhoneticsBasicsPage from '../pages/FakePhoneticsBasicsPage';
 
 export default function PhoneticsBasicsTutorialPage() {
-    return <FakeBasicExpressionsPage />;
+    return <FakePhoneticsBasicsPage />;
 }

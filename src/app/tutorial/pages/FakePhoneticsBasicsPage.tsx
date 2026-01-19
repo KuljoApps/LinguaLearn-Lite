@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -5,8 +7,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ArrowLeft, Volume2, MessageSquareText } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-// This is a static, non-interactive "fake" page for the tutorial.
 
 const fakePhrases = [
     { phrase: 'Hello, how are you?', phonetic: '/həˈloʊ, haʊ ɑːr juː?/', translation: 'Cześć, jak się masz?' },
@@ -19,7 +19,7 @@ const fakePhrases = [
     { phrase: 'Can you speak more slowly?', phonetic: '/kæn juː spiːk mɔːr ˈsloʊli?/', translation: 'Czy możesz mówić wolniej?' },
 ];
 
-export default function FakeBasicExpressionsPage() {
+export default function FakePhoneticsBasicsPage() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-2xl shadow-2xl">

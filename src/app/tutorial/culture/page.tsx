@@ -1,5 +1,7 @@
-import FakeCultureEnPage from '../pages/FakeCulturePage';
+"use client";
+
+import FakeCulturePage from '../pages/FakeCulturePage';
 
 export default function CultureTutorialPage() {
-    return <FakeCultureEnPage />;
+    return <FakeCulturePage />;
 }

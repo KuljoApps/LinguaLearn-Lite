@@ -1,5 +1,7 @@
-import FakeColorsDictionaryPage from '../pages/FakeDictionaryColorsPage';
+"use client";
+
+import FakeDictionaryColorsPage from '../pages/FakeDictionaryColorsPage';
 
 export default function DictionaryColorsTutorialPage() {
-    return <FakeColorsDictionaryPage />;
+    return <FakeDictionaryColorsPage />;
 }

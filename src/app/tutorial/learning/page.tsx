@@ -1,5 +1,7 @@
-import FakeLearningEnPage from '../pages/FakeLearningPage';
+"use client";
+
+import FakeLearningPage from '../pages/FakeLearningPage';
 
 export default function LearningTutorialPage() {
-    return <FakeLearningEnPage />;
+    return <FakeLearningPage />;
 }

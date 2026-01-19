@@ -1,10 +1,10 @@
+"use client";
+
 import { ArrowLeft, Hash, Palette, Clock, Users, BookText, PersonStanding, Utensils, Home, Briefcase } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
 
-// This is a static, non-interactive "fake" page for the tutorial.
-
-export default function FakeDictionaryEnPage() {
+export default function FakeDictionaryPage() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-md shadow-2xl">

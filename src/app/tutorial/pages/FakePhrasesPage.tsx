@@ -1,10 +1,10 @@
+"use client";
+
 import { ArrowLeft, Utensils, Plane, ShoppingCart, Train, PartyPopper, Siren, MessageSquareText, Hotel, CloudSun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
 
-// This is a static, non-interactive "fake" page for the tutorial.
-
-export default function FakePhrasesEnPage() {
+export default function FakePhrasesPage() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-md shadow-2xl">

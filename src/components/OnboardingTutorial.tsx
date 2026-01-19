@@ -170,6 +170,20 @@ const extendedSteps: Step[] = [
         description: 'Na koniec odrobina zabawy! Ta sekcja to świetne uzupełnienie nauki o kulturze, które pomoże Ci ćwiczyć wymowę w zabawny sposób.',
         bubblePosition: 'bottom',
     },
+    {
+        path: '/learning/en/phonetics',
+        elementId: 'phonetics-alphabet',
+        title: 'Alfabet i wymowa',
+        description: 'Naucz się poprawnej wymowy liter i dźwięków. To podstawa, która ułatwi Ci mówienie i rozumienie.',
+        bubblePosition: 'bottom'
+    },
+    {
+        path: '/learning/en/phonetics',
+        elementId: 'phonetics-difficult',
+        title: 'Trudne Dźwięki',
+        description: 'Tutaj znajdziesz przykłady słów i zwrotów, które często sprawiają trudność. Ćwicz je, aby brzmieć jak native speaker!',
+        bubblePosition: 'top'
+    },
 ];
 
 

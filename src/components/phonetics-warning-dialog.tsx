@@ -15,7 +15,7 @@ import { Label } from '@/components/ui/label';
 import { Volume2 } from 'lucide-react';
 import type { Language } from '@/lib/storage';
 
-const PHONETICS_WARNING_DISMISSED_KEY = 'phoneticsWarningDismissed_v1';
+const PHONETICS_WARNING_DISMISSED_KEY = 'phoneticsWarningDismissed_v2';
 
 interface PhoneticsWarningDialogProps {
   lang: Language;
@@ -70,10 +70,11 @@ export default function PhoneticsWarningDialog({ lang }: PhoneticsWarningDialogP
   const [displayLang, setDisplayLang] = useState<'pl' | 'native'>('native');
 
   useEffect(() => {
-    const dismissed = localStorage.getItem(PHONETICS_WARNING_DISMISSED_KEY);
+    return; // Temporarily disabled
+    /* const dismissed = localStorage.getItem(PHONETICS_WARNING_DISMISSED_KEY);
     if (dismissed !== 'true') {
       setIsOpen(true);
-    }
+    } */
   }, []);
 
   const handleClose = () => {
@@ -88,6 +89,8 @@ export default function PhoneticsWarningDialog({ lang }: PhoneticsWarningDialogP
     uiTexts[key][displayLang === 'native' ? nativeLang : 'pl'];
 
   const displayedFlag = displayLang === 'native' ? flagMap[nativeLang] : '🇵🇱';
+
+  if (!isOpen) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

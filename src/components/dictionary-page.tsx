@@ -35,7 +35,7 @@ export default function DictionaryPage({ title, backHref, words, children }: Dic
 
             const realFavorites = getFavorites(categorySlug);
             if (isWordListTutorialActive) {
-                const fakeFavoriteWord = 'khaki';
+                const fakeFavoriteWord = 'navy blue';
                 const favoriteSet = new Set([fakeFavoriteWord, ...realFavorites]);
                 setFavorites(Array.from(favoriteSet));
             } else {

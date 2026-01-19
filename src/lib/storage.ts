@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { allAchievements } from './achievements';
 import type { Achievement } from './types';

@@ -196,63 +196,63 @@ const extendedSteps: Step[] = [
 
 const quizSteps: Step[] = [
     {
-        path: '/tutorial/quiz/demo',
+        path: '/tutorial/quiz-demo',
         elementId: 'quiz-timer',
         title: 'Czas na odpowiedź',
         description: 'Masz 15 sekund na każdą odpowiedź. Pasek postępu pokazuje, ile czasu pozostało. Nie marnuj go!',
         bubblePosition: 'bottom',
     },
     {
-        path: '/tutorial/quiz/demo',
+        path: '/tutorial/quiz-demo',
         elementId: 'quiz-pause-button',
         title: 'Potrzebujesz przerwy?',
         description: 'Kliknij pauzę, aby zatrzymać czas. Pamiętaj jednak, że wznowienie quizu kosztuje 5 sekund!',
         bubblePosition: 'top'
     },
     {
-        path: '/tutorial/quiz/demo',
+        path: '/tutorial/quiz-demo',
         elementId: 'quiz-correct-answer',
         title: 'Poprawna odpowiedź',
         description: 'Świetnie! Poprawna odpowiedź zostanie podświetlona na zielono. Po chwili automatycznie przejdziesz do następnego pytania.',
         bubblePosition: 'bottom',
     },
     {
-        path: '/tutorial/quiz/demo',
+        path: '/tutorial/quiz-demo',
         elementId: 'quiz-iv-translation',
         title: 'Pytania wieloetapowe',
         description: 'Niektóre pytania, jak te o czasowniki nieregularne, mają dwa etapy. Najpierw wybierz poprawne tłumaczenie.',
         bubblePosition: 'top'
     },
      {
-        path: '/tutorial/quiz/demo',
+        path: '/tutorial/quiz-demo',
         elementId: 'quiz-iv-forms',
         title: 'Uzupełnij formy',
         description: 'Następnie wpisz brakujące formy czasownika i kliknij "Potwierdź", aby sprawdzić swoją odpowiedź.',
         bubblePosition: 'bottom'
     },
     {
-        path: '/tutorial/quiz/demo',
+        path: '/tutorial/quiz-demo',
         elementId: 'quiz-incorrect-answer',
         title: 'Błędna odpowiedź',
         description: 'Nie martw się! Twoja błędna odpowiedź podświetli się na czerwono, a prawidłowa — na zielono. Każdy błąd to okazja do nauki!',
         bubblePosition: 'top'
     },
     {
-        path: '/tutorial/quiz/demo',
+        path: '/tutorial/quiz-demo',
         elementId: 'quiz-results-summary',
         title: 'Podsumowanie wyników',
         description: 'Po zakończeniu quizu zobaczysz swoje statystyki. Sprawdź, jak Ci poszło!',
         bubblePosition: 'bottom',
     },
     {
-        path: '/tutorial/quiz/demo',
+        path: '/tutorial/quiz-demo',
         elementId: 'quiz-results-errors',
         title: 'Przejrzyj błędy',
         description: 'Wszystkie błędne odpowiedzi z sesji są tutaj. Przeanalizuj je, aby uniknąć ich w przyszłości.',
         bubblePosition: 'top'
     },
     {
-        path: '/tutorial/quiz/demo',
+        path: '/tutorial/quiz-demo',
         elementId: 'quiz-results-actions',
         title: 'Co dalej?',
         description: 'Możesz zagrać ponownie, wrócić do menu lub przejrzeć wszystkie swoje błędy w dedykowanej sekcji.',
@@ -533,7 +533,7 @@ export default function OnboardingTutorial() {
                             variant="ghost"
                             size="icon"
                             className="h-8 w-8"
-                            disabled={stage === 'initial' && currentStepIndex === 0}
+                            disabled={stage === 'initial' && currentStepIndex === 1}
                         >
                             <ArrowLeft className="h-4 w-4" />
                         </Button>

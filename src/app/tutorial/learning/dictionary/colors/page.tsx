@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -29,6 +31,31 @@ const fakeWords = [
 export default function FakeColorsDictionaryPage() {
     const favorites = ['navy blue', 'apricot', 'olive'];
 
+    const renderWord = (w: (typeof fakeWords)[0]) => (
+        <div className="flex items-center justify-between text-sm py-1.5">
+            <div className="flex items-center gap-2">
+                {w.colorCode && (
+                    <div
+                        className="h-4 w-4 shrink-0 rounded-full border"
+                        style={{ backgroundColor: w.colorCode }}
+                    />
+                )}
+                <div>
+                    <p className="font-bold">{w.word}</p>
+                    <p className="text-muted-foreground">{w.translation}</p>
+                </div>
+            </div>
+            <button className="p-2 -m-2 rounded-full pointer-events-none">
+                <Star className={cn(
+                    "h-3.5 w-3.5 transition-all",
+                    favorites.includes(w.word)
+                        ? "text-amber fill-amber"
+                        : "text-muted-foreground/40"
+                )} />
+            </button>
+        </div>
+    );
+
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-2xl shadow-2xl">
@@ -40,32 +67,22 @@ export default function FakeColorsDictionaryPage() {
                 </CardHeader>
                 <CardContent>
                     <ScrollArea className="h-96 w-full pr-4">
-                        <div className="flex flex-col" data-tutorial-id="dictionary-word-list">
-                           {fakeWords.map((w, index) => (
-                                <React.Fragment key={`${w.word}-${index}`}>
-                                    <div className="flex items-center justify-between text-sm py-1.5">
-                                        <div className="flex items-center gap-2">
-                                            {w.colorCode && (
-                                                <div
-                                                    className="h-4 w-4 shrink-0 rounded-full border"
-                                                    style={{ backgroundColor: w.colorCode }}
-                                                />
-                                            )}
-                                            <div>
-                                                <p className="font-bold">{w.word}</p>
-                                                <p className="text-muted-foreground">{w.translation}</p>
-                                            </div>
-                                        </div>
-                                        <button className="p-2 -m-2 rounded-full pointer-events-none">
-                                            <Star className={cn(
-                                                "h-3.5 w-3.5 transition-all",
-                                                favorites.includes(w.word)
-                                                    ? "text-amber fill-amber"
-                                                    : "text-muted-foreground/40"
-                                            )} />
-                                        </button>
-                                    </div>
-                                    {index < fakeWords.length - 1 && <Separator />}
+                        <div className="flex flex-col">
+                            <div data-tutorial-id="dictionary-word-list" className="py-1.5 -my-1.5">
+                                {fakeWords.slice(0, 3).map((w, index) => (
+                                    <React.Fragment key={`${w.word}-focus-${index}`}>
+                                        {renderWord(w)}
+                                        {index < 2 && <Separator />}
+                                    </React.Fragment>
+                                ))}
+                            </div>
+                            
+                            {fakeWords.length > 3 && <Separator />}
+
+                            {fakeWords.slice(3).map((w, index) => (
+                                <React.Fragment key={`${w.word}-rest-${index}`}>
+                                    {renderWord(w)}
+                                    {index < fakeWords.length - 4 && <Separator />}
                                 </React.Fragment>
                             ))}
                         </div>

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle, Trash2 } from "lucide-react";
-import { getAchievements, clearStats, type AchievementStatus, getLanguage, getTutorialState, type Language } from "@/lib/storage";
+import { getAchievements, clearStats, type AchievementStatus, getLanguage, getTutorialState, type Language } from '@/lib/storage';
 import { allAchievements, type Achievement } from '@/lib/achievements';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
@@ -62,7 +62,7 @@ export default function AchievementsPage() {
             const isOnAchievementsStep = tutorialState?.isActive &&
                                       tutorialState.stage === 'extended' &&
                                       tutorialState.step === 6;
-            setIsTutorialActive(isOnAchievementsStep && Object.keys(currentAchievements).length === 0);
+            setIsTutorialActive(!!(isOnAchievementsStep && Object.keys(currentAchievements).length === 0));
         };
 
         handleStateUpdate();
@@ -115,10 +115,10 @@ export default function AchievementsPage() {
                 <CardHeader>
                     <CardTitle className="text-center text-3xl">{getUIText('title')}</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4 max-h-[60vh] overflow-y-auto p-6">
+                <CardContent className="space-y-4 max-h-[60vh] overflow-y-auto p-6" data-tutorial-id="achievements-grid">
                      <TooltipProvider>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            {displayedAchievements.map((achievement: Achievement, index: number) => {
+                            {displayedAchievements.map((achievement: Achievement) => {
                                 const status = displayAchievementsData[achievement.id] || { progress: 0, unlockedAt: null };
                                 const isUnlocked = !!status.unlockedAt;
                                 const progressPercentage = isUnlocked ? 100 : (status.progress / achievement.goal) * 100;
@@ -131,12 +131,10 @@ export default function AchievementsPage() {
                                 return (
                                     <Tooltip key={achievement.id}>
                                         <TooltipTrigger asChild>
-                                            <Card
-                                                {...(index === 0 ? { 'data-tutorial-id': 'first-achievement' } : {})}
-                                                className={cn(
-                                                    "flex flex-col items-center justify-center p-4 text-center transition-all",
-                                                    !isUnlocked && "bg-muted/50 opacity-60"
-                                                )}>
+                                            <Card className={cn(
+                                                "flex flex-col items-center justify-center p-4 text-center transition-all",
+                                                !isUnlocked && "bg-muted/50 opacity-60"
+                                            )}>
                                                 <div className="relative">
                                                     <Icon className={cn("h-12 w-12 mb-2", isUnlocked ? "text-amber" : "text-muted-foreground")} />
                                                      {isUnlocked && (

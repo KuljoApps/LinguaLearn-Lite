@@ -95,6 +95,7 @@ export default function SettingsPage() {
                                 suppressHydrationWarning
                             />
                         </div>
+                        <Separator/>
                         <div className="space-y-2">
                             <Label htmlFor="volume-slider" className="text-lg">{getUIText('volume')}</Label>
                             <Slider
@@ -108,6 +109,7 @@ export default function SettingsPage() {
                                 suppressHydrationWarning
                             />
                         </div>
+                        <Separator/>
                         <div className="flex items-center justify-between">
                             <Label htmlFor="vibrations-switch" className="text-lg">{getUIText('vibrations')}</Label>
                             <Switch

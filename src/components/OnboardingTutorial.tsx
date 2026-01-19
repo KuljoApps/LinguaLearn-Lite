@@ -87,10 +87,9 @@ const extendedSteps: Step[] = [
     },
     {
         path: '/achievements',
-        elementId: 'first-achievement',
+        elementId: 'achievements-grid',
         title: 'Twoje osiągnięcia',
         description: 'Tutaj znajdziesz wszystkie swoje odznaki. Zdobywaj je za postępy w\u00A0nauce, regularność i\u00A0perfekcyjne wyniki w\u00A0quizach!',
-        bubblePosition: 'bottom',
     },
     {
         path: '/learning/en/dictionary',
@@ -294,44 +293,28 @@ export default function OnboardingTutorial() {
     }
 
     return (
-      <>
-        <div
-          className="fixed inset-0 z-[100] pointer-events-none tutorial-spotlight"
-          style={{ boxShadow: "0 0 0 9999px rgba(0, 0, 0, 0.7)" }}
-        >
-          <div
-            className="absolute rounded-lg transition-all duration-300"
-            style={spotlightStyle}
-          />
+        <div className="fixed inset-0 z-[100] pointer-events-none">
+            {currentStep && !currentStep.isModal && (
+                <>
+                    <div className="absolute inset-0 tutorial-spotlight" style={{...spotlightStyle, boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.7)'}}></div>
+                    <div
+                        className="fixed bg-background p-4 rounded-lg shadow-xl w-64 z-50 transition-all duration-300 pointer-events-auto"
+                        style={bubbleStyle}
+                    >
+                        <h3 className="font-bold mb-1 text-lg">{currentStep.title}</h3>
+                        <p className="text-sm text-muted-foreground mb-4" dangerouslySetInnerHTML={{ __html: currentStep.description.replace(/ ([a-zA-Z])\s/g, ' $1\u00A0') }} />
+                        <div className="flex justify-between items-center">
+                            <span className="text-xs text-muted-foreground">
+                                {stage === 'initial' ? currentStepIndex + 1 : initialSteps.length + currentStepIndex + 1} / {initialSteps.length + extendedSteps.length}
+                            </span>
+                             <Button onClick={handleNext} size="sm">
+                                {stage === 'extended' && isLastStep ? uiTexts.finish : uiTexts.next}
+                            </Button>
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
-        {currentStep && !currentStep.isModal && (
-          <div
-            className="fixed bg-background p-4 rounded-lg shadow-xl w-64 z-[101] transition-all duration-300 pointer-events-auto"
-            style={bubbleStyle}
-          >
-            <h3 className="font-bold mb-1 text-lg">{currentStep.title}</h3>
-            <p
-              className="text-sm text-muted-foreground mb-4"
-              dangerouslySetInnerHTML={{
-                __html: currentStep.description.replace(/ ([a-zA-Z])\s/g, " $1\u00A0"),
-              }}
-            />
-            <div className="flex justify-between items-center">
-              <span className="text-xs text-muted-foreground">
-                {stage === "initial"
-                  ? currentStepIndex + 1
-                  : initialSteps.length + currentStepIndex + 1}{" "}
-                / {initialSteps.length + extendedSteps.length}
-              </span>
-              <Button onClick={handleNext} size="sm">
-                {stage === "extended" && isLastStep
-                  ? uiTexts.finish
-                  : uiTexts.next}
-              </Button>
-            </div>
-          </div>
-        )}
-      </>
     );
 }
 

@@ -232,55 +232,80 @@ const extendedSteps: Step[] = [
 ];
 
 const quizSteps: Step[] = [
-    { // step 0 (slide 26)
+    { // 0
         path: '/tutorial/quiz-demo',
         elementId: 'quiz-timer',
         title: 'Czas na odpowiedź',
         description: 'Masz 15 sekund na każdą odpowiedź. Pasek postępu pokazuje, ile czasu pozostało. Nie marnuj go!',
         bubblePosition: 'bottom',
     },
-    { // step 1 (slide 27)
+    { // 1
         path: '/tutorial/quiz-demo',
         elementId: 'quiz-pause-button',
         title: 'Potrzebujesz przerwy?',
         description: 'Kliknij pauzę, aby zatrzymać czas. Pamiętaj jednak, że wznowienie quizu kosztuje 5 sekund!',
         bubblePosition: 'top'
     },
-    { // step 2 - INTERACTIVE
+    { // 2
         path: '/tutorial/quiz-demo',
         interactive: true,
-        title: '',
-        description: ''
+        title: 'Interakcja',
+        description: 'Teraz Twoja kolej! Wybierz poprawną odpowiedź, aby kontynuować.'
     },
-    { // step 3 (slide 28)
+    { // 3
         path: '/tutorial/quiz-demo',
-        elementId: 'quiz-correct-answer',
+        elementId: 'quiz-answer-buttons',
         title: 'Poprawna odpowiedź',
         description: 'Świetnie! Poprawna odpowiedź zostanie podświetlona na zielono. Po chwili automatycznie przejdziesz do następnego pytania.',
         bubblePosition: 'bottom',
     },
-    { // step 4 (slide 29)
+    { // 4 - for q2
         path: '/tutorial/quiz-demo',
-        elementId: 'quiz-incorrect-answer',
+        interactive: true,
+        title: 'Interakcja 2',
+        description: 'Spróbuj jeszcze raz!'
+    },
+    { // 5
+        path: '/tutorial/quiz-demo',
+        elementId: 'quiz-answer-buttons',
         title: 'Błędna odpowiedź',
         description: 'Nie martw się! Twoja błędna odpowiedź podświetli się na czerwono, a prawidłowa — na zielono. Każdy błąd to okazja do nauki!',
         bubblePosition: 'top'
     },
-    { // step 5 (slide 30)
+    { // 6 - for q3
+        path: '/tutorial/quiz-demo',
+        interactive: true,
+        title: 'Interakcja 3',
+        description: 'Ostatnie pytanie testowe.'
+    },
+    { // 7
+        path: '/tutorial/quiz-demo',
+        elementId: 'quiz-answer-buttons',
+        title: 'Błędna odpowiedź',
+        description: 'Nie martw się! Twoja błędna odpowiedź podświetli się na czerwono, a prawidłowa — na zielono. Każdy błąd to okazja do nauki!',
+        bubblePosition: 'top'
+    },
+    { // 8 - after last question
+        interactive: true,
+        path: '/tutorial/quiz-demo',
+        title: 'Wyniki',
+        description: 'Quiz zakończony! Zobaczmy, jak Ci poszło.',
+    },
+    { // 9
         path: '/tutorial/quiz-demo',
         elementId: 'quiz-results-summary',
         title: 'Podsumowanie wyników',
         description: 'Po zakończeniu quizu zobaczysz swoje statystyki. Sprawdź, jak Ci poszło!',
         bubblePosition: 'bottom',
     },
-    { // step 6 (slide 31)
+    { // 10
         path: '/tutorial/quiz-demo',
         elementId: 'quiz-results-errors',
         title: 'Przegląd błędów',
         description: 'Wszystkie błędne odpowiedzi z sesji są tutaj. Przeanalizuj je, aby uniknąć ich w przyszłości.',
         bubblePosition: 'top'
     },
-    { // step 7 (slide 32)
+    { // 11
         path: '/tutorial/quiz-demo',
         elementId: 'quiz-results-actions',
         title: 'Co dalej?',
@@ -325,6 +350,8 @@ export default function OnboardingTutorial() {
         let attempts = 0;
         const maxAttempts = 20;
 
+        const isStickyStep = stage === 'quiz' && currentStepIndex === 11;
+
         const findAndPosition = () => {
             const element = document.querySelector<HTMLElement>(`[data-tutorial-id="${currentStep.elementId}"]`);
 
@@ -343,7 +370,7 @@ export default function OnboardingTutorial() {
                     transition: 'all 0.3s ease-in-out',
                 });
 
-                const bubbleHeight = stage === 'quiz' && currentStepIndex === 1 ? 170 : 150; 
+                const bubbleHeight = 150; 
                 const bubbleWidth = 256; 
                 let bubbleTop;
                 let bubbleLeft = rect.left + rect.width / 2 - bubbleWidth / 2;
@@ -359,6 +386,13 @@ export default function OnboardingTutorial() {
                     bubbleTop = rect.bottom + 15 + offset;
                 }
                 
+                if (isStickyStep) {
+                    if (bubbleTop < 16) bubbleTop = 16;
+                    if (bubbleTop + bubbleHeight > window.innerHeight - 16) {
+                        bubbleTop = window.innerHeight - bubbleHeight - 16;
+                    }
+                }
+
                 if (bubbleLeft < 16) bubbleLeft = 16;
                 if (bubbleLeft + bubbleWidth > window.innerWidth - 16) {
                     bubbleLeft = window.innerWidth - bubbleWidth - 16;
@@ -397,22 +431,36 @@ export default function OnboardingTutorial() {
         setBubbleStyle({ opacity: 0, transition: 'none' });
         
         const timeoutId = setTimeout(findAndPosition, 150);
-
         window.addEventListener('resize', findAndPosition);
+        if (isStickyStep) {
+            window.addEventListener('scroll', findAndPosition);
+        }
+
 
         return () => {
             clearTimeout(timeoutId);
             window.removeEventListener('resize', findAndPosition);
+             if (isStickyStep) {
+                window.removeEventListener('scroll', findAndPosition);
+            }
         };
     }, [currentStep, pathname, stage, currentStepIndex]);
 
 
     const handleNext = () => {
-        const nextStepIndex = currentStepIndex + 1;
+        let nextStepIndex = currentStepIndex + 1;
         
-        if (stage === 'quiz' && (currentStepIndex === 3 || currentStepIndex === 4)) {
-            // After correct/incorrect answer bubble, go back to interactive step
-            saveTutorialState({ isActive: true, stage, step: 2 });
+        if (stage === 'quiz' && (currentStepIndex === 3 || currentStepIndex === 5 || currentStepIndex === 7)) {
+            // After correct/incorrect answer bubble, go to next interactive step
+             if (currentStepIndex === 3) nextStepIndex = 4; // after Q1 correct -> Q2 interactive
+             else if (currentStepIndex === 5) nextStepIndex = 6; // after Q2 incorrect -> Q3 interactive
+             else if (currentStepIndex === 7) nextStepIndex = 9; // after Q3 incorrect -> Results
+            
+            saveTutorialState({ isActive: true, stage, step: nextStepIndex });
+            const nextStep = steps[nextStepIndex];
+            if (nextStep?.path && nextStep.path !== pathname) {
+                router.push(nextStep.path);
+            }
             return;
         }
 

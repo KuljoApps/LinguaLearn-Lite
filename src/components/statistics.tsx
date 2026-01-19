@@ -1,7 +1,6 @@
-
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -54,6 +53,7 @@ export default function StatisticsPage() {
     const [errors, setErrors] = useState<ErrorRecord[]>([]);
     const [isClearAlertOpen, setIsClearAlertOpen] = useState(false);
     const [language, setLanguage] = useState<Language>('en');
+    const [isTutorialActiveForCards, setIsTutorialActiveForCards] = useState(false);
     const [isTutorialActiveForGrid, setIsTutorialActiveForGrid] = useState(false);
 
     useEffect(() => {
@@ -65,9 +65,15 @@ export default function StatisticsPage() {
             setErrors(getErrors());
 
             const tutorialState = getTutorialState();
+            
+            const isOnStatsCardsStep = tutorialState?.isActive &&
+                                      tutorialState.stage === 'extended' &&
+                                      tutorialState.step === 2;
+            setIsTutorialActiveForCards(isOnStatsCardsStep && currentStats.totalAnswers === 0);
+
             const isOnStatsGridStep = tutorialState?.isActive &&
                                       tutorialState.stage === 'extended' &&
-                                      tutorialState.step === 3; // Step 3 is the grid
+                                      tutorialState.step === 3;
             
             setIsTutorialActiveForGrid(isOnStatsGridStep && currentStats.lastFiftyAnswers.length === 0);
         };
@@ -92,20 +98,33 @@ export default function StatisticsPage() {
         setErrors(getErrors());
         setIsClearAlertOpen(false);
     }
+    
+    const fakeStats: Stats = {
+      ...defaultStats,
+      totalAnswers: 128,
+      totalErrors: 17,
+      longestStreak: 23,
+      perQuizStats: {
+        'English - Polish': { totalAnswers: 78, totalErrors: 12 },
+        'Irregular Verbs': { totalAnswers: 50, totalErrors: 5 },
+      }
+    };
+    
+    const displayStats = isTutorialActiveForCards ? fakeStats : stats;
 
-    const successRate = stats.totalAnswers > 0
-        ? Math.round(((stats.totalAnswers - stats.totalErrors) / stats.totalAnswers) * 100)
+    const successRate = displayStats.totalAnswers > 0
+        ? Math.round(((displayStats.totalAnswers - displayStats.totalErrors) / displayStats.totalAnswers) * 100)
         : 0;
     
-    const quizNames = Object.keys(stats.perQuizStats);
+    const quizNames = Object.keys(displayStats.perQuizStats);
 
     const renderLastFiftyAnswersGrid = () => {
         const gridItems = [];
         let errorIndex = -1;
         
-        const answersToRender = isTutorialActiveForGrid
-            ? Array.from({ length: 50 }, () => Math.random() > 0.3)
-            : stats.lastFiftyAnswers;
+        const fakeAnswers = useMemo(() => Array.from({ length: 50 }, () => Math.random() > 0.3), []);
+        const answersToRender = isTutorialActiveForGrid ? fakeAnswers : stats.lastFiftyAnswers;
+
 
         for (let i = 0; i < 50; i++) {
             const answer = answersToRender[i];
@@ -126,7 +145,7 @@ export default function StatisticsPage() {
                 errorIndex++;
                 const currentError = errors[errorIndex];
 
-                if (!currentError || isTutorialActiveForGrid) { // Don't show popover for fake data
+                if (!currentError || isTutorialActiveForGrid) { 
                     gridItems.push(
                         <div
                             key={`error-no-data-${i}`}
@@ -190,7 +209,7 @@ export default function StatisticsPage() {
                                         <CheckCircle className="h-5 w-5 text-amber" />
                                     </CardHeader>
                                     <CardContent>
-                                        <div className="text-2xl font-bold">{stats.totalAnswers.toLocaleString()}</div>
+                                        <div className="text-2xl font-bold">{displayStats.totalAnswers.toLocaleString()}</div>
                                     </CardContent>
                                     <ArrowUpRight className="absolute bottom-2 right-2 h-4 w-4 text-muted-foreground/40" />
                                 </Card>
@@ -202,7 +221,7 @@ export default function StatisticsPage() {
                                         quizNames.map((quizName) => (
                                             <div key={quizName} className="flex justify-between">
                                                 <span>{quizName}:</span>
-                                                <span className="font-bold">{stats.perQuizStats[quizName]?.totalAnswers || 0}</span>
+                                                <span className="font-bold">{displayStats.perQuizStats[quizName]?.totalAnswers || 0}</span>
                                             </div>
                                         ))
                                     ) : (
@@ -219,7 +238,7 @@ export default function StatisticsPage() {
                                         <ShieldX className="h-5 w-5 text-amber" />
                                     </CardHeader>
                                     <CardContent>
-                                        <div className="text-2xl font-bold">{stats.totalErrors.toLocaleString()}</div>
+                                        <div className="text-2xl font-bold">{displayStats.totalErrors.toLocaleString()}</div>
                                     </CardContent>
                                     <ArrowUpRight className="absolute bottom-2 right-2 h-4 w-4 text-muted-foreground/40" />
                                 </Card>
@@ -231,7 +250,7 @@ export default function StatisticsPage() {
                                         quizNames.map((quizName) => (
                                             <div key={quizName} className="flex justify-between">
                                                 <span>{quizName}:</span>
-                                                <span className="font-bold">{stats.perQuizStats[quizName]?.totalErrors || 0}</span>
+                                                <span className="font-bold">{displayStats.perQuizStats[quizName]?.totalErrors || 0}</span>
                                             </div>
                                         ))
                                     ) : (
@@ -258,7 +277,7 @@ export default function StatisticsPage() {
                                 <div className="space-y-1 text-sm">
                                     {quizNames.length > 0 ? (
                                         quizNames.map((quizName) => {
-                                            const quizStats = stats.perQuizStats[quizName];
+                                            const quizStats = displayStats.perQuizStats[quizName];
                                             const rate = quizStats && quizStats.totalAnswers > 0
                                                 ? Math.round(((quizStats.totalAnswers - quizStats.totalErrors) / quizStats.totalAnswers) * 100)
                                                 : 0;
@@ -283,7 +302,7 @@ export default function StatisticsPage() {
                                         <Flame className="h-6 w-6 text-amber" />
                                     </CardHeader>
                                     <CardContent>
-                                        <div className="text-2xl font-bold">{stats.longestStreak.toLocaleString()}</div>
+                                        <div className="text-2xl font-bold">{displayStats.longestStreak.toLocaleString()}</div>
                                     </CardContent>
                                     <ArrowUpRight className="absolute bottom-2 right-2 h-4 w-4 text-muted-foreground/40" />
                                 </Card>
@@ -292,13 +311,13 @@ export default function StatisticsPage() {
                                 <div className="text-center space-y-1">
                                     <h4 className="font-medium mb-1">{getUIText('longestStreakAchieved')}</h4>
                                     <p className="text-sm text-muted-foreground">
-                                        {stats.longestStreak > 0 && stats.longestStreakDate
-                                            ? new Date(stats.longestStreakDate).toLocaleString()
+                                        {displayStats.longestStreak > 0 && displayStats.longestStreakDate
+                                            ? new Date(displayStats.longestStreakDate).toLocaleString()
                                             : getUIText('notYetAchieved')}
                                     </p>
-                                    {stats.longestStreakQuiz && (
+                                    {displayStats.longestStreakQuiz && (
                                         <p className="text-xs text-muted-foreground">
-                                            {getUIText('inQuiz')} <span className="font-semibold text-foreground">{stats.longestStreakQuiz}</span>
+                                            {getUIText('inQuiz')} <span className="font-semibold text-foreground">{displayStats.longestStreakQuiz}</span>
                                         </p>
                                     )}
                                 </div>

@@ -69,7 +69,7 @@ const extendedSteps: Step[] = [
         path: '/stats',
         elementId: 'last-50-grid',
         title: 'Ostatnie odpowiedzi',
-        description: 'Ta siatka pokazuje Twoje ostatnie 50\u00A0odpowiedzi. Zielony to sukces, czerwony to błąd. Najedź na czerwony kwadrat, aby zobaczyć szczegóły błędu.',
+        description: 'Ta siatka pokazuje Twoje ostatnie 50\u00A0odpowiedzi. Zielony to sukces, czerwony to błąd. Najedź na czerwony kwadrat <span class="inline-block h-3 w-3 bg-destructive rounded-sm align-middle mx-1"></span>, aby zobaczyć szczegóły błędu.',
     },
     {
         path: '/errors',

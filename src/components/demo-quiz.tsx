@@ -38,7 +38,6 @@ export default function DemoQuiz() {
     const [questionTimer, setQuestionTimer] = useState(QUESTION_TIME_LIMIT);
     const [totalTime, setTotalTime] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
-    const timeoutFiredRef = useRef(false);
     const [sessionErrors, setSessionErrors] = useState<Omit<ErrorRecord, 'id'>[]>([]);
     
     const [activeTutorialStep, setActiveTutorialStep] = useState<number | null>(null);
@@ -51,7 +50,6 @@ export default function DemoQuiz() {
         setSelectedAnswer(null);
         setAnswerStatus(null);
         setQuestionTimer(QUESTION_TIME_LIMIT);
-        timeoutFiredRef.current = false;
     }, []);
 
     const handleNextQuestion = useCallback(() => {
@@ -81,11 +79,16 @@ export default function DemoQuiz() {
             const state = getTutorialState();
             if (state?.stage === 'quiz') {
                 const newStep = state.step;
-                if (prevActiveTutorialStep && [3, 4].includes(prevActiveTutorialStep) && newStep > prevActiveTutorialStep) {
-                     handleNextQuestion();
-                } else {
-                    setActiveTutorialStep(newStep);
+                const prevStep = prevActiveTutorialStep;
+
+                if (prevStep && newStep > prevStep) {
+                    if (newStep === 2) { 
+                        // This is the interactive step, quiz starts.
+                    } else if (newStep > 2) {
+                        handleNextQuestion();
+                    }
                 }
+                 setActiveTutorialStep(newStep);
             } else {
                  setActiveTutorialStep(null);
             }
@@ -105,8 +108,7 @@ export default function DemoQuiz() {
             setQuestionTimer((prev) => {
                 if (prev <= 1) {
                     clearInterval(interval);
-                    if (!timeoutFiredRef.current) {
-                        timeoutFiredRef.current = true;
+                    if (!answerStatus) {
                         setAnswerStatus("timeout");
                         if (currentQuestionIndex === 0) {
                             saveTutorialState({ isActive: true, stage: 'quiz', step: 3 });
@@ -124,14 +126,14 @@ export default function DemoQuiz() {
     }, [isQuizActive, isPaused, answerStatus, currentQuestionIndex]);
 
     useEffect(() => {
-        if (!isQuizActive || isPaused || !!answerStatus || currentQuestionIndex >= demoQuestions.length) {
+        if (!isQuizActive || isPaused || currentQuestionIndex >= demoQuestions.length) {
             return;
         }
         const interval = setInterval(() => {
             setTotalTime(prev => prev + 1);
         }, 1000);
         return () => clearInterval(interval);
-    }, [isQuizActive, isPaused, answerStatus, currentQuestionIndex]);
+    }, [isQuizActive, isPaused, currentQuestionIndex]);
 
 
     const handleAnswerClick = (answer: string) => {
@@ -144,7 +146,7 @@ export default function DemoQuiz() {
         setSelectedAnswer(answer);
         const isCorrect = answer === currentQuestion.correctAnswer;
         
-        if (isCorrect && currentQuestionIndex < 2) {
+        if (isCorrect) {
             setAnswerStatus("correct");
             playSound('correct');
             vibrate('correct');
@@ -208,6 +210,9 @@ export default function DemoQuiz() {
     const overallProgress = ((currentQuestionIndex + 1) / demoQuestions.length) * 100;
     const questionTimeProgress = (questionTimer / QUESTION_TIME_LIMIT) * 100;
 
+    const isCorrectAnswerStep = activeTutorialStep === 3;
+    const isIncorrectAnswerStep = activeTutorialStep === 4;
+
     return (
         <>
             <Card className="w-full max-w-lg shadow-2xl">
@@ -225,14 +230,14 @@ export default function DemoQuiz() {
                         <div className="w-full flex justify-around gap-4 text-center">
                             <div className="flex items-center gap-2">
                                 <Clock className="h-6 w-6" />
-                                <span className="text-2xl font-bold">{questionTimer}s</span>
+                                <span className="text-2xl font-bold">{isQuizActive ? questionTimer : QUESTION_TIME_LIMIT}s</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <Clock className="h-6 w-6" />
                                 <span className="text-2xl font-bold">{formatTime(totalTime)}</span>
                             </div>
                         </div>
-                        <Progress value={questionTimeProgress} className="w-full h-2" />
+                        <Progress value={isQuizActive ? questionTimeProgress : 100} className="w-full h-2" />
                     </div>
 
                     <div className="text-center space-y-2">
@@ -243,7 +248,16 @@ export default function DemoQuiz() {
                         )}>"{currentQuestion.word}"?</p>
                     </div>
                     
-                    <div data-tutorial-id="quiz-correct-answer" className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+                    <div
+                        data-tutorial-id={
+                            isCorrectAnswerStep
+                                ? 'quiz-correct-answer'
+                                : isIncorrectAnswerStep
+                                ? 'quiz-incorrect-answer'
+                                : undefined
+                        }
+                        className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full"
+                    >
                         {currentQuestion.options.map((option) => (
                             <Button
                                 key={option}
@@ -252,18 +266,17 @@ export default function DemoQuiz() {
                                     "h-auto text-lg p-4 whitespace-normal transition-all duration-300", 
                                     getButtonClass(option)
                                 )}
-                                disabled={!!answerStatus || isPaused || (currentQuestionIndex === 0 && option !== currentQuestion.correctAnswer) && activeTutorialStep === 2}
+                                disabled={!!answerStatus || isPaused || (currentQuestionIndex === 0 && option !== currentQuestion.correctAnswer && isQuizActive)}
                             >
                                 {option}
                             </Button>
                         ))}
                     </div>
-                    <div data-tutorial-id="quiz-incorrect-answer" className="hidden"></div>
                     <div className="flex justify-center gap-4 w-full pt-4 border-t">
                         <Button variant="outline" size="icon" className="pointer-events-none opacity-50"><Home /></Button>
                         <Button variant="outline" size="icon" className="pointer-events-none opacity-50"><RefreshCw /></Button>
                         <div data-tutorial-id="quiz-pause-button">
-                            <Button variant="outline" size="icon" onClick={handlePauseClick}>
+                            <Button variant="outline" size="icon" onClick={handlePauseClick} disabled={!isQuizActive}>
                                 {isPaused ? <Play /> : <Pause />}
                             </Button>
                         </div>

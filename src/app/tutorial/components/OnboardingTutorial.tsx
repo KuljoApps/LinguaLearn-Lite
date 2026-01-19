@@ -551,31 +551,23 @@ export default function OnboardingTutorial() {
 
     const isFinalStep = stage === 'quiz' && currentStepIndex === steps.length - 1;
     
-    let currentStepDisplay: number;
-    let totalStepsDisplay: number;
+    const totalInitialBubbleSteps = initialSteps.length - 1;
+    const interactiveQuizStepsCount = quizSteps.filter(s => s.interactive).length;
+    const totalExtendedSteps = extendedSteps.length;
+    const totalQuizBubbleSteps = quizSteps.length - interactiveQuizStepsCount;
+    const totalOverallBubbleSteps = totalInitialBubbleSteps + totalExtendedSteps + totalQuizBubbleSteps;
+
+    let currentStepDisplay: number = 0;
+    let totalStepsDisplay: number = totalOverallBubbleSteps;
 
     if (stage === 'initial') {
-        // For the initial stage, show progress out of the 5 main steps
         currentStepDisplay = currentStepIndex;
-        totalStepsDisplay = initialSteps.length -1;
-    } else {
-        // For extended stages, show the full count
-        const totalInitialBubbleSteps = initialSteps.length - 1;
-        const totalExtendedSteps = extendedSteps.length;
-        
-        let interactiveQuizStepsCount = quizSteps.filter(s => s.interactive).length;
-        const totalQuizBubbleSteps = quizSteps.length - interactiveQuizStepsCount;
-
-        const totalOverallBubbleSteps = totalInitialBubbleSteps + totalExtendedSteps + totalQuizBubbleSteps;
-        
-        totalStepsDisplay = totalOverallBubbleSteps;
-
-        if (stage === 'extended') {
-            currentStepDisplay = totalInitialBubbleSteps + currentStepIndex;
-        } else { // stage === 'quiz'
-            let passedInteractiveQuizSteps = quizSteps.slice(0, currentStepIndex).filter(s => s.interactive).length;
-            currentStepDisplay = totalInitialBubbleSteps + totalExtendedSteps + currentStepIndex - passedInteractiveQuizSteps;
-        }
+        totalStepsDisplay = totalInitialBubbleSteps;
+    } else if (stage === 'extended') {
+        currentStepDisplay = totalInitialBubbleSteps + currentStepIndex + 1;
+    } else if (stage === 'quiz') {
+        const passedInteractiveQuizSteps = quizSteps.slice(0, currentStepIndex).filter(s => s.interactive).length;
+        currentStepDisplay = totalInitialBubbleSteps + totalExtendedSteps + currentStepIndex - passedInteractiveQuizSteps + 1;
     }
 
 
@@ -603,7 +595,7 @@ export default function OnboardingTutorial() {
                             <ArrowLeft className="h-4 w-4" />
                         </Button>
                         <span className="text-xs text-muted-foreground">
-                             {stage === 'initial' ? `${currentStepIndex}/${totalStepsDisplay}` : `${currentStepDisplay}/${totalStepsDisplay}`}
+                            {stage === 'initial' ? `${currentStepDisplay}/${totalStepsDisplay}` : `${currentStepDisplay}/${totalOverallBubbleSteps}`}
                         </span>
                     </div>
                     <Button onClick={handleNext} size="sm">
@@ -614,6 +606,7 @@ export default function OnboardingTutorial() {
         </div>
     );
 }
+
 
 
 

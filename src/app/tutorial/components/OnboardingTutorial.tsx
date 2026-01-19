@@ -164,7 +164,7 @@ const extendedSteps: Step[] = [
         title: 'Tradycje i Historia',
         description: 'Zanurz się w\u00A0lokalnych zwyczajach i\u00A0kluczowych wydarzeniach historycznych, aby lepiej zrozumieć duszę narodu.',
         bubblePosition: 'top',
-        bubbleOffset: 15,
+        bubbleOffset: 75,
     },
     {
         path: '/tutorial/tongue-twisters',
@@ -554,4 +554,5 @@ export default function OnboardingTutorial() {
         </div>
     );
 }
+
 

@@ -10,7 +10,7 @@ import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import LinguaLearnLogo from '@/components/LinguaLearnLogo';
 import { Clock, Pause, Home, RefreshCw } from 'lucide-react';
-import QuizResults from './quiz-results';
+import DemoQuizResults from './demo-quiz-results';
 
 const BaseQuizView = ({ children }: { children: React.ReactNode }) => (
     <Card className="w-full max-w-lg shadow-2xl">
@@ -193,7 +193,7 @@ export default function DemoQuiz() {
         ];
 
         return (
-            <QuizResults 
+            <DemoQuizResults 
                  score={8}
                  totalQuestions={10}
                  totalTime={142}

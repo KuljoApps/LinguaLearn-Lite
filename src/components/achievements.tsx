@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle, Trash2 } from "lucide-react";
-import { getAchievements, clearStats, type AchievementStatus, getLanguage, getTutorialState, type Language } from '@/lib/storage';
+import { getAchievements, clearStats, type AchievementStatus, getLanguage, getTutorialState, type Language } from "@/lib/storage";
 import { allAchievements, type Achievement } from '@/lib/achievements';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
@@ -114,7 +114,7 @@ export default function AchievementsPage() {
     const achievementItems = displayedAchievements.map((achievement) => {
         const status = displayAchievementsData[achievement.id] || { progress: 0, unlockedAt: null };
         const isUnlocked = !!status.unlockedAt;
-        const progressPercentage = isUnlocked ? 100 : (status.progress / achievement.goal) * 100;
+        const progressPercentage = isUnlocked ? 100 : (achievement.goal > 0 ? (status.progress / achievement.goal) * 100 : 0);
         const Icon = achievement.icon;
         
         const achievementName = (isFrench && achievement.name_fr) ? achievement.name_fr : (isGerman && achievement.name_de) ? achievement.name_de : (isItalian && achievement.name_it) ? achievement.name_it : (isSpanish && achievement.name_es) ? achievement.name_es : achievement.name;
@@ -162,10 +162,10 @@ export default function AchievementsPage() {
                 <CardContent className="space-y-4 max-h-[60vh] overflow-y-auto p-6">
                      <TooltipProvider>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div data-tutorial-id="achievements-grid" className="contents">
+                           <div data-tutorial-id="achievements-grid" className="col-span-1 sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 {achievementItems.slice(0, 2)}
-                            </div>
-                            {achievementItems.slice(2)}
+                           </div>
+                           {achievementItems.slice(2)}
                         </div>
                     </TooltipProvider>
                 </CardContent>

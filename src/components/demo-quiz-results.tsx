@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -27,7 +27,7 @@ export default function DemoQuizResults({ score, totalQuestions, totalTime, sess
         return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
     };
 
-    const motivationalMessage = useMemo(() => {
+    const motivationalMessage = (() => {
         if (successRate === 100) {
             return {
                 icon: <Trophy className="h-16 w-16 text-amber animate-shake" />,
@@ -54,8 +54,7 @@ export default function DemoQuizResults({ score, totalQuestions, totalTime, sess
             title: 'Ćwiczenie czyni mistrza!',
             description: 'Każdy błąd to okazja do nauki. Spróbuj jeszcze raz!',
         };
-    }, [successRate]);
-
+    })();
 
     return (
         <Card className="w-full max-w-lg shadow-2xl">
@@ -127,16 +126,14 @@ export default function DemoQuizResults({ score, totalQuestions, totalTime, sess
             <CardFooter className="flex-col gap-4 pt-4" data-tutorial-id="quiz-results-actions">
                  <div className="flex w-full gap-4">
                     <Button onClick={onRestart} className="w-full">Zagraj ponownie</Button>
-                    <Link href="/" passHref className="w-full">
-                        <Button variant="outline" className="w-full">Wróć do menu</Button>
-                    </Link>
+                     <Button asChild variant="outline" className="w-full">
+                        <Link href="/">Wróć do menu</Link>
+                    </Button>
                 </div>
                 {sessionErrors.length > 0 && (
-                    <Link href="/errors" passHref>
-                        <Button variant="link" className="text-muted-foreground">
-                            Zobacz wszystkie błędy
-                        </Button>
-                    </Link>
+                    <Button variant="link" className="text-muted-foreground pointer-events-none">
+                        Zobacz wszystkie błędy
+                    </Button>
                 )}
             </CardFooter>
         </Card>

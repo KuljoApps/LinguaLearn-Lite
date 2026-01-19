@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import Link from 'next/link';
 import { getTutorialState, saveTutorialState, type ErrorRecord } from '@/lib/storage';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -40,11 +41,12 @@ export default function DemoQuiz() {
     const [isPaused, setIsPaused] = useState(false);
     const timeoutFiredRef = useRef(false);
     const [activeTutorialStep, setActiveTutorialStep] = useState<number | null>(null);
-    const [isQuizActive, setIsQuizActive] = useState(false);
     
     const prevActiveTutorialStep = usePrevious(activeTutorialStep);
     const currentQuestion = useMemo(() => demoQuestions[currentQuestionIndex], [currentQuestionIndex]);
-    
+    const isTutorialBubbleVisible = activeTutorialStep !== null && activeTutorialStep !== 2;
+    const isQuizActive = activeTutorialStep === 2;
+
     const resetQuestionState = useCallback(() => {
         setSelectedAnswer(null);
         setAnswerStatus(null);
@@ -69,7 +71,6 @@ export default function DemoQuiz() {
         setScore(0);
         setTotalTime(0);
         setIsPaused(false);
-        setIsQuizActive(false);
         resetQuestionState();
         saveTutorialState({ isActive: true, stage: 'quiz', step: 0 });
     }, [resetQuestionState]);
@@ -82,15 +83,13 @@ export default function DemoQuiz() {
                 const newStep = state.step;
                 
                 // Advance the question ONLY when moving from a feedback step to the next one
-                if ((activeTutorialStep === 3 && newStep === 4) || (activeTutorialStep === 4 && newStep === 5)) {
-                    handleNextQuestion();
+                if (prevActiveTutorialStep && [3,4].includes(prevActiveTutorialStep) && newStep === 2) {
+                     handleNextQuestion();
                 }
 
                 setActiveTutorialStep(newStep);
-                setIsQuizActive(newStep === 2); // Quiz is interactive only on step 2
 
             } else {
-                 setIsQuizActive(false);
                  setActiveTutorialStep(null);
             }
         };
@@ -98,7 +97,7 @@ export default function DemoQuiz() {
         handleStateUpdate();
         window.addEventListener('tutorial-state-changed', handleStateUpdate);
         return () => window.removeEventListener('tutorial-state-changed', handleStateUpdate);
-    }, [activeTutorialStep, handleNextQuestion]);
+    }, [activeTutorialStep, handleNextQuestion, prevActiveTutorialStep]);
 
     // Per-question timer
     useEffect(() => {
@@ -166,8 +165,7 @@ export default function DemoQuiz() {
                 playSound('correct');
                 vibrate('correct');
                 setScore(prev => prev + 1);
-                // Directly advance to Q3 as per logic, and set to interactive
-                handleNextQuestion();
+                saveTutorialState({ isActive: true, stage: 'quiz', step: 3 });
             } else {
                 playSound('incorrect');
                 vibrate('incorrect');
@@ -215,14 +213,21 @@ export default function DemoQuiz() {
     };
 
     if (currentQuestionIndex >= demoQuestions.length) {
+        const fakeSessionErrors = [
+            { word: 'Throughout', userAnswer: 'Na zewnątrz', correctAnswer: 'Przez cały (czas)', quiz: 'Demo Quiz' },
+            { word: 'Impeccable', userAnswer: 'Zwykły', correctAnswer: 'Nieskazitelny', quiz: 'Demo Quiz' },
+            { word: 'Reliable', userAnswer: 'Religijny', correctAnswer: 'Niezawodny', quiz: 'Demo Quiz' },
+            { word: 'Accomplish', userAnswer: 'Akompaniować', correctAnswer: 'Osiągnąć', quiz: 'Demo Quiz' },
+            { word: 'Conscious', userAnswer: 'Sumienny', correctAnswer: 'Świadomy', quiz: 'Demo Quiz' },
+        ];
         return (
             <DemoQuizResults 
                 score={score}
                 totalQuestions={demoQuestions.length}
                 totalTime={totalTime}
-                sessionErrors={[]}
-                onRestart={restartQuiz}
+                sessionErrors={fakeSessionErrors}
                 quizName="Demo Quiz"
+                onRestart={restartQuiz}
             />
         );
     }
@@ -280,7 +285,7 @@ export default function DemoQuiz() {
                                     "h-auto text-lg p-4 whitespace-normal transition-all duration-300", 
                                     getButtonClass(option)
                                 )}
-                                disabled={!!answerStatus || isPaused}
+                                disabled={!!answerStatus || isPaused || !isQuizActive}
                             >
                                 {option}
                             </Button>

@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -47,8 +46,8 @@ const tutorialBubbleOffsets: { [key: string]: number } = {
     'quiz-timer': 0,              // Slajd 26
     'quiz-pause-button': 0,       // Slajd 27
     'quiz-correct-answer': -520,     // Slajd 28
-    'quiz-incorrect-answer': 0,   // Slajd 29
-    'quiz-results-summary': 0,    // Slajd 30
+    'quiz-incorrect-answer': -280,   // Slajd 29
+    'quiz-results-summary': -520,    // Slajd 30
     'quiz-results-errors': 0,     // Slajd 31
     'quiz-results-actions': 0,    // Slajd 32
 };
@@ -615,6 +614,7 @@ export default function OnboardingTutorial() {
         </div>
     );
 }
+
 
 
 

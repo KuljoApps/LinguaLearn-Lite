@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -13,6 +14,7 @@ interface Step {
     path?: string;
     isModal?: boolean;
     bubblePosition?: 'top' | 'bottom';
+    bubbleOffset?: number;
     action?: 'open-extras' | 'expand-first-item';
 }
 
@@ -162,6 +164,7 @@ const extendedSteps: Step[] = [
         title: 'Tradycje i Historia',
         description: 'Zanurz się w\u00A0lokalnych zwyczajach i\u00A0kluczowych wydarzeniach historycznych, aby lepiej zrozumieć duszę narodu.',
         bubblePosition: 'top',
+        bubbleOffset: 15,
     },
     {
         path: '/tutorial/tongue-twisters',
@@ -322,10 +325,12 @@ export default function OnboardingTutorial() {
                 const isBubbleTop = (currentStep.bubblePosition === 'top') || 
                                     (currentStep.bubblePosition !== 'bottom' && rect.top > bubbleHeight + 40);
 
+                const offset = currentStep.bubbleOffset || 0;
+                
                 if (isBubbleTop) {
-                    bubbleTop = rect.top - bubbleHeight - 25;
+                    bubbleTop = rect.top - bubbleHeight - 25 - offset;
                 } else {
-                    bubbleTop = rect.bottom + 15;
+                    bubbleTop = rect.bottom + 15 + offset;
                 }
                 
                 if (bubbleLeft < 16) bubbleLeft = 16;
@@ -549,3 +554,4 @@ export default function OnboardingTutorial() {
         </div>
     );
 }
+

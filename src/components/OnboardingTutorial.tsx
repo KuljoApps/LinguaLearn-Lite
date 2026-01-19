@@ -58,6 +58,7 @@ const extendedSteps: Step[] = [
         elementId: 'settings-eyecare',
         title: 'Ochrona Wzroku',
         description: 'Uczysz się wieczorem? Użyj tego suwaka, aby nałożyć na aplikację ciepły filtr, który zmniejszy zmęczenie oczu.',
+        bubblePosition: 'bottom',
     },
     {
         path: '/stats',
@@ -285,31 +286,31 @@ export default function OnboardingTutorial() {
         )
     }
 
+    if (!currentStep || currentStep.isModal) {
+      return null;
+    }
+
     return (
         <div className="fixed inset-0 z-[100] pointer-events-none">
-            {currentStep && !currentStep.isModal && (
-                <>
-                    <div 
-                        className="absolute rounded-lg shadow-xl pointer-events-auto tutorial-spotlight"
-                        style={spotlightStyle}
-                    />
-                    <div
-                        className="fixed bg-background p-4 rounded-lg shadow-xl w-64 z-50 transition-all duration-300 pointer-events-auto"
-                        style={bubbleStyle}
-                    >
-                        <h3 className="font-bold mb-1 text-lg">{currentStep.title}</h3>
-                        <p className="text-sm text-muted-foreground mb-4" dangerouslySetInnerHTML={{ __html: currentStep.description.replace(/ ([a-zA-Z])\s/g, ' $1\u00A0') }} />
-                        <div className="flex justify-between items-center">
-                            <span className="text-xs text-muted-foreground">
-                                {stage === 'initial' ? currentStepIndex + 1 : initialSteps.length + currentStepIndex + 1} / {initialSteps.length + extendedSteps.length}
-                            </span>
-                             <Button onClick={handleNext} size="sm">
-                                {stage === 'extended' && isLastStep ? uiTexts.finish : uiTexts.next}
-                            </Button>
-                        </div>
-                    </div>
-                </>
-            )}
+            <div
+                className="absolute tutorial-spotlight transition-all duration-300 pointer-events-auto"
+                style={spotlightStyle}
+            />
+            <div
+                className="fixed bg-background p-4 rounded-lg shadow-xl w-64 z-[101] transition-all duration-300 pointer-events-auto"
+                style={bubbleStyle}
+            >
+                <h3 className="font-bold mb-1 text-lg">{currentStep.title}</h3>
+                <p className="text-sm text-muted-foreground mb-4" dangerouslySetInnerHTML={{ __html: currentStep.description.replace(/ ([a-zA-Z])\s/g, ' $1\u00A0') }} />
+                <div className="flex justify-between items-center">
+                    <span className="text-xs text-muted-foreground">
+                        {stage === 'initial' ? currentStepIndex + 1 : initialSteps.length + currentStepIndex + 1} / {initialSteps.length + extendedSteps.length}
+                    </span>
+                        <Button onClick={handleNext} size="sm">
+                        {stage === 'extended' && isLastStep ? uiTexts.finish : uiTexts.next}
+                    </Button>
+                </div>
+            </div>
         </div>
     );
 }

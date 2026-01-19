@@ -121,13 +121,14 @@ export default function QuizEnPl() {
             setSelectedAnswer(null);
             playSound("incorrect");
             vibrate("incorrect");
-            const unlocked = updateStats(false, QUIZ_NAME, questions[currentQuestionIndex].id);
+            const currentQuestion = questions[currentQuestionIndex];
+            const unlocked = updateStats(false, QUIZ_NAME, currentQuestion.id);
             unlocked.forEach(showAchievementToast);
             
             const errorRecord = {
-              word: questions[currentQuestionIndex].word,
+              word: currentQuestion.word,
               userAnswer: 'No answer',
-              correctAnswer: questions[currentQuestionIndex].correctAnswer,
+              correctAnswer: currentQuestion.correctAnswer,
               quiz: QUIZ_NAME,
             };
             addError(errorRecord);
@@ -273,7 +274,6 @@ export default function QuizEnPl() {
             totalQuestions={questions.length}
             totalTime={totalTime}
             sessionErrors={sessionErrors}
-            quizName={QUIZ_NAME}
             onRestart={restartTest}
         />
     );

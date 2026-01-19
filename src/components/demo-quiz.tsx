@@ -1,15 +1,15 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { Home, RefreshCw, Pause, Play, Clock, Trophy } from "lucide-react";
+import { Home, RefreshCw, Pause, Play, Clock } from "lucide-react";
 import { type Question } from "@/lib/questions-en-pl";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import LinguaLearnLogo from '@/components/LinguaLearnLogo';
-import { getTutorialState, saveTutorialState, type ErrorRecord } from "@/lib/storage";
-import QuizResults from "./quiz-results";
+import { getTutorialState, saveTutorialState } from "@/lib/storage";
+import DemoQuizResults from "./demo-quiz-results";
 
 const tutorialQuestions: Question[] = [
     { id: 999, language: 'English', word: 'Hello', options: ['Cześć', 'Do widzenia', 'Dziękuję', 'Przepraszam'], correctAnswer: 'Cześć' },
@@ -94,19 +94,9 @@ export default function DemoQuiz() {
     };
 
     if (isFinished) {
-        const fakeErrors: Omit<ErrorRecord, 'id'>[] = [
-            { quiz: 'Tutorial Quiz', word: 'Reliable', userAnswer: 'Religijny', correctAnswer: 'Niezawodny' }
-        ];
-
         return (
-            <QuizResults
-                score={score}
-                totalQuestions={2}
-                totalTime={42}
-                sessionErrors={fakeErrors}
-                quizName={"Tutorial"}
+            <DemoQuizResults
                 onRestart={restartQuiz}
-                isTutorialMode={true}
             />
         );
     }

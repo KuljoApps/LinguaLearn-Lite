@@ -36,13 +36,14 @@ const initialSteps: Step[] = [
         title: 'Główne quizy',
         description: 'To serce aplikacji. Wybierz jeden z\u00A0pięciu trybów, aby sprawdzić swoją wiedzę w\u00A0różnych kategoriach.',
         path: '/',
+        bubbleOffset: 5,
     },
     {
         elementId: 'learning-button',
         title: 'Baza wiedzy',
         description: 'Potrzebujesz powtórki? Tutaj znajdziesz moduły do nauki, w\u00A0tym gramatykę, słownictwo i\u00A0wiele więcej.',
         path: '/',
-        bubbleOffset: 30,
+        bubbleOffset: 34,
     },
     {
         elementId: 'toolbar',
@@ -144,14 +145,14 @@ const extendedSteps: Step[] = [
     {
         path: '/tutorial/dictionary-colors',
         elementId: 'dictionary-word-list',
-        title: 'Ucz się i personalizuj',
+        title: 'Nauka i personalizacja',
         description: 'Oprócz listy słówek, możesz oznaczać ulubione pozycje gwiazdką <span class="inline-block h-3 w-3 text-amber fill-amber align-middle mx-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-3 w-3"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.007z" clip-rule="evenodd"></path></svg></span>, aby mieć je zawsze na górze listy!',
         bubblePosition: 'bottom',
     },
     {
         path: '/tutorial/culture',
         elementId: 'culture-about',
-        title: 'Poznaj kulturę kraju',
+        title: 'Poznawanie kultury kraju',
         description: 'Odkryj fascynujące fakty o\u00A0kraju, którego języka się uczysz. To świetny sposób, by zrozumieć kontekst i\u00A0poszerzyć horyzonty.',
         bubblePosition: 'bottom',
     },
@@ -195,7 +196,7 @@ const extendedSteps: Step[] = [
     {
         path: '/tutorial/phonetics-basics',
         elementId: 'phonetics-first-item',
-        title: 'Ćwicz wymowę',
+        title: 'Ćwiczenie wymowy',
         description: 'Posłuchaj, jak lektor wymawia każdy zwrot, klikając ikonę głośnika. Możesz odtwarzać nagranie tyle razy, ile potrzebujesz, aby doskonalić swój akcent!',
         bubblePosition: 'bottom',
         action: 'expand-first-item'
@@ -234,7 +235,7 @@ const quizSteps: Step[] = [
      {
         path: '/tutorial/quiz-demo',
         elementId: 'quiz-iv-forms',
-        title: 'Uzupełnij formy',
+        title: 'Uzupełnianie form',
         description: 'Następnie wpisz brakujące formy czasownika i kliknij "Potwierdź", aby sprawdzić swoją odpowiedź.',
         bubblePosition: 'bottom'
     },
@@ -255,7 +256,7 @@ const quizSteps: Step[] = [
     {
         path: '/tutorial/quiz-demo',
         elementId: 'quiz-results-errors',
-        title: 'Przejrzyj błędy',
+        title: 'Przegląd błędów',
         description: 'Wszystkie błędne odpowiedzi z sesji są tutaj. Przeanalizuj je, aby uniknąć ich w przyszłości.',
         bubblePosition: 'top'
     },

@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -85,7 +84,7 @@ const extendedSteps: Step[] = [
         title: 'Interaktywna tabela',
         description: 'Klikaj nagłówki, aby sortować błędy. Jeśli tabela jest za szeroka, możesz ją przewijać w\u00A0poziomie.',
     },
-    {
+     {
         path: '/achievements',
         elementId: 'achievements-grid',
         title: 'Twoje osiągnięcia',
@@ -290,12 +289,10 @@ export default function OnboardingTutorial() {
         <div className="fixed inset-0 z-[100] pointer-events-none">
             {currentStep && !currentStep.isModal && (
                 <>
-                    <div className="fixed inset-0 tutorial-spotlight" />
                     <div 
-                        className="absolute rounded-lg shadow-xl pointer-events-auto"
+                        className="absolute rounded-lg shadow-xl pointer-events-auto tutorial-spotlight"
                         style={spotlightStyle}
                     />
-
                     <div
                         className="fixed bg-background p-4 rounded-lg shadow-xl w-64 z-50 transition-all duration-300 pointer-events-auto"
                         style={bubbleStyle}

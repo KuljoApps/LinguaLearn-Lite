@@ -62,7 +62,7 @@ export default function AchievementsPage() {
             const isOnAchievementsStep = tutorialState?.isActive &&
                                       tutorialState.stage === 'extended' &&
                                       tutorialState.step === 6;
-            setIsTutorialActive(!!(isOnAchievementsStep && Object.keys(currentAchievements).length === 0));
+            setIsTutorialActive(isOnAchievementsStep && Object.keys(currentAchievements).length === 0);
         };
 
         handleStateUpdate();
@@ -119,7 +119,7 @@ export default function AchievementsPage() {
                      <TooltipProvider>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                            {/* Wrapper for the first two items for the tutorial to focus on */}
-                            <div data-tutorial-id="achievements-grid" className="contents">
+                            <div data-tutorial-id="achievements-grid" className="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 {displayedAchievements.slice(0, 2).map((achievement, index) => {
                                     const status = displayAchievementsData[achievement.id] || { progress: 0, unlockedAt: null };
                                     const isUnlocked = !!status.unlockedAt;

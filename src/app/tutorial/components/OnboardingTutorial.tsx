@@ -64,7 +64,7 @@ const extendedSteps: Step[] = [
         description: 'Uczysz się wieczorem? Użyj tego suwaka, aby nałożyć na aplikację ciepły filtr, który zmniejszy zmęczenie oczu.',
         bubblePosition: 'bottom',
     },
-    {
+     {
         path: '/tutorial/stats',
         elementId: 'stats-cards',
         title: 'Ogólne statystyki',
@@ -115,6 +115,7 @@ const extendedSteps: Step[] = [
         description: 'Rozwiń tę sekcję, aby odkryć ciekawostki kulturowe, łamańce językowe i zasady fonetyki, które wzbogacą Twoją naukę.',
         action: 'open-extras',
         bubblePosition: 'top',
+        bubbleOffset: 30,
     },
     {
         path: '/tutorial/phrases',

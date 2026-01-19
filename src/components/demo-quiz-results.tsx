@@ -56,6 +56,14 @@ export default function DemoQuizResults({ score, totalQuestions, totalTime, sess
         };
     })();
 
+    const fakeSessionErrors = [
+        { word: 'Throughout', userAnswer: 'Na zewnątrz', correctAnswer: 'Przez cały (czas)', quiz: 'Demo Quiz' },
+        { word: 'Impeccable', userAnswer: 'Zwykły', correctAnswer: 'Nieskazitelny', quiz: 'Demo Quiz' },
+        { word: 'Reliable', userAnswer: 'Religijny', correctAnswer: 'Niezawodny', quiz: 'Demo Quiz' },
+        { word: 'Accomplish', userAnswer: 'Akompaniować', correctAnswer: 'Osiągnąć', quiz: 'Demo Quiz' },
+        { word: 'Conscious', userAnswer: 'Sumienny', correctAnswer: 'Świadomy', quiz: 'Demo Quiz' },
+    ];
+
     return (
         <Card className="w-full max-w-lg shadow-2xl">
             <CardHeader className="items-center text-center pb-4">
@@ -88,7 +96,7 @@ export default function DemoQuizResults({ score, totalQuestions, totalTime, sess
                         <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background">
                             <div className="flex items-center gap-2">
                                 <ShieldX className="h-4 w-4 text-destructive"/>
-                                <span className="text-2xl font-bold">{sessionErrors.length}</span>
+                                <span className="text-2xl font-bold">{fakeSessionErrors.length}</span>
                             </div>
                             <span className="text-xs text-muted-foreground">Błędne</span>
                         </div>
@@ -102,39 +110,35 @@ export default function DemoQuizResults({ score, totalQuestions, totalTime, sess
                     </CardContent>
                 </Card>
 
-                {sessionErrors.length > 0 && (
-                    <div className="space-y-2" data-tutorial-id="quiz-results-errors">
-                        <h3 className="text-center font-semibold">Warto to powtórzyć</h3>
-                        <ScrollArea className="h-32 w-full rounded-md border p-2">
-                             <div className="space-y-2">
-                                {sessionErrors.map((error, index) => (
-                                    <React.Fragment key={index}>
-                                        <div className="text-sm p-2 bg-muted/30 rounded-md">
-                                            <p><span className="font-semibold">{error.word}</span></p>
-                                            <p className="text-destructive">Twoja odp: <span className="font-medium">{error.userAnswer}</span></p>
-                                            <p className="text-success">Poprawna: <span className="font-medium">{error.correctAnswer}</span></p>
-                                        </div>
-                                        {index < sessionErrors.length - 1 && <Separator />}
-                                    </React.Fragment>
-                                ))}
-                            </div>
-                        </ScrollArea>
-                    </div>
-                )}
+                <div className="space-y-2" data-tutorial-id="quiz-results-errors">
+                    <h3 className="text-center font-semibold">Warto to powtórzyć</h3>
+                    <ScrollArea className="h-32 w-full rounded-md border p-2">
+                         <div className="space-y-2">
+                            {fakeSessionErrors.map((error, index) => (
+                                <React.Fragment key={index}>
+                                    <div className="text-sm p-2 bg-muted/30 rounded-md">
+                                        <p><span className="font-semibold">{error.word}</span></p>
+                                        <p className="text-destructive">Twoja odp: <span className="font-medium">{error.userAnswer}</span></p>
+                                        <p className="text-success">Poprawna: <span className="font-medium">{error.correctAnswer}</span></p>
+                                    </div>
+                                    {index < fakeSessionErrors.length - 1 && <Separator />}
+                                </React.Fragment>
+                            ))}
+                        </div>
+                    </ScrollArea>
+                </div>
             </CardContent>
 
             <CardFooter className="flex-col gap-4 pt-4" data-tutorial-id="quiz-results-actions">
                  <div className="flex w-full gap-4">
                     <Button onClick={onRestart} className="w-full">Zagraj ponownie</Button>
-                     <Button asChild variant="outline" className="w-full">
+                    <Button asChild variant="outline" className="w-full">
                         <Link href="/">Wróć do menu</Link>
                     </Button>
                 </div>
-                {sessionErrors.length > 0 && (
-                    <Button variant="link" className="text-muted-foreground pointer-events-none">
-                        Zobacz wszystkie błędy
-                    </Button>
-                )}
+                <Button variant="link" className="text-muted-foreground pointer-events-none">
+                    Zobacz wszystkie błędy
+                </Button>
             </CardFooter>
         </Card>
     );

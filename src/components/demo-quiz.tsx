@@ -22,7 +22,6 @@ const demoQuestions = [
 const QUESTION_TIME_LIMIT = 15;
 const PAUSE_PENALTY = 5;
 
-// Custom hook to store the previous value of a state or prop
 function usePrevious<T>(value: T): T | undefined {
   const ref = useRef<T>();
   useEffect(() => {
@@ -40,11 +39,12 @@ export default function DemoQuiz() {
     const [totalTime, setTotalTime] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
     const timeoutFiredRef = useRef(false);
-    const [activeTutorialStep, setActiveTutorialStep] = useState<number | null>(null);
+    const [sessionErrors, setSessionErrors] = useState<Omit<ErrorRecord, 'id'>[]>([]);
     
+    const [activeTutorialStep, setActiveTutorialStep] = useState<number | null>(null);
     const prevActiveTutorialStep = usePrevious(activeTutorialStep);
+    
     const currentQuestion = useMemo(() => demoQuestions[currentQuestionIndex], [currentQuestionIndex]);
-    const isTutorialBubbleVisible = activeTutorialStep !== null && activeTutorialStep !== 2;
     const isQuizActive = activeTutorialStep === 2;
 
     const resetQuestionState = useCallback(() => {
@@ -59,10 +59,10 @@ export default function DemoQuiz() {
         if (nextIndex < demoQuestions.length) {
             setCurrentQuestionIndex(nextIndex);
             resetQuestionState();
-            saveTutorialState({ isActive: true, stage: 'quiz', step: 2 }); // Back to interactive step
+            saveTutorialState({ isActive: true, stage: 'quiz', step: 2 });
         } else {
-            setCurrentQuestionIndex(demoQuestions.length); // End quiz
-            saveTutorialState({ isActive: true, stage: 'quiz', step: 5 }); // Move to results
+            setCurrentQuestionIndex(demoQuestions.length);
+            saveTutorialState({ isActive: true, stage: 'quiz', step: 5 });
         }
     }, [currentQuestionIndex, resetQuestionState]);
 
@@ -71,24 +71,21 @@ export default function DemoQuiz() {
         setScore(0);
         setTotalTime(0);
         setIsPaused(false);
+        setSessionErrors([]);
         resetQuestionState();
         saveTutorialState({ isActive: true, stage: 'quiz', step: 0 });
     }, [resetQuestionState]);
 
-    // Main useEffect to sync with tutorial state
     useEffect(() => {
         const handleStateUpdate = () => {
             const state = getTutorialState();
             if (state?.stage === 'quiz') {
                 const newStep = state.step;
-                
-                // Advance the question ONLY when moving from a feedback step to the next one
-                if (prevActiveTutorialStep && [3,4].includes(prevActiveTutorialStep) && newStep === 2) {
+                if (prevActiveTutorialStep && [3, 4].includes(prevActiveTutorialStep) && newStep > prevActiveTutorialStep) {
                      handleNextQuestion();
+                } else {
+                    setActiveTutorialStep(newStep);
                 }
-
-                setActiveTutorialStep(newStep);
-
             } else {
                  setActiveTutorialStep(null);
             }
@@ -99,7 +96,6 @@ export default function DemoQuiz() {
         return () => window.removeEventListener('tutorial-state-changed', handleStateUpdate);
     }, [activeTutorialStep, handleNextQuestion, prevActiveTutorialStep]);
 
-    // Per-question timer
     useEffect(() => {
         if (!isQuizActive || isPaused || !!answerStatus) {
             return;
@@ -127,7 +123,6 @@ export default function DemoQuiz() {
         return () => clearInterval(interval);
     }, [isQuizActive, isPaused, answerStatus, currentQuestionIndex]);
 
-    // Total quiz time
     useEffect(() => {
         if (!isQuizActive || isPaused || !!answerStatus || currentQuestionIndex >= demoQuestions.length) {
             return;
@@ -142,7 +137,6 @@ export default function DemoQuiz() {
     const handleAnswerClick = (answer: string) => {
         if (answerStatus || !isQuizActive) return;
 
-        // For Q1, only allow the correct answer to be clicked to guide the user
         if (currentQuestionIndex === 0 && answer !== currentQuestion.correctAnswer) {
             return;
         }
@@ -150,49 +144,29 @@ export default function DemoQuiz() {
         setSelectedAnswer(answer);
         const isCorrect = answer === currentQuestion.correctAnswer;
         
-        if (currentQuestionIndex === 0) { // Q1
+        if (isCorrect && currentQuestionIndex < 2) {
             setAnswerStatus("correct");
             playSound('correct');
             vibrate('correct');
             setScore(prev => prev + 1);
-            saveTutorialState({ isActive: true, stage: 'quiz', step: 3 }); // Show slide 28
-            return;
-        }
-
-        if (currentQuestionIndex === 1) { // Q2
-            setAnswerStatus(isCorrect ? "correct" : "incorrect");
-            if (isCorrect) {
-                playSound('correct');
-                vibrate('correct');
-                setScore(prev => prev + 1);
-                saveTutorialState({ isActive: true, stage: 'quiz', step: 3 });
-            } else {
-                playSound('incorrect');
-                vibrate('incorrect');
-                saveTutorialState({ isActive: true, stage: 'quiz', step: 4 }); // Show slide 29
-            }
-            return;
-        }
-        
-        if (currentQuestionIndex === 2) { // Q3
-            // Force an incorrect answer display for the tutorial if they get it right
-            if (isCorrect) {
-                 const wrongAnswer = currentQuestion.options.find(o => o !== currentQuestion.correctAnswer)!;
-                 setSelectedAnswer(wrongAnswer);
-            }
+            saveTutorialState({ isActive: true, stage: 'quiz', step: 3 });
+        } else {
             setAnswerStatus("incorrect");
             playSound('incorrect');
             vibrate('incorrect');
-            saveTutorialState({ isActive: true, stage: 'quiz', step: 4 }); // Show slide 29
+            if (currentQuestionIndex === 2 && isCorrect) {
+                const wrongAnswer = currentQuestion.options.find(o => o !== currentQuestion.correctAnswer)!;
+                setSelectedAnswer(wrongAnswer);
+            }
+            saveTutorialState({ isActive: true, stage: 'quiz', step: 4 });
         }
     };
 
 
     const handlePauseClick = () => {
         if (!isQuizActive) return;
-        const newIsPaused = !isPaused;
-        setIsPaused(newIsPaused);
-        if (!newIsPaused && questionTimer > PAUSE_PENALTY) {
+        setIsPaused(prev => !prev);
+        if (isPaused && questionTimer > PAUSE_PENALTY) {
             setQuestionTimer(prev => Math.max(0, prev - PAUSE_PENALTY));
         }
     };
@@ -213,19 +187,12 @@ export default function DemoQuiz() {
     };
 
     if (currentQuestionIndex >= demoQuestions.length) {
-        const fakeSessionErrors = [
-            { word: 'Throughout', userAnswer: 'Na zewnątrz', correctAnswer: 'Przez cały (czas)', quiz: 'Demo Quiz' },
-            { word: 'Impeccable', userAnswer: 'Zwykły', correctAnswer: 'Nieskazitelny', quiz: 'Demo Quiz' },
-            { word: 'Reliable', userAnswer: 'Religijny', correctAnswer: 'Niezawodny', quiz: 'Demo Quiz' },
-            { word: 'Accomplish', userAnswer: 'Akompaniować', correctAnswer: 'Osiągnąć', quiz: 'Demo Quiz' },
-            { word: 'Conscious', userAnswer: 'Sumienny', correctAnswer: 'Świadomy', quiz: 'Demo Quiz' },
-        ];
         return (
             <DemoQuizResults 
                 score={score}
                 totalQuestions={demoQuestions.length}
                 totalTime={totalTime}
-                sessionErrors={fakeSessionErrors}
+                sessionErrors={sessionErrors}
                 quizName="Demo Quiz"
                 onRestart={restartQuiz}
             />
@@ -254,7 +221,7 @@ export default function DemoQuiz() {
                     <CardDescription className="pt-2">Wybierz poprawną odpowiedź</CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-col items-center justify-center p-6 space-y-8">
-                        <div data-tutorial-id="quiz-timer" className="w-full space-y-4">
+                    <div data-tutorial-id="quiz-timer" className="w-full space-y-4">
                         <div className="w-full flex justify-around gap-4 text-center">
                             <div className="flex items-center gap-2">
                                 <Clock className="h-6 w-6" />
@@ -285,7 +252,7 @@ export default function DemoQuiz() {
                                     "h-auto text-lg p-4 whitespace-normal transition-all duration-300", 
                                     getButtonClass(option)
                                 )}
-                                disabled={!!answerStatus || isPaused || !isQuizActive}
+                                disabled={!!answerStatus || isPaused || (currentQuestionIndex === 0 && option !== currentQuestion.correctAnswer) && activeTutorialStep === 2}
                             >
                                 {option}
                             </Button>
@@ -318,7 +285,5 @@ export default function DemoQuiz() {
                 </CardFooter>
             </Card>
         </>
-        );
-    }
-    
-    
+    );
+}

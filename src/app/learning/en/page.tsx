@@ -24,17 +24,36 @@ import {
     CollapsibleTrigger
 } from "@/components/ui/collapsible";
 import { useState, useEffect } from "react";
+import { getTutorialState } from "@/lib/storage";
+import { cn } from "@/lib/utils";
 
 const EXTRAS_COLLAPSIBLE_STATE_KEY = "linguaLearnExtrasOpen";
 
 export default function LearningEnPage() {
     const [isExtrasOpen, setIsExtrasOpen] = useState(false);
+    const [isExtrasTutorialActive, setIsExtrasTutorialActive] = useState(false);
 
     useEffect(() => {
         const savedState = localStorage.getItem(EXTRAS_COLLAPSIBLE_STATE_KEY);
         if (savedState === "true") {
             setIsExtrasOpen(true);
         }
+
+        const handleTutorialUpdate = () => {
+            const tutorialState = getTutorialState();
+            const isOnExtrasStep =
+                tutorialState?.isActive &&
+                tutorialState.stage === "extended" &&
+                tutorialState.step === 9; // Index for "learning-extras"
+            setIsExtrasTutorialActive(isOnExtrasStep);
+        };
+
+        handleTutorialUpdate();
+        window.addEventListener("tutorial-state-changed", handleTutorialUpdate);
+
+        return () => {
+            window.removeEventListener("tutorial-state-changed", handleTutorialUpdate);
+        };
     }, []);
 
     const handleExtrasOpenChange = (open: boolean) => {
@@ -92,8 +111,8 @@ export default function LearningEnPage() {
                         </Button>
                     </Link>
                     
-                    {/* TUTORIAL FOCUS SIZE: This div's padding (py-2) defines the focus area for the 'Extras' step. */}
-                    <div className="py-2" data-tutorial-id="learning-extras">
+                    {/* TUTORIAL FOCUS SIZE: This div's padding (py-0 or py-6) defines the focus area for the 'Extras' step. */}
+                    <div className={cn({ 'py-6': isExtrasTutorialActive, 'py-0': !isExtrasTutorialActive })} data-tutorial-id="learning-extras">
                         <Collapsible
                             open={isExtrasOpen}
                             onOpenChange={handleExtrasOpenChange}

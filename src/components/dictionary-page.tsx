@@ -114,10 +114,7 @@ export default function DictionaryPage({ title, backHref, words, children }: Dic
                                                 </p>
                                             </div>
                                         </div>
-                                         <button 
-                                            {...(index === 0 && { 'data-tutorial-id': 'dictionary-favorites-star' })}
-                                            onClick={() => handleFavoriteToggle(w.word)} 
-                                            className="p-2 -m-2 rounded-full hover:bg-accent transition-colors">
+                                         <button onClick={() => handleFavoriteToggle(w.word)} className="p-2 -m-2 rounded-full hover:bg-accent transition-colors">
                                             <Star className={cn(
                                                 "h-3.5 w-3.5 transition-all",
                                                 favorites.includes(w.word)

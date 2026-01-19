@@ -166,7 +166,7 @@ export default function StatisticsPage() {
                     <CardTitle className="text-center text-3xl">{getUIText('title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4" data-tutorial-id="stats-main-cards">
+                    <div className="grid grid-cols-2 gap-4">
                         <Popover>
                             <PopoverTrigger asChild>
                                 <Card className="relative cursor-pointer transition-colors hover:bg-muted/50">
@@ -197,6 +197,35 @@ export default function StatisticsPage() {
                             </PopoverContent>
                         </Popover>
                         <Popover>
+                            <PopoverTrigger asChild>
+                                <Card className="relative cursor-pointer transition-colors hover:bg-muted/50">
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                        <CardTitle className="text-sm font-medium">{getUIText('totalErrors')}</CardTitle>
+                                        <ShieldX className="h-5 w-5 text-amber" />
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="text-2xl font-bold">{stats.totalErrors.toLocaleString()}</div>
+                                    </CardContent>
+                                    <ArrowUpRight className="absolute bottom-2 right-2 h-4 w-4 text-muted-foreground/40" />
+                                </Card>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-56">
+                                <h4 className="font-medium text-center mb-2">{getUIText('errorsPerQuiz')}</h4>
+                                <div className="space-y-1 text-sm">
+                                    {quizNames.length > 0 ? (
+                                        quizNames.map((quizName) => (
+                                            <div key={quizName} className="flex justify-between">
+                                                <span>{quizName}:</span>
+                                                <span className="font-bold">{stats.perQuizStats[quizName]?.totalErrors || 0}</span>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p className="text-muted-foreground text-center">{getUIText('noData')}</p>
+                                    )}
+                                </div>
+                            </PopoverContent>
+                        </Popover>
+                         <Popover>
                             <PopoverTrigger asChild>
                                 <Card className="relative cursor-pointer transition-colors hover:bg-muted/50">
                                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -231,11 +260,9 @@ export default function StatisticsPage() {
                                 </div>
                             </PopoverContent>
                         </Popover>
-                    </div>
-                     <div className="grid grid-cols-2 gap-4">
                         <Popover>
                             <PopoverTrigger asChild>
-                                <Card className="relative cursor-pointer transition-colors hover:bg-muted/50" data-tutorial-id="stats-streak">
+                                <Card className="relative cursor-pointer transition-colors hover:bg-muted/50">
                                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                         <CardTitle className="text-sm font-medium">{getUIText('longestStreak')}</CardTitle>
                                         <Flame className="h-6 w-6 text-amber" />
@@ -262,37 +289,8 @@ export default function StatisticsPage() {
                                 </div>
                             </PopoverContent>
                         </Popover>
-                        <Popover>
-                            <PopoverTrigger asChild>
-                                <Card className="relative cursor-pointer transition-colors hover:bg-muted/50">
-                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                        <CardTitle className="text-sm font-medium">{getUIText('totalErrors')}</CardTitle>
-                                        <ShieldX className="h-5 w-5 text-amber" />
-                                    </CardHeader>
-                                    <CardContent>
-                                        <div className="text-2xl font-bold">{stats.totalErrors.toLocaleString()}</div>
-                                    </CardContent>
-                                    <ArrowUpRight className="absolute bottom-2 right-2 h-4 w-4 text-muted-foreground/40" />
-                                </Card>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-56">
-                                <h4 className="font-medium text-center mb-2">{getUIText('errorsPerQuiz')}</h4>
-                                <div className="space-y-1 text-sm">
-                                    {quizNames.length > 0 ? (
-                                        quizNames.map((quizName) => (
-                                            <div key={quizName} className="flex justify-between">
-                                                <span>{quizName}:</span>
-                                                <span className="font-bold">{stats.perQuizStats[quizName]?.totalErrors || 0}</span>
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <p className="text-muted-foreground text-center">{getUIText('noData')}</p>
-                                    )}
-                                </div>
-                            </PopoverContent>
-                        </Popover>
                     </div>
-                    <Card data-tutorial-id="stats-last-50">
+                    <Card>
                         <CardHeader>
                             <CardTitle className="text-sm font-medium">{getUIText('lastFifty')}</CardTitle>
                         </CardHeader>

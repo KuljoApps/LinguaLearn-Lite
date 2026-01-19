@@ -19,23 +19,56 @@ export default function Home() {
     const [showRateDialog, setShowRateDialog] = useState(false);
 
     useEffect(() => {
-        const currentLang = getLanguage();
-        setCurrentLanguage(currentLang);
+        setCurrentLanguage(getLanguage());
         
+        // --- TUTORIAL LOGIC ---
+        // For testing purposes, we always show the tutorial.
         const showTutorialForTesting = true;
+        // To use production logic (show only once), change the line above to:
+        // const showTutorialForTesting = false;
 
         if (showTutorialForTesting || !isTutorialCompleted()) {
             saveTutorialState({ isActive: true, stage: 'initial', step: 0 });
-            if (!showTutorialForTesting) {
-                 setTutorialCompleted();
-            }
+            // Set tutorial as completed for production logic, but `showTutorialForTesting` overrides this for testing.
+            setTutorialCompleted();
         } else {
-             // This logic is for production after the tutorial has been completed once.
+            // --- TEMPORARY FOR DEVELOPMENT ---
+            // This logic shows the promo dialog every 5 visits for easier testing.
+            try {
+                const devPromoCounter = parseInt(sessionStorage.getItem('dev_promo_counter') || '0');
+                const newPromoCount = devPromoCounter + 1;
+                if (newPromoCount >= 15) {
+                    setShowPromo(true);
+                    sessionStorage.setItem('dev_promo_counter', '0');
+                } else {
+                    sessionStorage.setItem('dev_promo_counter', newPromoCount.toString());
+                }
+            } catch (e) {
+                sessionStorage.removeItem('dev_promo_counter');
+            }
+
+            // This logic shows the rate dialog every 10 visits for easier testing.
+            try {
+                const devRateCounter = parseInt(sessionStorage.getItem('dev_rate_counter') || '0');
+                const newRateCount = devRateCounter + 1;
+                if (newRateCount >= 10 && !showPromo) { // !showPromo to avoid overlap
+                    setShowRateDialog(true);
+                    sessionStorage.setItem('dev_rate_counter', '0');
+                } else {
+                    sessionStorage.setItem('dev_rate_counter', newRateCount.toString());
+                }
+            } catch (e) {
+                sessionStorage.removeItem('dev_rate_counter');
+            }
+            // --- END TEMPORARY LOGIC ---
+            
+            /* --- PRODUCTION LOGIC ---
             if (shouldShowProPromo()) {
                 setShowPromo(true);
             } else if (shouldShowRateAppDialog()) {
                 setShowRateDialog(true);
             }
+            */
         }
     }, []);
 
@@ -205,7 +238,7 @@ export default function Home() {
                     </DropdownMenu>
 
                     <Link href="/settings" passHref>
-                        <Button variant="outline" size="icon" data-tutorial-id="settings-button">
+                        <Button variant="outline" size="icon">
                             <Settings />
                         </Button>
                     </Link>

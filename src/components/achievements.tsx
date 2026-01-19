@@ -84,13 +84,13 @@ export default function AchievementsPage() {
 
     return (
         <>
-            <Card className="w-full max-w-2xl shadow-2xl" data-tutorial-id="achievements-card">
+            <Card className="w-full max-w-2xl shadow-2xl">
                 <CardHeader>
                     <CardTitle className="text-center text-3xl">{getUIText('title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4 max-h-[60vh] overflow-y-auto p-6">
                      <TooltipProvider>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" data-tutorial-id="achievements-grid">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             {displayedAchievements.map((achievement: Achievement) => {
                                 const status = achievements[achievement.id] || { progress: 0, unlockedAt: null };
                                 const isUnlocked = !!status.unlockedAt;
@@ -147,7 +147,6 @@ export default function AchievementsPage() {
                             variant="destructive" 
                             onClick={() => setIsClearAlertOpen(true)}
                             disabled={Object.keys(achievements).length === 0}
-                            data-tutorial-id="achievements-reset"
                         >
                             <Trash2 className="mr-2 h-4 w-4" /> {getUIText('reset')}
                         </Button>

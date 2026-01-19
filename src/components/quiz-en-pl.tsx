@@ -1,7 +1,9 @@
+
 "use client";
 
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { Home, RefreshCw, Pause, Play, Clock, Trophy } from "lucide-react";
+import { useSearchParams } from 'next/navigation';
 import { questions as initialQuestions, type Question } from "@/lib/questions-en-pl";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,7 +21,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { updateStats, addError, updateTimeSpent, checkSessionAchievements, type Achievement, type ErrorRecord } from "@/lib/storage";
+import { updateStats, addError, updateTimeSpent, checkSessionAchievements, type Achievement, type ErrorRecord, getTutorialState } from "@/lib/storage";
 import { playSound } from "@/lib/sounds";
 import LinguaLearnLogo from '@/components/LinguaLearnLogo';
 import { vibrate } from "@/lib/vibrations";
@@ -39,11 +41,21 @@ const QUESTION_TIME_LIMIT = 15;
 const PAUSE_PENALTY = 5;
 const MIN_TIME_FOR_PAUSE = 6;
 const QUIZ_NAME = 'English - Polish';
-const TIME_UPDATE_INTERVAL = 5; // seconds
+const TIME_UPDATE_INTERVAL = 5;
 const QUIZ_LENGTH = 10;
+
+const tutorialQuestions: Question[] = [
+  { id: 999, language: 'English', word: 'Hello', options: ['Cześć', 'Do widzenia', 'Dziękuję', 'Przepraszam'], correctAnswer: 'Cześć' },
+  { id: 998, language: 'English', word: 'Reliable', options: ['Religijny', 'Niezawodny', 'Niepewny', 'Zmienny'], correctAnswer: 'Niezawodny' },
+  { id: 997, language: 'English', word: 'Conscientious', options: ['Sumienny', 'Niedbały', 'Leniwy', 'Powierzchowny'], correctAnswer: 'Sumienny' },
+];
 
 
 export default function QuizEnPl() {
+  const searchParams = useSearchParams();
+  const [isTutorialMode, setIsTutorialMode] = useState(false);
+  const [isTutorialPaused, setIsTutorialPaused] = useState(false);
+
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -61,6 +73,28 @@ export default function QuizEnPl() {
   
   const router = useRouter();
   const { toast } = useToast();
+  
+  useEffect(() => {
+    setIsTutorialMode(searchParams.get('tutorial') === 'true');
+  }, [searchParams]);
+
+  useEffect(() => {
+    const handleTutorialState = () => {
+      const tutorialState = getTutorialState();
+      if (tutorialState?.stage === 'quiz') {
+          if (tutorialState.step === 0 || tutorialState.step === 1) {
+              setIsTutorialPaused(true);
+          } else {
+              setIsTutorialPaused(false);
+          }
+      } else {
+          setIsTutorialPaused(false);
+      }
+    };
+    handleTutorialState();
+    window.addEventListener('tutorial-state-changed', handleTutorialState);
+    return () => window.removeEventListener('tutorial-state-changed', handleTutorialState);
+  }, []);
 
   const showAchievementToast = useCallback((achievement: Achievement) => {
     playSound('achievement');
@@ -76,10 +110,14 @@ export default function QuizEnPl() {
   }, [toast]);
   
   useEffect(() => {
-    const newQuestions = shuffleArray(initialQuestions).slice(0, QUIZ_LENGTH);
-    setQuestions(newQuestions);
+    if (isTutorialMode) {
+      setQuestions(tutorialQuestions);
+    } else {
+      const newQuestions = shuffleArray(initialQuestions).slice(0, QUIZ_LENGTH);
+      setQuestions(newQuestions);
+    }
     timeoutFiredRef.current = false;
-  }, []);
+  }, [isTutorialMode]);
 
   useEffect(() => {
       timeoutFiredRef.current = false;
@@ -87,12 +125,12 @@ export default function QuizEnPl() {
 
   // Finalize session achievements
   useEffect(() => {
-      if (currentQuestionIndex >= questions.length && questions.length > 0) {
+      if (!isTutorialMode && currentQuestionIndex >= questions.length && questions.length > 0) {
           const isPerfect = score === questions.length;
           const unlocked = checkSessionAchievements(isPerfect);
           unlocked.forEach(showAchievementToast);
       }
-  }, [currentQuestionIndex, questions.length, score, showAchievementToast]);
+  }, [isTutorialMode, currentQuestionIndex, questions.length, score, showAchievementToast]);
 
   // Handle transitions between questions
   useEffect(() => {
@@ -110,7 +148,7 @@ export default function QuizEnPl() {
 
   // Per-question timer
   useEffect(() => {
-    if (isPaused || !!answerStatus || currentQuestionIndex >= questions.length) {
+    if (isPaused || !!answerStatus || currentQuestionIndex >= questions.length || isTutorialPaused) {
       return;
     }
 
@@ -122,19 +160,21 @@ export default function QuizEnPl() {
             timeoutFiredRef.current = true;
             setAnswerStatus("timeout");
             setSelectedAnswer(null);
-            playSound("incorrect");
-            vibrate("incorrect");
             
-            const unlocked = updateStats(false, QUIZ_NAME, questions[currentQuestionIndex].id);
-            unlocked.forEach(showAchievementToast);
-
+            if (!isTutorialMode) {
+              playSound("incorrect");
+              vibrate("incorrect");
+              const unlocked = updateStats(false, QUIZ_NAME, questions[currentQuestionIndex].id);
+              unlocked.forEach(showAchievementToast);
+            }
+            
             const errorRecord = {
               word: questions[currentQuestionIndex].word,
               userAnswer: 'No answer',
               correctAnswer: questions[currentQuestionIndex].correctAnswer,
               quiz: QUIZ_NAME,
             };
-            addError(errorRecord);
+            if (!isTutorialMode) addError(errorRecord);
             setSessionErrors(prev => [...prev, errorRecord]);
           }
           return 0;
@@ -144,11 +184,11 @@ export default function QuizEnPl() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isPaused, answerStatus, currentQuestionIndex, questions, showAchievementToast]);
+  }, [isPaused, answerStatus, currentQuestionIndex, questions, showAchievementToast, isTutorialMode, isTutorialPaused]);
 
   // Total quiz time and periodic time-based achievement check
   useEffect(() => {
-    if (currentQuestionIndex >= questions.length || isPaused) {
+    if (isTutorialMode || currentQuestionIndex >= questions.length || isPaused) {
       return;
     }
 
@@ -161,41 +201,52 @@ export default function QuizEnPl() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [currentQuestionIndex, questions.length, isPaused, totalTime, showAchievementToast]);
+  }, [isTutorialMode, currentQuestionIndex, questions.length, isPaused, totalTime, showAchievementToast]);
 
 
   const currentQuestion = useMemo(() => questions[currentQuestionIndex], [questions, currentQuestionIndex]);
 
   useEffect(() => {
     if (currentQuestion) {
-      setShuffledOptions(shuffleArray(currentQuestion.options));
+      if(isTutorialMode) {
+        setShuffledOptions(currentQuestion.options);
+      } else {
+        setShuffledOptions(shuffleArray(currentQuestion.options));
+      }
     }
-  }, [currentQuestion]);
+  }, [currentQuestion, isTutorialMode]);
   
   const handleAnswerClick = (answer: string) => {
     if (answerStatus || isPaused) return;
 
     setSelectedAnswer(answer);
     const isCorrect = answer === currentQuestion.correctAnswer;
-    const unlocked = updateStats(isCorrect, QUIZ_NAME, currentQuestion.id);
-    unlocked.forEach(showAchievementToast);
+    
+    if (!isTutorialMode) {
+        const unlocked = updateStats(isCorrect, QUIZ_NAME, currentQuestion.id);
+        unlocked.forEach(showAchievementToast);
+    }
     
     if (isCorrect) {
       setScore((prevScore) => prevScore + 1);
       setAnswerStatus("correct");
-      playSound("correct");
-      vibrate("correct");
+      if(!isTutorialMode) {
+        playSound("correct");
+        vibrate("correct");
+      }
     } else {
       setAnswerStatus("incorrect");
-      playSound("incorrect");
-      vibrate("incorrect");
+      if(!isTutorialMode) {
+        playSound("incorrect");
+        vibrate("incorrect");
+      }
       const errorRecord = {
         word: currentQuestion.word,
         userAnswer: answer,
         correctAnswer: currentQuestion.correctAnswer,
         quiz: QUIZ_NAME,
       };
-      addError(errorRecord);
+      if (!isTutorialMode) addError(errorRecord);
       setSessionErrors(prev => [...prev, errorRecord]);
     }
   };
@@ -209,7 +260,7 @@ export default function QuizEnPl() {
   };
   
   const handleHomeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (currentQuestionIndex > 0) {
+    if (currentQuestionIndex > 0 && !isTutorialMode) {
       e.preventDefault();
       setIsHomeAlertOpen(true);
     }
@@ -228,7 +279,7 @@ export default function QuizEnPl() {
   }
 
   const restartTest = () => {
-    setQuestions(shuffleArray(initialQuestions).slice(0, QUIZ_LENGTH));
+    setQuestions(isTutorialMode ? tutorialQuestions : shuffleArray(initialQuestions).slice(0, QUIZ_LENGTH));
     setCurrentQuestionIndex(0);
     setScore(0);
     setSelectedAnswer(null);
@@ -277,6 +328,7 @@ export default function QuizEnPl() {
             sessionErrors={sessionErrors}
             quizName={QUIZ_NAME}
             onRestart={restartTest}
+            isTutorialMode={isTutorialMode}
         />
     );
   }
@@ -294,6 +346,7 @@ export default function QuizEnPl() {
 
   const progressValue = ((currentQuestionIndex + 1) / questions.length) * 100;
   const questionTimeProgress = (questionTimer / QUESTION_TIME_LIMIT) * 100;
+  const isTutorialIncorrectStep = isTutorialMode && currentQuestionIndex === 1;
 
   return (
     <>
@@ -315,7 +368,7 @@ export default function QuizEnPl() {
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center p-6 space-y-8">
             <div className="w-full flex justify-around gap-4 text-center">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2" data-tutorial-id="quiz-timer">
                     <Clock className="h-6 w-6" />
                     <span className={cn(
                         "text-2xl font-bold transition-colors duration-300 text-card-foreground",
@@ -340,27 +393,38 @@ export default function QuizEnPl() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-            {shuffledOptions.map((option) => (
-              <Button
-                key={option}
-                onClick={() => handleAnswerClick(option)}
-                disabled={!!answerStatus || isPaused}
-                className={cn("h-auto text-lg p-4 whitespace-normal transition-all duration-300", getButtonClass(option))}
-              >
-                {option}
-              </Button>
-            ))}
+            {shuffledOptions.map((option) => {
+              const isCorrect = option === currentQuestion.correctAnswer;
+              return (
+                <Button
+                  key={option}
+                  data-tutorial-id={isTutorialMode && isCorrect ? 'quiz-answer-correct' : (isTutorialMode && !isCorrect ? 'quiz-answer-incorrect' : undefined)}
+                  onClick={() => handleAnswerClick(option)}
+                  disabled={!!answerStatus || isPaused}
+                  className={cn("h-auto text-lg p-4 whitespace-normal transition-all duration-300", getButtonClass(option))}
+                >
+                  {option}
+                </Button>
+              )
+            })}
           </div>
           <div className="flex justify-center gap-4 w-full pt-4 border-t">
-            <Link href="/" passHref>
-              <Button variant="outline" size="icon" onClick={handleHomeClick}>
+            {isTutorialMode ? (
+              <Button variant="outline" size="icon" disabled>
                 <Home />
               </Button>
-            </Link>
+            ) : (
+              <Link href="/" passHref>
+                <Button variant="outline" size="icon" onClick={handleHomeClick}>
+                  <Home />
+                </Button>
+              </Link>
+            )}
             <Button variant="outline" size="icon" onClick={handleRestartClick}>
               <RefreshCw />
             </Button>
             <Button 
+                data-tutorial-id="quiz-pause-button"
                 variant="outline" 
                 size="icon" 
                 onClick={handlePauseClick}

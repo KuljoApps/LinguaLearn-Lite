@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useMemo } from 'react';
@@ -9,7 +10,6 @@ import { Separator } from '@/components/ui/separator';
 import { Brain, ThumbsUp, Trophy, Clock, CheckCircle, ShieldX } from 'lucide-react';
 import type { ErrorRecord, Language } from '@/lib/storage';
 import { getLanguage } from '@/lib/storage';
-import { cn } from '@/lib/utils';
 
 interface QuizResultsProps {
     score: number;
@@ -18,6 +18,7 @@ interface QuizResultsProps {
     quizName: string;
     sessionErrors: Omit<ErrorRecord, 'id'>[];
     onRestart: () => void;
+    isTutorialMode?: boolean;
 }
 
 const uiTexts: { [key: string]: Record<Language, string> } = {
@@ -28,7 +29,6 @@ const uiTexts: { [key: string]: Record<Language, string> } = {
     goodTitle: { en: 'Good Effort!', pl: 'Dobry wynik!', fr: 'Bel Effort !', de: 'Gute Leistung!', it: 'Buon Tentativo!', es: '¡Buen Esfuerzo!' },
     goodDesc: { en: 'You\'re on the right track. Keep practicing!', pl: 'Jesteś na dobrej drodze. Ćwicz dalej!', fr: 'Vous êtes sur la bonne voie. Continuez à pratiquer !', de: 'Du bist auf dem richtigen Weg. Übe weiter!', it: 'Sei sulla strada giusta. Continua a esercitarti!', es: 'Estás en el camino correcto. ¡Sigue practicando!' },
     practiceTitle: { en: 'Practice Makes Perfect!', pl: 'Ćwiczenie czyni mistrza!', fr: 'C\'est en forgeant qu\'on devient forgeron !', de: 'Übung macht den Meister!', it: 'La pratica rende perfetti!', es: '¡La práctica hace al maestro!' },
-    practiceDesc: { en: 'Every mistake is a learning opportunity. Try again!', pl: 'Każdy błąd to okazja do nauki. Spróbuj jeszcze raz!', fr: 'Chaque erreur est une opportunité d\'apprendre. Réessayez !', de: 'Jeder Fehler ist eine Lernchance. Versuche es erneut!', it: 'Ogni errore è un\'opportunità di apprendimento. Riprova!', es: 'Cada error es una oportunidad de aprendizaje. ¡Inténtalo de nuevo!' },
     summary: { en: 'Summary', pl: 'Podsumowanie', fr: 'Résumé', de: 'Zusammenfassung', it: 'Riepilogo', es: 'Resumen' },
     score: { en: 'Score', pl: 'Wynik', fr: 'Score', de: 'Ergebnis', it: 'Punteggio', es: 'Puntuación' },
     accuracy: { en: 'Accuracy', pl: 'Skuteczność', fr: 'Précision', de: 'Genauigkeit', it: 'Precisione', es: 'Precisión' },
@@ -43,18 +43,12 @@ const uiTexts: { [key: string]: Record<Language, string> } = {
     seeAllErrors: { en: 'See all errors', pl: 'Zobacz wszystkie błędy', fr: 'Voir toutes les erreurs', de: 'Alle Fehler ansehen', it: 'Vedi tutti gli errori', es: 'Ver todos los errores' }
 };
 
-export default function QuizResults({ score, totalQuestions, totalTime, quizName, sessionErrors, onRestart }: QuizResultsProps) {
+export default function QuizResults({ score, totalQuestions, totalTime, quizName, sessionErrors, onRestart, isTutorialMode }: QuizResultsProps) {
     const lang = useMemo(() => getLanguage(), []);
     const successRate = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
     
     const getUIText = (key: keyof typeof uiTexts) => {
         return uiTexts[key][lang] || uiTexts[key]['en'];
-    };
-
-    const formatTime = (seconds: number) => {
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
     };
 
     const motivationalMessage = useMemo(() => {
@@ -85,6 +79,11 @@ export default function QuizResults({ score, totalQuestions, totalTime, quizName
             description: getUIText('practiceDesc'),
         };
     }, [successRate, lang]);
+    
+    const fakeSessionErrors: Omit<ErrorRecord, 'id'>[] = [
+        { quiz: 'Tutorial Quiz', word: 'Reliable', userAnswer: 'Religijny', correctAnswer: 'Niezawodny' }
+    ];
+    const errorsToDisplay = isTutorialMode && sessionErrors.length === 0 ? fakeSessionErrors : sessionErrors;
 
 
     return (
@@ -96,7 +95,7 @@ export default function QuizResults({ score, totalQuestions, totalTime, quizName
             </CardHeader>
 
             <CardContent className="space-y-4">
-                <Card className="bg-muted/50">
+                <Card className="bg-muted/50" data-tutorial-id="quiz-results-summary">
                     <CardHeader className="pb-2">
                         <CardTitle className="text-xl text-center">{getUIText('summary')}</CardTitle>
                     </CardHeader>
@@ -119,7 +118,7 @@ export default function QuizResults({ score, totalQuestions, totalTime, quizName
                         <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background">
                             <div className="flex items-center gap-2">
                                 <ShieldX className="h-4 w-4 text-destructive"/>
-                                <span className="text-2xl font-bold">{sessionErrors.length}</span>
+                                <span className="text-2xl font-bold">{errorsToDisplay.length}</span>
                             </div>
                             <span className="text-xs text-muted-foreground">{getUIText('incorrect')}</span>
                         </div>
@@ -133,19 +132,19 @@ export default function QuizResults({ score, totalQuestions, totalTime, quizName
                     </CardContent>
                 </Card>
 
-                {sessionErrors.length > 0 && (
-                    <div className="space-y-2">
+                {errorsToDisplay.length > 0 && (
+                    <div className="space-y-2" data-tutorial-id="quiz-results-errors">
                         <h3 className="text-center font-semibold">{getUIText('worthRepeating')}</h3>
                         <ScrollArea className="h-32 w-full rounded-md border p-2">
                              <div className="space-y-2">
-                                {sessionErrors.map((error, index) => (
+                                {errorsToDisplay.map((error, index) => (
                                     <React.Fragment key={index}>
                                         <div className="text-sm p-2 bg-muted/30 rounded-md">
                                             <p><span className="font-semibold">{error.word}</span></p>
                                             <p className="text-destructive">{getUIText('yourAnswer')} <span className="font-medium">{error.userAnswer}</span></p>
                                             <p className="text-success">{getUIText('correctAnswer')} <span className="font-medium">{error.correctAnswer}</span></p>
                                         </div>
-                                        {index < sessionErrors.length - 1 && <Separator />}
+                                        {index < errorsToDisplay.length - 1 && <Separator />}
                                     </React.Fragment>
                                 ))}
                             </div>
@@ -155,15 +154,15 @@ export default function QuizResults({ score, totalQuestions, totalTime, quizName
             </CardContent>
 
             <CardFooter className="flex-col gap-4 pt-4">
-                 <div className="flex w-full gap-4">
+                 <div className="flex w-full gap-4" data-tutorial-id="quiz-results-buttons">
                     <Button onClick={onRestart} className="w-full">{getUIText('playAgain')}</Button>
                     <Link href="/" passHref className="w-full">
-                        <Button variant="outline" className="w-full">{getUIText('backToMenu')}</Button>
+                        <Button variant="outline" className="w-full" disabled={isTutorialMode}>{getUIText('backToMenu')}</Button>
                     </Link>
                 </div>
-                {sessionErrors.length > 0 && (
+                {errorsToDisplay.length > 0 && (
                     <Link href="/errors" passHref>
-                        <Button variant="link" className="text-muted-foreground">
+                        <Button variant="link" className="text-muted-foreground" disabled={isTutorialMode}>
                             {getUIText('seeAllErrors')}
                         </Button>
                     </Link>

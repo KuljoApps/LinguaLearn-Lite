@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 
 import FakeAchievementsPage from '@/app/tutorial/pages/FakeAchievementsPage';
 import FakeCulturePage from '@/app/tutorial/pages/FakeCulturePage';
@@ -35,8 +35,15 @@ const tutorialPages: { [key: string]: React.ComponentType } = {
   'quiz-demo': FakeQuizDemoPage,
 };
 
-export default function TutorialSlugPage({ params }: { params: { slug: string } }) {
-  const PageComponent = tutorialPages[params.slug];
+export default function TutorialSlugPage() {
+  const params = useParams();
+  const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
+
+  if (!slug) {
+    notFound();
+  }
+
+  const PageComponent = tutorialPages[slug];
 
   if (!PageComponent) {
     notFound();

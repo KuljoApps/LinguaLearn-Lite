@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -41,6 +42,8 @@ export default function PhrasesPage({ title, backHref, phrases, children }: Phra
         ? backButtonTextsLearning[lang] || backButtonTextsLearning['en']
         : backButtonTextsPhrases[lang] || backButtonTextsPhrases['en'];
 
+    const tutorialId = title === 'Airport' ? 'airport-first-phrases' : title === 'Tongue Twisters' ? 'tongue-twisters-first-two' : undefined;
+
     return (
         <Card className="w-full max-w-2xl shadow-2xl">
             <CardHeader className="text-center">
@@ -52,7 +55,7 @@ export default function PhrasesPage({ title, backHref, phrases, children }: Phra
             <CardContent>
                 <ScrollArea className="h-96 w-full pr-4">
                     <div className="flex flex-col gap-3">
-                        <div data-tutorial-id="airport-first-phrases" className="flex flex-col gap-3">
+                        <div data-tutorial-id={tutorialId} className="flex flex-col gap-3">
                             {phrases.slice(0, 2).map((p, index) => (
                                 <React.Fragment key={index}>
                                     <div className="text-sm">

@@ -163,6 +163,13 @@ const extendedSteps: Step[] = [
         description: 'Zanurz się w\u00A0lokalnych zwyczajach i\u00A0kluczowych wydarzeniach historycznych, aby lepiej zrozumieć duszę narodu.',
         bubblePosition: 'top',
     },
+    {
+        path: '/learning/en/tongue-twisters',
+        elementId: 'tongue-twisters-first-two',
+        title: 'Humorystyczne uzupełnienie',
+        description: 'Na koniec odrobina zabawy! Ta sekcja to świetne uzupełnienie nauki o kulturze, które pomoże Ci ćwiczyć wymowę w zabawny sposób.',
+        bubblePosition: 'bottom',
+    },
 ];
 
 

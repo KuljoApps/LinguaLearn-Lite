@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
@@ -158,7 +157,7 @@ export default function AchievementsPage() {
             <Card className="w-full max-w-2xl shadow-2xl">
                 <CardHeader className="text-center">
                     <div className="flex items-center justify-center gap-4">
-                        <Trophy className="h-8 w-8 text-amber" />
+                        <Trophy className="h-8 w-8" />
                         <CardTitle className="text-3xl">{getUIText('title')}</CardTitle>
                     </div>
                 </CardHeader>
@@ -209,4 +208,3 @@ export default function AchievementsPage() {
         </>
     );
 }
-

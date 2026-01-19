@@ -62,35 +62,33 @@ export default function LearningEnPage() {
                         </Button>
                     </Link>
 
-                    <div className="space-y-4" data-tutorial-id="learning-main-modules">
-                        <Link href="/learning/en/tenses">
-                            <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
-                                <Clock className="mr-2 h-5 w-5 text-deep-purple" />
-                                Tenses
-                            </Button>
-                        </Link>
+                    <Link href="/learning/en/tenses" data-tutorial-id="learning-main-modules">
+                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
+                            <Clock className="mr-2 h-5 w-5 text-deep-purple" />
+                            Tenses
+                        </Button>
+                    </Link>
 
-                        <Link href="/learning/en/grammar">
-                            <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
-                                <FilePenLine className="mr-2 h-5 w-5 text-deep-purple" />
-                                General Grammar
-                            </Button>
-                        </Link>
+                    <Link href="/learning/en/grammar">
+                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
+                            <FilePenLine className="mr-2 h-5 w-5 text-deep-purple" />
+                            General Grammar
+                        </Button>
+                    </Link>
 
-                        <Link href="/learning/en/phrases">
-                            <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
-                                <MessageSquareText className="mr-2 h-5 w-5 text-deep-purple" />
-                                Expressions & Phrases
-                            </Button>
-                        </Link>
+                    <Link href="/learning/en/phrases">
+                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
+                            <MessageSquareText className="mr-2 h-5 w-5 text-deep-purple" />
+                            Expressions & Phrases
+                        </Button>
+                    </Link>
 
-                        <Link href="/learning/en/dictionary">
-                            <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
-                                <BookText className="mr-2 h-5 w-5 text-deep-purple" />
-                                Dictionary
-                            </Button>
-                        </Link>
-                    </div>
+                    <Link href="/learning/en/dictionary">
+                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary">
+                            <BookText className="mr-2 h-5 w-5 text-deep-purple" />
+                            Dictionary
+                        </Button>
+                    </Link>
                     
                     <div className="py-2" data-tutorial-id="learning-extras">
                         <Collapsible

@@ -142,6 +142,27 @@ const extendedSteps: Step[] = [
         description: 'Oprócz listy słówek, możesz oznaczać ulubione pozycje gwiazdką <span class="inline-block h-3 w-3 text-amber fill-amber align-middle mx-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-3 w-3"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.007z" clip-rule="evenodd"></path></svg></span>, aby mieć je zawsze na górze listy!',
         bubblePosition: 'bottom',
     },
+    {
+        path: '/learning/en/culture',
+        elementId: 'culture-about',
+        title: 'Poznaj Kulturę Kraju',
+        description: 'Odkryj fascynujące fakty o\u00A0kraju, którego języka się uczysz. To świetny sposób, by zrozumieć kontekst i\u00A0poszerzyć horyzonty.',
+        bubblePosition: 'bottom',
+    },
+    {
+        path: '/learning/en/culture',
+        elementId: 'culture-places',
+        title: 'Ważne Miejsca',
+        description: 'Przeglądaj najważniejsze miasta i\u00A0zabytki. Każdy element zawiera ciekawe opisy, fakty i\u00A0statystyki.',
+        bubblePosition: 'bottom',
+    },
+    {
+        path: '/learning/en/culture',
+        elementId: 'culture-history',
+        title: 'Tradycje i Historia',
+        description: 'Zanurz się w\u00A0lokalnych zwyczajach i\u00A0kluczowych wydarzeniach historycznych, aby lepiej zrozumieć duszę narodu.',
+        bubblePosition: 'top',
+    },
 ];
 
 

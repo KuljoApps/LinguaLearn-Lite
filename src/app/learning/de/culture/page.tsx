@@ -15,13 +15,13 @@ export default function CultureDePage() {
                     </div>
                 </CardHeader>
                 <CardContent className="flex flex-col space-y-4 px-6 pt-0 pb-4">
-                    <Link href="/learning/de/culture/about" passHref>
+                    <Link href="/learning/de/culture/about" passHref data-tutorial-id="culture-about">
                         <Button className="w-full h-16 text-lg flex items-center justify-center">
                             <span className="text-4xl mr-4">🇩🇪</span>
                             Über Deutschland
                         </Button>
                     </Link>
-                    <div className="grid grid-cols-2 gap-4 pt-2">
+                    <div data-tutorial-id="culture-places" className="grid grid-cols-2 gap-4 pt-2">
                          <Link href="/learning/de/culture/cities" passHref>
                             <Button variant="outline" className="w-full h-28 flex-col gap-2 text-lg border-2 border-primary whitespace-normal text-center">
                                 <Building2 className="h-12 w-12 text-deep-purple" />
@@ -34,6 +34,8 @@ export default function CultureDePage() {
                                 Wichtigste Denkmäler
                             </Button>
                         </Link>
+                    </div>
+                    <div data-tutorial-id="culture-history" className="grid grid-cols-2 gap-4">
                         <Link href="/learning/de/culture/traditions" passHref>
                             <Button variant="outline" className="w-full h-24 flex-col gap-2 text-lg border-2 border-primary whitespace-normal text-center">
                                 <Handshake className="h-12 w-12 text-deep-purple" />

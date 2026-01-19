@@ -21,16 +21,13 @@ export default function Home() {
     useEffect(() => {
         setCurrentLanguage(getLanguage());
         
-        // --- TUTORIAL LOGIC ---
-        // For testing purposes, we always show the tutorial.
         const showTutorialForTesting = true;
-        // To use production logic (show only once), change the line above to:
-        // const showTutorialForTesting = false;
 
         if (showTutorialForTesting || !isTutorialCompleted()) {
             saveTutorialState({ isActive: true, stage: 'initial', step: 0 });
-            // Set tutorial as completed for production logic, but `showTutorialForTesting` overrides this for testing.
-            setTutorialCompleted();
+            if (!showTutorialForTesting) {
+              setTutorialCompleted();
+            }
         } else {
             // --- TEMPORARY FOR DEVELOPMENT ---
             // This logic shows the promo dialog every 5 visits for easier testing.

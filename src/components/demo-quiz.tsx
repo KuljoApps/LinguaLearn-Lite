@@ -54,10 +54,6 @@ const IrregularVerbQuestionView = ({
     ivForm2Input,
     ivForm3Input,
     answerStatus,
-    handleTranslationClick,
-    handleConfirmClick,
-    setIvForm2Input,
-    setIvForm3Input
 }: any) => {
 
     const getInputClass = (inputValue: string, correctValue: string) => {
@@ -105,8 +101,7 @@ const IrregularVerbQuestionView = ({
                 {shuffleArray(question.translationOptions).map((option: string) => (
                     <Button
                         key={option}
-                        onClick={() => handleTranslationClick(option)}
-                        disabled={!!ivTranslationStatus || !!answerStatus}
+                        disabled={true}
                         className={cn("h-auto text-lg p-4 whitespace-normal transition-all duration-300", getTranslationButtonClass(option))}
                     >
                         {option}
@@ -122,9 +117,8 @@ const IrregularVerbQuestionView = ({
                         <Input
                             id="form2"
                             value={ivForm2Input}
-                            onChange={(e) => setIvForm2Input(e.target.value)}
-                            placeholder=""
-                            disabled={!!answerStatus || ivTranslationStatus !== 'correct'}
+                            readOnly
+                            disabled={true}
                             className={cn("text-center transition-colors duration-300 mt-1", getInputClass(ivForm2Input, question.form2))}
                         />
                     </div>
@@ -133,29 +127,25 @@ const IrregularVerbQuestionView = ({
                         <Input
                             id="form3"
                             value={ivForm3Input}
-                            onChange={(e) => setIvForm3Input(e.target.value)}
-                            placeholder=""
-                            disabled={!!answerStatus || ivTranslationStatus !== 'correct'}
+                            readOnly
+                            disabled={true}
                             className={cn("text-center transition-colors duration-300 mt-1", getInputClass(ivForm3Input, question.form3))}
                         />
                     </div>
                 </div>
             </div>
-
-            {ivTranslationStatus === 'correct' && (
-              <Button 
-                  className="w-full mt-4 h-12 text-lg"
-                  onClick={handleConfirmClick}
-                  disabled={!!answerStatus || !ivForm2Input || !ivForm3Input}
-              >
-                  Confirm Answer
-              </Button>
-            )}
+            
+            <Button 
+                className="w-full mt-4 h-12 text-lg"
+                disabled={true}
+            >
+                Confirm Answer
+            </Button>
         </div>
     );
 };
 
-const MultipleChoiceQuestionView = ({ question, answerStatus, selectedAnswer, handleAnswerClick }: any) => {
+const MultipleChoiceQuestionView = ({ question, answerStatus, selectedAnswer }: any) => {
     
     const getButtonClass = (option: string) => {
         if (!answerStatus) return "bg-primary text-primary-foreground hover:bg-primary/90";
@@ -272,9 +262,6 @@ export default function DemoQuiz() {
     
     const currentQuestion = questions[currentQuestionIndex];
 
-    const handleConfirmClick = () => {};
-    const handleTranslationClick = () => {};
-    
     if (isFinished) {
         return <DemoQuizResults onRestart={restartQuiz} />;
     }

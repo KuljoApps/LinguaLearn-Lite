@@ -85,6 +85,7 @@ export default function QuizEnPl() {
       timeoutFiredRef.current = false;
   }, [currentQuestionIndex]);
 
+  // Finalize session achievements
   useEffect(() => {
       if (currentQuestionIndex >= questions.length && questions.length > 0) {
           const isPerfect = score === questions.length;
@@ -106,8 +107,10 @@ export default function QuizEnPl() {
     return () => clearTimeout(timer);
   }, [answerStatus]);
 
+  const currentQuestion = useMemo(() => questions[currentQuestionIndex], [questions, currentQuestionIndex]);
+
   useEffect(() => {
-    if (isPaused || !!answerStatus || currentQuestionIndex >= questions.length) {
+    if (isPaused || !!answerStatus || !currentQuestion) {
       return;
     }
 
@@ -121,7 +124,6 @@ export default function QuizEnPl() {
             setSelectedAnswer(null);
             playSound("incorrect");
             vibrate("incorrect");
-            const currentQuestion = questions[currentQuestionIndex];
             const unlocked = updateStats(false, QUIZ_NAME, currentQuestion.id);
             unlocked.forEach(showAchievementToast);
             
@@ -141,7 +143,7 @@ export default function QuizEnPl() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isPaused, answerStatus, currentQuestionIndex, questions, showAchievementToast]);
+  }, [isPaused, answerStatus, currentQuestion, showAchievementToast]);
 
   useEffect(() => {
     if (currentQuestionIndex >= questions.length || isPaused) {
@@ -159,9 +161,6 @@ export default function QuizEnPl() {
     return () => clearInterval(interval);
   }, [currentQuestionIndex, questions.length, isPaused, totalTime, showAchievementToast]);
 
-
-  const currentQuestion = useMemo(() => questions[currentQuestionIndex], [questions, currentQuestionIndex]);
-
   useEffect(() => {
     if (currentQuestion) {
       setShuffledOptions(shuffleArray(currentQuestion.options));
@@ -169,7 +168,7 @@ export default function QuizEnPl() {
   }, [currentQuestion]);
   
   const handleAnswerClick = (answer: string) => {
-    if (answerStatus || isPaused) return;
+    if (answerStatus || isPaused || !currentQuestion) return;
 
     setSelectedAnswer(answer);
     const isCorrect = answer === currentQuestion.correctAnswer;
@@ -244,7 +243,7 @@ export default function QuizEnPl() {
   }
 
   const getButtonClass = (option: string) => {
-    if (!answerStatus) {
+    if (!answerStatus || !currentQuestion) {
       return "bg-primary text-primary-foreground hover:bg-primary/90";
     }
     
@@ -327,10 +326,10 @@ export default function QuizEnPl() {
 
           <div className="text-center space-y-2">
               <p className="text-muted-foreground">What is the Polish meaning of</p>
-              <p className={cn(
+              {currentQuestion && <p className={cn(
                   "font-headline font-bold text-card-foreground",
                   currentQuestion.word.length > 20 ? "text-3xl" : "text-4xl"
-              )}>"{currentQuestion.word}"?</p>
+              )}>"{currentQuestion.word}"?</p>}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">

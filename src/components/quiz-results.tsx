@@ -55,9 +55,7 @@ export default function QuizResults({ score, totalQuestions, totalTime, sessionE
     const successRate = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
     
     const getUIText = (key: keyof typeof uiTexts) => {
-        const texts = uiTexts[key];
-        if (!texts) return `[${String(key)}]`;
-        return (texts as any)[lang] || texts['en'];
+        return uiTexts[key][lang] || uiTexts[key]['en'];
     };
 
     const motivationalMessage = useMemo(() => {

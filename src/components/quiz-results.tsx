@@ -16,6 +16,7 @@ interface QuizResultsProps {
     totalTime: number;
     sessionErrors: Omit<ErrorRecord, 'id'>[];
     onRestart: () => void;
+    quizName?: string;
 }
 
 const uiTexts: { [key: string]: Record<Language | 'pl', string> } = {
@@ -26,6 +27,7 @@ const uiTexts: { [key: string]: Record<Language | 'pl', string> } = {
     goodTitle: { en: 'Good Effort!', pl: 'Dobry wynik!', fr: 'Bel Effort !', de: 'Gute Leistung!', it: 'Buon Tentativo!', es: '¡Buen Esfuerzo!' },
     goodDesc: { en: 'You\'re on the right track. Keep practicing!', pl: 'Jesteś na dobrej drodze. Ćwicz dalej!', fr: 'Vous êtes sur la bonne voie. Continuez à pratiquer !', de: 'Du bist auf dem richtigen Weg. Übe weiter!', it: 'Sei sulla strada giusta. Continua a esercitarti!', es: 'Estás en el camino correcto. ¡Sigue practicando!' },
     practiceTitle: { en: 'Practice Makes Perfect!', pl: 'Ćwiczenie czyni mistrza!', fr: 'C\'est en forgeant qu\'on devient forgeron !', de: 'Übung macht den Meister!', it: 'La pratica rende perfetti!', es: '¡La práctica hace al maestro!' },
+    practiceDesc: { en: 'Every attempt is a step forward. Don\'t give up!', pl: 'Każda próba to krok naprzód. Nie poddawaj się!', fr: 'Chaque tentative est un pas en avant. N\'abandonnez pas !', de: 'Jeder Versuch ist ein Schritt nach vorn. Gib nicht auf!', it: 'Ogni tentativo è un passo avanti. Non arrenderti!', es: '¡Cada intento es un paso adelante. No te rindas!' },
     summary: { en: 'Summary', pl: 'Podsumowanie', fr: 'Résumé', de: 'Zusammenfassung', it: 'Riepilogo', es: 'Resumen' },
     score: { en: 'Score', pl: 'Wynik', fr: 'Score', de: 'Ergebnis', it: 'Punteggio', es: 'Puntuación' },
     accuracy: { en: 'Accuracy', pl: 'Skuteczność', fr: 'Précision', de: 'Genauigkeit', it: 'Precisione', es: 'Precisión' },

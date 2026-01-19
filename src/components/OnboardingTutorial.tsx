@@ -224,6 +224,20 @@ const quizSteps: Step[] = [
   },
   {
     path: '/quiz/demo',
+    elementId: 'quiz-iv-translation',
+    title: 'Pytania o Czasowniki',
+    description: 'Niektóre quizy, jak ten o czasownikach nieregularnych, mają inny format. Najpierw wybierasz poprawne tłumaczenie...',
+    bubblePosition: 'bottom',
+  },
+  {
+    path: '/quiz/demo',
+    elementId: 'quiz-iv-forms',
+    title: 'Uzupełnianie Form',
+    description: '...a następnie musisz wpisać poprawne formy czasownika. To świetny sposób na utrwalenie trudniejszych zagadnień.',
+    bubblePosition: 'top',
+  },
+  {
+    path: '/quiz/demo',
     elementId: 'quiz-results-summary',
     title: 'Podsumowanie wyników',
     description: 'Po każdym quizie zobaczysz swoje statystyki: wynik, skuteczność, liczbę błędów oraz całkowity czas.',

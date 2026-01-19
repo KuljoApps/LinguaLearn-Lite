@@ -15,6 +15,8 @@ interface DemoQuizResultsProps {
 }
 
 const uiTexts: { [key: string]: Record<Language | 'pl', string> } = {
+    greatTitle: { en: 'Great Job!', pl: 'Świetna robota!', fr: 'Excellent Travail !', de: 'Tolle Arbeit!', it: 'Ottimo Lavoro!', es: '¡Gran Trabajo!' },
+    greatDesc: { en: 'Your score is impressive. Keep it up!', pl: 'Twój wynik jest imponujący. Tak trzymać!', fr: 'Votre score est impressionnant. Continuez comme ça !', de: 'Dein Ergebnis ist beeindruckend. Mach weiter so!', it: 'Il tuo punteggio è impressionante. Continua così!', es: 'Tu puntuación es impresionante. ¡Sigue así!' },
     goodTitle: { en: 'Good Effort!', pl: 'Dobry wynik!', fr: 'Bel Effort !', de: 'Gute Leistung!', it: 'Buon Tentativo!', es: '¡Buen Esfuerzo!' },
     goodDesc: { en: 'You\'re on the right track. Keep practicing!', pl: 'Jesteś na dobrej drodze. Ćwicz dalej!', fr: 'Vous êtes sur la bonne voie. Continuez à pratiquer !', de: 'Du bist auf dem richtigen Weg. Übe weiter!', it: 'Sei sulla strada giusta. Continua a esercitarti!', es: 'Estás en el camino correcto. ¡Sigue practicando!' },
     summary: { en: 'Summary', pl: 'Podsumowanie', fr: 'Résumé', de: 'Zusammenfassung', it: 'Riepilogo', es: 'Resumen' },
@@ -53,8 +55,8 @@ export default function DemoQuizResults({ onRestart }: DemoQuizResultsProps) {
         <Card className="w-full max-w-lg shadow-2xl">
             <CardHeader className="items-center text-center pb-4">
                 <Brain className="h-16 w-16 text-muted-foreground" />
-                <CardTitle className="text-3xl font-bold">{getUIText('goodTitle')}</CardTitle>
-                <CardDescription>{getUIText('goodDesc')}</CardDescription>
+                <CardTitle className="text-3xl font-bold">{getUIText('greatTitle')}</CardTitle>
+                <CardDescription>{getUIText('greatDesc')}</CardDescription>
             </CardHeader>
 
             <CardContent className="space-y-4">
@@ -64,17 +66,17 @@ export default function DemoQuizResults({ onRestart }: DemoQuizResultsProps) {
                     </CardHeader>
                     <CardContent className="grid grid-cols-2 gap-4 text-center">
                         <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background">
-                            <span className="text-2xl font-bold">1 / 2</span>
+                            <span className="text-2xl font-bold">2 / 3</span>
                             <span className="text-xs text-muted-foreground">{getUIText('score')}</span>
                         </div>
                         <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background">
-                            <span className="text-2xl font-bold">50%</span>
+                            <span className="text-2xl font-bold">67%</span>
                             <span className="text-xs text-muted-foreground">{getUIText('accuracy')}</span>
                         </div>
                         <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background">
                             <div className="flex items-center gap-2">
                                 <CheckCircle className="h-4 w-4 text-success"/>
-                                <span className="text-2xl font-bold">1</span>
+                                <span className="text-2xl font-bold">2</span>
                             </div>
                             <span className="text-xs text-muted-foreground">{getUIText('correct')}</span>
                         </div>
@@ -88,7 +90,7 @@ export default function DemoQuizResults({ onRestart }: DemoQuizResultsProps) {
                         <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background col-span-2">
                              <div className="flex items-center gap-2">
                                 <Clock className="h-4 w-4 text-muted-foreground"/>
-                                <span className="text-2xl font-bold">00:42</span>
+                                <span className="text-2xl font-bold">01:15</span>
                             </div>
                             <span className="text-xs text-muted-foreground">{getUIText('totalTime')}</span>
                         </div>

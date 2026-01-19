@@ -274,6 +274,7 @@ export default function QuizEnPl() {
             totalQuestions={questions.length}
             totalTime={totalTime}
             sessionErrors={sessionErrors}
+            quizName={QUIZ_NAME}
             onRestart={restartTest}
         />
     );

@@ -43,11 +43,11 @@ export default function DictionaryPage({ title, backHref, words, children }: Dic
                 
                 timeouts.push(setTimeout(() => {
                     setFavorites(current => Array.from(new Set([...current, 'apricot'])));
-                }, 1000));
+                }, 2000));
                 
                 timeouts.push(setTimeout(() => {
                     setFavorites(current => Array.from(new Set([...current, 'olive'])));
-                }, 2000));
+                }, 4000));
             } else {
                 setFavorites(realFavorites);
             }
@@ -162,8 +162,11 @@ export default function DictionaryPage({ title, backHref, words, children }: Dic
             </CardHeader>
             <CardContent>
                 <ScrollArea className="h-96 w-full pr-4">
-                    <div className="flex flex-col" data-tutorial-id="dictionary-word-list">
-                       {renderedItems}
+                    <div className="flex flex-col">
+                       <div data-tutorial-id="dictionary-word-list">
+                           {renderedItems.slice(0, 3)}
+                       </div>
+                       {renderedItems.slice(3)}
                     </div>
                 </ScrollArea>
             </CardContent>

@@ -193,6 +193,72 @@ const extendedSteps: Step[] = [
     },
 ];
 
+const quizSteps: Step[] = [
+    {
+        path: '/tutorial/quiz/demo',
+        elementId: 'quiz-timer',
+        title: 'Czas na odpowiedź',
+        description: 'Masz 15 sekund na każdą odpowiedź. Pasek postępu pokazuje, ile czasu pozostało. Nie marnuj go!',
+        bubblePosition: 'bottom',
+    },
+    {
+        path: '/tutorial/quiz/demo',
+        elementId: 'quiz-pause-button',
+        title: 'Potrzebujesz przerwy?',
+        description: 'Kliknij pauzę, aby zatrzymać czas. Pamiętaj jednak, że wznowienie quizu kosztuje 5 sekund!',
+        bubblePosition: 'top'
+    },
+    {
+        path: '/tutorial/quiz/demo',
+        elementId: 'quiz-correct-answer',
+        title: 'Poprawna odpowiedź',
+        description: 'Świetnie! Poprawna odpowiedź zostanie podświetlona na zielono. Po chwili automatycznie przejdziesz do następnego pytania.',
+        bubblePosition: 'bottom',
+    },
+    {
+        path: '/tutorial/quiz/demo',
+        elementId: 'quiz-iv-translation',
+        title: 'Pytania wieloetapowe',
+        description: 'Niektóre pytania, jak te o czasowniki nieregularne, mają dwa etapy. Najpierw wybierz poprawne tłumaczenie.',
+        bubblePosition: 'top'
+    },
+     {
+        path: '/tutorial/quiz/demo',
+        elementId: 'quiz-iv-forms',
+        title: 'Uzupełnij formy',
+        description: 'Następnie wpisz brakujące formy czasownika i kliknij "Potwierdź", aby sprawdzić swoją odpowiedź.',
+        bubblePosition: 'bottom'
+    },
+    {
+        path: '/tutorial/quiz/demo',
+        elementId: 'quiz-incorrect-answer',
+        title: 'Błędna odpowiedź',
+        description: 'Nie martw się! Twoja błędna odpowiedź podświetli się na czerwono, a prawidłowa — na zielono. Każdy błąd to okazja do nauki!',
+        bubblePosition: 'top'
+    },
+    {
+        path: '/tutorial/quiz/demo',
+        elementId: 'quiz-results-summary',
+        title: 'Podsumowanie wyników',
+        description: 'Po zakończeniu quizu zobaczysz swoje statystyki. Sprawdź, jak Ci poszło!',
+        bubblePosition: 'bottom',
+    },
+    {
+        path: '/tutorial/quiz/demo',
+        elementId: 'quiz-results-errors',
+        title: 'Przejrzyj błędy',
+        description: 'Wszystkie błędne odpowiedzi z sesji są tutaj. Przeanalizuj je, aby uniknąć ich w przyszłości.',
+        bubblePosition: 'top'
+    },
+    {
+        path: '/tutorial/quiz/demo',
+        elementId: 'quiz-results-actions',
+        title: 'Co dalej?',
+        description: 'Możesz zagrać ponownie, wrócić do menu lub przejrzeć wszystkie swoje błędy w dedykowanej sekcji.',
+        bubblePosition: 'top'
+    },
+];
+
 
 const uiTexts = {
     next: 'Dalej',
@@ -216,8 +282,8 @@ export default function OnboardingTutorial() {
     const stage = tutorialState?.stage || 'initial';
     const currentStepIndex = tutorialState?.step || 0;
     
-    const steps = stage === 'initial' ? initialSteps : extendedSteps;
-    const currentStep = (stage === 'decision' || stage === 'quiz') ? null : steps[currentStepIndex];
+    const steps = stage === 'initial' ? initialSteps : stage === 'extended' ? extendedSteps : quizSteps;
+    const currentStep = (stage === 'decision') ? null : steps[currentStepIndex];
 
     useEffect(() => {
         if (!currentStep || currentStep.isModal || !currentStep.elementId) {
@@ -247,7 +313,7 @@ export default function OnboardingTutorial() {
                     transition: 'all 0.3s ease-in-out',
                 });
 
-                const bubbleHeight = 150; 
+                const bubbleHeight = stage === 'quiz' && currentStepIndex === 1 ? 170 : 150; 
                 const bubbleWidth = 256; 
                 let bubbleTop;
                 let bubbleLeft = rect.left + rect.width / 2 - bubbleWidth / 2;
@@ -306,7 +372,7 @@ export default function OnboardingTutorial() {
             clearTimeout(timeoutId);
             window.removeEventListener('resize', findAndPosition);
         };
-    }, [currentStep, pathname]);
+    }, [currentStep, pathname, stage, currentStepIndex]);
 
 
     const handleNext = () => {
@@ -318,6 +384,11 @@ export default function OnboardingTutorial() {
         
         if (stage === 'extended' && nextStepIndex >= steps.length) {
             saveTutorialState({ isActive: true, stage: 'decision', step: 1 });
+            return;
+        }
+        
+        if (stage === 'quiz' && nextStepIndex >= steps.length) {
+            saveTutorialState({ isActive: true, stage: 'decision', step: -1 });
             return;
         }
 
@@ -341,7 +412,10 @@ export default function OnboardingTutorial() {
     }
 
     const handleStartTest = () => {
-        router.push('/tutorial/quiz/demo');
+        const firstQuizStep = quizSteps[0];
+        if (firstQuizStep.path !== pathname) {
+            router.push(firstQuizStep.path!);
+        }
         saveTutorialState({ isActive: true, stage: 'quiz', step: 0 });
     }
 
@@ -425,13 +499,12 @@ export default function OnboardingTutorial() {
     
     if (!currentStep) return null;
 
-    const isLastStep = currentStepIndex === steps.length - 1;
+    const isFinalStep = stage === 'quiz' && currentStepIndex === steps.length - 1;
 
     return (
-        <div className="fixed inset-0 z-[100] pointer-events-none">
-            <div className="absolute inset-0 bg-black/60" />
+        <div className="fixed inset-0 z-[100]">
             <div
-                className="absolute border-2 border-white rounded-md transition-all duration-300 pointer-events-auto"
+                className="absolute rounded-md border-2 border-white tutorial-spotlight transition-all duration-300 pointer-events-none"
                 style={spotlightStyle}
             />
             <div
@@ -442,10 +515,10 @@ export default function OnboardingTutorial() {
                 <p className="text-sm text-muted-foreground mb-4" dangerouslySetInnerHTML={{ __html: currentStep.description.replace(/ ([a-zA-Z])\s/g, ' $1\u00A0') }} />
                 <div className="flex justify-between items-center">
                     <span className="text-xs text-muted-foreground">
-                        {stage === 'initial' ? currentStepIndex + 1 : initialSteps.length + currentStepIndex + 1} / {initialSteps.length + extendedSteps.length + 8}
+                        {stage === 'initial' ? currentStepIndex + 1 : (stage === 'extended' ? initialSteps.length + currentStepIndex + 1 : initialSteps.length + extendedSteps.length + currentStepIndex + 1)} / {initialSteps.length + extendedSteps.length + quizSteps.length}
                     </span>
                     <Button onClick={handleNext} size="sm">
-                        {stage === 'extended' && isLastStep ? uiTexts.finish : uiTexts.next}
+                        {isFinalStep ? uiTexts.finish : uiTexts.next}
                     </Button>
                 </div>
             </div>

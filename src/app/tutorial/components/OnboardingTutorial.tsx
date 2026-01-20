@@ -14,7 +14,6 @@ interface Step {
     isModal?: boolean;
     bubblePosition?: 'top' | 'bottom';
     action?: 'open-extras' | 'expand-first-item';
-    interactive?: boolean;
 }
 
 const tutorialBubbleOffsets: { [key: string]: number } = {
@@ -45,9 +44,9 @@ const tutorialBubbleOffsets: { [key: string]: number } = {
     'phonetics-first-item': 0,    // Slajd 25
     'quiz-timer': 0,              // Slajd 26
     'quiz-pause-button': 0,       // Slajd 27
-    'quiz-correct-answer': -520,     // Slajd 28
-    'quiz-incorrect-answer': 42,   // Slajd 29
-    'quiz-results-summary': -500,    // Slajd 30
+    'quiz-correct-answer-feedback': -520, // Slajd 28
+    'quiz-incorrect-answer-feedback': 42, // Slajd 29
+    'quiz-results-summary': -520,    // Slajd 30
     'quiz-results-errors': 22,     // Slajd 31
     'quiz-results-actions': 40,    // Slajd 32
 };
@@ -232,56 +231,50 @@ const extendedSteps: Step[] = [
 ];
 
 const quizSteps: Step[] = [
-    { // step 0 (slide 26)
-        path: '/tutorial/quiz-demo',
+    {
+        path: '/tutorial/quiz-question1',
         elementId: 'quiz-timer',
         title: 'Czas na odpowiedź',
         description: 'Masz 15 sekund na każdą odpowiedź. Pasek postępu pokazuje, ile czasu pozostało. Nie marnuj go!',
         bubblePosition: 'bottom',
     },
-    { // step 1 (slide 27)
-        path: '/tutorial/quiz-demo',
+    {
+        path: '/tutorial/quiz-question1',
         elementId: 'quiz-pause-button',
         title: 'Potrzebujesz przerwy?',
         description: 'Kliknij pauzę, aby zatrzymać czas. Pamiętaj jednak, że wznowienie quizu kosztuje 5 sekund!',
         bubblePosition: 'top'
     },
-    { // step 2 - INTERACTIVE
-        path: '/tutorial/quiz-demo',
-        interactive: true,
-        title: '',
-        description: ''
-    },
-    { // step 3 (slide 28)
-        path: '/tutorial/quiz-demo',
-        elementId: 'quiz-correct-answer',
+    {
+        path: '/tutorial/quiz-correct',
+        elementId: 'quiz-correct-answer-feedback',
         title: 'Poprawna odpowiedź',
         description: 'Świetnie! Poprawna odpowiedź zostanie podświetlona na zielono. Po chwili automatycznie przejdziesz do następnego pytania.',
         bubblePosition: 'bottom',
     },
-    { // step 4 (slide 29)
-        path: '/tutorial/quiz-demo',
-        elementId: 'quiz-incorrect-answer',
+    {
+        path: '/tutorial/quiz-incorrect',
+        elementId: 'quiz-incorrect-answer-feedback',
         title: 'Błędna odpowiedź',
         description: 'Nie martw się! Twoja błędna odpowiedź podświetli się na czerwono, a prawidłowa — na zielono. Każdy błąd to okazja do nauki!',
         bubblePosition: 'top'
     },
-    { // step 5 (slide 30)
-        path: '/tutorial/quiz-demo',
+    {
+        path: '/tutorial/quiz-results',
         elementId: 'quiz-results-summary',
         title: 'Podsumowanie wyników',
         description: 'Po zakończeniu quizu zobaczysz swoje statystyki. Sprawdź, jak Ci poszło!',
         bubblePosition: 'bottom',
     },
-    { // step 6 (slide 31)
-        path: '/tutorial/quiz-demo',
+    {
+        path: '/tutorial/quiz-results',
         elementId: 'quiz-results-errors',
         title: 'Przegląd błędów',
         description: 'Wszystkie błędne odpowiedzi z sesji są tutaj. Przeanalizuj je, aby uniknąć ich w przyszłości.',
         bubblePosition: 'top'
     },
-    { // step 7 (slide 32)
-        path: '/tutorial/quiz-demo',
+    {
+        path: '/tutorial/quiz-results',
         elementId: 'quiz-results-actions',
         title: 'Co dalej?',
         description: 'Możesz zagrać ponownie, wrócić do menu lub przejrzeć wszystkie swoje błędy w dedykowanej sekcji.',
@@ -314,9 +307,9 @@ export default function OnboardingTutorial() {
     
     const steps = stage === 'initial' ? initialSteps : stage === 'extended' ? extendedSteps : quizSteps;
     const currentStep = (stage === 'decision') ? null : steps[currentStepIndex];
-
+    
     useEffect(() => {
-        if (!currentStep || stage === 'decision') return;
+        if (!currentStep) return;
 
         const getStepPath = (index: number) => {
             if (index >= 0 && index < steps.length) {
@@ -338,7 +331,7 @@ export default function OnboardingTutorial() {
     }, [currentStepIndex, stage, steps, router, pathname, currentStep]);
 
     useEffect(() => {
-        if (!currentStep || currentStep.isModal || !currentStep.elementId || currentStep.interactive) {
+        if (!currentStep || currentStep.isModal || !currentStep.elementId) {
             setSpotlightStyle({ opacity: 0 });
             setBubbleStyle({ opacity: 0 });
             return;
@@ -431,12 +424,6 @@ export default function OnboardingTutorial() {
 
     const handleNext = () => {
         const nextStepIndex = currentStepIndex + 1;
-        
-        if (stage === 'quiz' && (currentStepIndex === 3 || currentStepIndex === 4)) {
-            // After correct/incorrect answer bubble, go back to interactive step
-            saveTutorialState({ isActive: true, stage, step: 2 });
-            return;
-        }
 
         if (stage === 'initial' && nextStepIndex >= steps.length) {
             saveTutorialState({ isActive: true, stage: 'decision', step: 0 });
@@ -448,10 +435,8 @@ export default function OnboardingTutorial() {
             return;
         }
         
-        const isFinalStep = stage === 'quiz' && nextStepIndex >= steps.length;
-        if (isFinalStep) {
-            clearTutorialState();
-            router.push('/');
+        if (stage === 'quiz' && nextStepIndex >= steps.length) {
+            saveTutorialState({ isActive: true, stage: 'decision', step: -1 });
             return;
         }
 
@@ -478,6 +463,9 @@ export default function OnboardingTutorial() {
 
     const handleFinish = () => {
         clearTutorialState();
+        if (pathname.startsWith('/tutorial')) {
+          router.push('/');
+        }
     };
     
     const handleShowMore = () => {
@@ -498,10 +486,6 @@ export default function OnboardingTutorial() {
 
     if (!tutorialState?.isActive) return null;
     
-    if (currentStep?.interactive) {
-        return null;
-    }
-
     const renderModalContent = () => {
       if (stage === 'initial' && currentStepIndex === 0) {
         return (
@@ -583,9 +567,8 @@ export default function OnboardingTutorial() {
     const isFinalStep = stage === 'quiz' && currentStepIndex === steps.length - 1;
     
     const totalInitialBubbleSteps = initialSteps.filter(s => !s.isModal).length;
-    const interactiveQuizStepsCount = quizSteps.filter(s => s.interactive).length;
     const totalExtendedSteps = extendedSteps.length;
-    const totalQuizBubbleSteps = quizSteps.length - interactiveQuizStepsCount;
+    const totalQuizBubbleSteps = quizSteps.length;
     const totalOverallBubbleSteps = totalInitialBubbleSteps + totalExtendedSteps + totalQuizBubbleSteps;
 
     let currentStepDisplay: number = 0;
@@ -597,8 +580,7 @@ export default function OnboardingTutorial() {
     } else if (stage === 'extended') {
         currentStepDisplay = totalInitialBubbleSteps + currentStepIndex + 1;
     } else if (stage === 'quiz') {
-        const quizBubbleSteps = quizSteps.slice(0, currentStepIndex).filter(s => !s.interactive);
-        currentStepDisplay = totalInitialBubbleSteps + totalExtendedSteps + quizBubbleSteps.length + 1;
+        currentStepDisplay = totalInitialBubbleSteps + totalExtendedSteps + currentStepIndex + 1;
     }
 
 
@@ -629,7 +611,7 @@ export default function OnboardingTutorial() {
                             {stage === 'initial' ? `${currentStepDisplay}/${totalStepsDisplay}` : `${currentStepDisplay}/${totalOverallBubbleSteps}`}
                         </span>
                     </div>
-                    <Button onClick={handleNext} size="sm">
+                    <Button onClick={isFinalStep ? handleFinish : handleNext} size="sm">
                         {isFinalStep ? uiTexts.finish : uiTexts.next}
                     </Button>
                 </div>
@@ -637,5 +619,3 @@ export default function OnboardingTutorial() {
         </div>
     );
 }
-
-    

@@ -16,8 +16,12 @@ const question = {
     correctAnswer: 'Cześć'
 };
 
+const QUESTION_TIME_LIMIT = 15;
+
 export default function QuizCorrectPage() {
     const [activeStep, setActiveStep] = useState<number | null>(null);
+    const [questionTimer, setQuestionTimer] = useState(QUESTION_TIME_LIMIT);
+    const [totalTime, setTotalTime] = useState(0);
 
     useEffect(() => {
         const updateStep = () => {
@@ -30,6 +34,20 @@ export default function QuizCorrectPage() {
         updateStep();
         return () => window.removeEventListener('tutorial-state-changed', updateStep);
     }, []);
+
+    useEffect(() => {
+        let interval: NodeJS.Timeout;
+        if (activeStep === 0) { // Only animate for Slide 27
+            interval = setInterval(() => {
+                setQuestionTimer(prev => (prev > 0 ? prev - 1 : QUESTION_TIME_LIMIT));
+                setTotalTime(prev => prev + 1);
+            }, 1000);
+        } else {
+            setQuestionTimer(QUESTION_TIME_LIMIT);
+            setTotalTime(0);
+        }
+        return () => clearInterval(interval);
+    }, [activeStep]);
     
     const formatTime = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);
@@ -37,8 +55,14 @@ export default function QuizCorrectPage() {
         return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
     };
 
+    const isAnswerView = activeStep === 2; // This is Slide 29
+    
+    const displayTimer = activeStep === 0 ? questionTimer : isAnswerView ? 11 : 15;
+    const displayTotalTime = activeStep === 0 ? totalTime : isAnswerView ? 4 : 0;
+    const questionTimeProgress = (displayTimer / QUESTION_TIME_LIMIT) * 100;
+    
     const getButtonClass = (option: string) => {
-        if (activeStep === 2) {
+        if (isAnswerView) {
             const isCorrectAnswer = option === question.correctAnswer;
             if (isCorrectAnswer) {
                 return "bg-success text-success-foreground hover:bg-success/90";
@@ -47,10 +71,9 @@ export default function QuizCorrectPage() {
         }
         return "bg-primary text-primary-foreground";
     };
-    
-    const isAnswerView = activeStep === 2;
-    const timer = isAnswerView ? 11 : 15;
-    const totalTime = isAnswerView ? 4 : 0;
+
+    const overallProgress = isAnswerView ? 100 : 50;
+    const score = isAnswerView ? 1 : 0;
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -69,14 +92,14 @@ export default function QuizCorrectPage() {
                         <div className="w-full flex justify-around gap-4 text-center">
                             <div className="flex items-center gap-2">
                                 <Clock className="h-6 w-6" />
-                                <span className="text-2xl font-bold">{timer}s</span>
+                                <span className="text-2xl font-bold">{displayTimer}s</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <Clock className="h-6 w-6" />
-                                <span className="text-2xl font-bold">{formatTime(totalTime)}</span>
+                                <span className="text-2xl font-bold">{formatTime(displayTotalTime)}</span>
                             </div>
                         </div>
-                        <Progress value={(timer / 15) * 100} className="w-full h-2" />
+                        <Progress value={questionTimeProgress} className="w-full h-2" />
                     </div>
                     <div className="text-center space-y-2">
                         <p className="text-muted-foreground">What is the Polish meaning of</p>
@@ -113,10 +136,10 @@ export default function QuizCorrectPage() {
                         </div>
                         <div className="flex items-center gap-2">
                             <span className="text-sm font-medium">Punkty:</span>
-                            <div className="text-2xl font-bold text-primary">{isAnswerView ? 1 : 0}</div>
+                            <div className="text-2xl font-bold text-primary">{score}</div>
                         </div>
                     </div>
-                    <Progress value={isAnswerView ? 100 : 50} className="w-full h-2" />
+                    <Progress value={overallProgress} className="w-full h-2" />
                 </CardFooter>
             </Card>
         </main>

@@ -335,15 +335,17 @@ export default function OnboardingTutorial() {
     useEffect(() => {
         if (!currentStep) return;
 
-        const getStepPath = (index: number) => {
-            if (index >= 0 && index < steps.length) {
-                return steps[index].path;
+        // Prefetching logic
+        const getStepPath = (index: number, currentStage: typeof stage) => {
+            const stageSteps = currentStage === 'initial' ? initialSteps : currentStage === 'extended' ? extendedSteps : quizSteps;
+            if (index >= 0 && index < stageSteps.length) {
+                return stageSteps[index].path;
             }
             return null;
         };
 
-        const nextPath = getStepPath(currentStepIndex + 1);
-        const prevPath = getStepPath(currentStepIndex - 1);
+        const nextPath = getStepPath(currentStepIndex + 1, stage);
+        const prevPath = getStepPath(currentStepIndex - 1, stage);
 
         if (nextPath && nextPath !== pathname) {
             router.prefetch(nextPath);
@@ -352,7 +354,12 @@ export default function OnboardingTutorial() {
             router.prefetch(prevPath);
         }
 
-    }, [currentStepIndex, stage, steps, router, pathname, currentStep]);
+        // Reactive navigation
+        if (currentStep.path && pathname && currentStep.path !== pathname) {
+            router.push(currentStep.path);
+        }
+
+    }, [currentStepIndex, stage, router, pathname, currentStep, steps]);
 
     useEffect(() => {
         if (!currentStep || currentStep.isModal || !currentStep.elementId) {
@@ -443,7 +450,7 @@ export default function OnboardingTutorial() {
             clearTimeout(timeoutId);
             window.removeEventListener('resize', findAndPosition);
         };
-    }, [currentStep, pathname, stage, currentStepIndex]);
+    }, [currentStep, pathname]);
 
 
     const handleNext = () => {
@@ -464,10 +471,6 @@ export default function OnboardingTutorial() {
             return;
         }
 
-        const nextStep = steps[nextStepIndex];
-        if (nextStep?.path && nextStep.path !== pathname) {
-            router.push(nextStep.path);
-        }
         saveTutorialState({ isActive: true, stage, step: nextStepIndex });
     };
 
@@ -476,11 +479,6 @@ export default function OnboardingTutorial() {
         if (stage === 'initial' && prevStepIndex < 1) return;
         if (prevStepIndex < 0) return;
 
-        const prevStep = steps[prevStepIndex];
-
-        if (prevStep?.path && prevStep.path !== pathname) {
-            router.push(prevStep.path);
-        }
         saveTutorialState({ isActive: true, stage, step: prevStepIndex });
     };
 
@@ -493,18 +491,10 @@ export default function OnboardingTutorial() {
     };
     
     const handleShowMore = () => {
-        const firstExtendedStep = extendedSteps[0];
-        if (firstExtendedStep.path !== pathname) {
-            router.push(firstExtendedStep.path!);
-        }
         saveTutorialState({ isActive: true, stage: 'extended', step: 0 });
     }
 
     const handleStartTest = () => {
-        const firstQuizStep = quizSteps[0];
-        if (firstQuizStep.path !== pathname) {
-            router.push(firstQuizStep.path!);
-        }
         saveTutorialState({ isActive: true, stage: 'quiz', step: 0 });
     }
 

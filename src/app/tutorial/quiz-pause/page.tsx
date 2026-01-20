@@ -13,9 +13,11 @@ const question = {
     correctAnswer: 'Cześć'
 };
 
+const QUESTION_TIME_LIMIT = 15;
+
 export default function QuizPausePage() {
     const questionTimer = 10;
-    const totalTime = 5;
+    const totalTime = 86; // 1 minute 26 seconds
     
     const formatTime = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);
@@ -47,7 +49,7 @@ export default function QuizPausePage() {
                                 <span className="text-2xl font-bold">{formatTime(totalTime)}</span>
                             </div>
                         </div>
-                        <Progress value={(questionTimer / 15) * 100} className="w-full h-2" />
+                        <Progress value={(questionTimer / QUESTION_TIME_LIMIT) * 100} className="w-full h-2" />
                     </div>
                     <div className="text-center space-y-2">
                         <p className="text-muted-foreground">What is the Polish meaning of</p>

@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -48,7 +47,7 @@ const tutorialBubbleOffsets: { [key: string]: number } = {
     'quiz-pause-button': 0,       // Slajd 27
     'quiz-correct-answer': -520,     // Slajd 28
     'quiz-incorrect-answer': 42,   // Slajd 29
-    'quiz-results-summary': -520,    // Slajd 30
+    'quiz-results-summary': -500,    // Slajd 30
     'quiz-results-errors': 22,     // Slajd 31
     'quiz-results-actions': 40,    // Slajd 32
 };
@@ -317,6 +316,28 @@ export default function OnboardingTutorial() {
     const currentStep = (stage === 'decision') ? null : steps[currentStepIndex];
 
     useEffect(() => {
+        if (!currentStep || stage === 'decision') return;
+
+        const getStepPath = (index: number) => {
+            if (index >= 0 && index < steps.length) {
+                return steps[index].path;
+            }
+            return null;
+        };
+
+        const nextPath = getStepPath(currentStepIndex + 1);
+        const prevPath = getStepPath(currentStepIndex - 1);
+
+        if (nextPath && nextPath !== pathname) {
+            router.prefetch(nextPath);
+        }
+        if (prevPath && prevPath !== pathname) {
+            router.prefetch(prevPath);
+        }
+
+    }, [currentStepIndex, stage, steps, router, pathname, currentStep]);
+
+    useEffect(() => {
         if (!currentStep || currentStep.isModal || !currentStep.elementId || currentStep.interactive) {
             setSpotlightStyle({ opacity: 0 });
             setBubbleStyle({ opacity: 0 });
@@ -427,8 +448,10 @@ export default function OnboardingTutorial() {
             return;
         }
         
-        if (stage === 'quiz' && nextStepIndex >= steps.length) {
-            saveTutorialState({ isActive: true, stage: 'decision', step: -1 });
+        const isFinalStep = stage === 'quiz' && nextStepIndex >= steps.length;
+        if (isFinalStep) {
+            clearTutorialState();
+            router.push('/');
             return;
         }
 
@@ -455,11 +478,6 @@ export default function OnboardingTutorial() {
 
     const handleFinish = () => {
         clearTutorialState();
-    };
-
-    const handleFinalStepAndRedirect = () => {
-        clearTutorialState();
-        router.push('/');
     };
     
     const handleShowMore = () => {
@@ -611,7 +629,7 @@ export default function OnboardingTutorial() {
                             {stage === 'initial' ? `${currentStepDisplay}/${totalStepsDisplay}` : `${currentStepDisplay}/${totalOverallBubbleSteps}`}
                         </span>
                     </div>
-                    <Button onClick={isFinalStep ? handleFinalStepAndRedirect : handleNext} size="sm">
+                    <Button onClick={handleNext} size="sm">
                         {isFinalStep ? uiTexts.finish : uiTexts.next}
                     </Button>
                 </div>
@@ -620,3 +638,4 @@ export default function OnboardingTutorial() {
     );
 }
 
+    

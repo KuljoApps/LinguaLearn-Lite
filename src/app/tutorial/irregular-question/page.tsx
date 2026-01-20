@@ -49,7 +49,7 @@ export default function IrregularVerbQuizPage() {
 
     useEffect(() => {
         let timeoutId: NodeJS.Timeout;
-        if (activeStep === 5) { // Animation for slide 32
+        if (activeStep === 5) { // Animation for slide 31
             setShowHint(false);
             setForm2Input('');
             setForm3Input('');
@@ -65,7 +65,7 @@ export default function IrregularVerbQuizPage() {
                 setForm3Class('bg-destructive text-destructive-foreground');
             };
             animate();
-        } else if (activeStep === 6) { // Hint for slide 33
+        } else if (activeStep === 6) { // Hint for slide 32
             setForm2Input('was');
             setForm3Input('beed');
             setForm2Class('');
@@ -100,20 +100,21 @@ export default function IrregularVerbQuizPage() {
                         <Progress value={100} className="w-full h-2" />
                     </div>
 
-                    <div className="text-center space-y-2">
-                        <p className="text-muted-foreground">Czasownik nieregularny:</p>
-                        <p className="text-4xl font-headline font-bold">"{question.verb}"</p>
-                    </div>
-
                     <div className="w-full space-y-4">
-                        <div data-tutorial-id="irregular-quiz-part1">
-                            <p className="text-center text-muted-foreground">1. Wybierz poprawne tłumaczenie</p>
-                            <div className="grid grid-cols-3 gap-2 w-full mt-2">
-                                {question.translationOptions.map((option) => (
-                                    <Button key={option} disabled className={cn("h-auto text-base p-2", option === question.correctTranslation ? 'bg-success text-success-foreground' : 'bg-primary text-primary-foreground opacity-50')}>
-                                        {option}
-                                    </Button>
-                                ))}
+                         <div data-tutorial-id="irregular-quiz-part1" className="text-center space-y-4">
+                            <div className="space-y-2">
+                                <p className="text-muted-foreground">Czasownik nieregularny:</p>
+                                <p className="text-4xl font-headline font-bold">"{question.verb}"</p>
+                            </div>
+                            <div className="w-full">
+                                <p className="text-center text-muted-foreground">1. Wybierz poprawne tłumaczenie</p>
+                                <div className="grid grid-cols-3 gap-2 w-full mt-2">
+                                    {question.translationOptions.map((option) => (
+                                        <Button key={option} disabled className={cn("h-auto text-base p-2", option === question.correctTranslation ? 'bg-success text-success-foreground' : 'bg-primary text-primary-foreground opacity-50')}>
+                                            {option}
+                                        </Button>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                         <div className="pt-4" data-tutorial-id="irregular-quiz-part2">
@@ -128,9 +129,9 @@ export default function IrregularVerbQuizPage() {
                             {showHint && (
                                 <div className="animate-in fade-in">
                                     <p className="text-success font-medium">
-                                        Poprawne formy: {question.correctForm2}
+                                        Poprawne formy: {question.correctForm2}, {question.correctForm3}
                                     </p>
-                                    <p className="text-xs text-muted-foreground mt-1">Jeżeli czasownik ma dwie formy, każda z nich jest zaliczana.</p>
+                                    <div className="text-xs text-muted-foreground mt-1">Jeżeli czasownik ma dwie formy, każda z nich jest zaliczana.</div>
                                 </div>
                             )}
                         </div>

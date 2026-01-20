@@ -43,7 +43,7 @@ const tutorialBubbleOffsets: { [key: string]: number } = {
     'phonetics-difficult': 36,
     'phonetics-first-item': 0,
     'quiz-timer': 0,
-    'quiz-pause-button': 0,
+    'quiz-pause-button': 16,
     'quiz-correct-answer': 42,
     'quiz-incorrect-answer': 42,
     'irregular-quiz-part1': 0,

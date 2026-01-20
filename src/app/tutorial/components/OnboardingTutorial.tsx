@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -455,6 +456,11 @@ export default function OnboardingTutorial() {
     const handleFinish = () => {
         clearTutorialState();
     };
+
+    const handleFinalStepAndRedirect = () => {
+        clearTutorialState();
+        router.push('/');
+    };
     
     const handleShowMore = () => {
         const firstExtendedStep = extendedSteps[0];
@@ -571,7 +577,7 @@ export default function OnboardingTutorial() {
         currentStepDisplay = currentStepIndex;
         totalStepsDisplay = totalInitialBubbleSteps;
     } else if (stage === 'extended') {
-        currentStepDisplay = totalInitialBubbleSteps + currentStepIndex;
+        currentStepDisplay = totalInitialBubbleSteps + currentStepIndex + 1;
     } else if (stage === 'quiz') {
         const quizBubbleSteps = quizSteps.slice(0, currentStepIndex).filter(s => !s.interactive);
         currentStepDisplay = totalInitialBubbleSteps + totalExtendedSteps + quizBubbleSteps.length + 1;
@@ -605,7 +611,7 @@ export default function OnboardingTutorial() {
                             {stage === 'initial' ? `${currentStepDisplay}/${totalStepsDisplay}` : `${currentStepDisplay}/${totalOverallBubbleSteps}`}
                         </span>
                     </div>
-                    <Button onClick={handleNext} size="sm">
+                    <Button onClick={isFinalStep ? handleFinalStepAndRedirect : handleNext} size="sm">
                         {isFinalStep ? uiTexts.finish : uiTexts.next}
                     </Button>
                 </div>
@@ -613,3 +619,4 @@ export default function OnboardingTutorial() {
         </div>
     );
 }
+

@@ -48,7 +48,7 @@ const tutorialBubbleOffsets: { [key: string]: number } = {
     'quiz-incorrect-answer': 42,
     'irregular-quiz-part1': 0,
     'irregular-quiz-part2': -340,
-    'irregular-quiz-hint': 40,
+    'irregular-quiz-hint': 80,
     'quiz-results-summary': 22,
     'quiz-results-errors': 22,
     'quiz-results-actions': 40,
@@ -217,79 +217,87 @@ const extendedSteps: Step[] = [
         bubblePosition: 'bottom'
     },
     { // Slajd 25
-        path: '/tutorial/phonetics-basics',
+        path: '/tutorial/phonetics',
         elementId: 'phonetics-difficult',
         title: 'Trudne dźwięki',
         description: 'Tutaj znajdziesz przykłady słów i zwrotów, które często sprawiają trudność. Ćwicz je, aby brzmieć jak native speaker!',
         bubblePosition: 'top',
     },
+    { // Slajd 26
+        path: '/tutorial/phonetics-basics',
+        elementId: 'phonetics-first-item',
+        title: 'Odsłuchiwanie wymowy',
+        description: 'Kliknij na ikonę głośnika <span class="inline-block h-4 w-4 align-middle text-deep-purple mx-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg></span>, aby usłyszeć poprawną wymowę. Możesz też rozwinąć każdy element, aby zobaczyć tłumaczenie i zapis fonetyczny.',
+        action: 'expand-first-item',
+        bubblePosition: 'bottom',
+    },
 ];
 
 const quizSteps: Step[] = [
-    { // step 0 (Slajd 26)
+    { // step 0 (Slajd 27)
         path: '/tutorial/quiz-correct',
         elementId: 'quiz-timer',
         title: 'Czas na odpowiedź',
         description: 'Masz 15 sekund na każdą odpowiedź. Pasek postępu pokazuje, ile czasu pozostało. Nie marnuj go!',
         bubblePosition: 'bottom',
     },
-    { // step 1 (Slajd 27)
+    { // step 1 (Slajd 28)
         path: '/tutorial/quiz-pause',
         elementId: 'quiz-pause-button',
         title: 'Potrzebujesz przerwy?',
         description: 'Kliknij pauzę, aby zatrzymać czas. Pamiętaj jednak, że wznowienie quizu kosztuje 5 sekund!',
         bubblePosition: 'top'
     },
-    { // step 2 (Slajd 28)
+    { // step 2 (Slajd 29)
         path: '/tutorial/quiz-correct',
         elementId: 'quiz-correct-answer',
         title: 'Poprawna odpowiedź',
         description: 'Świetnie! Poprawna odpowiedź zostanie podświetlona na zielono. Po chwili automatycznie przejdziesz do następnego pytania.',
         bubblePosition: 'top',
     },
-    { // step 3 (Slajd 29)
+    { // step 3 (Slajd 30)
         path: '/tutorial/quiz-incorrect',
         elementId: 'quiz-incorrect-answer',
         title: 'Błędna odpowiedź',
         description: 'Nie martw się! Twoja błędna odpowiedź podświetli się na czerwono, a prawidłowa — na zielono. Każdy błąd to okazja do nauki!',
         bubblePosition: 'top'
     },
-    { // step 4 (Slajd 30)
+    { // step 4 (Slajd 31)
         path: '/tutorial/irregular-question',
         elementId: 'irregular-quiz-part1',
         title: 'Testy z czasowników',
         description: 'Ten typ quizu ma dłuższy czas na odpowiedź (30s) i sprawdza dwie rzeczy: tłumaczenie oraz znajomość form czasowników nieregularnych.',
         bubblePosition: 'bottom',
     },
-    { // step 5 (Slajd 31)
+    { // step 5 (Slajd 32)
         path: '/tutorial/irregular-question',
         elementId: 'irregular-quiz-part2',
         title: 'Wpisywanie odpowiedzi',
         description: 'Po wybraniu poprawnego tłumaczenia, aktywują się pola do wpisania dwóch pozostałych form czasownika. Zobaczmy, jak to działa.',
         bubblePosition: 'bottom',
     },
-    { // step 6 (Slajd 32)
+    { // step 6 (Slajd 33)
         path: '/tutorial/irregular-question',
         elementId: 'irregular-quiz-hint',
         title: 'Dwie poprawne formy',
         description: 'Gdy wpiszesz błędną odpowiedź, system podświetli ją na czerwono i wskaże poprawną formę. Niektóre czasowniki, jak "be", mają dwie opcje (was/were) - obie są zaliczane jako poprawne!',
         bubblePosition: 'top',
     },
-    { // step 7 (Slajd 33)
+    { // step 7 (Slajd 34)
         path: '/tutorial/quiz-results',
         elementId: 'quiz-results-summary',
         title: 'Podsumowanie wyników',
         description: 'Po zakończeniu quizu zobaczysz swoje statystyki. Sprawdź, jak Ci poszło!',
         bubblePosition: 'bottom',
     },
-    { // step 8 (Slajd 34)
+    { // step 8 (Slajd 35)
         path: '/tutorial/quiz-results',
         elementId: 'quiz-results-errors',
         title: 'Przegląd błędów',
         description: 'Wszystkie błędne odpowiedzi z sesji są tutaj. Przeanalizuj je, aby uniknąć ich w przyszłości.',
         bubblePosition: 'top'
     },
-    { // step 9 (Slajd 35)
+    { // step 9 (Slajd 36)
         path: '/tutorial/quiz-results',
         elementId: 'quiz-results-actions',
         title: 'Co dalej?',

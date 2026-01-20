@@ -15,7 +15,7 @@ const question = {
 
 export default function QuizPausePage() {
     const questionTimer = 10;
-    const totalTime = 86; // 01:26
+    const totalTime = 5;
     
     const formatTime = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);

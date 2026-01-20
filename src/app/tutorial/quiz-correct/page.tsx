@@ -17,8 +17,6 @@ const question = {
 };
 
 export default function QuizCorrectPage() {
-    const [timer, setTimer] = useState(15);
-    const [totalTime, setTotalTime] = useState(0);
     const [activeStep, setActiveStep] = useState<number | null>(null);
 
     useEffect(() => {
@@ -33,21 +31,6 @@ export default function QuizCorrectPage() {
         return () => window.removeEventListener('tutorial-state-changed', updateStep);
     }, []);
     
-    useEffect(() => {
-        let interval: NodeJS.Timeout | undefined;
-        if (activeStep === 0) { // Only animate on slide 26
-            setTotalTime(86); // Start at 01:26
-            interval = setInterval(() => {
-                setTimer(prev => (prev > 0 ? prev - 1 : 15));
-                setTotalTime(prev => prev + 1);
-            }, 1000);
-        } else {
-            setTimer(11);
-            setTotalTime(4);
-        }
-        return () => clearInterval(interval);
-    }, [activeStep]);
-    
     const formatTime = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
@@ -55,7 +38,7 @@ export default function QuizCorrectPage() {
     };
 
     const getButtonClass = (option: string) => {
-        if (activeStep === 2) { // Slide 28, show correct answer
+        if (activeStep === 2) {
             const isCorrectAnswer = option === question.correctAnswer;
             if (isCorrectAnswer) {
                 return "bg-success text-success-foreground hover:bg-success/90";
@@ -65,6 +48,10 @@ export default function QuizCorrectPage() {
         return "bg-primary text-primary-foreground";
     };
     
+    const isAnswerView = activeStep === 2;
+    const timer = isAnswerView ? 11 : 15;
+    const totalTime = isAnswerView ? 4 : 0;
+
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-lg shadow-2xl">
@@ -126,10 +113,10 @@ export default function QuizCorrectPage() {
                         </div>
                         <div className="flex items-center gap-2">
                             <span className="text-sm font-medium">Punkty:</span>
-                            <div className="text-2xl font-bold text-primary">{activeStep === 2 ? 1 : 0}</div>
+                            <div className="text-2xl font-bold text-primary">{isAnswerView ? 1 : 0}</div>
                         </div>
                     </div>
-                    <Progress value={activeStep === 2 ? 100 : 50} className="w-full h-2" />
+                    <Progress value={isAnswerView ? 100 : 50} className="w-full h-2" />
                 </CardFooter>
             </Card>
         </main>

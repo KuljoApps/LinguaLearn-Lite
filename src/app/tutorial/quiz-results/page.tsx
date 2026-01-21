@@ -11,12 +11,12 @@ import { Brain, ThumbsUp, Trophy, Clock, CheckCircle, ShieldX } from 'lucide-rea
 import type { ErrorRecord } from '@/lib/storage';
 
 const fakeSessionErrors = [
-    { word: 'Reliable', userAnswer: 'Religijny', correctAnswer: 'Niezawodny', quiz: 'Demo Quiz' },
+    { word: 'Sympathetic', userAnswer: 'Sympatyczny', correctAnswer: 'Współczujący', quiz: 'Demo Quiz' },
     { word: 'Accomplish', userAnswer: 'Akompaniować', correctAnswer: 'Osiągnąć', quiz: 'Demo Quiz' },
     { word: 'Conscious', userAnswer: 'Sumienny', correctAnswer: 'Świadomy', quiz: 'Demo Quiz' },
     { word: 'Eventually', userAnswer: 'Ewentualnie', correctAnswer: 'Ostatecznie', quiz: 'Demo Quiz' },
     { word: 'Fabric', userAnswer: 'Fabryka', correctAnswer: 'Tkanina', quiz: 'Demo Quiz' },
-    { word: 'Sympathetic', userAnswer: 'Sympatyczny', correctAnswer: 'Współczujący', quiz: 'Demo Quiz' }
+    { word: 'Reliable', userAnswer: 'Religijny', correctAnswer: 'Niezawodny', quiz: 'Demo Quiz' }
 ];
 
 export default function QuizResultsPage() {

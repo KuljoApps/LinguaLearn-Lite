@@ -1,0 +1,19 @@
+// PRZYKŁAD: src/components/achievements.tsx
+
+export default function AchievementsPage() {
+    // ...
+    return (
+        // ...
+        <CardContent>
+             <TooltipProvider>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div data-tutorial-id="achievements-grid" className="...">
+                        {/* ...Elementy siatki osiągnięć... */}
+                    </div>
+                   {/* ...Pozostałe elementy... */}
+                </div>
+            </TooltipProvider>
+        </CardContent>
+        // ...
+    );
+}

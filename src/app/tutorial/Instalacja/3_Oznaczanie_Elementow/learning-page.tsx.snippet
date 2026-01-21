@@ -1,0 +1,31 @@
+// PRZYKŁAD: src/app/learning/en/page.tsx
+
+export default function LearningEnPage() {
+    // ...
+    return (
+        <Card data-tutorial-id="learning-card" className="...">
+            {/* ... */}
+            <CardContent>
+                <Link href="/learning/en/questions" data-tutorial-id="learning-question-base">
+                    <Button>...</Button>
+                </Link>
+
+                <div data-tutorial-id="learning-main-modules" className="...">
+                    {/* Linki do Tenses, Grammar, Phrases, Dictionary */}
+                </div>
+
+                <div data-tutorial-id="learning-extras" className="...">
+                    <Collapsible>
+                        <CollapsibleTrigger asChild>
+                            <Button data-tutorial-id="extras-trigger">...</Button>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                            {/* ...przyciski w sekcji Extras... */}
+                        </CollapsibleContent>
+                    </Collapsible>
+                </div>
+            </CardContent>
+            {/* ... */}
+        </Card>
+    );
+}

@@ -1,0 +1,21 @@
+// PRZYKŁAD: Komponent z wynikami quizu
+
+export default function QuizResults() {
+    // ...
+    return (
+        <Card>
+            {/* ... */}
+            <CardContent>
+                <div data-tutorial-id="quiz-results-summary" className="...">
+                    {/* ...podsumowanie statystyk... */}
+                </div>
+                <div data-tutorial-id="quiz-results-errors" className="...">
+                    {/* ...lista błędów... */}
+                </div>
+            </CardContent>
+            <CardFooter data-tutorial-id="quiz-results-actions" className="...">
+                {/* ...przyciski akcji (zagraj ponownie, wróć)... */}
+            </CardFooter>
+        </Card>
+    );
+}

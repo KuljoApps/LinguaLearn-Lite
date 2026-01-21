@@ -1,0 +1,33 @@
+// src/components/settings.tsx
+
+// --- START TUTORIAL INTEGRATION ---
+import { saveTutorialState } from '@/lib/storage';
+import { useRouter } from "next/navigation";
+import { GraduationCap, /*...inne ikony...*/ } from "lucide-react";
+
+
+export default function SettingsPage() {
+    // ...inne hooki...
+    const router = useRouter();
+
+    const handleRunTutorial = () => {
+      saveTutorialState({ isActive: true, stage: 'initial', step: 0 });
+      router.push('/');
+    };
+    // --- END TUTORIAL INTEGRATION ---
+
+    return (
+        <>
+            {/* ...reszta komponentu... */}
+
+            {/* --- START TUTORIAL INTEGRATION (wewnątrz Developer Tools) --- */}
+            <Button variant="secondary" size="sm" onClick={handleRunTutorial}>
+              <GraduationCap className="mr-2 h-4 w-4" />
+              Uruchom samouczek
+            </Button>
+            {/* --- END TUTORIAL INTEGRATION --- */}
+
+            {/* ...inne przyciski dev tools... */}
+        </>
+    );
+}

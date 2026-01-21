@@ -1,0 +1,34 @@
+// PRZYKŁAD: src/app/page.tsx
+
+// W tym pliku należy dodać atrybuty `data-tutorial-id` do następujących elementów:
+
+export default function Home() {
+    // ...
+    return (
+        // ...
+        <CardContent data-tutorial-id="quiz-buttons" className="...">
+            {/* ...przyciski quizów... */}
+        </CardContent>
+
+        <div data-tutorial-id="learning-button" className="...">
+            <Link href={/*...*/}>
+                <Button>
+                    {/* ... */}
+                </Button>
+            </Link>
+        </div>
+
+        <CardFooter data-tutorial-id="toolbar" className="...">
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button data-tutorial-id="language-switcher">
+                        {/* ...flaga... */}
+                    </Button>
+                </DropdownMenuTrigger>
+                {/* ... */}
+            </DropdownMenu>
+            {/* ...inne przyciski paska narzędzi... */}
+        </CardFooter>
+        // ...
+    );
+}

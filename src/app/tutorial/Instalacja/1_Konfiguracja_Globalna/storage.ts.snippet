@@ -1,0 +1,52 @@
+// src/lib/storage.ts
+
+// --- START TUTORIAL INTEGRATION ---
+// Dodaj te interfejsy i funkcje do swojego pliku `storage.ts`
+
+export interface TutorialState {
+  isActive: boolean;
+  stage: 'initial' | 'decision' | 'extended' | 'quiz';
+  step: number;
+  origin?: 'decision-0' | 'decision-1' | 'quiz-decision' | 'extended-decision';
+}
+
+const TUTORIAL_STATE_KEY = 'linguaLearnTutorialState';
+const TUTORIAL_COMPLETED_KEY = 'linguaLearnTutorialCompleted_v2';
+
+
+export const getTutorialState = (): TutorialState | null => {
+    if (typeof window === 'undefined') return null;
+    try {
+        const stateJson = sessionStorage.getItem(TUTORIAL_STATE_KEY);
+        return stateJson ? JSON.parse(stateJson) : null;
+    } catch (e) {
+        return null;
+    }
+}
+
+export const saveTutorialState = (state: TutorialState) => {
+    if (typeof window === 'undefined') return;
+    try {
+        sessionStorage.setItem(TUTORIAL_STATE_KEY, JSON.stringify(state));
+        window.dispatchEvent(new CustomEvent('tutorial-state-changed'));
+    } catch(e) {
+        console.error("Failed to save tutorial state", e)
+    }
+}
+
+export const clearTutorialState = () => {
+    if (typeof window === 'undefined') return;
+    sessionStorage.removeItem(TUTORIAL_STATE_KEY);
+    window.dispatchEvent(new CustomEvent('tutorial-state-changed'));
+}
+
+export const isTutorialCompleted = (): boolean => {
+    if (typeof window === 'undefined') return true;
+    return localStorage.getItem(TUTORIAL_COMPLETED_KEY) === 'true';
+}
+
+export const setTutorialCompleted = () => {
+    if (typeof window === 'undefined') return;
+    localStorage.setItem(TUTORIAL_COMPLETED_KEY, 'true');
+}
+// --- END TUTORIAL INTEGRATION ---

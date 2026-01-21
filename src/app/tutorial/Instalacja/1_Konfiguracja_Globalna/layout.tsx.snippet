@@ -1,0 +1,23 @@
+// src/app/layout.tsx
+
+// --- START TUTORIAL INTEGRATION ---
+import TutorialManager from '@/app/tutorial/components/TutorialManager';
+// --- END TUTORIAL INTEGRATION ---
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        {/* ...inne komponenty, np. EyeCareManager... */}
+
+        {/* --- START TUTORIAL INTEGRATION --- */}
+        {/* Umieść ten komponent wewnątrz <body> */}
+        <TutorialManager />
+        {/* --- END TUTORIAL INTEGRATION --- */}
+
+        {children}
+        {/* ...inne komponenty, np. Toaster... */}
+      </body>
+    </html>
+  );
+}

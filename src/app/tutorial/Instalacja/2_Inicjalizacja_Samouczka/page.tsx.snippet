@@ -1,0 +1,22 @@
+// src/app/page.tsx
+
+// --- START TUTORIAL INTEGRATION ---
+import { useEffect } from 'react';
+import { isTutorialCompleted, saveTutorialState } from '@/lib/storage';
+
+export default function Home() {
+    // ...inne hooki i stany...
+
+    // --- START TUTORIAL INTEGRATION ---
+    useEffect(() => {
+        // ...inna logika w useEffect...
+
+        // Ta część uruchomi samouczek tylko raz dla nowego użytkownika.
+        if (!isTutorialCompleted()) {
+            saveTutorialState({ isActive: true, stage: 'initial', step: 0 });
+        }
+    }, [/* ...zależności... */]);
+    // --- END TUTORIAL INTEGRATION ---
+
+    // ...reszta komponentu...
+}

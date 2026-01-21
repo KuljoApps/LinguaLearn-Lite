@@ -42,9 +42,10 @@ const uiTexts = {
     reset: { en: 'Reset', fr: 'Réinitialiser', de: 'Zurücksetzen', it: 'Ripristina', es: 'Restablecer' },
 };
 
+const DEV_TOOLS_COLLAPSIBLE_STATE_KEY = 'linguaLearnDevToolsOpen';
 
 export default function SettingsPage() {
-    const [settings, setSettings] = useState<AppSettings>({ soundsEnabled: true, vibrationsEnabled: true, volume: 50, eyeCareLevel: 20 });
+    const [settings, setSettings] = useState<AppSettings>({ soundsEnabled: true, vibrationsEnabled: true, volume: 50, eyeCareLevel: 0 });
     const [isResetAlertOpen, setIsResetAlertOpen] = useState(false);
     const [language, setLanguageState] = useState<Language>('en');
     const [isDevToolsOpen, setIsDevToolsOpen] = useState(false);
@@ -54,14 +55,18 @@ export default function SettingsPage() {
 
     useEffect(() => {
         setSettings(getSettings());
-    }, []);
+        
+        const savedDevToolsState = localStorage.getItem(DEV_TOOLS_COLLAPSIBLE_STATE_KEY);
+        if (savedDevToolsState === 'true') {
+            setIsDevToolsOpen(true);
+        }
 
-     useEffect(() => {
         const handleLanguageChange = () => {
             setLanguageState(getLanguage());
         };
         handleLanguageChange();
         window.addEventListener('language-changed', handleLanguageChange);
+
         return () => {
             window.removeEventListener('language-changed', handleLanguageChange);
         };
@@ -78,7 +83,6 @@ export default function SettingsPage() {
 
         if (key === 'vibrationsEnabled' && value === true) {
             if (typeof window !== 'undefined' && 'vibrate' in window.navigator) {
-                // A short vibration to confirm the setting is on.
                 window.navigator.vibrate(100);
             }
         }
@@ -93,6 +97,11 @@ export default function SettingsPage() {
     const handleRunTutorial = () => {
         saveTutorialState({ isActive: true, stage: 'initial', step: 0 });
         router.push('/');
+    };
+    
+    const handleDevToolsOpenChange = (open: boolean) => {
+        setIsDevToolsOpen(open);
+        localStorage.setItem(DEV_TOOLS_COLLAPSIBLE_STATE_KEY, JSON.stringify(open));
     };
 
     return (
@@ -110,7 +119,7 @@ export default function SettingsPage() {
                             <Switch
                                 id="sounds-switch"
                                 checked={settings.soundsEnabled}
-                                onCheckedChange={(checked) => handleSettingChange('soundsEnabled', checked)}
+                                onCheckedChange={(checked) => handleSettingChange('soundsEnabled', !!checked)}
                             />
                         </div>
                         <Separator/>
@@ -132,7 +141,7 @@ export default function SettingsPage() {
                             <Switch
                                 id="vibrations-switch"
                                 checked={settings.vibrationsEnabled}
-                                onCheckedChange={(checked) => handleSettingChange('vibrationsEnabled', checked)}
+                                onCheckedChange={(checked) => handleSettingChange('vibrationsEnabled', !!checked)}
                             />
                         </div>
                     </div>
@@ -173,9 +182,8 @@ export default function SettingsPage() {
                         </Button>
                     </div>
 
-                    {/* --- DEV TOOLS --- */}
                     <div className="w-full pt-4 mt-4 border-t border-dashed">
-                        <Collapsible open={isDevToolsOpen} onOpenChange={setIsDevToolsOpen} className="w-full">
+                        <Collapsible open={isDevToolsOpen} onOpenChange={handleDevToolsOpenChange} className="w-full">
                             <div className="flex items-center justify-center -mb-2">
                                 <Separator className="flex-grow" />
                                 <CollapsibleTrigger asChild>
@@ -204,7 +212,6 @@ export default function SettingsPage() {
                             </CollapsibleContent>
                         </Collapsible>
                     </div>
-                    {/* --- END DEV TOOLS --- */}
                 </CardFooter>
             </Card>
 

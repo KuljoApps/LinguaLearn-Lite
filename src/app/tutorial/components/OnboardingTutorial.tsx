@@ -45,10 +45,10 @@ const tutorialBubbleOffsets: { [key: string]: number } = {
     'quiz-timer': 0,
     'quiz-pause-button': 16,
     'quiz-correct-answer': 42,
+    'quiz-incorrect-answer': 42,
     'irregular-quiz-part1': 0,
     'irregular-quiz-part2': -340,
     'irregular-quiz-hint': 80,
-    'quiz-incorrect-answer': 42,
     'quiz-results-summary': 8,
     'quiz-results-errors': 22,
     'quiz-results-actions': 40,
@@ -256,32 +256,32 @@ const quizSteps: Step[] = [
         bubblePosition: 'top',
     },
     { // Slajd 30
+        path: '/tutorial/quiz-incorrect',
+        elementId: 'quiz-incorrect-answer',
+        title: 'Błędna odpowiedź',
+        description: 'Nie martw się! Twoja błędna odpowiedź podświetli się na czerwono, a prawidłowa — na zielono. Każdy błąd to okazja do nauki!',
+        bubblePosition: 'top'
+    },
+    { // Slajd 31
         path: '/tutorial/irregular-question',
         elementId: 'irregular-quiz-part1',
         title: 'Testy z czasowników',
         description: 'Ten typ quizu ma dłuższy czas na odpowiedź (30s) i sprawdza dwie rzeczy: tłumaczenie oraz znajomość form czasowników nieregularnych.',
         bubblePosition: 'bottom',
     },
-    { // Slajd 31
+    { // Slajd 32
         path: '/tutorial/irregular-question',
         elementId: 'irregular-quiz-part2',
         title: 'Wpisywanie odpowiedzi',
         description: 'Po wybraniu poprawnego tłumaczenia, aktywują się pola do wpisania dwóch pozostałych form czasownika. Zobaczmy, jak to działa.',
         bubblePosition: 'bottom',
     },
-    { // Slajd 32
+    { // Slajd 33
         path: '/tutorial/irregular-question',
         elementId: 'irregular-quiz-hint',
         title: 'Dwie poprawne formy',
         description: 'Gdy wpiszesz błędną odpowiedź, system podświetli ją na czerwono i wskaże poprawną formę. Niektóre czasowniki, jak "be", mają dwie opcje (was/were) - obie są zaliczane jako poprawne!',
         bubblePosition: 'top',
-    },
-    { // Slajd 33
-        path: '/tutorial/quiz-incorrect',
-        elementId: 'quiz-incorrect-answer',
-        title: 'Błędna odpowiedź',
-        description: 'Nie martw się! Twoja błędna odpowiedź podświetli się na czerwono, a prawidłowa — na zielono. Każdy błąd to okazja do nauki!',
-        bubblePosition: 'top'
     },
     { // Slajd 34
         path: '/tutorial/quiz-results',
@@ -320,7 +320,6 @@ const uiTexts = {
 
 export default function OnboardingTutorial() {
     const [tutorialState, setTutorialState] = useState<TutorialState | null>(null);
-    const [isMounted, setIsMounted] = useState(false);
     const router = useRouter();
     const pathname = usePathname();
     
@@ -328,7 +327,6 @@ export default function OnboardingTutorial() {
     const [bubbleStyle, setBubbleStyle] = useState<React.CSSProperties>({});
 
     useEffect(() => {
-        setIsMounted(true);
         const updateState = () => {
             setTutorialState(getTutorialState());
         };
@@ -340,35 +338,23 @@ export default function OnboardingTutorial() {
     const stage = tutorialState?.stage || 'initial';
     const currentStepIndex = tutorialState?.step || 0;
     
-    const getSteps = () => {
-        switch (stage) {
-            case 'initial':
-                return initialSteps;
-            case 'extended':
-                return extendedSteps;
-            case 'quiz':
-                return quizSteps;
-            default:
-                return [];
-        }
-    };
-    const steps = getSteps();
+    const steps = stage === 'initial' ? initialSteps : stage === 'extended' ? extendedSteps : quizSteps;
     const currentStep = (stage === 'decision') ? null : steps[currentStepIndex];
     
     useEffect(() => {
-        if (!isMounted) return;
         if (currentStep?.path && pathname !== currentStep.path) {
             router.push(currentStep.path);
         }
-    }, [currentStep, pathname, router, isMounted]);
+    }, [currentStep, pathname, router]);
 
     useEffect(() => {
-        if (!isMounted || !currentStep || currentStep.isModal || !currentStep.elementId) {
+        if (!currentStep || currentStep.isModal || !currentStep.elementId) {
             setSpotlightStyle({ opacity: 0 });
             setBubbleStyle({ opacity: 0 });
             return;
         }
 
+        // Safeguard: Only try to position the bubble if we are on the correct page.
         if (currentStep.path && pathname !== currentStep.path) {
             setSpotlightStyle({ opacity: 0, transition: 'none' });
             setBubbleStyle({ opacity: 0, transition: 'none' });
@@ -457,25 +443,24 @@ export default function OnboardingTutorial() {
             clearTimeout(timeoutId);
             window.removeEventListener('resize', findAndPosition);
         };
-    }, [currentStep, pathname, isMounted]);
+    }, [currentStep, pathname]);
 
 
     const handleNext = () => {
         const nextStepIndex = currentStepIndex + 1;
-        const currentSteps = getSteps();
 
-        if (stage === 'initial' && nextStepIndex >= currentSteps.length) {
+        if (stage === 'initial' && nextStepIndex >= steps.length) {
             saveTutorialState({ isActive: true, stage: 'decision', step: 0 });
             return;
         }
-
-        if ((stage === 'extended' || stage === 'quiz_extended') && nextStepIndex >= currentSteps.length) {
-            saveTutorialState({ isActive: true, stage: 'decision', step: -1 }); // Final finish
+        
+        if (stage === 'extended' && nextStepIndex >= steps.length) {
+            saveTutorialState({ isActive: true, stage: 'decision', step: 1 });
             return;
         }
-
-        if (stage === 'quiz' && nextStepIndex >= currentSteps.length) {
-            saveTutorialState({ isActive: true, stage: 'decision', step: 2 }); // Post-quiz decision
+        
+        if (stage === 'quiz' && nextStepIndex >= steps.length) {
+            saveTutorialState({ isActive: true, stage: 'decision', step: -1 });
             return;
         }
 
@@ -485,17 +470,13 @@ export default function OnboardingTutorial() {
     const handleBack = () => {
         const prevStepIndex = currentStepIndex - 1;
 
-        if (stage === 'initial' && prevStepIndex < 1) return;
+        if (stage === 'initial' && prevStepIndex < 1) return; // Can't go back from the first bubble step
         if (stage === 'extended' && prevStepIndex < 0) {
             saveTutorialState({ isActive: true, stage: 'decision', step: 0 });
             return;
         }
-        if (stage === 'quiz' && prevStepIndex < 0) { // This case will be blocked by the disabled button
-            saveTutorialState({ isActive: true, stage: 'decision', step: 0 });
-            return;
-        }
-         if (stage === 'quiz_extended' && prevStepIndex < 0) {
-            saveTutorialState({ isActive: true, stage: 'decision', step: 2 });
+        if (stage === 'quiz' && prevStepIndex < 0) {
+            saveTutorialState({ isActive: true, stage: 'decision', step: 1 });
             return;
         }
         
@@ -513,16 +494,12 @@ export default function OnboardingTutorial() {
     const handleShowMore = () => {
         saveTutorialState({ isActive: true, stage: 'extended', step: 0 });
     }
-    
-    const handleShowMoreAfterQuiz = () => {
-        saveTutorialState({ isActive: true, stage: 'quiz_extended', step: 0 });
-    }
 
     const handleStartTest = () => {
         saveTutorialState({ isActive: true, stage: 'quiz', step: 0 });
     }
 
-    if (!isMounted || !tutorialState || !tutorialState.isActive) {
+    if (!tutorialState || !tutorialState.isActive) {
         return null;
     }
     
@@ -565,7 +542,19 @@ export default function OnboardingTutorial() {
           );
       }
       
-      // Post-full tutorial or Post-quiz-extended
+      if (stage === 'decision' && currentStepIndex === 1) {
+          return (
+              <>
+                  <h2 className="text-2xl font-bold">Wprowadzenie zakończone!</h2>
+                  <p className="text-muted-foreground my-6">Wiesz już wszystko, co potrzebne, aby w pełni korzystać z aplikacji. Chcesz teraz wypróbować krótki test, aby zobaczyć jak działa quiz?</p>
+                  <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                      <Button onClick={handleStartTest}>{uiTexts.startTest}</Button>
+                      <Button variant="secondary" onClick={handleFinish}>{uiTexts.exit}</Button>
+                  </div>
+              </>
+          );
+      }
+      
       if (stage === 'decision' && currentStepIndex === -1) {
           return (
               <>
@@ -574,20 +563,6 @@ export default function OnboardingTutorial() {
                   <Button onClick={handleFinish}>{uiTexts.start}</Button>
               </>
           )
-      }
-
-      // Post-quiz only path
-      if (stage === 'decision' && currentStepIndex === 2) {
-        return (
-            <>
-                <h2 className="text-2xl font-bold">Demo quizu ukończone!</h2>
-                <p className="text-muted-foreground my-6">Wiesz już, jak wygląda test. Chcesz teraz poznać resztę funkcji, czy wolisz już zacząć właściwą naukę?</p>
-                <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                    <Button onClick={handleShowMoreAfterQuiz}>{uiTexts.showMore}</Button>
-                    <Button variant="secondary" onClick={handleFinish}>{uiTexts.start}</Button>
-                </div>
-            </>
-        );
       }
       return null;
     }
@@ -606,28 +581,21 @@ export default function OnboardingTutorial() {
     
     if (!currentStep) return null;
 
-    const currentSteps = getSteps();
-    const isFinalStep = currentStepIndex === currentSteps.length - 1;
+    const isFinalStep = stage === 'quiz' && currentStepIndex === steps.length - 1;
     
-    const totalInitialBubbleSteps = initialSteps.length -1;
+    const totalInitialBubbleSteps = initialSteps.filter(s => !s.isModal).length;
     const totalExtendedSteps = extendedSteps.length;
-    const totalQuizSteps = quizSteps.length;
-    
+    const totalQuizBubbleSteps = quizSteps.length;
+    const totalOverallBubbleSteps = totalInitialBubbleSteps + totalExtendedSteps + totalQuizBubbleSteps;
+
     let currentStepDisplay: number = 0;
-    let totalStepsDisplay: number = 0;
-    
+
     if (stage === 'initial') {
         currentStepDisplay = currentStepIndex;
-        totalStepsDisplay = totalInitialBubbleSteps;
     } else if (stage === 'extended') {
         currentStepDisplay = totalInitialBubbleSteps + currentStepIndex + 1;
-        totalStepsDisplay = totalInitialBubbleSteps + totalExtendedSteps;
     } else if (stage === 'quiz') {
-        currentStepDisplay = currentStepIndex + 1;
-        totalStepsDisplay = totalQuizSteps;
-    } else if (stage === 'quiz_extended') {
-        currentStepDisplay = currentStepIndex + 1;
-        totalStepsDisplay = totalExtendedSteps;
+        currentStepDisplay = totalInitialBubbleSteps + totalExtendedSteps + currentStepIndex + 1;
     }
 
 
@@ -650,15 +618,15 @@ export default function OnboardingTutorial() {
                             variant="ghost"
                             size="icon"
                             className="h-8 w-8"
-                            disabled={(stage === 'initial' && currentStepIndex === 1) || (stage === 'quiz' && currentStepIndex === 0)}
+                            disabled={(stage === 'initial' && currentStepIndex === 1)}
                         >
                             <ArrowLeft className="h-4 w-4" />
                         </Button>
                         <span className="text-xs text-muted-foreground">
-                            {currentStepDisplay}/{totalStepsDisplay}
+                            {stage === 'initial' ? `${currentStepDisplay}/${totalInitialBubbleSteps}` : `${currentStepDisplay}/${totalOverallBubbleSteps}`}
                         </span>
                     </div>
-                    <Button onClick={isFinalStep ? handleNext : handleNext} size="sm">
+                    <Button onClick={isFinalStep ? handleFinish : handleNext} size="sm">
                         {isFinalStep ? uiTexts.finish : uiTexts.next}
                     </Button>
                 </div>
@@ -666,3 +634,4 @@ export default function OnboardingTutorial() {
         </div>
     );
 }
+

@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -359,15 +360,9 @@ export default function OnboardingTutorial() {
     }, [currentStep, pathname, router, isMounted]);
 
     useEffect(() => {
-        if (!isMounted || !currentStep || currentStep.isModal || !currentStep.elementId) {
+        if (!isMounted || !currentStep || currentStep.isModal || pathname !== currentStep.path) {
             setSpotlightStyle({ opacity: 0 });
             setBubbleStyle({ opacity: 0 });
-            return;
-        }
-
-        if (currentStep.path && pathname !== currentStep.path) {
-            setSpotlightStyle({ opacity: 0, transition: 'none' });
-            setBubbleStyle({ opacity: 0, transition: 'none' });
             return;
         }
 
@@ -375,6 +370,7 @@ export default function OnboardingTutorial() {
         const maxAttempts = 20;
 
         const findAndPosition = () => {
+            if (!currentStep?.elementId) return;
             const element = document.querySelector<HTMLElement>(`[data-tutorial-id="${currentStep.elementId}"]`);
 
             if (element) {
@@ -681,3 +677,5 @@ export default function OnboardingTutorial() {
         </div>
     );
 }
+
+    

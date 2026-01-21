@@ -311,11 +311,14 @@ const uiTexts = {
     next: 'Dalej',
     finish: 'Zakończ',
     exit: 'Wyjdź',
+    exitToMenu: 'Wyjdź do menu',
     showMore: 'Pokaż więcej',
     start: 'Zacznij naukę',
     startTest: 'Zacznij krótki test',
-    finalTitle: 'Wszystko gotowe!',
-    finalDesc: 'To wszystko! Jesteś gotów, aby w\u00A0pełni wykorzystać LinguaLearn. Powodzenia w\u00A0nauce!',
+    afterExtendedTitle: 'Wprowadzenie zakończone!',
+    afterExtendedDesc: 'Wiesz już wszystko, co potrzebne, aby w pełni korzystać z aplikacji. Chcesz teraz wypróbować krótki test, aby zobaczyć jak działa quiz?',
+    afterAllTitle: 'Wszystko gotowe!',
+    afterAllDesc: 'To wszystko! Znasz już całą aplikację. Teraz możesz zacząć prawdziwą naukę. Powodzenia!',
     almostDoneTitle: 'Prawie wszystko gotowe!',
     almostDoneDesc: 'Znasz już podstawy i wiesz, jak działają quizy. Chcesz teraz poznać resztę zaawansowanych funkcji, czy od razu zacząć naukę?',
     exploreMore: 'Poznaj więcej!',
@@ -457,7 +460,7 @@ export default function OnboardingTutorial() {
         }
         
         if (stage === 'extended' && nextStepIndex >= steps.length) {
-            saveTutorialState({ isActive: true, stage: 'decision', step: -1, origin: tutorialState?.origin });
+            saveTutorialState({ isActive: true, stage: 'decision', step: 1, origin: tutorialState?.origin });
             return;
         }
         
@@ -506,9 +509,9 @@ export default function OnboardingTutorial() {
     const handleShowMore = () => {
         saveTutorialState({ isActive: true, stage: 'extended', step: 0, origin: tutorialState?.origin });
     }
-
+    
     const handleStartTest = () => {
-        saveTutorialState({ isActive: true, stage: 'quiz', step: 0, origin: tutorialState?.origin });
+        saveTutorialState({ isActive: true, stage: 'quiz', step: 0, origin: 'decision-0' });
     }
 
     const handleExploreExtended = () => {
@@ -562,17 +565,17 @@ export default function OnboardingTutorial() {
           if (currentStepIndex === 1) {
               return (
                   <>
-                      <h2 className="text-2xl font-bold">Wprowadzenie zakończone!</h2>
-                      <p className="text-muted-foreground my-6">Wiesz już wszystko, co potrzebne, aby w pełni korzystać z aplikacji. Chcesz teraz wypróbować krótki test, aby zobaczyć jak działa quiz?</p>
+                      <h2 className="text-2xl font-bold">{uiTexts.afterExtendedTitle}</h2>
+                      <p className="text-muted-foreground my-6">{uiTexts.afterExtendedDesc}</p>
                       <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                          <Button onClick={handleStartTest}>{uiTexts.startTest}</Button>
-                          <Button variant="secondary" onClick={handleFinish}>{uiTexts.exit}</Button>
+                          <Button onClick={() => saveTutorialState({ isActive: true, stage: 'quiz', step: 0, origin: 'extended-decision' })}>{uiTexts.startTest}</Button>
+                          <Button variant="secondary" onClick={handleFinish}>{uiTexts.exitToMenu}</Button>
                       </div>
                   </>
               );
           }
           if (currentStepIndex === -1) {
-            if (tutorialState?.origin === 'decision-0') {
+            if (tutorialState?.origin === 'quiz-decision') {
                  return (
                     <>
                         <h2 className="text-2xl font-bold">{uiTexts.almostDoneTitle}</h2>
@@ -581,6 +584,15 @@ export default function OnboardingTutorial() {
                              <Button onClick={handleExploreExtended}>{uiTexts.exploreMore}</Button>
                              <Button variant="secondary" onClick={handleFinish}>{uiTexts.start}</Button>
                         </div>
+                    </>
+                )
+            }
+             if (tutorialState?.origin === 'extended-decision') {
+                return (
+                    <>
+                        <h2 className="text-2xl font-bold">{uiTexts.afterAllTitle}</h2>
+                        <p className="text-muted-foreground my-6">{uiTexts.afterAllDesc}</p>
+                         <Button onClick={handleFinish}>{uiTexts.start}</Button>
                     </>
                 )
             }
@@ -633,6 +645,9 @@ export default function OnboardingTutorial() {
         if (tutorialState.origin === 'decision-0') {
             currentStepDisplay = totalInitialBubbleSteps + currentStepIndex + 1;
             totalStepsDisplay = totalInitialBubbleSteps + quizSteps.length;
+        } else if (tutorialState.origin === 'extended-decision') {
+            currentStepDisplay = currentStepIndex + 1;
+            totalStepsDisplay = quizSteps.length;
         } else {
             currentStepDisplay = totalInitialBubbleSteps + extendedSteps.length + currentStepIndex + 1;
             totalStepsDisplay = totalInitialBubbleSteps + extendedSteps.length + quizSteps.length;

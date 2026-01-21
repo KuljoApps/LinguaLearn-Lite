@@ -256,32 +256,32 @@ const quizSteps: Step[] = [
         bubblePosition: 'top',
     },
     { // Slajd 30
+        path: '/tutorial/quiz-incorrect',
+        elementId: 'quiz-incorrect-answer',
+        title: 'Błędna odpowiedź',
+        description: 'Nie martw się! Twoja błędna odpowiedź podświetli się na czerwono, a prawidłowa — na zielono. Każdy błąd to okazja do nauki!',
+        bubblePosition: 'top'
+    },
+    { // Slajd 31
         path: '/tutorial/irregular-question',
         elementId: 'irregular-quiz-part1',
         title: 'Testy z czasowników',
         description: 'Ten typ quizu ma dłuższy czas na odpowiedź (30s) i sprawdza dwie rzeczy: tłumaczenie oraz znajomość form czasowników nieregularnych.',
         bubblePosition: 'bottom',
     },
-    { // Slajd 31
+    { // Slajd 32
         path: '/tutorial/irregular-question',
         elementId: 'irregular-quiz-part2',
         title: 'Wpisywanie odpowiedzi',
         description: 'Po wybraniu poprawnego tłumaczenia, aktywują się pola do wpisania dwóch pozostałych form czasownika. Zobaczmy, jak to działa.',
         bubblePosition: 'bottom',
     },
-    { // Slajd 32
+    { // Slajd 33
         path: '/tutorial/irregular-question',
         elementId: 'irregular-quiz-hint',
         title: 'Dwie poprawne formy',
         description: 'Gdy wpiszesz błędną odpowiedź, system podświetli ją na czerwono i wskaże poprawną formę. Niektóre czasowniki, jak "be", mają dwie opcje (was/were) - obie są zaliczane jako poprawne!',
         bubblePosition: 'top',
-    },
-    { // Slajd 33
-        path: '/tutorial/quiz-incorrect',
-        elementId: 'quiz-incorrect-answer',
-        title: 'Błędna odpowiedź',
-        description: 'Nie martw się! Twoja błędna odpowiedź podświetli się na czerwono, a prawidłowa — na zielono. Każdy błąd to okazja do nauki!',
-        bubblePosition: 'top'
     },
     { // Slajd 34
         path: '/tutorial/quiz-results',
@@ -316,8 +316,6 @@ const uiTexts = {
     startTest: 'Zacznij krótki test',
     finalTitle: 'Wszystko gotowe!',
     finalDesc: 'To wszystko! Jesteś gotów, aby w\u00A0pełni wykorzystać LinguaLearn. Powodzenia w\u00A0nauce!',
-    quizEndTitle: 'Demonstracja zakończona!',
-    quizEndDesc: 'Wiesz już jak działają quizy. Chcesz teraz zobaczyć szczegółowe omówienie pozostałych funkcji aplikacji?',
 };
 
 export default function OnboardingTutorial() {
@@ -336,7 +334,6 @@ export default function OnboardingTutorial() {
         window.addEventListener('tutorial-state-changed', updateState);
         return () => window.removeEventListener('tutorial-state-changed', updateState);
     }, []);
-
 
     const stage = tutorialState?.stage || 'initial';
     const currentStepIndex = tutorialState?.step || 0;
@@ -463,7 +460,7 @@ export default function OnboardingTutorial() {
         }
         
         if (stage === 'quiz' && nextStepIndex >= steps.length) {
-            saveTutorialState({ isActive: true, stage: 'decision', step: 2 });
+            saveTutorialState({ isActive: true, stage: 'decision', step: -1 });
             return;
         }
 
@@ -475,11 +472,11 @@ export default function OnboardingTutorial() {
 
         if (stage === 'initial' && prevStepIndex < 1) return; // Can't go back from the first bubble step
         if (stage === 'extended' && prevStepIndex < 0) {
-            saveTutorialState({ isActive: true, stage: 'decision', step: tutorialState?.origin === 'quiz-decision' ? 2 : 0, origin: tutorialState?.origin });
+            saveTutorialState({ isActive: true, stage: 'decision', step: 0, origin: tutorialState?.origin });
             return;
         }
         if (stage === 'quiz' && prevStepIndex < 0) {
-            saveTutorialState({ isActive: true, stage: 'decision', step: 0, origin: 'decision-0' });
+            saveTutorialState({ isActive: true, stage: 'decision', step: 1, origin: tutorialState?.origin });
             return;
         }
         
@@ -548,16 +545,16 @@ export default function OnboardingTutorial() {
           if (currentStepIndex === 1) {
               return (
                   <>
-                      <h2 className="text-2xl font-bold">{uiTexts.quizEndTitle}</h2>
-                      <p className="text-muted-foreground my-6">{uiTexts.quizEndDesc}</p>
-                       <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                          <Button onClick={handleShowMore}>{uiTexts.showMore}</Button>
-                          <Button variant="secondary" onClick={handleFinish}>{uiTexts.start}</Button>
+                      <h2 className="text-2xl font-bold">Wprowadzenie zakończone!</h2>
+                      <p className="text-muted-foreground my-6">Wiesz już wszystko, co potrzebne, aby w pełni korzystać z aplikacji. Chcesz teraz wypróbować krótki test, aby zobaczyć jak działa quiz?</p>
+                      <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                          <Button onClick={handleStartTest}>{uiTexts.startTest}</Button>
+                          <Button variant="secondary" onClick={handleFinish}>{uiTexts.exit}</Button>
                       </div>
                   </>
               );
           }
-          if (currentStepIndex === 2) {
+          if (currentStepIndex === -1) {
             return (
                 <>
                     <h2 className="text-2xl font-bold">{uiTexts.finalTitle}</h2>
@@ -585,9 +582,9 @@ export default function OnboardingTutorial() {
     
     if (!currentStep) return null;
 
-    const isFinalStep = false;
+    const isFinalStep = stage === 'quiz' && currentStepIndex === steps.length - 1;
     
-    const totalInitialBubbleSteps = initialSteps.length - 1;
+    const totalInitialBubbleSteps = initialSteps.filter(s => !s.isModal).length;
 
     let currentStepDisplay = 0;
     let totalStepsDisplay = 0;

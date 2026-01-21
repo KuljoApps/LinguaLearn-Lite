@@ -12,8 +12,8 @@ import { useEffect } from 'react';
 
 const question = {
     word: 'Throughout', 
-    options: ['Na zewnątrz', 'Pod spodem', 'Wewnątrz', 'Przez cały (czas)'], 
-    correctAnswer: 'Przez cały (czas)'
+    options: ['Na zewnątrz', 'Pod spodem', 'Wewnątrz', 'Przez cały czas'], 
+    correctAnswer: 'Przez cały czas'
 };
 
 export default function QuizIncorrectPage() {

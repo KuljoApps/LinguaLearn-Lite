@@ -3,6 +3,8 @@
 import { allAchievements } from './achievements';
 import type { Achievement } from './types';
 
+export type { Achievement };
+
 export interface MasteryProgress {
     [quizName: string]: number[]; // Array of unique question IDs
 }
@@ -61,6 +63,8 @@ export interface GlobalStats {
     uniqueDaysPlayed: number;
     lastPlayTimestamp: number | null;
     quizCompletionCount: number;
+    lastPromoShownAtQuizCount?: number;
+    lastRateAppShownAtQuizCount?: number;
 }
 
 // --- Tutorial State ---
@@ -180,6 +184,8 @@ const getGlobalStats = (): GlobalStats => {
         uniqueDaysPlayed: 0, 
         lastPlayTimestamp: null,
         quizCompletionCount: 0,
+        lastPromoShownAtQuizCount: 0,
+        lastRateAppShownAtQuizCount: 0,
     };
     if (typeof window === 'undefined') return defaultGlobalStats;
 
@@ -412,21 +418,34 @@ export const shouldShowProPromo = (): boolean => {
     if (typeof window === 'undefined') return false;
     const globalStats = getGlobalStats();
     const count = globalStats.quizCompletionCount || 0;
+    const lastShown = globalStats.lastPromoShownAtQuizCount || 0;
     // Show after 15, 45, 75... completed quizzes
-    return count > 0 && (count - 15) % 30 === 0;
+    const shouldShow = count > 0 && (count - 15) % 30 === 0;
+    return shouldShow && count !== lastShown;
 }
 
 export const shouldShowRateAppDialog = (): boolean => {
     if (typeof window === 'undefined') return false;
     const globalStats = getGlobalStats();
     const count = globalStats.quizCompletionCount || 0;
+    const lastShown = globalStats.lastRateAppShownAtQuizCount || 0;
     // Show after 30, 60, 90... completed quizzes
-    return count > 0 && count % 30 === 0;
+    const shouldShow = count > 0 && count % 30 === 0;
+    return shouldShow && count !== lastShown;
 }
 
 export const recordProPromoShown = () => {
-    // This is now a no-op for production logic, but might be used for other promo types.
-    // The quiz count logic handles display frequency.
+    if (typeof window === 'undefined') return;
+    const globalStats = getGlobalStats();
+    globalStats.lastPromoShownAtQuizCount = globalStats.quizCompletionCount;
+    saveGlobalStats(globalStats);
+}
+
+export const recordRateAppDialogShown = () => {
+    if (typeof window === 'undefined') return;
+    const globalStats = getGlobalStats();
+    globalStats.lastRateAppShownAtQuizCount = globalStats.quizCompletionCount;
+    saveGlobalStats(globalStats);
 }
 
 

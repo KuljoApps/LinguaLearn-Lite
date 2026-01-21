@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import LinguaLearnLogo from '@/components/LinguaLearnLogo';
-import { getLanguage, setLanguage, shouldShowProPromo, shouldShowRateAppDialog, isTutorialCompleted, saveTutorialState } from '@/lib/storage';
+import { getLanguage, setLanguage, shouldShowProPromo, shouldShowRateAppDialog, isTutorialCompleted, saveTutorialState, recordProPromoShown, recordRateAppDialogShown } from '@/lib/storage';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -28,8 +28,10 @@ export default function Home() {
         } else {
              if (shouldShowProPromo()) {
                 setShowPromo(true);
+                recordProPromoShown();
             } else if (shouldShowRateAppDialog()) {
                 setShowRateDialog(true);
+                recordRateAppDialogShown();
             }
         }
     }, [pathname]);

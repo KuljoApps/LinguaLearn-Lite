@@ -69,13 +69,13 @@ export default function StatisticsPage() {
             const isOnStatsCardsStep = tutorialState?.isActive &&
                                       tutorialState.stage === 'extended' &&
                                       (tutorialState.step === 2 || tutorialState.step === 3);
-            setIsTutorialActiveForCards(isOnStatsCardsStep && currentStats.totalAnswers === 0);
+            setIsTutorialActiveForCards(!!(isOnStatsCardsStep && currentStats.totalAnswers === 0));
 
             const isOnStatsGridStep = tutorialState?.isActive &&
                                       tutorialState.stage === 'extended' &&
                                       tutorialState.step === 3;
             
-            setIsTutorialActiveForGrid(isOnStatsGridStep && currentStats.lastFiftyAnswers.length === 0);
+            setIsTutorialActiveForGrid(!!(isOnStatsGridStep && currentStats.lastFiftyAnswers.length === 0));
         };
 
         loadDataForCurrentLanguage();

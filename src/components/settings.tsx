@@ -44,7 +44,7 @@ const uiTexts = {
 
 
 export default function SettingsPage() {
-    const [settings, setSettings] = useState<AppSettings>(getSettings);
+    const [settings, setSettings] = useState<AppSettings>({ soundsEnabled: true, vibrationsEnabled: true, volume: 50, eyeCareLevel: 20 });
     const [isResetAlertOpen, setIsResetAlertOpen] = useState(false);
     const [language, setLanguageState] = useState<Language>('en');
     const [isDevToolsOpen, setIsDevToolsOpen] = useState(false);
@@ -52,6 +52,9 @@ export default function SettingsPage() {
     const [showRateDialog, setShowRateDialog] = useState(false);
     const router = useRouter();
 
+    useEffect(() => {
+        setSettings(getSettings());
+    }, []);
 
      useEffect(() => {
         const handleLanguageChange = () => {
@@ -108,7 +111,6 @@ export default function SettingsPage() {
                                 id="sounds-switch"
                                 checked={settings.soundsEnabled}
                                 onCheckedChange={(checked) => handleSettingChange('soundsEnabled', checked)}
-                                suppressHydrationWarning
                             />
                         </div>
                         <Separator/>
@@ -122,7 +124,6 @@ export default function SettingsPage() {
                                 value={[settings.volume]}
                                 onValueChange={(value) => handleSettingChange('volume', value[0])}
                                 disabled={!settings.soundsEnabled}
-                                suppressHydrationWarning
                             />
                         </div>
                         <Separator/>
@@ -132,7 +133,6 @@ export default function SettingsPage() {
                                 id="vibrations-switch"
                                 checked={settings.vibrationsEnabled}
                                 onCheckedChange={(checked) => handleSettingChange('vibrationsEnabled', checked)}
-                                suppressHydrationWarning
                             />
                         </div>
                     </div>
@@ -146,7 +146,6 @@ export default function SettingsPage() {
                             step={1}
                             value={[settings.eyeCareLevel]}
                             onValueChange={(value) => handleSettingChange('eyeCareLevel', value[0])}
-                            suppressHydrationWarning
                         />
                     </div>
                     <Separator />

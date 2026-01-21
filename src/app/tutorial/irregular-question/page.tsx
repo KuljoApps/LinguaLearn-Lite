@@ -20,6 +20,8 @@ const question = {
     translationOptions: ['mieć', 'robić', 'być'],
 };
 
+const QUIZ_LENGTH = 3;
+
 export default function IrregularVerbQuizPage() {
     const [form2Input, setForm2Input] = useState('');
     const [form3Input, setForm3Input] = useState('');
@@ -61,7 +63,8 @@ export default function IrregularVerbQuizPage() {
     };
 
     useEffect(() => {
-        if (activeStep === 5) { // Step 32: "Wpisywanie odpowiedzi" - Animate typing
+        // Step 32 in the new order is index 5
+        if (activeStep === 5) { 
             setShowHint(false);
             setForm2Input('');
             setForm3Input('');
@@ -77,16 +80,14 @@ export default function IrregularVerbQuizPage() {
                 setForm3Class('bg-destructive text-destructive-foreground');
             };
             animate();
-        } else if (activeStep === 6) { // Step 33: "Dwie poprawne formy" - Show hint statically
-            // Set the state to match the end of the previous animation's state
+        // Step 33 in the new order is index 6
+        } else if (activeStep === 6) { 
             setForm2Input('was');
             setForm3Input('beed');
             setForm2Class('');
             setForm3Class('bg-destructive text-destructive-foreground');
-            // Show the hint immediately, without delay
             setShowHint(true);
         } else {
-            // Reset state for all other steps
             setForm2Input('');
             setForm3Input('');
             setForm2Class('');
@@ -156,8 +157,17 @@ export default function IrregularVerbQuizPage() {
                         <Button variant="outline" size="icon"><Pause /></Button>
                     </div>
                 </CardContent>
-                <CardFooter className="flex justify-center p-6 pt-0">
-                    <Button variant="outline" className="pointer-events-none opacity-50"><ArrowLeft className="mr-2 h-4 w-4" /> Wróć</Button>
+                <CardFooter className="flex-col gap-4 p-6 pt-0">
+                    <div className="flex justify-between w-full items-center">
+                        <div className="text-sm text-muted-foreground">
+                           Pytanie 3 z {QUIZ_LENGTH}
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium">Punkty:</span>
+                            <div className="text-2xl font-bold text-primary">1</div>
+                        </div>
+                    </div>
+                    <Progress value={(3 / QUIZ_LENGTH) * 100} className="w-full h-2" />
                 </CardFooter>
             </Card>
         </main>

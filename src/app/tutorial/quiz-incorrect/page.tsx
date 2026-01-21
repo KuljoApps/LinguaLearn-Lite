@@ -16,6 +16,8 @@ const question = {
     correctAnswer: 'Przez cały czas'
 };
 
+const QUIZ_LENGTH = 3;
+
 export default function QuizIncorrectPage() {
     const selectedAnswer = 'Na zewnątrz';
     const answerStatus = "incorrect";
@@ -98,14 +100,14 @@ export default function QuizIncorrectPage() {
                  <CardFooter className="flex-col gap-4 p-6 pt-0">
                     <div className="flex justify-between w-full items-center">
                         <div className="text-sm text-muted-foreground">
-                           Pytanie 2 z 2
+                           Pytanie 2 z {QUIZ_LENGTH}
                         </div>
                         <div className="flex items-center gap-2">
                             <span className="text-sm font-medium">Punkty:</span>
                             <div className="text-2xl font-bold text-primary">1</div>
                         </div>
                     </div>
-                    <Progress value={100} className="w-full h-2" />
+                    <Progress value={(2 / QUIZ_LENGTH) * 100} className="w-full h-2" />
                 </CardFooter>
             </Card>
         </main>

@@ -18,6 +18,7 @@ const question = {
 };
 
 const QUESTION_TIME_LIMIT = 15;
+const QUIZ_LENGTH = 3;
 
 export default function QuizCorrectPage() {
     const [activeStep, setActiveStep] = useState<number | null>(null);
@@ -84,7 +85,7 @@ export default function QuizCorrectPage() {
         return "bg-primary text-primary-foreground";
     };
 
-    const overallProgress = isAnswerView ? 100 : 50;
+    const overallProgress = (1 / QUIZ_LENGTH) * 100;
     const score = isAnswerView ? 1 : 0;
 
     return (
@@ -132,8 +133,8 @@ export default function QuizCorrectPage() {
                         ))}
                     </div>
                     <div className="flex justify-center gap-4 w-full pt-4 border-t">
-                        <Button variant="outline" size="icon" className="pointer-events-none opacity-50"><Home /></Button>
-                        <Button variant="outline" size="icon" className="pointer-events-none opacity-50"><RefreshCw /></Button>
+                        <Button variant="outline" size="icon"><Home /></Button>
+                        <Button variant="outline" size="icon"><RefreshCw /></Button>
                         <div data-tutorial-id="quiz-pause-button">
                              <Button variant="outline" size="icon">
                                 <Pause />
@@ -144,7 +145,7 @@ export default function QuizCorrectPage() {
                  <CardFooter className="flex-col gap-4 p-6 pt-0">
                     <div className="flex justify-between w-full items-center">
                         <div className="text-sm text-muted-foreground">
-                           Pytanie 1 z 2
+                           Pytanie 1 z {QUIZ_LENGTH}
                         </div>
                         <div className="flex items-center gap-2">
                             <span className="text-sm font-medium">Punkty:</span>

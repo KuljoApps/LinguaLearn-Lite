@@ -17,6 +17,7 @@ const question = {
 };
 
 const QUESTION_TIME_LIMIT = 15;
+const QUIZ_LENGTH = 3;
 
 export default function QuizPausePage() {
     const router = useRouter();
@@ -96,14 +97,14 @@ export default function QuizPausePage() {
                  <CardFooter className="flex-col gap-4 p-6 pt-0">
                     <div className="flex justify-between w-full items-center">
                         <div className="text-sm text-muted-foreground">
-                           Pytanie 1 z 2
+                           Pytanie 1 z {QUIZ_LENGTH}
                         </div>
                         <div className="flex items-center gap-2">
                             <span className="text-sm font-medium">Punkty:</span>
                             <div className="text-2xl font-bold text-primary">0</div>
                         </div>
                     </div>
-                    <Progress value={50} className="w-full h-2" />
+                    <Progress value={(1 / QUIZ_LENGTH) * 100} className="w-full h-2" />
                 </CardFooter>
             </Card>
         </main>

@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { Home, RefreshCw, Pause, Play, Clock, Trophy } from "lucide-react";
-import { questions as initialQuestions, type Question as RawQuestion } from "@/lib/questions-phrasal-verbs";
+import { questions as initialQuestions, type Question } from "@/lib/questions-phrasal-verbs";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -27,14 +27,6 @@ import { vibrate } from "@/lib/vibrations";
 import { useToast } from "@/hooks/use-toast";
 import QuizResults from "./quiz-results";
 
-// Processed question type for use within the component
-interface ProcessedQuestion {
-    id: number;
-    word: string;
-    options: string[];
-    correctAnswer: string;
-}
-
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -53,7 +45,7 @@ const QUIZ_LENGTH = 10;
 
 
 export default function QuizPhrasalVerbs() {
-  const [questions, setQuestions] = useState<ProcessedQuestion[]>([]);
+  const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -64,6 +56,7 @@ export default function QuizPhrasalVerbs() {
   const [totalTime, setTotalTime] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [showTimePenalty, setShowTimePenalty] = useState(false);
+  const [shuffledOptions, setShuffledOptions] = useState<string[]>([]);
   const [sessionErrors, setSessionErrors] = useState<Omit<ErrorRecord, 'id'>[]>([]);
   const timeoutFiredRef = useRef(false);
   
@@ -84,37 +77,8 @@ export default function QuizPhrasalVerbs() {
   }, [toast]);
   
   const setupQuiz = useCallback(() => {
-    const shuffledRawQuestions = shuffleArray(initialQuestions);
-    const selectedRawQuestions = shuffledRawQuestions.slice(0, QUIZ_LENGTH);
-
-    // 1. Process questions to have a single correct answer
-    const questionsWithSingleAnswer = selectedRawQuestions.map(q => {
-        const randomIndex = Math.floor(Math.random() * q.correctAnswers.length);
-        const singleCorrectAnswer = q.correctAnswers[randomIndex];
-        return {
-            id: q.id,
-            word: q.word,
-            correctAnswer: singleCorrectAnswer,
-        };
-    });
-
-    // 2. Generate options for each question
-    const finalQuestions = questionsWithSingleAnswer.map((currentQ, index) => {
-        const otherAnswers = questionsWithSingleAnswer
-            .filter((_, i) => i !== index)
-            .map(q => q.correctAnswer);
-        
-        const incorrectOptions = shuffleArray(otherAnswers).slice(0, 3);
-        
-        const options = shuffleArray([
-            currentQ.correctAnswer,
-            ...incorrectOptions
-        ]);
-
-        return { ...currentQ, options };
-    });
-
-    setQuestions(finalQuestions);
+    const newQuestions = shuffleArray(initialQuestions).slice(0, QUIZ_LENGTH);
+    setQuestions(newQuestions);
     setCurrentQuestionIndex(0);
     setScore(0);
     setSelectedAnswer(null);
@@ -213,6 +177,12 @@ export default function QuizPhrasalVerbs() {
 
 
   const currentQuestion = useMemo(() => questions[currentQuestionIndex], [questions, currentQuestionIndex]);
+
+  useEffect(() => {
+    if (currentQuestion) {
+      setShuffledOptions(shuffleArray(currentQuestion.options));
+    }
+  }, [currentQuestion]);
   
   const handleAnswerClick = (answer: string) => {
     if (answerStatus || isPaused) return;
@@ -368,7 +338,7 @@ export default function QuizPhrasalVerbs() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-            {currentQuestion.options.map((option) => (
+            {shuffledOptions.map((option) => (
               <Button
                 key={option}
                 onClick={() => handleAnswerClick(option)}

@@ -68,6 +68,7 @@ export interface TutorialState {
   isActive: boolean;
   stage: 'initial' | 'decision' | 'extended' | 'quiz';
   step: number;
+  origin?: 'decision-0' | 'decision-1' | 'quiz-decision';
 }
 
 const TUTORIAL_STATE_KEY = 'linguaLearnTutorialState';
@@ -98,11 +99,6 @@ export const clearTutorialState = () => {
     window.dispatchEvent(new CustomEvent('tutorial-state-changed'));
 }
 
-
-const getKey = (baseKey: string): string => {
-    const lang = getLanguage();
-    return `${baseKey}_${lang}`;
-}
 
 // --- Tutorial Functions ---
 export const isTutorialCompleted = (): boolean => {
@@ -622,8 +618,3 @@ export const addError = (error: Omit<ErrorRecord, 'id'>) => {
 
 export const clearErrors = (): Achievement[] => {
     if (typeof window === 'undefined') return [];
-    localStorage.removeItem(getKey('linguaLearnErrors_v2'));
-    return [];
-}
-
-export type { Achievement };

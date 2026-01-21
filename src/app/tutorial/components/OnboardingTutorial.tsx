@@ -234,70 +234,70 @@ const extendedSteps: Step[] = [
 ];
 
 const quizSteps: Step[] = [
-    { // Slajd 27
+    { // Slajd 27 -> Quiz 1
         path: '/tutorial/quiz-correct',
         elementId: 'quiz-timer',
         title: 'Czas na odpowiedź',
         description: 'Masz 15 sekund na każdą odpowiedź. Pasek postępu pokazuje, ile czasu pozostało. Nie marnuj go!',
         bubblePosition: 'bottom',
     },
-    { // Slajd 28
+    { // Slajd 28 -> Quiz 2
         path: '/tutorial/quiz-pause',
         elementId: 'quiz-pause-button',
         title: 'Potrzebujesz przerwy?',
         description: 'Kliknij pauzę, aby zatrzymać czas. Pamiętaj jednak, że wznowienie quizu kosztuje 5 sekund!',
         bubblePosition: 'top'
     },
-    { // Slajd 29
+    { // Slajd 29 -> Quiz 3
         path: '/tutorial/quiz-correct',
         elementId: 'quiz-correct-answer',
         title: 'Poprawna odpowiedź',
         description: 'Świetnie! Poprawna odpowiedź zostanie podświetlona na zielono. Po chwili automatycznie przejdziesz do następnego pytania.',
         bubblePosition: 'top',
     },
-    { // Slajd 30
-        path: '/tutorial/quiz-incorrect',
-        elementId: 'quiz-incorrect-answer',
-        title: 'Błędna odpowiedź',
-        description: 'Nie martw się! Twoja błędna odpowiedź podświetli się na czerwono, a prawidłowa — na zielono. Każdy błąd to okazja do nauki!',
-        bubblePosition: 'top'
-    },
-    { // Slajd 31
+    { // Slajd 30 -> Quiz 4
         path: '/tutorial/irregular-question',
         elementId: 'irregular-quiz-part1',
         title: 'Testy z czasowników',
         description: 'Ten typ quizu ma dłuższy czas na odpowiedź (30s) i sprawdza dwie rzeczy: tłumaczenie oraz znajomość form czasowników nieregularnych.',
         bubblePosition: 'bottom',
     },
-    { // Slajd 32
+    { // Slajd 31 -> Quiz 5
         path: '/tutorial/irregular-question',
         elementId: 'irregular-quiz-part2',
         title: 'Wpisywanie odpowiedzi',
         description: 'Po wybraniu poprawnego tłumaczenia, aktywują się pola do wpisania dwóch pozostałych form czasownika. Zobaczmy, jak to działa.',
         bubblePosition: 'bottom',
     },
-    { // Slajd 33
+    { // Slajd 32 -> Quiz 6
         path: '/tutorial/irregular-question',
         elementId: 'irregular-quiz-hint',
         title: 'Dwie poprawne formy',
         description: 'Gdy wpiszesz błędną odpowiedź, system podświetli ją na czerwono i wskaże poprawną formę. Niektóre czasowniki, jak "be", mają dwie opcje (was/were) - obie są zaliczane jako poprawne!',
         bubblePosition: 'top',
     },
-    { // Slajd 34
+    { // Slajd 33 -> Quiz 7
+        path: '/tutorial/quiz-incorrect',
+        elementId: 'quiz-incorrect-answer',
+        title: 'Błędna odpowiedź',
+        description: 'Nie martw się! Twoja błędna odpowiedź podświetli się na czerwono, a prawidłowa — na zielono. Każdy błąd to okazja do nauki!',
+        bubblePosition: 'top'
+    },
+    { // Slajd 34 -> Quiz 8
         path: '/tutorial/quiz-results',
         elementId: 'quiz-results-summary',
         title: 'Podsumowanie wyników',
         description: 'Po zakończeniu quizu zobaczysz swoje statystyki. Sprawdź, jak Ci poszło!',
         bubblePosition: 'bottom',
     },
-    { // Slajd 35
+    { // Slajd 35 -> Quiz 9
         path: '/tutorial/quiz-results',
         elementId: 'quiz-results-errors',
         title: 'Przegląd błędów',
         description: 'Wszystkie błędne odpowiedzi z sesji są tutaj. Przeanalizuj je, aby uniknąć ich w przyszłości.',
         bubblePosition: 'top'
     },
-    { // Slajd 36
+    { // Slajd 36 -> Quiz 10
         path: '/tutorial/quiz-results',
         elementId: 'quiz-results-actions',
         title: 'Co dalej?',
@@ -316,6 +316,8 @@ const uiTexts = {
     startTest: 'Zacznij krótki test',
     finalTitle: 'Wszystko gotowe!',
     finalDesc: 'To wszystko! Jesteś gotów, aby w\u00A0pełni wykorzystać LinguaLearn. Powodzenia w\u00A0nauce!',
+    quizEndTitle: 'Demonstracja zakończona!',
+    quizEndDesc: 'Wiesz już jak działają quizy. Chcesz teraz zobaczyć szczegółowe omówienie pozostałych funkcji aplikacji?',
 };
 
 export default function OnboardingTutorial() {
@@ -325,10 +327,8 @@ export default function OnboardingTutorial() {
     
     const [spotlightStyle, setSpotlightStyle] = useState<React.CSSProperties>({});
     const [bubbleStyle, setBubbleStyle] = useState<React.CSSProperties>({});
-    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
-        setIsMounted(true);
         const updateState = () => {
             setTutorialState(getTutorialState());
         };
@@ -341,7 +341,7 @@ export default function OnboardingTutorial() {
     const stage = tutorialState?.stage || 'initial';
     const currentStepIndex = tutorialState?.step || 0;
     
-    const steps = stage === 'initial' ? initialSteps : stage === 'extended' ? extendedSteps : quizSteps;
+    const steps: Step[] = stage === 'initial' ? initialSteps : stage === 'extended' ? extendedSteps : quizSteps;
     const currentStep = (stage === 'decision') ? null : steps[currentStepIndex];
     
     useEffect(() => {
@@ -453,21 +453,21 @@ export default function OnboardingTutorial() {
         const nextStepIndex = currentStepIndex + 1;
 
         if (stage === 'initial' && nextStepIndex >= steps.length) {
-            saveTutorialState({ isActive: true, stage: 'decision', step: 0 });
+            saveTutorialState({ isActive: true, stage: 'decision', step: 0, origin: 'decision-0' });
             return;
         }
         
         if (stage === 'extended' && nextStepIndex >= steps.length) {
-            saveTutorialState({ isActive: true, stage: 'decision', step: 1 });
+            saveTutorialState({ isActive: true, stage: 'decision', step: 1, origin: 'decision-1' });
             return;
         }
         
         if (stage === 'quiz' && nextStepIndex >= steps.length) {
-            saveTutorialState({ isActive: true, stage: 'decision', step: -1 });
+            saveTutorialState({ isActive: true, stage: 'decision', step: 2 });
             return;
         }
 
-        saveTutorialState({ isActive: true, stage, step: nextStepIndex });
+        saveTutorialState({ ...tutorialState!, stage, step: nextStepIndex });
     };
 
     const handleBack = () => {
@@ -475,16 +475,15 @@ export default function OnboardingTutorial() {
 
         if (stage === 'initial' && prevStepIndex < 1) return; // Can't go back from the first bubble step
         if (stage === 'extended' && prevStepIndex < 0) {
-            saveTutorialState({ isActive: true, stage: 'decision', step: 0 });
+            saveTutorialState({ isActive: true, stage: 'decision', step: tutorialState?.origin === 'quiz-decision' ? 2 : 0, origin: tutorialState?.origin });
             return;
         }
-        const backToStep = tutorialState?.origin === 'decision-0' ? 0 : 1;
         if (stage === 'quiz' && prevStepIndex < 0) {
-            saveTutorialState({ isActive: true, stage: 'decision', step: backToStep });
+            saveTutorialState({ isActive: true, stage: 'decision', step: 0, origin: 'decision-0' });
             return;
         }
         
-        saveTutorialState({ isActive: true, stage, step: prevStepIndex });
+        saveTutorialState({ ...tutorialState!, stage, step: prevStepIndex });
     };
 
 
@@ -496,15 +495,14 @@ export default function OnboardingTutorial() {
     };
     
     const handleShowMore = () => {
-        saveTutorialState({ isActive: true, stage: 'extended', step: 0 });
+        saveTutorialState({ isActive: true, stage: 'extended', step: 0, origin: tutorialState?.origin });
     }
 
     const handleStartTest = () => {
-        const origin = stage === 'decision' && currentStepIndex === 0 ? 'decision-0' : 'decision-1';
-        saveTutorialState({ isActive: true, stage: 'quiz', step: 0, origin: origin });
+        saveTutorialState({ isActive: true, stage: 'quiz', step: 0, origin: tutorialState?.origin });
     }
 
-    if (!isMounted || !tutorialState || !tutorialState.isActive) {
+    if (!tutorialState || !tutorialState.isActive) {
         return null;
     }
     
@@ -533,42 +531,43 @@ export default function OnboardingTutorial() {
         )
       }
       
-      if (stage === 'decision' && currentStepIndex === 0) {
-          return (
-               <>
-                  <h2 className="text-2xl font-bold">Podstawy za nami!</h2>
-                  <p className="text-muted-foreground my-6">Możesz teraz poznać więcej funkcji, wypróbować krótki test lub od razu zacząć naukę.</p>
-                  <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                      <Button onClick={handleShowMore}>{uiTexts.showMore}</Button>
-                      <Button onClick={handleStartTest} variant="outline">{uiTexts.startTest}</Button>
-                      <Button variant="secondary" onClick={handleFinish}>{uiTexts.start}</Button>
-                  </div>
-              </>
-          );
+      if (stage === 'decision') {
+          if (currentStepIndex === 0) {
+              return (
+                   <>
+                      <h2 className="text-2xl font-bold">Podstawy za nami!</h2>
+                      <p className="text-muted-foreground my-6">Możesz teraz poznać więcej funkcji, wypróbować krótki test lub od razu zacząć naukę.</p>
+                      <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                          <Button onClick={handleShowMore}>{uiTexts.showMore}</Button>
+                          <Button onClick={handleStartTest} variant="outline">{uiTexts.startTest}</Button>
+                          <Button variant="secondary" onClick={handleFinish}>{uiTexts.start}</Button>
+                      </div>
+                  </>
+              );
+          }
+          if (currentStepIndex === 1) {
+              return (
+                  <>
+                      <h2 className="text-2xl font-bold">{uiTexts.finalTitle}</h2>
+                      <p className="text-muted-foreground my-6">{uiTexts.finalDesc}</p>
+                      <Button onClick={handleFinish}>{uiTexts.start}</Button>
+                  </>
+              );
+          }
+          if (currentStepIndex === 2) {
+            return (
+                <>
+                    <h2 className="text-2xl font-bold">{uiTexts.quizEndTitle}</h2>
+                    <p className="text-muted-foreground my-6">{uiTexts.quizEndDesc}</p>
+                     <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                        <Button onClick={handleShowMore}>{uiTexts.showMore}</Button>
+                        <Button variant="secondary" onClick={handleFinish}>{uiTexts.start}</Button>
+                    </div>
+                </>
+            )
+        }
       }
       
-      if (stage === 'decision' && currentStepIndex === 1) {
-          return (
-              <>
-                  <h2 className="text-2xl font-bold">Wprowadzenie zakończone!</h2>
-                  <p className="text-muted-foreground my-6">Wiesz już wszystko, co potrzebne, aby w pełni korzystać z aplikacji. Chcesz teraz wypróbować krótki test, aby zobaczyć jak działa quiz?</p>
-                  <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                      <Button onClick={handleStartTest}>{uiTexts.startTest}</Button>
-                      <Button variant="secondary" onClick={handleFinish}>{uiTexts.exit}</Button>
-                  </div>
-              </>
-          );
-      }
-      
-      if (stage === 'decision' && currentStepIndex === -1) {
-          return (
-              <>
-                  <h2 className="text-2xl font-bold">{uiTexts.finalTitle}</h2>
-                  <p className="text-muted-foreground my-6">{uiTexts.finalDesc}</p>
-                  <Button onClick={handleFinish}>{uiTexts.start}</Button>
-              </>
-          )
-      }
       return null;
     }
 
@@ -586,37 +585,37 @@ export default function OnboardingTutorial() {
     
     if (!currentStep) return null;
 
-    const isFinalStep = stage === 'quiz' && currentStepIndex === steps.length - 1;
+    const isFinalStep = false;
     
-    const totalInitialBubbleSteps = initialSteps.filter(s => !s.isModal).length;
-    const totalExtendedSteps = extendedSteps.length;
-    const totalQuizBubbleSteps = quizSteps.length;
-    const totalOverallBubbleSteps = totalInitialBubbleSteps + totalExtendedSteps + totalQuizBubbleSteps;
+    const totalInitialBubbleSteps = initialSteps.length - 1;
 
-    let currentStepDisplay: number = 0;
-    let totalStepsDisplay: number = 0;
+    let currentStepDisplay = 0;
+    let totalStepsDisplay = 0;
 
     if (stage === 'initial') {
         currentStepDisplay = currentStepIndex;
         totalStepsDisplay = totalInitialBubbleSteps;
     } else if (stage === 'extended') {
-        currentStepDisplay = totalInitialBubbleSteps + currentStepIndex + 1;
-        totalStepsDisplay = totalInitialBubbleSteps + totalExtendedSteps;
+        if (tutorialState.origin === 'quiz-decision') {
+            currentStepDisplay = currentStepIndex + 1;
+            totalStepsDisplay = extendedSteps.length;
+        } else {
+            currentStepDisplay = totalInitialBubbleSteps + currentStepIndex + 1;
+            totalStepsDisplay = totalInitialBubbleSteps + extendedSteps.length;
+        }
     } else if (stage === 'quiz') {
-        const cameFromInitial = tutorialState.origin === 'decision-0';
-        currentStepDisplay = currentStepIndex + 1;
-        totalStepsDisplay = totalQuizBubbleSteps;
-        
-        if (!cameFromInitial) {
-             currentStepDisplay += totalInitialBubbleSteps + totalExtendedSteps;
-             totalStepsDisplay += totalInitialBubbleSteps + totalExtendedSteps;
+        if (tutorialState.origin === 'decision-0') {
+            currentStepDisplay = currentStepIndex + 1;
+            totalStepsDisplay = quizSteps.length;
+        } else {
+            currentStepDisplay = totalInitialBubbleSteps + extendedSteps.length + currentStepIndex + 1;
+            totalStepsDisplay = totalInitialBubbleSteps + extendedSteps.length + quizSteps.length;
         }
     }
 
-
-    const cameFromInitialDecision = tutorialState?.origin === 'decision-0';
     const isBackButtonDisabled = (stage === 'initial' && currentStepIndex === 1) || 
-                                 (stage === 'quiz' && currentStepIndex === 0 && cameFromInitialDecision);
+                                 (stage === 'quiz' && currentStepIndex === 0 && tutorialState?.origin === 'decision-0') ||
+                                 (stage === 'extended' && currentStepIndex === 0 && tutorialState?.origin === 'quiz-decision');
 
 
     return (
@@ -646,7 +645,7 @@ export default function OnboardingTutorial() {
                             {currentStepDisplay}/{totalStepsDisplay}
                         </span>
                     </div>
-                    <Button onClick={isFinalStep ? handleFinish : handleNext} size="sm">
+                    <Button onClick={handleNext} size="sm">
                         {isFinalStep ? uiTexts.finish : uiTexts.next}
                     </Button>
                 </div>

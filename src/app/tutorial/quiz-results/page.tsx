@@ -31,34 +31,60 @@ export default function QuizResultsPage() {
             }, 3000);
             return () => clearTimeout(timer);
         }
-
+    
         const isThisStepActive = tutorialState.stage === 'quiz' && tutorialState.step === 8;
-        let scrollInterval: NodeJS.Timeout | undefined;
-
+        let timeouts: NodeJS.Timeout[] = [];
+        let animationFrameId: number;
+    
+        const easeInOutQuad = (t: number, b: number, c: number, d: number) => {
+            t /= d / 2;
+            if (t < 1) return (c / 2) * t * t + b;
+            t--;
+            return (-c / 2) * (t * (t - 2) - 1) + b;
+        };
+    
+        const animateScroll = (element: Element, to: number, duration: number) => {
+            const start = element.scrollTop;
+            const change = to - start;
+            let startTime: number | null = null;
+    
+            const animation = (currentTime: number) => {
+                if (startTime === null) startTime = currentTime;
+                const timeElapsed = currentTime - startTime;
+                const run = easeInOutQuad(timeElapsed, start, change, duration);
+                element.scrollTop = run;
+                if (timeElapsed < duration) {
+                    animationFrameId = requestAnimationFrame(animation);
+                }
+            };
+            animationFrameId = requestAnimationFrame(animation);
+        };
+    
         if (isThisStepActive && scrollAreaRef.current) {
             const viewport = scrollAreaRef.current?.querySelector('div[data-radix-scroll-area-viewport]');
-            
+    
             if (viewport) {
-                const animateScroll = () => {
+                const scrollDown = () => {
                     const maxScroll = viewport.scrollHeight - viewport.clientHeight;
-                    viewport.scrollTo({ top: maxScroll, behavior: 'smooth' });
-
-                    setTimeout(() => {
-                        viewport.scrollTo({ top: 0, behavior: 'smooth' });
-                    }, 2500); 
+                    animateScroll(viewport, maxScroll, 3000); // Slower scroll down (3 seconds)
+                    timeouts.push(setTimeout(scrollUp, 4000)); // Wait longer before scrolling up
                 };
-
-                const startTimeout = setTimeout(() => {
-                    animateScroll();
-                    scrollInterval = setInterval(animateScroll, 5000); // Repeat
-                }, 1200);
-
-                return () => {
-                    clearTimeout(startTimeout);
-                    if (scrollInterval) clearInterval(scrollInterval);
+    
+                const scrollUp = () => {
+                    animateScroll(viewport, 0, 3000); // Slower scroll up (3 seconds)
+                    timeouts.push(setTimeout(scrollDown, 4000)); // Wait longer before repeating
                 };
+    
+                timeouts.push(setTimeout(scrollDown, 1200)); // Initial start
             }
         }
+    
+        return () => {
+            timeouts.forEach(clearTimeout);
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+        };
     }, [router]);
 
 

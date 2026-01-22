@@ -47,11 +47,36 @@ export default function Errors() {
                      <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Word</TableHead>
-                                <TableHead>Correct Answer</TableHead>
-                                <TableHead>Your Answer</TableHead>
-                                <TableHead>Quiz</TableHead>
-                                <TableHead>Date</TableHead>
+                                <TableHead>
+                                    <Button variant="ghost" className="justify-start px-0 font-bold text-foreground pointer-events-none">
+                                        Word
+                                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                                    </Button>
+                                </TableHead>
+                                <TableHead>
+                                    <Button variant="ghost" className="justify-start px-0 font-bold text-foreground pointer-events-none">
+                                        Correct Answer
+                                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                                    </Button>
+                                </TableHead>
+                                <TableHead>
+                                    <Button variant="ghost" className="justify-start px-0 font-bold text-foreground pointer-events-none">
+                                        Your Answer
+                                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                                    </Button>
+                                </TableHead>
+                                <TableHead>
+                                    <Button variant="ghost" className="justify-start px-0 font-bold text-foreground pointer-events-none">
+                                        Quiz
+                                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                                    </Button>
+                                </TableHead>
+                                <TableHead>
+                                    <Button variant="ghost" className="justify-start px-0 font-bold text-foreground pointer-events-none">
+                                        Date
+                                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                                    </Button>
+                                </TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>

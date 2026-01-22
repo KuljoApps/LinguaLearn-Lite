@@ -213,7 +213,7 @@ export default function TensesPage({ title, backHref, tenses, language }: Tenses
                     <CardTitle className="text-3xl">{title}</CardTitle>
                 </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pl-6 pr-2">
                 <ScrollArea className="h-96 w-full pr-4">
                     {renderContent()}
                 </ScrollArea>

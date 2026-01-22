@@ -116,7 +116,7 @@ export default function SettingsPage() {
             <Card className="w-full max-w-md shadow-2xl" data-tutorial-id="settings-card">
                  <CardHeader className="relative flex h-14 items-center justify-center overflow-hidden p-6">
                     <SettingsIcon className={cn(
-                        "h-8 w-8 text-foreground",
+                        "h-8 w-8 shrink-0 text-foreground",
                         animate && "animate-icon-fly-out"
                     )} />
                     <CardTitle className={cn(
@@ -248,3 +248,4 @@ export default function SettingsPage() {
         </>
     );
 }
+    

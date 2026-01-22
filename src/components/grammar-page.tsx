@@ -37,7 +37,7 @@ export default function GrammarPage({ title, backHref, content }: GrammarPagePro
                     <CardTitle className="text-3xl">{title}</CardTitle>
                 </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pl-6 pr-2 pt-2 pb-4">
                 <ScrollArea className="h-96 w-full pr-4">
                     <Accordion type="single" collapsible className="w-full" defaultValue={content[0]?.heading}>
                         {content.map((rule) => (

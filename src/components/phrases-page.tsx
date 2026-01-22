@@ -52,7 +52,7 @@ export default function PhrasesPage({ title, backHref, phrases, children }: Phra
                     <CardTitle className="text-3xl">{title}</CardTitle>
                 </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pl-6 pr-2 pt-2 pb-4">
                 <ScrollArea className="h-96 w-full pr-4">
                     <div className="flex flex-col gap-3">
                         <div data-tutorial-id={tutorialId} className="flex flex-col gap-3">

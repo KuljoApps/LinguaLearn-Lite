@@ -13,7 +13,7 @@ export const adverbsContent = {
               },
               {
                   heading: 'Przysłówki nieregularne',
-                  text: 'Niektóre przysłówki mają taką samą formę jak przymiotniki (np. "fast", "hard", "late"), a inne mają zupełnie nieregularną formę (np. "good" -> "well").',
+                  text: 'Niektóre przysłówki mają taką samą formę jak przymiotniki (np. "fast", "hard", "late"), a\u00A0inne mają zupełnie nieregularną formę (np. "good" -> "well").',
                   examples: [
                       { original: 'He drives very fast.', translation: 'On jeździ bardzo szybko.' },
                       { original: 'You speak English well.', translation: 'Mówisz dobrze po angielsku.' }
@@ -21,7 +21,7 @@ export const adverbsContent = {
               },
               {
                   heading: 'Pozycja przysłówków w zdaniu',
-                  text: 'Miejsce przysłówka zależy od jego rodzaju. Przysłówki sposobu stoją zazwyczaj po czasowniku lub dopełnieniu. Przysłówki czasu (np. "yesterday", "now") są elastyczne i mogą stać na początku lub na końcu zdania.',
+                  text: 'Miejsce przysłówka zależy od jego rodzaju. Przysłówki sposobu stoją zazwyczaj po czasowniku lub dopełnieniu. Przysłówki czasu (np. "yesterday", "now") są elastyczne i\u00A0mogą stać na początku lub na końcu zdania.',
                   examples: [
                     { original: 'She sings beautifully.', translation: 'Ona pięknie śpiewa.' },
                     { original: 'I will call you tomorrow.', translation: 'Zadzwonię do ciebie jutro.' }
@@ -37,7 +37,7 @@ export const adverbsContent = {
               },
               {
                   heading: 'Stopniowanie przysłówków',
-                  text: 'Przysłówki stopniuje się podobnie do przymiotników. Krótkie formy dodają "-er" i "-est", a te z końcówką "-ly" używają "more" i "most".',
+                  text: 'Przysłówki stopniuje się podobnie do przymiotników. Krótkie formy dodają "-er" i\u00A0"-est", a\u00A0te z\u00A0końcówką "-ly" używają "more" i\u00A0"most".',
                   examples: [
                       { original: 'He works harder than anyone else.', translation: 'On pracuje ciężej niż ktokolwiek inny.' },
                       { original: 'She spoke more quietly than before.', translation: 'Mówiła ciszej niż wcześniej.' }
@@ -60,15 +60,15 @@ export const adverbsContent = {
               },
               {
                   heading: 'Pozycja w zdaniu (TeKaMoLo)',
-                  text: 'Przysłówki i okoliczniki w środku zdania często układają się według schematu Te-Ka-Mo-Lo: Temporal (kiedy?), Kausal (dlaczego?), Modal (jak?), Lokal (gdzie?).',
+                  text: 'Przysłówki i\u00A0okoliczniki w\u00A0środku zdania często układają się według schematu Te-Ka-Mo-Lo: Temporal (kiedy?), Kausal (dlaczego?), Modal (jak?), Lokal (gdzie?).',
                   examples: [
-                      { original: 'Ich fahre heute (Te) wegen des Streiks (Ka) mit dem Bus (Mo) nach Berlin (Lo).', translation: 'Jadę dzisiaj z powodu strajku autobusem do Berlina.' },
-                      { original: 'Sie arbeitet gern (Mo) zu Hause (Lo).', translation: 'Ona chętnie pracuje w domu.' }
+                      { original: 'Ich fahre heute (Te) wegen des Streiks (Ka) mit dem Bus (Mo) nach Berlin (Lo).', translation: 'Jadę dzisiaj z\u00A0powodu strajku autobusem do Berlina.' },
+                      { original: 'Sie arbeitet gern (Mo) zu Hause (Lo).', translation: 'Ona chętnie pracuje w\u00A0domu.' }
                   ]
               },
               {
                   heading: 'Przysłówki na początku zdania',
-                  text: 'Gdy przysłówek (zwłaszcza czasu lub miejsca) rozpoczyna zdanie, następuje po nim inwersja – odmieniony czasownik zajmuje drugie miejsce, a podmiot przesuwa się za czasownik.',
+                  text: 'Gdy przysłówek (zwłaszcza czasu lub miejsca) rozpoczyna zdanie, następuje po nim inwersja – odmieniony czasownik zajmuje drugie miejsce, a\u00A0podmiot przesuwa się za czasownik.',
                   examples: [
                       { original: 'Gestern habe ich meine Freunde getroffen.', translation: 'Wczoraj spotkałem moich przyjaciół.' },
                       { original: 'Dort steht ein altes Haus.', translation: 'Tam stoi stary dom.' }
@@ -79,12 +79,12 @@ export const adverbsContent = {
                 text: 'Niemiecki używa wielu krótkich przysłówków (tzw. partykuł modalnych), aby nadać wypowiedzi emocjonalny odcień. Słowa takie jak "doch", "ja", "wohl" często nie mają bezpośredniego tłumaczenia, ale zmieniają ton zdania.',
                 examples: [
                   { original: 'Das ist ja super!', translation: 'To jest przecież super! (wyraża zdziwienie/entuzjazm)' },
-                  { original: 'Du kommst doch mit, oder?', translation: 'No przecież idziesz z nami, prawda? (wyraża oczekiwanie/naleganie)' }
+                  { original: 'Du kommst doch mit, oder?', translation: 'No przecież idziesz z\u00A0nami, prawda? (wyraża oczekiwanie/naleganie)' }
                 ]
               },
               {
                   heading: 'Stopniowanie przysłówków',
-                  text: 'Przysłówki stopniuje się tak samo jak przymiotniki. Do stopnia wyższego dodaje się końcówkę "-er", a do najwyższego "am ...-sten". Istnieją również formy nieregularne.',
+                  text: 'Przysłówki stopniuje się tak samo jak przymiotniki. Do stopnia wyższego dodaje się końcówkę "-er", a\u00A0do najwyższego "am ...-sten". Istnieją również formy nieregularne.',
                   examples: [
                       { original: 'Er läuft schneller als ich.', translation: 'On biega szybciej niż ja.' },
                       { original: 'Von allen singt sie am schönsten.', translation: 'Ze wszystkich ona śpiewa najpiękniej.' }
@@ -107,15 +107,15 @@ export const adverbsContent = {
               },
               {
                 heading: 'Użycie kilku przysłówków na "-mente"',
-                text: 'Gdy w jednym zdaniu występuje kilka przysłówków zakończonych na "-mente", tylko ostatni z nich zachowuje tę końcówkę. Poprzednie występują w formie żeńskiej przymiotnika.',
+                text: 'Gdy w\u00A0jednym zdaniu występuje kilka przysłówków zakończonych na "-mente", tylko ostatni z\u00A0nich zachowuje tę końcówkę. Poprzednie występują w\u00A0formie żeńskiej przymiotnika.',
                 examples: [
-                  { original: 'Ella habló clara y lentamente.', translation: 'Ona mówiła jasno i powoli.' },
-                  { original: 'Lo hizo rápida y eficientemente.', translation: 'Zrobił to szybko i wydajnie.' }
+                  { original: 'Ella habló clara y lentamente.', translation: 'Ona mówiła jasno i\u00A0powoli.' },
+                  { original: 'Lo hizo rápida y eficientemente.', translation: 'Zrobił to szybko i\u00A0wydajnie.' }
                 ]
               },
               {
                   heading: 'Przysłówki o tej samej formie co przymiotniki',
-                  text: 'Niektóre słowa mogą funkcjonować zarówno jako przymiotniki, jak i przysłówki, bez zmiany formy. Dotyczy to np. słów "rápido" czy "duro".',
+                  text: 'Niektóre słowa mogą funkcjonować zarówno jako przymiotniki, jak i\u00A0przysłówki, bez zmiany formy. Dotyczy to np. słów "rápido" czy "duro".',
                   examples: [
                       { original: 'El tren rápido (przymiotnik) llegó. / Él corre rápido (przysłówek).', translation: 'Szybki pociąg przyjechał. / On szybko biega.' },
                       { original: 'Es un trabajo duro (przymiotnik). / Trabaja duro (przysłówek).', translation: 'To ciężka praca. / On ciężko pracuje.' }
@@ -123,7 +123,7 @@ export const adverbsContent = {
               },
               {
                   heading: 'Pozycja w zdaniu',
-                  text: 'Przysłówki mają dużą swobodę i mogą znajdować się w różnych miejscach zdania, ale najczęściej stoją bezpośrednio po czasowniku, który modyfikują.',
+                  text: 'Przysłówki mają dużą swobodę i\u00A0mogą znajdować się w\u00A0różnych miejscach zdania, ale najczęściej stoją bezpośrednio po czasowniku, który modyfikują.',
                   examples: [
                       { original: 'Ella siempre habla claramente.', translation: 'Ona zawsze mówi wyraźnie.' },
                       { original: 'Ayer trabajamos mucho.', translation: 'Wczoraj dużo pracowaliśmy.' }
@@ -131,7 +131,7 @@ export const adverbsContent = {
               },
               {
                   heading: 'Przysłówki ilości',
-                  text: 'Przysłówki takie jak "muy" (bardzo) i "mucho" (dużo) są często mylone. "Muy" modyfikuje przymiotniki i inne przysłówki, podczas gdy "mucho" modyfikuje czasowniki i rzeczowniki.',
+                  text: 'Przysłówki takie jak "muy" (bardzo) i\u00A0"mucho" (dużo) są często mylone. "Muy" modyfikuje przymiotniki i\u00A0inne przysłówki, podczas gdy "mucho" modyfikuje czasowniki i\u00A0rzeczowniki.',
                   examples: [
                       { original: 'El café está muy caliente.', translation: 'Kawa jest bardzo gorąca.' },
                       { original: 'No me gusta mucho el café.', translation: 'Nie bardzo lubię kawę.' }
@@ -154,7 +154,7 @@ export const adverbsContent = {
               },
               {
                   heading: 'Pozycja w zdaniu',
-                  text: 'Krótkie i częste przysłówki (bien, mal, beaucoup, vite) zazwyczaj stoją po odmienionym czasowniku. W czasach złożonych znajdują się między czasownikiem posiłkowym a imiesłowem.',
+                  text: 'Krótkie i\u00A0częste przysłówki (bien, mal, beaucoup, vite) zazwyczaj stoją po odmienionym czasowniku. W\u00A0czasach złożonych znajdują się między czasownikiem posiłkowym a\u00A0imiesłowem.',
                   examples: [
                       { original: 'J\'ai bien dormi.', translation: 'Dobrze spałem.' },
                       { original: 'Elle parle rapidement.', translation: 'Ona mówi szybko.' }
@@ -170,7 +170,7 @@ export const adverbsContent = {
               },
               {
                 heading: 'Przysłówki ilości (Adverbes de quantité)',
-                text: 'Przysłówki takie jak "beaucoup" (dużo), "peu" (mało), "assez" (wystarczająco) w połączeniu z rzeczownikiem wymagają użycia przyimka "de" (lub "d\'" przed samogłoską).',
+                text: 'Przysłówki takie jak "beaucoup" (dużo), "peu" (mało), "assez" (wystarczająco) w\u00A0połączeniu z\u00A0rzeczownikiem wymagają użycia przyimka "de" (lub "d\'" przed samogłoską).',
                 examples: [
                   { original: 'Il a beaucoup d\'amis.', translation: 'On ma dużo przyjaciół.' },
                   { original: 'J\'ai peu de temps.', translation: 'Mam mało czasu.' }
@@ -178,7 +178,7 @@ export const adverbsContent = {
               },
               {
                   heading: 'Stopniowanie przysłówków',
-                  text: 'Przysłówki stopniuje się opisowo za pomocą "plus" (bardziej), "moins" (mniej) i "aussi" (tak... jak).',
+                  text: 'Przysłówki stopniuje się opisowo za pomocą "plus" (bardziej), "moins" (mniej) i\u00A0"aussi" (tak... jak).',
                   examples: [
                       { original: 'Il court plus vite que moi.', translation: 'On biega szybciej niż ja.' },
                       { original: 'Elle chante le plus joliment de toutes.', translation: 'Ona śpiewa najpiękniej ze wszystkich.' }
@@ -201,7 +201,7 @@ export const adverbsContent = {
               },
               {
                   heading: 'Pozycja w zdaniu',
-                  text: 'Przysłówki zazwyczaj stoją po czasowniku. W czasach złożonych (np. Passato Prossimo) krótkie przysłówki (jak "già", "ancora", "più") umieszcza się między czasownikiem posiłkowym a imiesłowem.',
+                  text: 'Przysłówki zazwyczaj stoją po czasowniku. W\u00A0czasach złożonych (np. Passato Prossimo) krótkie przysłówki (jak "già", "ancora", "più") umieszcza się między czasownikiem posiłkowym a\u00A0imiesłowem.',
                   examples: [
                       { original: 'Parla lentamente.', translation: 'On/ona mówi powoli.' },
                       { original: 'Non ho ancora mangiato.', translation: 'Jeszcze nie jadłem.' }
@@ -209,7 +209,7 @@ export const adverbsContent = {
               },
               {
                   heading: 'Przysłówki nieregularne',
-                  text: 'Podobnie jak w innych językach, istnieją przysłówki o nieregularnych formach, które nie podlegają ogólnym zasadom tworzenia.',
+                  text: 'Podobnie jak w\u00A0innych językach, istnieją przysłówki o\u00A0nieregularnych formach, które nie podlegają ogólnym zasadom tworzenia.',
                   examples: [
                       { original: 'Cucina molto bene. (buono -> bene)', translation: 'On/ona gotuje bardzo dobrze.' },
                       { original: 'Sto male oggi. (cattivo -> male)', translation: 'Źle się dzisiaj czuję.' }
@@ -217,7 +217,7 @@ export const adverbsContent = {
               },
               {
                   heading: 'Przysłówki miejsca: qui/qua vs lì/là',
-                  text: '"Qui" i "qua" oznaczają "tutaj" (blisko mówiącego). "Lì" i "là" oznaczają "tam" (daleko od mówiącego i słuchającego). "Qua" i "là" są nieco mniej precyzyjne.',
+                  text: '"Qui" i\u00A0"qua" oznaczają "tutaj" (blisko mówiącego). "Lì" i\u00A0"là" oznaczają "tam" (daleko od mówiącego i\u00A0słuchającego). "Qua" i\u00A0"là" są nieco mniej precyzyjne.',
                   examples: [
                       { original: 'Vieni qui, per favore.', translation: 'Chodź tutaj, proszę.' },
                       { original: 'La stazione è là, in fondo alla strada.', translation: 'Stacja jest tam, na końcu ulicy.' }
@@ -225,10 +225,10 @@ export const adverbsContent = {
               },
               {
                 heading: 'Cząstki przysłówkowe "ci" i "ne"',
-                text: 'Cząstki "ci" i "ne" mogą pełnić funkcję przysłówków. "Ci" często zastępuje określenie miejsca ("tam"), a "ne" określenie miejsca, z którego się pochodzi lub oddala ("stamtąd").',
+                text: 'Cząstki "ci" i\u00A0"ne" mogą pełnić funkcję przysłówków. "Ci" często zastępuje określenie miejsca ("tam"), a\u00A0"ne" określenie miejsca, z\u00A0którego się pochodzi lub oddala ("stamtąd").',
                 examples: [
                   { original: 'Conosci Roma? Sì, ci sono stato. (ci = a Roma)', translation: 'Znasz Rzym? Tak, byłem tam.' },
-                  { original: 'Sei stato in ufficio? No, ne vengo proprio ora. (ne = dall\'ufficio)', translation: 'Byłeś w biurze? Nie, właśnie stamtąd wracam.' }
+                  { original: 'Sei stato in ufficio? No, ne vengo proprio ora. (ne = dall\'ufficio)', translation: 'Byłeś w\u00A0biurze? Nie, właśnie stamtąd wracam.' }
                 ]
               }
           ],

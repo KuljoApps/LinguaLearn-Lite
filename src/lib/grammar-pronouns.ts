@@ -5,7 +5,7 @@ export const pronounsContent = {
           content: [
             {
               heading: 'Zaimki osobowe (Subject & Object Pronouns)',
-              text: 'Zaimki podmiotowe (I, you, he) występują przed czasownikiem jako wykonawca czynności, a zaimki dopełnienia (me, you, him) po czasowniku lub przyimku.',
+              text: 'Zaimki podmiotowe (I, you, he) występują przed czasownikiem jako wykonawca czynności, a\u00A0zaimki dopełnienia (me, you, him) po czasowniku lub przyimku.',
               examples: [
                 { original: 'She (S) gave me (O) a book.', translation: 'Ona dała mi książkę.' },
                 { original: 'They (S) are waiting for us (O).', translation: 'Oni na nas czekają.' }
@@ -13,7 +13,7 @@ export const pronounsContent = {
             },
             {
               heading: 'Zaimki dzierżawcze (Possessive Pronouns)',
-              text: 'Zastępują rzeczownik, wskazując na przynależność (mine, yours, his, hers, ours, theirs). Nie mylić z przymiotnikami dzierżawczymi (my, your), które stoją przed rzeczownikiem.',
+              text: 'Zastępują rzeczownik, wskazując na przynależność (mine, yours, his, hers, ours, theirs). Nie mylić z\u00A0przymiotnikami dzierżawczymi (my, your), które stoją przed rzeczownikiem.',
               examples: [
                 { original: 'This is my car. That one is yours.', translation: 'To jest mój samochód. Tamten jest twój.' },
                 { original: 'Her idea is good, but I prefer mine.', translation: 'Jej pomysł jest dobry, ale wolę swój.' }
@@ -21,7 +21,7 @@ export const pronounsContent = {
             },
             {
               heading: 'Zaimki zwrotne (Reflexive Pronouns)',
-              text: 'Używane, gdy podmiot i dopełnienie to ta sama osoba (myself, yourself, himself). Mogą też służyć do podkreślenia, że ktoś zrobił coś sam.',
+              text: 'Używane, gdy podmiot i\u00A0dopełnienie to ta sama osoba (myself, yourself, himself). Mogą też służyć do podkreślenia, że ktoś zrobił coś sam.',
               examples: [
                 { original: 'He hurt himself while cooking.', translation: 'On skaleczył się podczas gotowania.' },
                 { original: 'I painted the room myself.', translation: 'Sam/a pomalowałem/am pokój.' }
@@ -29,7 +29,7 @@ export const pronounsContent = {
             },
             {
               heading: 'Zaimki wskazujące (Demonstrative Pronouns)',
-              text: 'Wskazują na konkretne osoby lub rzeczy (this, that, these, those). Ich forma zależy od liczby i odległości od mówiącego.',
+              text: 'Wskazują na konkretne osoby lub rzeczy (this, that, these, those). Ich forma zależy od liczby i\u00A0odległości od mówiącego.',
               examples: [
                 { original: 'This is my favorite song.', translation: 'To jest moja ulubiona piosenka.' },
                 { original: 'Can you pass me those books?', translation: 'Czy możesz podać mi tamte książki?' }
@@ -37,7 +37,7 @@ export const pronounsContent = {
             },
             {
               heading: 'Zaimki względne (Relative Pronouns)',
-              text: 'Wprowadzają zdania podrzędne, które opisują rzeczownik. "Who" odnosi się do ludzi, "which" do rzeczy, a "that" można używać zamiennie, zwłaszcza w mowie potocznej.',
+              text: 'Wprowadzają zdania podrzędne, które opisują rzeczownik. "Who" odnosi się do ludzi, "which" do rzeczy, a\u00A0"that" można używać zamiennie, zwłaszcza w\u00A0mowie potocznej.',
               examples: [
                 { original: 'The woman who lives next door is a doctor.', translation: 'Kobieta, która mieszka obok, jest lekarką.' },
                 { original: 'This is the book which won the prize.', translation: 'To jest książka, która wygrała nagrodę.' }
@@ -45,7 +45,7 @@ export const pronounsContent = {
             },
             {
               heading: 'Zaimki nieokreślone (Indefinite Pronouns)',
-              text: 'Odnoszą się do osób lub rzeczy w sposób ogólny, nieokreślony (np. someone, anything, nobody, everyone). W zdaniu traktowane są jak trzecia osoba liczby pojedynczej.',
+              text: 'Odnoszą się do osób lub rzeczy w\u00A0sposób ogólny, nieokreślony (np. someone, anything, nobody, everyone). W\u00A0zdaniu traktowane są jak trzecia osoba liczby pojedynczej.',
               examples: [
                 { original: 'Somebody has to clean this mess.', translation: 'Ktoś musi posprzątać ten bałagan.' },
                 { original: 'Is there anything I can do for you?', translation: 'Czy jest cokolwiek, co mogę dla ciebie zrobić?' }
@@ -60,7 +60,7 @@ export const pronounsContent = {
           content: [
             {
               heading: 'Zaimki osobowe w przypadkach (Personalpronomen in Kasus)',
-              text: 'Niemiecki wymaga użycia odpowiedniego zaimka w zależności od przypadku: Nominativ (kto? co?), Akkusativ (kogo? co?) oraz Dativ (komu? czemu?). To jedna z podstaw gramatyki.',
+              text: 'Niemiecki wymaga użycia odpowiedniego zaimka w\u00A0zależności od przypadku: Nominativ (kto? co?), Akkusativ (kogo? co?) oraz Dativ (komu? czemu?). To jedna z\u00A0podstaw gramatyki.',
               examples: [
                 { original: 'Er (N) sieht mich (A).', translation: 'On mnie widzi.' },
                 { original: 'Ich (N) gebe dir (D) ein Geschenk.', translation: 'Daję ci prezent.' }
@@ -68,7 +68,7 @@ export const pronounsContent = {
             },
             {
               heading: 'Zaimki dzierżawcze (Possessivpronomen)',
-              text: 'Określają przynależność i odmieniają się jak rodzajnik nieokreślony, przyjmując końcówki zgodne z rodzajem, liczbą i przypadkiem rzeczownika.',
+              text: 'Określają przynależność i\u00A0odmieniają się jak rodzajnik nieokreślony, przyjmując końcówki zgodne z\u00A0rodzajem, liczbą i\u00A0przypadkiem rzeczownika.',
               examples: [
                 { original: 'Das ist mein Bruder.', translation: 'To jest mój brat.' },
                 { original: 'Ich fahre mit seinem Auto.', translation: 'Jadę jego samochodem.' }
@@ -76,7 +76,7 @@ export const pronounsContent = {
             },
             {
               heading: 'Zaimki zwrotne (Reflexivpronomen)',
-              text: 'Używane z czasownikami zwrotnymi. W Akkusativie i Dativie dla 3. osoby liczby pojedynczej i mnogiej mają formę "sich".',
+              text: 'Używane z\u00A0czasownikami zwrotnymi. W\u00A0Akkusativie i\u00A0Dativie dla 3. osoby liczby pojedynczej i\u00A0mnogiej mają formę "sich".',
               examples: [
                 { original: 'Ich wasche mich.', translation: 'Myję się.' },
                 { original: 'Er kauft sich ein neues Hemd.', translation: 'On kupuje sobie nową koszulę.' }
@@ -84,7 +84,7 @@ export const pronounsContent = {
             },
             {
               heading: 'Zaimki względne (Relativpronomen)',
-              text: 'Wprowadzają zdania podrzędne (Relativsätze), które opisują rzeczownik z zdania głównego. Ich forma (der, die, das...) musi zgadzać się z rodzajem i liczbą tego rzeczownika, a przypadek zależy od ich funkcji w zdaniu podrzędnym.',
+              text: 'Wprowadzają zdania podrzędne (Relativsätze), które opisują rzeczownik z\u00A0zdania głównego. Ich forma (der, die, das...) musi zgadzać się z\u00A0rodzajem i\u00A0liczbą tego rzeczownika, a\u00A0przypadek zależy od ich funkcji w\u00A0zdaniu podrzędnym.',
               examples: [
                 { original: 'Das ist der Mann, der mir geholfen hat.', translation: 'To jest mężczyzna, który mi pomógł.' },
                 { original: 'Das Buch, das ich lese, ist sehr interessant.', translation: 'Książka, którą czytam, jest bardzo interesująca.' }
@@ -92,7 +92,7 @@ export const pronounsContent = {
             },
             {
               heading: 'Zaimki wskazujące (Demonstrativpronomen)',
-              text: 'Podkreślają lub wskazują na konkretną osobę lub rzecz. Najczęściej używane to "dieser" (ten) i "jener" (tamten). Rodzajnik określony (der, die, das) również może pełnić tę funkcję z mocniejszym akcentem.',
+              text: 'Podkreślają lub wskazują na konkretną osobę lub rzecz. Najczęściej używane to "dieser" (ten) i\u00A0"jener" (tamten). Rodzajnik określony (der, die, das) również może pełnić tę funkcję z\u00A0mocniejszym akcentem.',
               examples: [
                 { original: 'Dieses Kleid gefällt mir besser als jenes.', translation: 'Ta sukienka podoba mi się bardziej niż tamta.' },
                 { original: 'Den kenne ich nicht! (wskazując na kogoś)', translation: 'Tego nie znam!' }
@@ -100,7 +100,7 @@ export const pronounsContent = {
             },
             {
               heading: 'Zaimek nieokreślony "man"',
-              text: 'Jest to bardzo ważny zaimek bezosobowy, odpowiadający polskim formom "się" (mówi się), "człowiek" lub "ludzie". W zdaniu zawsze łączy się z czasownikiem w 3. osobie liczby pojedynczej.',
+              text: 'Jest to bardzo ważny zaimek bezosobowy, odpowiadający polskim formom "się" (mówi się), "człowiek" lub "ludzie". W\u00A0zdaniu zawsze łączy się z\u00A0czasownikiem w\u00A03. osobie liczby pojedynczej.',
               examples: [
                 { original: 'In Deutschland trinkt man viel Bier.', translation: 'W Niemczech pije się dużo piwa.' },
                 { original: 'Man darf hier nicht rauchen.', translation: 'Nie wolno tu palić.' }
@@ -131,7 +131,7 @@ export const pronounsContent = {
             },
             {
               heading: 'Zaimki dzierżawcze (Pronombres Posesivos)',
-              text: 'Zastępują rzeczownik, pokazując przynależność (mío, tuyo, suyo...). Muszą zgadzać się co do rodzaju i liczby z zastępowanym rzeczownikiem.',
+              text: 'Zastępują rzeczownik, pokazując przynależność (mío, tuyo, suyo...). Muszą zgadzać się co do rodzaju i\u00A0liczby z\u00A0zastępowanym rzeczownikiem.',
               examples: [
                 { original: 'Este libro no es mío, es tuyo.', translation: 'Ta książka nie jest moja, jest twoja.' },
                 { original: 'Mi casa es grande, pero la suya es enorme.', translation: 'Mój dom jest duży, ale jego/jej jest ogromny.' }
@@ -139,23 +139,23 @@ export const pronounsContent = {
             },
             {
               heading: 'Zaimki zwrotne (Pronombres Reflexivos)',
-              text: 'Używane z czasownikami zwrotnymi (me, te, se, nos, os, se), wskazują, że czynność jest wykonywana "na sobie" lub dotyczy samego podmiotu.',
+              text: 'Używane z\u00A0czasownikami zwrotnymi (me, te, se, nos, os, se), wskazują, że czynność jest wykonywana "na sobie" lub dotyczy samego podmiotu.',
               examples: [
-                { original: 'Yo me levanto a las siete.', translation: 'Wstaję o siódmej.' },
+                { original: 'Yo me levanto a las siete.', translation: 'Wstaję o\u00A0siódmej.' },
                 { original: 'Ella se peina el pelo.', translation: 'Ona czesze sobie włosy.' }
               ]
             },
             {
               heading: 'Zaimki względne (Pronombres Relativos)',
-              text: 'Łączą zdania i odnoszą się do wcześniej wspomnianego rzeczownika. Najważniejsze z nich to "que" (który, co), "quien" (kto) i "cuyo" (którego).',
+              text: 'Łączą zdania i\u00A0odnoszą się do wcześniej wspomnianego rzeczownika. Najważniejsze z\u00A0nich to "que" (który, co), "quien" (kto) i\u00A0"cuyo" (którego).',
               examples: [
                 { original: 'La casa que compramos es muy vieja.', translation: 'Dom, który kupiliśmy, jest bardzo stary.' },
-                { original: 'El hombre de quien te hablé es mi profesor.', translation: 'Mężczyzna, o którym ci mówiłem, jest moim profesorem.' }
+                { original: 'El hombre de quien te hablé es mi profesor.', translation: 'Mężczyzna, o\u00A0którym ci mówiłem, jest moim profesorem.' }
               ]
             },
             {
               heading: 'Zaimki po przyimkach (Pronombres Preposicionales)',
-              text: 'Po przyimkach (np. para, con, sin) używa się specjalnych form zaimków (mí, ti, él, ella...). Istnieją specjalne formy "conmigo" (ze mną) i "contigo" (z tobą).',
+              text: 'Po przyimkach (np. para, con, sin) używa się specjalnych form zaimków (mí, ti, él, ella...). Istnieją specjalne formy "conmigo" (ze mną) i\u00A0"contigo" (z tobą).',
               examples: [
                 { original: 'Este regalo es para ti.', translation: 'Ten prezent jest dla ciebie.' },
                 { original: '¿Quieres venir conmigo al cine?', translation: 'Chcesz iść ze mną do kina?' }
@@ -170,7 +170,7 @@ export const pronounsContent = {
           content: [
             {
               heading: 'Zaimki dopełnienia (Pronoms COD et COI)',
-              text: 'Zaimki dopełnienia bliższego (COD: me, te, le, la...) i dalszego (COI: me, te, lui...) zawsze stoją przed odmienionym czasownikiem.',
+              text: 'Zaimki dopełnienia bliższego (COD: me, te, le, la...) i\u00A0dalszego (COI: me, te, lui...) zawsze stoją przed odmienionym czasownikiem.',
               examples: [
                 { original: 'Je la vois.', translation: 'Widzę ją.' },
                 { original: 'Il me parle.', translation: 'On do mnie mówi.' }
@@ -178,7 +178,7 @@ export const pronounsContent = {
             },
             {
               heading: 'Kolejność dwóch zaimków dopełnienia',
-              text: 'Gdy w zdaniu występują dwa zaimki, ich kolejność jest ściśle określona (np. "me le", "te la", "lui en").',
+              text: 'Gdy w\u00A0zdaniu występują dwa zaimki, ich kolejność jest ściśle określona (np. "me le", "te la", "lui en").',
               examples: [
                 { original: 'Il me le donne.', translation: 'On mi to daje.' },
                 { original: 'Je te l\'ai dit.', translation: 'Powiedziałem/am ci to.' }
@@ -186,7 +186,7 @@ export const pronounsContent = {
             },
             {
               heading: 'Zaimki "en" oraz "y"',
-              text: '"En" zastępuje rzeczowniki z rodzajnikiem cząstkowym (de, du, de la) lub ilością. "Y" zastępuje miejsce (odpowiada na pytanie "gdzie?") lub rzeczownik po przyimku "à".',
+              text: '"En" zastępuje rzeczowniki z\u00A0rodzajnikiem cząstkowym (de, du, de la) lub ilością. "Y" zastępuje miejsce (odpowiada na pytanie "gdzie?") lub rzeczownik po przyimku "à".',
               examples: [
                 { original: 'Tu as de l\'argent? Oui, j\'en ai.', translation: 'Masz pieniądze? Tak, mam (ich trochę).' },
                 { original: 'Tu vas à Paris? Oui, j\'y vais.', translation: 'Jedziesz do Paryża? Tak, jadę (tam).' }
@@ -194,15 +194,15 @@ export const pronounsContent = {
             },
             {
               heading: 'Zaimki akcentowane (Pronoms Toniques)',
-              text: 'Używane do podkreślenia podmiotu, po przyimkach lub w krótkich odpowiedziach bez czasownika (moi, toi, lui, elle...).',
+              text: 'Używane do podkreślenia podmiotu, po przyimkach lub w\u00A0krótkich odpowiedziach bez czasownika (moi, toi, lui, elle...).',
               examples: [
-                { original: 'Moi, je suis polonais. Et toi?', translation: 'Ja jestem Polakiem. A ty?' },
-                { original: 'Il vient avec nous.', translation: 'On idzie z nami.' }
+                { original: 'Moi, je suis polonais. Et toi?', translation: 'Ja jestem Polakiem. A\u00A0ty?' },
+                { original: 'Il vient avec nous.', translation: 'On idzie z\u00A0nami.' }
               ]
             },
             {
               heading: 'Zaimki względne (Pronoms Relatifs)',
-              text: 'Łączą zdania. "Qui" jest podmiotem, "que" jest dopełnieniem bliższym, "dont" zastępuje "de + rzeczownik", a "où" odnosi się do miejsca lub czasu.',
+              text: 'Łączą zdania. "Qui" jest podmiotem, "que" jest dopełnieniem bliższym, "dont" zastępuje "de + rzeczownik", a\u00A0"où" odnosi się do miejsca lub czasu.',
               examples: [
                 { original: 'L\'homme qui parle est mon père.', translation: 'Mężczyzna, który mówi, jest moim ojcem.' },
                 { original: 'C\'est le film que je veux voir.', translation: 'To jest film, który chcę zobaczyć.' }
@@ -210,7 +210,7 @@ export const pronounsContent = {
             },
             {
               heading: 'Zaimki wskazujące (Pronoms Démonstratifs)',
-              text: 'Zastępują konkretny, wskazany rzeczownik (celui, celle, ceux, celles). Często występują z dodatkiem "-ci" (ten tutaj) lub "-là" (ten tam).',
+              text: 'Zastępują konkretny, wskazany rzeczownik (celui, celle, ceux, celles). Często występują z\u00A0dodatkiem "-ci" (ten tutaj) lub "-là" (ten tam).',
               examples: [
                 { original: 'Quel pull préfères-tu? Celui-ci ou celui-là?', translation: 'Który sweter wolisz? Ten tutaj czy tamten?' },
                 { original: 'Je prends les pommes, mais pas celles-là.', translation: 'Biorę te jabłka, ale nie tamte.' }
@@ -225,15 +225,15 @@ export const pronounsContent = {
           content: [
             {
               heading: 'Zaimki dopełnienia (Pronomi Diretti e Indiretti)',
-              text: 'Wskazują na dopełnienie bliższe (kogo/co? - lo, la...) lub dalsze (komu/czemu? - gli, le...). Ich poprawne użycie jest kluczowe dla płynności wypowiedzi.',
+              text: 'Wskazują na dopełnienie bliższe (kogo/co? - lo, la...) i\u00A0dalsze (komu/czemu? - gli, le...). Ich poprawne użycie jest kluczowe dla płynności wypowiedzi.',
               examples: [
                 { original: 'La vedo.', translation: 'Widzę ją.' },
-                { original: 'Gli parlo spesso.', translation: 'Często z nim rozmawiam.' }
+                { original: 'Gli parlo spesso.', translation: 'Często z\u00A0nim rozmawiam.' }
               ]
             },
             {
               heading: 'Pozycja zaimków nieakcentowanych',
-              text: 'Zaimki dopełnienia stoją przed odmienionym czasownikiem lub są dołączane na końcu bezokolicznika, trybu rozkazującego i gerundio, tworząc jedno słowo.',
+              text: 'Zaimki dopełnienia stoją przed odmienionym czasownikiem lub są dołączane na końcu bezokolicznika, trybu rozkazującego i\u00A0gerundio, tworząc jedno słowo.',
               examples: [
                 { original: 'Lo voglio fare. / Voglio farlo.', translation: 'Chcę to zrobić.' },
                 { original: 'Guardami!', translation: 'Spójrz na mnie!' }
@@ -243,7 +243,7 @@ export const pronounsContent = {
               heading: 'Cząstki "ci" oraz "ne"',
               text: '"Ci" często oznacza "tam" (miejsce) lub zastępuje rzeczownik po przyimku "a". "Ne" zastępuje rzeczownik wprowadzony przez "di" lub określenie ilości.',
               examples: [
-                { original: 'Sei mai stato a Roma? Sì, ci sono stato.', translation: 'Byłeś kiedyś w Rzymie? Tak, byłem (tam).' },
+                { original: 'Sei mai stato a Roma? Sì, ci sono stato.', translation: 'Byłeś kiedyś w\u00A0Rzymie? Tak, byłem (tam).' },
                 { original: 'Quanti libri hai? Ne ho molti.', translation: 'Ile masz książek? Mam ich wiele.' }
               ]
             },
@@ -257,15 +257,15 @@ export const pronounsContent = {
             },
             {
               heading: 'Zaimki względne (Pronomi Relativi)',
-              text: 'Wprowadzają zdania podrzędne. Najważniejsze to "che" (który/która/co - jako podmiot lub dopełnienie bliższe) oraz "cui" (używane z przyimkami).',
+              text: 'Wprowadzają zdania podrzędne. Najważniejsze to "che" (który/która/co - jako podmiot lub dopełnienie bliższe) oraz "cui" (używane z\u00A0przyimkami).',
               examples: [
                 { original: 'Il ragazzo che parla è mio fratello.', translation: 'Chłopak, który mówi, jest moim bratem.' },
-                { original: 'La città in cui vivo è molto bella.', translation: 'Miasto, w którym mieszkam, jest bardzo piękne.' }
+                { original: 'La città in cui vivo è molto bella.', translation: 'Miasto, w\u00A0którym mieszkam, jest bardzo piękne.' }
               ]
             },
             {
               heading: 'Zaimki wskazujące (Pronomi Dimostrativi)',
-              text: 'Wskazują na coś lub kogoś. "Questo" oznacza "ten" (blisko), a "quello" oznacza "tamten" (daleko). Odmieniają się przez rodzaj i liczbę.',
+              text: 'Wskazują na coś lub kogoś. "Questo" oznacza "ten" (blisko), a\u00A0"quello" oznacza "tamten" (daleko). Odmieniają się przez rodzaj i\u00A0liczbę.',
               examples: [
                 { original: 'Preferisco questa maglia, non quella.', translation: 'Wolę tę koszulkę, nie tamtą.' },
                 { original: 'Questi sono i miei amici.', translation: 'To są moi przyjaciele.' }

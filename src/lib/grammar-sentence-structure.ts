@@ -5,7 +5,7 @@ export const sentenceStructureContent = {
         content: [
           { 
             heading: 'Zdanie oznajmujące (SVO)', 
-            text: 'Podstawowy szyk zdania w języku angielskim to SVO: Podmiot (Subject) + Orzeczenie (Verb) + Dopełnienie (Object). Ten porządek jest stosunkowo sztywny i jego zachowanie jest kluczowe dla zrozumiałości.',
+            text: 'Podstawowy szyk zdania w\u00A0języku angielskim to SVO: Podmiot (Subject) + Orzeczenie (Verb) + Dopełnienie (Object). Ten porządek jest stosunkowo sztywny i\u00A0jego zachowanie jest kluczowe dla zrozumiałości.',
             examples: [
               { original: 'She (S) reads (V) books (O).', translation: 'Ona czyta książki.' },
               { original: 'The students (S) finished (V) their homework (O).', translation: 'Uczniowie skończyli swoje zadanie domowe.' }
@@ -13,7 +13,7 @@ export const sentenceStructureContent = {
           },
           { 
             heading: 'Pytania ogólne (Yes/No Questions) - Podstawy', 
-            text: 'Podstawowe pytania tworzy się przez inwersję, czyli postawienie czasownika posiłkowego (do, does, is, are, have) przed podmiotem. To jedna z fundamentalnych zasad tworzenia pytań.',
+            text: 'Podstawowe pytania tworzy się przez inwersję, czyli postawienie czasownika posiłkowego (do, does, is, are, have) przed podmiotem. To jedna z\u00A0fundamentalnych zasad tworzenia pytań.',
             examples: [
               { original: 'Do you like music?', translation: 'Czy lubisz muzykę?' },
               { original: 'Is he a doctor?', translation: 'Czy on jest lekarzem?' }
@@ -21,9 +21,9 @@ export const sentenceStructureContent = {
           },
           { 
             heading: 'Przeczenia (z "not") - Podstawy', 
-            text: 'Przeczenie tworzy się, dodając "not" po pierwszym czasowniku posiłkowym. W czasie Present Simple i Past Simple, jeśli nie ma innego czasownika posiłkowego, dodaje się "do not" (don\'t) / "does not" (doesn\'t) lub "did not" (didn\'t).',
+            text: 'Przeczenie tworzy się, dodając "not" po pierwszym czasowniku posiłkowym. W\u00A0czasie Present Simple i\u00A0Past Simple, jeśli nie ma innego czasownika posiłkowego, dodaje się "do not" (don\'t) / "does not" (doesn\'t) lub "did not" (didn\'t).',
             examples: [
-              { original: 'They are not from Canada.', translation: 'Oni nie są z Kanady.' },
+              { original: 'They are not from Canada.', translation: 'Oni nie są z\u00A0Kanady.' },
               { original: 'I do not understand the question.', translation: 'Nie rozumiem tego pytania.' }
             ]
           },
@@ -37,10 +37,10 @@ export const sentenceStructureContent = {
           },
           { 
             heading: 'Okoliczniki miejsca i czasu', 
-            text: 'Określenia miejsca i czasu zazwyczaj umieszcza się na końcu zdania. Standardowa kolejność to: sposób (how), miejsce (where), a następnie czas (when).',
+            text: 'Określenia miejsca i\u00A0czasu zazwyczaj umieszcza się na końcu zdania. Standardowa kolejność to: sposób (how), miejsce (where), a\u00A0następnie czas (when).',
             examples: [
               { original: 'We went to the cinema (miejsce) yesterday (czas).', translation: 'Poszliśmy wczoraj do kina.' },
-              { original: 'She drives her car carefully (sposób) in the city (miejsce).', translation: 'Ona ostrożnie prowadzi samochód w mieście.' }
+              { original: 'She drives her car carefully (sposób) in the city (miejsce).', translation: 'Ona ostrożnie prowadzi samochód w\u00A0mieście.' }
             ]
           },
           {
@@ -76,26 +76,26 @@ export const sentenceStructureContent = {
               },
               { 
                 heading: 'Przeczenia (nicht / kein) - Podstawy', 
-                text: 'Przeczenie "nicht" neguje czasownik lub całe zdanie i zazwyczaj stoi na końcu. Przeczenie "kein" neguje rzeczownik i stoi przed nim, odmieniając się jak rodzajnik nieokreślony.',
+                text: 'Przeczenie "nicht" neguje czasownik lub całe zdanie i\u00A0zazwyczaj stoi na końcu. Przeczenie "kein" neguje rzeczownik i\u00A0stoi przed nim, odmieniając się jak rodzajnik nieokreślony.',
                 examples: [
-                  { original: 'Ich spiele nicht gern Tennis.', translation: 'Nie lubię grać w tenisa.' },
+                  { original: 'Ich spiele nicht gern Tennis.', translation: 'Nie lubię grać w\u00A0tenisa.' },
                   { original: 'Er hat kein Auto.', translation: 'On nie ma samochodu.' }
                 ]
               },
               { 
                 heading: 'Zdania z dopełnieniem (Akkusativ / Dativ)', 
-                text: 'W niemieckim ważny jest przypadek (case). Dopełnienie w bierniku (Akkusativ) odpowiada na pytanie "kogo? co?", a w celowniku (Dativ) na "komu? czemu?". Standardowa kolejność to: Dativ przed Akkusativ.',
+                text: 'W niemieckim ważny jest przypadek (case). Dopełnienie w\u00A0bierniku (Akkusativ) odpowiada na pytanie "kogo? co?", a\u00A0w celowniku (Dativ) na "komu? czemu?". Standardowa kolejność to: Dativ przed Akkusativ.',
                 examples: [
                   { original: 'Der Lehrer gibt dem Schüler (Dativ) ein Buch (Akkusativ).', translation: 'Nauczyciel daje uczniowi książkę.' },
-                  { original: 'Ich sehe ihn (Akkusativ) im Park.', translation: 'Widzę go w parku.' }
+                  { original: 'Ich sehe ihn (Akkusativ) im Park.', translation: 'Widzę go w\u00A0parku.' }
                 ]
               },
               { 
                 heading: 'Okoliczniki czasu i miejsca (TeKaMoLo)', 
-                text: 'Określenia w zdaniu często podążają za regułą TeKaMoLo: Temporal (kiedy?), Kausal (dlaczego?), Modal (jak?), Lokal (gdzie?). Czas zazwyczaj występuje przed miejscem.',
+                text: 'Określenia w\u00A0zdaniu często podążają za regułą TeKaMoLo: Temporal (kiedy?), Kausal (dlaczego?), Modal (jak?), Lokal (gdzie?). Czas zazwyczaj występuje przed miejscem.',
                 examples: [
                   { original: 'Ich fahre morgen (Zeit) nach Berlin (Ort).', translation: 'Jadę jutro do Berlina.' },
-                  { original: 'Wir treffen uns um 18 Uhr (Zeit) vor dem Kino (Ort).', translation: 'Spotykamy się o 18:00 przed kinem.' }
+                  { original: 'Wir treffen uns um 18 Uhr (Zeit) vor dem Kino (Ort).', translation: 'Spotykamy się o\u00A018:00 przed kinem.' }
                 ]
               },
               {
@@ -103,7 +103,7 @@ export const sentenceStructureContent = {
                 text: 'W zdaniach podrzędnych, wprowadzanych spójnikami takimi jak "dass" (że), "weil" (ponieważ) czy "wenn" (kiedy/jeśli), odmieniony czasownik zawsze wędruje na sam koniec zdania.',
                 examples: [
                   { original: 'Ich weiß, dass er heute kommt.', translation: 'Wiem, że on dzisiaj przyjdzie.' },
-                  { original: 'Wir bleiben zu Hause, weil es regnet.', translation: 'Zostajemy w domu, ponieważ pada deszcz.' }
+                  { original: 'Wir bleiben zu Hause, weil es regnet.', translation: 'Zostajemy w\u00A0domu, ponieważ pada deszcz.' }
                 ]
               }
             ],
@@ -118,12 +118,12 @@ export const sentenceStructureContent = {
                 text: 'Podstawowy szyk to Podmiot-Orzeczenie-Dopełnienie (SVO), ale jest on bardzo elastyczny. Często pomija się podmiot (zaimek osobowy), ponieważ forma czasownika jasno go wskazuje.',
                 examples: [
                   { original: '(Yo) como una manzana.', translation: '(Ja) jem jabłko.' },
-                  { original: 'Mi amigo lee un libro en la biblioteca.', translation: 'Mój przyjaciel czyta książkę w bibliotece.' }
+                  { original: 'Mi amigo lee un libro en la biblioteca.', translation: 'Mój przyjaciel czyta książkę w\u00A0bibliotece.' }
                 ]
               },
               { 
                 heading: 'Pytania ogólne', 
-                text: 'Najprostszym sposobem jest zmiana intonacji zdania twierdzącego na pytającą. W piśmie zdanie otacza się znakami zapytania (¿...?). Możliwa jest też inwersja (zamiana miejscami czasownika i podmiotu).',
+                text: 'Najprostszym sposobem jest zmiana intonacji zdania twierdzącego na pytającą. W\u00A0piśmie zdanie otacza się znakami zapytania (¿...?). Możliwa jest też inwersja (zamiana miejscami czasownika i\u00A0podmiotu).',
                 examples: [
                   { original: '¿Hablas español?', translation: 'Mówisz po hiszpańsku? (przez intonację)' },
                   { original: '¿Viene Juan a la fiesta?', translation: 'Czy Juan przychodzi na imprezę? (przez inwersję)' }
@@ -147,15 +147,15 @@ export const sentenceStructureContent = {
               },
               { 
                 heading: 'Okoliczniki miejsca i czasu', 
-                text: 'Mają dużą swobodę w zdaniu. Najczęściej umieszcza się je na początku lub na końcu zdania.',
+                text: 'Mają dużą swobodę w\u00A0zdaniu. Najczęściej umieszcza się je na początku lub na końcu zdania.',
                 examples: [
                   { original: 'Ayer fuimos a la playa.', translation: 'Wczoraj poszliśmy na plażę.' },
-                  { original: 'Mi hermana vive en Madrid desde hace cinco años.', translation: 'Moja siostra mieszka w Madrycie od pięciu lat.' }
+                  { original: 'Mi hermana vive en Madrid desde hace cinco años.', translation: 'Moja siostra mieszka w\u00A0Madrycie od pięciu lat.' }
                 ]
               },
               {
                 heading: 'Pozycja przymiotników',
-                text: 'W przeciwieństwie do polskiego i angielskiego, większość przymiotników w języku hiszpańskim umieszcza się po rzeczowniku, który opisują.',
+                text: 'W przeciwieństwie do polskiego i\u00A0angielskiego, większość przymiotników w\u00A0języku hiszpańskim umieszcza się po rzeczowniku, który opisują.',
                 examples: [
                   { original: 'Tengo un coche rojo.', translation: 'Mam czerwony samochód.' },
                   { original: 'Es una mujer inteligente.', translation: 'To jest inteligentna kobieta.' }
@@ -178,7 +178,7 @@ export const sentenceStructureContent = {
               },
               { 
                 heading: 'Pytania (Est-ce que)', 
-                text: 'Standardowy i neutralny sposób tworzenia pytań to dodanie "Est-ce que" na początku zdania twierdzącego.',
+                text: 'Standardowy i\u00A0neutralny sposób tworzenia pytań to dodanie "Est-ce que" na początku zdania twierdzącego.',
                 examples: [
                   { original: 'Est-ce que tu parles français?', translation: 'Czy mówisz po francusku?' },
                   { original: 'Est-ce qu\'il vient à la fête?', translation: 'Czy on przychodzi na imprezę?' }
@@ -186,7 +186,7 @@ export const sentenceStructureContent = {
               },
               { 
                 heading: 'Przeczenia (ne ... pas)', 
-                text: 'Przeczenie tworzy się za pomocą dwóch części: "ne" i "pas", które "otaczają" odmieniony czasownik. W języku mówionym "ne" jest często pomijane.',
+                text: 'Przeczenie tworzy się za pomocą dwóch części: "ne" i\u00A0"pas", które "otaczają" odmieniony czasownik. W\u00A0języku mówionym "ne" jest często pomijane.',
                 examples: [
                   { original: 'Je ne comprends pas la question.', translation: 'Nie rozumiem pytania.' },
                   { original: 'Elle n\'est pas ici aujourd\'hui.', translation: 'Jej tu dzisiaj nie ma.' }
@@ -194,7 +194,7 @@ export const sentenceStructureContent = {
               },
               { 
                 heading: 'Zdania z zaimkami dopełnienia', 
-                text: 'Zaimki dopełnienia (np. le, la, lui, me, te) zawsze stoją bezpośrednio przed czasownikiem (lub czasownikiem posiłkowym w czasach złożonych).',
+                text: 'Zaimki dopełnienia (np. le, la, lui, me, te) zawsze stoją bezpośrednio przed czasownikiem (lub czasownikiem posiłkowym w\u00A0czasach złożonych).',
                 examples: [
                   { original: 'Je le vois.', translation: 'Widzę go.' },
                   { original: 'Tu me donnes le livre.', translation: 'Dajesz mi książkę.' }
@@ -210,7 +210,7 @@ export const sentenceStructureContent = {
               },
               {
                 heading: 'Pozycja przysłówków w czasach złożonych',
-                text: 'Krótkie i powszechne przysłówki (np. bien, mal, beaucoup, déjà) w czasach złożonych, jak Passé Composé, umieszcza się między czasownikiem posiłkowym a imiesłowem (participe passé).',
+                text: 'Krótkie i\u00A0powszechne przysłówki (np. bien, mal, beaucoup, déjà) w\u00A0czasach złożonych, jak Passé Composé, umieszcza się między czasownikiem posiłkowym a\u00A0imiesłowem (participe passé).',
                 examples: [
                   { original: 'J\'ai bien dormi.', translation: 'Dobrze spałem.' },
                   { original: 'Nous avons beaucoup mangé.', translation: 'Dużo zjedliśmy.' }
@@ -233,7 +233,7 @@ export const sentenceStructureContent = {
               },
               { 
                 heading: 'Pytania ogólne', 
-                text: 'Najprostszym i najczęstszym sposobem tworzenia pytań jest zmiana intonacji zdania twierdzącego na wznoszącą na końcu.',
+                text: 'Najprostszym i\u00A0najczęstszym sposobem tworzenia pytań jest zmiana intonacji zdania twierdzącego na wznoszącą na końcu.',
                 examples: [
                   { original: 'Parli italiano?', translation: 'Mówisz po włosku?' },
                   { original: 'Vieni alla festa stasera?', translation: 'Idziesz dziś wieczorem na imprezę?' }
@@ -257,15 +257,15 @@ export const sentenceStructureContent = {
               },
               { 
                 heading: 'Okoliczniki miejsca i czasu', 
-                text: 'Mają dużą swobodę w zdaniu, ale najczęściej występują na początku lub na końcu zdania.',
+                text: 'Mają dużą swobodę w\u00A0zdaniu, ale najczęściej występują na początku lub na końcu zdania.',
                 examples: [
                   { original: 'Domani andiamo al mare.', translation: 'Jutro jedziemy nad morze.' },
-                  { original: 'Lavoro in ufficio ogni giorno.', translation: 'Pracuję w biurze każdego dnia.' }
+                  { original: 'Lavoro in ufficio ogni giorno.', translation: 'Pracuję w\u00A0biurze każdego dnia.' }
                 ]
               },
               {
                 heading: 'Pozycja przymiotników',
-                text: 'Podobnie jak w hiszpańskim, większość przymiotników (zwłaszcza tych opisujących kolor, kształt, narodowość) umieszcza się po rzeczowniku.',
+                text: 'Podobnie jak w\u00A0hiszpańskim, większość przymiotników (zwłaszcza tych opisujących kolor, kształt, narodowość) umieszcza się po rzeczowniku.',
                 examples: [
                   { original: 'Ho una macchina rossa.', translation: 'Mam czerwony samochód.' },
                   { original: 'È una ragazza intelligente.', translation: 'To jest inteligentna dziewczyna.' }

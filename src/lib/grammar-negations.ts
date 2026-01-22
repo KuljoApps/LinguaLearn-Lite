@@ -5,7 +5,7 @@ export const negationsContent = {
           content: [
             { 
               heading: 'Przeczenie z "not" i czasownikami posiłkowymi', 
-              text: 'Głównym sposobem tworzenia przeczeń jest dodanie "not" po czasowniku posiłkowym (auxiliary verb) takim jak "be", "have", "will", "can". W mowie potocznej często używa się form skróconych (n\'t).',
+              text: 'Głównym sposobem tworzenia przeczeń jest dodanie "not" po czasowniku posiłkowym (auxiliary verb) takim jak "be", "have", "will", "can". W\u00A0mowie potocznej często używa się form skróconych (n\'t).',
               examples: [
                 { original: 'She is not (isn\'t) a doctor.', translation: 'Ona nie jest lekarką.' },
                 { original: 'We have not (haven\'t) finished yet.', translation: 'Jeszcze nie skończyliśmy.' }
@@ -13,7 +13,7 @@ export const negationsContent = {
             },
             { 
               heading: 'Przeczenia z "do/does/did"', 
-              text: 'W czasach Present Simple i Past Simple, jeśli w zdaniu nie ma innego czasownika posiłkowego, do tworzenia przeczeń używa się operatora "do/does/did" + "not".',
+              text: 'W czasach Present Simple i\u00A0Past Simple, jeśli w\u00A0zdaniu nie ma innego czasownika posiłkowego, do tworzenia przeczeń używa się operatora "do/does/did" + "not".',
               examples: [
                 { original: 'I do not (don\'t) like coffee.', translation: 'Nie lubię kawy.' },
                 { original: 'He did not (didn\'t) go to the party.', translation: 'On nie poszedł na imprezę.' }
@@ -21,15 +21,15 @@ export const negationsContent = {
             },
             { 
               heading: 'Przeczenie rzeczowników z "no"', 
-              text: 'Aby zaprzeczyć istnieniu czegoś, używa się słówka "no" bezpośrednio przed rzeczownikiem. W takim zdaniu czasownik pozostaje w formie twierdzącej.',
+              text: 'Aby zaprzeczyć istnieniu czegoś, używa się słówka "no" bezpośrednio przed rzeczownikiem. W\u00A0takim zdaniu czasownik pozostaje w\u00A0formie twierdzącej.',
               examples: [
                 { original: 'There is no milk in the fridge.', translation: 'W lodówce nie ma mleka.' },
-                { original: 'I have no idea what you are talking about.', translation: 'Nie mam pojęcia, o czym mówisz.' }
+                { original: 'I have no idea what you are talking about.', translation: 'Nie mam pojęcia, o\u00A0czym mówisz.' }
               ]
             },
             { 
               heading: 'Inne słowa przeczące', 
-              text: 'Słowa takie jak "never" (nigdy), "nobody" (nikt), "nothing" (nic) same w sobie nadają zdaniu sens negatywny. W standardowym angielskim nie stosuje się podwójnego przeczenia.',
+              text: 'Słowa takie jak "never" (nigdy), "nobody" (nikt), "nothing" (nic) same w\u00A0sobie nadają zdaniu sens negatywny. W\u00A0standardowym angielskim nie stosuje się podwójnego przeczenia.',
               examples: [
                 { original: 'She never eats meat.', translation: 'Ona nigdy nie je mięsa.' },
                 { original: 'Nobody knows the answer.', translation: 'Nikt nie zna odpowiedzi.' }
@@ -44,7 +44,7 @@ export const negationsContent = {
             content: [
               { 
                 heading: 'Przeczenie za pomocą "nicht"', 
-                text: '"Nicht" jest używane do negowania czasowników, przymiotników, przysłówków lub całych zdań. Jego pozycja w zdaniu jest kluczowa i zależy od tego, co chcemy zanegować.',
+                text: '"Nicht" jest używane do negowania czasowników, przymiotników, przysłówków lub całych zdań. Jego pozycja w\u00A0zdaniu jest kluczowa i\u00A0zależy od tego, co chcemy zanegować.',
                 examples: [
                   { original: 'Ich komme heute nicht.', translation: 'Nie przyjdę dzisiaj (negacja całego zdania, "nicht" na końcu).' },
                   { original: 'Das Auto ist nicht neu, sondern alt.', translation: 'Samochód nie jest nowy, lecz stary (negacja przymiotnika, "nicht" przed nim).' }
@@ -52,7 +52,7 @@ export const negationsContent = {
               },
               { 
                 heading: 'Przeczenie za pomocą "kein"', 
-                text: '"Kein" służy do negowania rzeczowników z rodzajnikiem nieokreślonym (ein/eine) lub rzeczowników bez rodzajnika. Odmienia się przez przypadki i rodzaje tak jak rodzajnik nieokreślony.',
+                text: '"Kein" służy do negowania rzeczowników z\u00A0rodzajnikiem nieokreślonym (ein/eine) lub rzeczowników bez rodzajnika. Odmienia się przez przypadki i\u00A0rodzaje tak jak rodzajnik nieokreślony.',
                 examples: [
                   { original: 'Das ist kein Apfel, das ist eine Birne.', translation: 'To nie jest jabłko, to jest gruszka.' },
                   { original: 'Ich habe keine Zeit.', translation: 'Nie mam czasu.' }
@@ -68,7 +68,7 @@ export const negationsContent = {
               },
               { 
                 heading: 'Podwójne przeczenie', 
-                text: 'W standardowym języku niemieckim, w przeciwieństwie do polskiego, generalnie unika się podwójnego przeczenia. Użycie jednego słowa przeczącego (np. "nie", "nichts") wystarcza do zanegowania całego zdania.',
+                text: 'W standardowym języku niemieckim, w\u00A0przeciwieństwie do polskiego, generalnie unika się podwójnego przeczenia. Użycie jednego słowa przeczącego (np. "nie", "nichts") wystarcza do zanegowania całego zdania.',
                 examples: [
                   { original: 'Er hat nie Zeit.', translation: 'On nigdy nie ma czasu (a nie: Er hat nie keine Zeit).' },
                   { original: 'Ich sehe niemanden.', translation: 'Nikogo nie widzę (a nie: Ich sehe nicht niemanden).' }
@@ -102,12 +102,12 @@ export const negationsContent = {
                 text: 'Jeśli słowo takie jak "nadie", "nada" czy "nunca" postawimy na początku zdania (przed czasownikiem), wtedy "no" jest pomijane.',
                 examples: [
                   { original: 'Nadie me ha llamado.', translation: 'Nikt do mnie nie dzwonił.' },
-                  { original: 'Nunca he estado en Argentina.', translation: 'Nigdy nie byłem w Argentynie.' }
+                  { original: 'Nunca he estado en Argentina.', translation: 'Nigdy nie byłem w\u00A0Argentynie.' }
                 ]
               },
               { 
                 heading: 'Przeczenie rzeczowników z "ningún/ninguna"', 
-                text: 'Słówko "ningún" (przed rzeczownikami męskimi) lub "ninguna" (przed żeńskimi) oznacza "żaden/żadna". Wymaga podwójnego przeczenia z "no", jeśli występuje po czasowniku.',
+                text: 'Słówko "ningún" (przed rzeczownikami męskimi) lub "ninguna" (przed żeńskimi) oznacza "żaden/żadna". Wymaga podwójnego przeczenia z\u00A0"no", jeśli występuje po czasowniku.',
                 examples: [
                   { original: 'No tengo ningún problema.', translation: 'Nie mam żadnego problemu.' },
                   { original: 'No conozco a ninguna persona aquí.', translation: 'Nie znam tu żadnej osoby.' }
@@ -122,7 +122,7 @@ export const negationsContent = {
             content: [
               { 
                 heading: 'Podstawowa konstrukcja "ne ... pas"', 
-                text: 'Standardowe przeczenie w języku francuskim tworzy się za pomocą dwóch części: "ne" (przed czasownikiem) i "pas" (po czasowniku), które "otaczają" odmieniony czasownik.',
+                text: 'Standardowe przeczenie w\u00A0języku francuskim tworzy się za pomocą dwóch części: "ne" (przed czasownikiem) i\u00A0"pas" (po czasowniku), które "otaczają" odmieniony czasownik.',
                 examples: [
                   { original: 'Je ne comprends pas.', translation: 'Nie rozumiem.' },
                   { original: 'Elle ne veut pas venir.', translation: 'Ona nie chce przyjść.' }
@@ -130,7 +130,7 @@ export const negationsContent = {
               },
               { 
                 heading: 'Przeczenia w czasach złożonych', 
-                text: 'W czasach złożonych, takich jak Passé Composé, "ne" i "pas" otaczają czasownik posiłkowy ("avoir" lub "être"), a nie imiesłów.',
+                text: 'W czasach złożonych, takich jak Passé Composé, "ne" i\u00A0"pas" otaczają czasownik posiłkowy ("avoir" lub "être"), a\u00A0nie imiesłów.',
                 examples: [
                   { original: 'J\'ai pas mangé.', translation: 'Nie jadłem/am.' },
                   { original: 'Nous ne sommes pas allés au cinéma.', translation: 'Nie poszliśmy do kina.' }
@@ -169,10 +169,10 @@ export const negationsContent = {
               },
               { 
                 heading: 'Podwójne przeczenie', 
-                text: 'Podobnie jak w hiszpańskim, słowa takie jak "niente" (nic) czy "nessuno" (nikt) wymagają "non" przed czasownikiem, jeśli stoją po nim.',
+                text: 'Podobnie jak w\u00A0hiszpańskim, słowa takie jak "niente" (nic) czy "nessuno" (nikt) wymagają "non" przed czasownikiem, jeśli stoją po nim.',
                 examples: [
                   { original: 'Non ho visto niente.', translation: 'Nic nie widziałem.' },
-                  { original: 'Non parlo mai con lui.', translation: 'Nigdy z nim nie rozmawiam.' }
+                  { original: 'Non parlo mai con lui.', translation: 'Nigdy z\u00A0nim nie rozmawiam.' }
                 ]
               },
               { 
@@ -185,7 +185,7 @@ export const negationsContent = {
               },
               { 
                 heading: 'Przeczenie z "né ... né"', 
-                text: 'Konstrukcja "né ... né" odpowiada polskiemu "ani ... ani" i służy do łączenia dwóch lub więcej elementów w zdaniu przeczącym. Zwykle wymaga użycia "non" przed czasownikiem.',
+                text: 'Konstrukcja "né ... né" odpowiada polskiemu "ani ... ani" i\u00A0łączy dwa lub więcej elementów w\u00A0zdaniu przeczącym. Zwykle wymaga użycia "non" przed czasownikiem.',
                 examples: [
                   { original: 'Non mi piace né il tè né il caffè.', translation: 'Nie lubię ani herbaty, ani kawy.' },
                   { original: 'Non ho né tempo né soldi.', translation: 'Nie mam ani czasu, ani pieniędzy.' }

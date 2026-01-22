@@ -5,7 +5,7 @@ export const questionsContent = {
           content: [
             { 
               heading: 'Pytania ogólne (Yes/No Questions)', 
-              text: 'Tworzy się je przez inwersję, czyli zamianę miejscami podmiotu i czasownika posiłkowego (auxiliary verb) jak "be", "have", "will" lub dodanie operatora "do/does/did" na początku zdania.',
+              text: 'Tworzy się je przez inwersję, czyli zamianę miejscami podmiotu i\u00A0czasownika posiłkowego (auxiliary verb) jak "be", "have", "will" lub dodanie operatora "do/does/did" na początku zdania.',
               examples: [
                 { original: 'Are you a student?', translation: 'Czy jesteś studentem?' },
                 { original: 'Did she finish her work?', translation: 'Czy ona skończyła swoją pracę?' }
@@ -21,7 +21,7 @@ export const questionsContent = {
             },
             {
               heading: 'Pytania rozłączne (Question Tags)',
-              text: 'To krótkie pytania dodawane na końcu zdania twierdzącego lub przeczącego, aby poprosić o potwierdzenie. Jeśli zdanie jest twierdzące, pytanie jest przeczące, i na odwrót.',
+              text: 'To krótkie pytania dodawane na końcu zdania twierdzącego lub przeczącego, aby poprosić o\u00A0potwierdzenie. Jeśli zdanie jest twierdzące, pytanie jest przeczące, i\u00A0na odwrót.',
               examples: [
                 { original: 'It\'s a beautiful day, isn\'t it?', translation: 'To piękny dzień, prawda?' },
                 { original: 'You haven\'t seen my keys, have you?', translation: 'Nie widziałeś moich kluczy, prawda?' }
@@ -29,7 +29,7 @@ export const questionsContent = {
             },
             {
               heading: 'Pytania pośrednie (Indirect Questions)',
-              text: 'Są to bardziej uprzejme formy pytań, często zaczynające się od zwrotów takich jak "Could you tell me..." lub "I was wondering...". W pytaniach pośrednich szyk zdania jest taki jak w zdaniu twierdzącym (brak inwersji).',
+              text: 'Są to bardziej uprzejme formy pytań, często zaczynające się od zwrotów takich jak "Could you tell me..." lub "I was wondering...". W\u00A0pytaniach pośrednich szyk zdania jest taki jak w\u00A0zdaniu twierdzącym (brak inwersji).',
               examples: [
                 { original: 'Could you tell me where the station is?', translation: 'Czy mógłbyś mi powiedzieć, gdzie jest stacja?' },
                 { original: 'I wonder if she will come to the party.', translation: 'Zastanawiam się, czy ona przyjdzie na imprezę.' }
@@ -37,7 +37,7 @@ export const questionsContent = {
             },
             {
               heading: 'Pytania o podmiot vs. dopełnienie',
-              text: 'W pytaniach o podmiot (kto/co wykonuje czynność) nie używamy operatora "do/does/did". Czasownik występuje w formie twierdzącej. W pytaniach o dopełnienie (na kogo/co skierowana jest czynność) operator jest konieczny.',
+              text: 'W pytaniach o\u00A0podmiot (kto/co wykonuje czynność) nie używamy operatora "do/does/did". Czasownik występuje w\u00A0formie twierdzącej. W\u00A0pytaniach o\u00A0dopełnienie (na kogo/co skierowana jest czynność) operator jest konieczny.',
               examples: [
                 { original: 'Who called you? (podmiot) vs. Who did you call? (dopełnienie)', translation: 'Kto do ciebie dzwonił? vs. Do kogo dzwoniłeś?' },
                 { original: 'What happened? (podmiot) vs. What did you see? (dopełnienie)', translation: 'Co się stało? vs. Co zobaczyłeś?' }
@@ -52,7 +52,7 @@ export const questionsContent = {
             content: [
               { 
                 heading: 'Pytania rozstrzygnięcia (Ja/Nein-Fragen)', 
-                text: 'Tworzy się je przez inwersję, czyli postawienie odmienionego czasownika (orzeczenia) na pierwszym miejscu w zdaniu. Podmiot znajduje się zaraz po nim.', 
+                text: 'Tworzy się je przez inwersję, czyli postawienie odmienionego czasownika (orzeczenia) na pierwszym miejscu w\u00A0zdaniu. Podmiot znajduje się zaraz po nim.', 
                 examples: [
                   { original: 'Lernst du Deutsch?', translation: 'Czy uczysz się niemieckiego?' },
                   { original: 'Haben Sie Kinder?', translation: 'Czy ma Pan/Pani dzieci?' }
@@ -60,7 +60,7 @@ export const questionsContent = {
               },
               { 
                 heading: 'Pytania szczegółowe (W-Fragen)', 
-                text: 'Zaczynają się od zaimka pytającego (Was, Wer, Wo, Wann, Warum, Wie itp.), po którym na drugim miejscu zawsze stoi odmieniony czasownik, a zaraz po nim podmiot.', 
+                text: 'Zaczynają się od zaimka pytającego (Was, Wer, Wo, Wann, Warum, Wie itp.), po którym na drugim miejscu zawsze stoi odmieniony czasownik, a\u00A0zaraz po nim podmiot.', 
                 examples: [
                   { original: 'Warum lernst du Deutsch?', translation: 'Dlaczego uczysz się niemieckiego?' },
                   { original: 'Wo ist der Bahnhof?', translation: 'Gdzie jest dworzec?' }
@@ -68,7 +68,7 @@ export const questionsContent = {
               },
               {
                 heading: 'Pytania z przyimkami',
-                text: 'Gdy pytanie dotyczy rzeczy i wymaga użycia przyimka, tworzy się je za pomocą "wo(r)-" + przyimek. Jeśli pytanie dotyczy osoby, przyimek stawia się przed zaimkiem pytającym "wem" lub "wen".',
+                text: 'Gdy pytanie dotyczy rzeczy i\u00A0wymaga użycia przyimka, tworzy się je za pomocą "wo(r)-" + przyimek. Jeśli pytanie dotyczy osoby, przyimek stawia się przed zaimkiem pytającym "wem" lub "wen".',
                 examples: [
                   { original: 'Worüber sprecht ihr?', translation: 'O czym rozmawiacie?' },
                   { original: 'Mit wem gehst du ins Kino?', translation: 'Z kim idziesz do kina?' }
@@ -84,9 +84,9 @@ export const questionsContent = {
               },
               {
                 heading: 'Pytania rozłączne (Frageanhängsel)',
-                text: 'Są to krótkie zwroty dodawane na końcu zdania, aby poprosić o potwierdzenie, podobnie jak polskie "prawda?". Najczęstsze to "oder?", "nicht wahr?" lub "nicht?".',
+                text: 'Są to krótkie zwroty dodawane na końcu zdania, aby poprosić o\u00A0potwierdzenie, podobnie jak polskie "prawda?". Najczęstsze to "oder?", "nicht wahr?" lub "nicht?".',
                 examples: [
-                  { original: 'Du kommst aus Polen, oder?', translation: 'Pochodzisz z Polski, prawda?' },
+                  { original: 'Du kommst aus Polen, oder?', translation: 'Pochodzisz z\u00A0Polski, prawda?' },
                   { original: 'Das Wetter ist schön, nicht wahr?', translation: 'Pogoda jest piękna, nieprawdaż?' }
                 ]
               }
@@ -99,7 +99,7 @@ export const questionsContent = {
             content: [
               { 
                 heading: 'Pytania przez intonację i znaki zapytania (¿...?)', 
-                text: 'Najprostszy sposób na zadanie pytania to użycie intonacji wznoszącej. W piśmie kluczowe jest użycie odwróconego znaku zapytania na początku i normalnego na końcu.', 
+                text: 'Najprostszy sposób na zadanie pytania to użycie intonacji wznoszącej. W\u00A0piśmie kluczowe jest użycie odwróconego znaku zapytania na początku i\u00A0normalnego na końcu.', 
                 examples: [
                   { original: '¿Trabajas aquí?', translation: 'Pracujesz tutaj?' },
                   { original: '¿Tienes hambre?', translation: 'Jesteś głodny/a?' }
@@ -107,7 +107,7 @@ export const questionsContent = {
               },
               { 
                 heading: 'Pytania przez inwersję', 
-                text: 'Można również zamienić miejscami podmiot i orzeczenie. Jest to częste, zwłaszcza w bardziej formalnym języku.', 
+                text: 'Można również zamienić miejscami podmiot i\u00A0orzeczenie. Jest to częste, zwłaszcza w\u00A0bardziej formalnym języku.', 
                 examples: [
                   { original: '¿Viene Juan a la fiesta?', translation: 'Czy Juan przychodzi na imprezę?' },
                   { original: '¿Ha llegado ya el tren?', translation: 'Czy pociąg już przyjechał?' }
@@ -123,7 +123,7 @@ export const questionsContent = {
               },
               {
                 heading: 'Pytania rozłączne (tag questions)',
-                text: 'Podobnie jak w angielskim, na końcu zdania można dodać krótkie pytanie, aby poprosić o potwierdzenie, np. ¿no?, ¿verdad?',
+                text: 'Podobnie jak w\u00A0angielskim, na końcu zdania można dodać krótkie pytanie, aby poprosić o\u00A0potwierdzenie, np. ¿no?, ¿verdad?',
                 examples: [
                   { original: 'Hace buen tiempo, ¿verdad?', translation: 'Jest ładna pogoda, prawda?' },
                   { original: 'No vas a salir, ¿no?', translation: 'Nie wychodzisz, prawda?' }
@@ -134,7 +134,7 @@ export const questionsContent = {
                 text: 'Używa się ich, aby dać rozmówcy wybór między dwiema lub więcej opcjami, używając spójnika "o" (lub).',
                 examples: [
                   { original: '¿Prefieres té o café?', translation: 'Wolisz herbatę czy kawę?' },
-                  { original: '¿Vamos al cine o nos quedamos en casa?', translation: 'Idziemy do kina czy zostajemy w domu?' }
+                  { original: '¿Vamos al cine o nos quedamos en casa?', translation: 'Idziemy do kina czy zostajemy w\u00A0domu?' }
                 ]
               }
             ],
@@ -146,7 +146,7 @@ export const questionsContent = {
             content: [
               { 
                 heading: 'Pytania przez "Est-ce que" (standard)', 
-                text: 'To najczęstszy i najbardziej neutralny sposób tworzenia pytań. Po prostu dodaje się "Est-ce que" na początku zdania oznajmującego.', 
+                text: 'To najczęstszy i\u00A0najbardziej neutralny sposób tworzenia pytań. Po prostu dodaje się "Est-ce que" na początku zdania oznajmującego.', 
                 examples: [
                   { original: 'Est-ce que tu parles français?', translation: 'Czy mówisz po francusku?' },
                   { original: 'Est-ce qu\'elle aime le chocolat?', translation: 'Czy ona lubi czekoladę?' }
@@ -154,7 +154,7 @@ export const questionsContent = {
               },
               { 
                 heading: 'Pytania przez inwersję (formalnie)', 
-                text: 'To bardziej formalny sposób, polegający na zamianie miejscami podmiotu (zaimka) i orzeczenia. Są one połączone myślnikiem. Jeśli czasownik kończy się na samogłoskę, a zaimek zaczyna, dodaje się "-t-".', 
+                text: 'To bardziej formalny sposób, polegający na zamianie miejscami podmiotu (zaimka) i\u00A0orzeczenia. Są one połączone myślnikiem. Jeśli czasownik kończy się na samogłoskę, a\u00A0zaimek zaczyna, dodaje się "-t-".', 
                 examples: [
                   { original: 'Parlez-vous français?', translation: 'Czy mówi Pan/Pani po francusku?' },
                   { original: 'Aime-t-il le chocolat?', translation: 'Czy on lubi czekoladę?' }
@@ -170,7 +170,7 @@ export const questionsContent = {
               },
               { 
                 heading: 'Pytania z zaimkami pytającymi (mots interrogatifs)', 
-                text: 'Używa się słów takich jak Où (gdzie), Quand (kiedy), Comment (jak), Pourquoi (dlaczego), Qui (kto), Que (co). Mogą one występować z "est-ce que" lub z inwersją.', 
+                text: 'Używa się słów takich jak Où (gdzie), Quand (kiedy), Comment (jak), Pourquoi (dlaczego), Qui (kto), Que (co). Mogą one występować z\u00A0"est-ce que" lub z\u00A0inwersją.', 
                 examples: [
                   { original: 'Où est-ce que tu habites?', translation: 'Gdzie mieszkasz?' },
                   { original: 'Comment allez-vous?', translation: 'Jak się Pan/Pani miewa?' }
@@ -178,7 +178,7 @@ export const questionsContent = {
               },
               {
                 heading: 'Pytania o "co" (Que vs Qu\'est-ce que)',
-                text: 'Pytając o "co" (dopełnienie), można użyć "Qu\'est-ce que" (standard) lub "Que" z inwersją (formalnie). W mowie potocznej często używa się "quoi" na końcu zdania.',
+                text: 'Pytając o\u00A0"co" (dopełnienie), można użyć "Qu\'est-ce que" (standard) lub "Que" z\u00A0inwersją (formalnie). W\u00A0mowie potocznej często używa się "quoi" na końcu zdania.',
                 examples: [
                   { original: 'Qu\'est-ce que tu fais?', translation: 'Co robisz?' },
                   { original: 'Tu fais quoi?', translation: '(potocznie) Co robisz?' }
@@ -193,10 +193,10 @@ export const questionsContent = {
             content: [
               { 
                 heading: 'Pytania przez intonację', 
-                text: 'Najczęstszym sposobem zadawania pytań, zwłaszcza w mowie, jest po prostu zmiana intonacji zdania oznajmującego na pytającą (wznoszącą na końcu). Szyk zdania pozostaje bez zmian.', 
+                text: 'Najczęstszym sposobem zadawania pytań, zwłaszcza w\u00A0mowie, jest po prostu zmiana intonacji zdania oznajmującego na pytającą (wznoszącą na końcu). Szyk zdania pozostaje bez zmian.', 
                 examples: [
                   { original: 'Parli italiano?', translation: 'Mówisz po włosku?' },
-                  { original: 'Hai fame?', translation: 'Jesteś głodny/a?' }
+                  { original: 'Vieni alla festa stasera?', translation: 'Idziesz dziś wieczorem na imprezę?' }
                 ]
               },
               { 
@@ -209,7 +209,7 @@ export const questionsContent = {
               },
               {
                 heading: 'Pytania z inwersją (rzadkie)',
-                text: 'Inwersja (przesunięcie podmiotu na koniec zdania) nie jest konieczna, ale może być użyta dla emfazy lub w bardziej formalnym, pisanym języku.',
+                text: 'Inwersja (przesunięcie podmiotu na koniec zdania) nie jest konieczna, ale może być użyta dla emfazy lub w\u00A0bardziej formalnym, pisanym języku.',
                 examples: [
                   { original: 'Che cosa vuole la signora?', translation: 'Czego pani sobie życzy?' },
                   { original: 'È arrivato Paolo?', translation: 'Czy Paweł przyjechał?' }
@@ -217,10 +217,10 @@ export const questionsContent = {
               },
               {
                 heading: 'Pytania rozłączne (vero? / no?)',
-                text: 'Aby poprosić o potwierdzenie, na końcu zdania dodaje się krótkie pytanie, takie jak "vero?" (prawda?) lub "no?".',
+                text: 'Aby poprosić o\u00A0potwierdzenie, na końcu zdania dodaje się krótkie pytanie, takie jak "vero?" (prawda?) lub "no?".',
                 examples: [
                   { original: 'È una bella giornata, vero?', translation: 'To piękny dzień, prawda?' },
-                  { original: 'Vieni con noi, no?', translation: 'Idziesz z nami, nie?' }
+                  { original: 'Vieni con noi, no?', translation: 'Idziesz z\u00A0nami, nie?' }
                 ]
               }
             ],

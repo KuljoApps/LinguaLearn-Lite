@@ -34,8 +34,8 @@ export default function DictionaryFrPage() {
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-md shadow-2xl">
                 <CardHeader className="relative flex flex-row items-center justify-center p-6">
-                    <div className="flex items-center gap-4">
-                        <BookText className="h-8 w-8" />
+                    <div className="flex items-center gap-2">
+                        <BookText className="h-7 w-7" />
                         <h1 className="text-3xl font-bold tracking-tight">Dictionnaire</h1>
                     </div>
                     <div className="absolute right-6 top-1/2 -translate-y-1/2">

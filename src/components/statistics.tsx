@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle, Flame, Percent, ShieldX, Trash2, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, CheckCircle, Flame, Percent, ShieldX, Trash2, ArrowUpRight, BarChart } from "lucide-react";
 import { getStats, clearStats, type Stats, getErrors, type ErrorRecord, getLanguage, type Language, getTutorialState } from "@/lib/storage";
 import {
   AlertDialog,
@@ -197,7 +197,10 @@ export default function StatisticsPage() {
         <>
             <Card className="w-full max-w-md shadow-2xl" data-tutorial-id="stats-card">
                 <CardHeader>
-                    <CardTitle className="text-center text-3xl">{getUIText('title')}</CardTitle>
+                    <div className="flex items-center justify-center gap-4">
+                        <BarChart className="h-8 w-8" />
+                        <CardTitle className="text-3xl">{getUIText('title')}</CardTitle>
+                    </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="grid grid-cols-2 gap-4" data-tutorial-id="stats-cards">

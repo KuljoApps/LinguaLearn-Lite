@@ -6,7 +6,7 @@ import { getTutorialState } from '@/lib/storage';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { ArrowLeft, CheckCircle, Flame, Percent, ShieldX, Trash2, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, CheckCircle, Flame, Percent, ShieldX, Trash2, ArrowUpRight, BarChart } from "lucide-react";
 import React from 'react';
 
 export default function Stats() {
@@ -77,7 +77,10 @@ export default function Stats() {
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-md shadow-2xl" data-tutorial-id="stats-card">
                 <CardHeader>
-                    <CardTitle className="text-center text-3xl">Statistics</CardTitle>
+                    <div className="flex items-center justify-center gap-4">
+                        <BarChart className="h-8 w-8" />
+                        <CardTitle className="text-3xl">Statistics</CardTitle>
+                    </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="grid grid-cols-2 gap-4" data-tutorial-id="stats-cards">

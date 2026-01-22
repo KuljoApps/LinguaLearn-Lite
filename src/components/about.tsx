@@ -54,6 +54,7 @@ export default function AboutPage() {
                         </span>
                     </h1>
                 </div>
+                <CardTitle className="text-2xl pt-2">{getUIText('title')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6 text-center">
                 <p className="text-muted-foreground">

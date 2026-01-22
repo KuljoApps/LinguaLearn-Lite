@@ -11,7 +11,7 @@ import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, Trash2, Settings as SettingsIcon } from "lucide-react";
 
-export default function Settings() {
+export default function SettingsPage() {
     const router = useRouter();
 
     useEffect(() => {
@@ -27,11 +27,9 @@ export default function Settings() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-md shadow-2xl" data-tutorial-id="settings-card">
-                <CardHeader className="items-center text-center">
-                    <div className="flex items-center justify-center gap-4">
-                        <SettingsIcon className="h-8 w-8" />
-                        <CardTitle className="text-3xl">Settings</CardTitle>
-                    </div>
+                <CardHeader className="flex flex-row items-center justify-center gap-4">
+                    <SettingsIcon className="h-8 w-8" />
+                    <CardTitle className="text-3xl">Settings</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div data-tutorial-id="settings-switches" className="space-y-4">

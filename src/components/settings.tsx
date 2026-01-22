@@ -109,11 +109,9 @@ export default function SettingsPage() {
             <ProPromotionDialog open={showPromoDialog} onOpenChange={setShowPromoDialog} />
             <RateAppDialog open={showRateDialog} onOpenChange={setShowRateDialog} />
             <Card className="w-full max-w-md shadow-2xl" data-tutorial-id="settings-card">
-                <CardHeader className="items-center text-center">
-                    <div className="flex items-center justify-center gap-4">
-                        <Settings className="h-8 w-8" />
-                        <CardTitle className="text-3xl">{getUIText('title')}</CardTitle>
-                    </div>
+                <CardHeader className="flex flex-row items-center justify-center gap-4">
+                    <Settings className="h-8 w-8" />
+                    <CardTitle className="text-3xl">{getUIText('title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div data-tutorial-id="settings-switches" className="space-y-4">
@@ -187,7 +185,7 @@ export default function SettingsPage() {
 
                     <div className="w-full pt-4 mt-4 border-t border-dashed">
                         <Collapsible open={isDevToolsOpen} onOpenChange={handleDevToolsOpenChange} className="w-full">
-                            <div className="flex items-center justify-center -mb-2">
+                            <div data-tutorial-id="dev-tools-trigger" className="flex items-center justify-center -mb-2">
                                 <Separator className="flex-grow" />
                                 <CollapsibleTrigger asChild>
                                     <Button variant="ghost" className="flex items-center gap-2 px-3">

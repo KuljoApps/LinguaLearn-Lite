@@ -57,6 +57,7 @@ const LANGUAGE_KEY = 'linguaLearnLanguage';
 const SETTINGS_KEY = 'linguaLearnSettings_v2';
 const GLOBAL_STATS_KEY = 'linguaLearnGlobalStats_v2';
 const TUTORIAL_COMPLETED_KEY = 'linguaLearnTutorialCompleted_v2';
+export const NEW_ACHIEVEMENTS_COUNT_KEY = 'linguaLearnNewAchievementsCount';
 
 
 export interface GlobalStats {
@@ -235,6 +236,26 @@ const saveMasteryProgress = (progress: MasteryProgress) => {
 
 // --- Achievement Functions ---
 
+export const getNewAchievementsCount = (): number => {
+    if (typeof window === 'undefined') return 0;
+    try {
+        const count = localStorage.getItem(NEW_ACHIEVEMENTS_COUNT_KEY);
+        return count ? parseInt(count, 10) : 0;
+    } catch (e) {
+        return 0;
+    }
+};
+
+const setNewAchievementsCount = (count: number) => {
+     if (typeof window === 'undefined') return;
+     localStorage.setItem(NEW_ACHIEVEMENTS_COUNT_KEY, String(count));
+     window.dispatchEvent(new CustomEvent('achievements-count-changed'));
+};
+
+export const clearNewAchievementsCount = () => {
+    setNewAchievementsCount(0);
+};
+
 export const getAchievements = (): Record<string, AchievementStatus> => {
     if (typeof window === 'undefined') return {};
     try {
@@ -249,16 +270,33 @@ export const getAchievements = (): Record<string, AchievementStatus> => {
 export const saveAchievements = (achievements: Record<string, AchievementStatus>) => {
     if (typeof window === 'undefined') return;
     try {
+        const oldAchievements = getAchievements();
+        const currentCount = getNewAchievementsCount();
+        let newlyUnlockedCount = 0;
+
+        Object.keys(achievements).forEach(id => {
+            const oldStatus = oldAchievements[id];
+            const newStatus = achievements[id];
+            if (newStatus.unlockedAt && (!oldStatus || !oldStatus.unlockedAt)) {
+                newlyUnlockedCount++;
+            }
+        });
+
         localStorage.setItem(getKey('linguaLearnAchievements_v2'), JSON.stringify(achievements));
         window.dispatchEvent(new CustomEvent('achievements-changed'));
+        
+        if (newlyUnlockedCount > 0) {
+            setNewAchievementsCount(currentCount + newlyUnlockedCount);
+        }
     } catch (error) {
         console.error("Failed to save achievements to localStorage", error);
     }
-}
+};
 
 export const clearAchievements = () => {
     if (typeof window === 'undefined') return;
     localStorage.removeItem(getKey('linguaLearnAchievements_v2'));
+    clearNewAchievementsCount();
     window.dispatchEvent(new CustomEvent('achievements-changed'));
 };
 
@@ -386,7 +424,7 @@ const checkAndUnlockAchievements = (stats: Stats): Achievement[] => {
         status.progress = currentProgress;
         
         if (currentProgress >= achievement.goal) {
-            if (!status.unlockedAt) { // Ensure we only unlock it once
+            if (!status.unlockedAt) { // This is where we detect a *newly* unlocked achievement
                 status.unlockedAt = Date.now();
                 newlyUnlocked.push(achievement);
             }
@@ -394,7 +432,6 @@ const checkAndUnlockAchievements = (stats: Stats): Achievement[] => {
         achievements[achievement.id] = status;
     });
 
-    // Always save the updated progress and any newly unlocked achievements.
     saveAchievements(achievements);
 
     return newlyUnlocked;

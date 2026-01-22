@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import LinguaLearnLogo from '@/components/LinguaLearnLogo';
-import { getLanguage, setLanguage, shouldShowProPromo, shouldShowRateAppDialog, isTutorialCompleted, saveTutorialState, recordProPromoShown, recordRateAppDialogShown } from '@/lib/storage';
+import { getLanguage, setLanguage, shouldShowProPromo, shouldShowRateAppDialog, isTutorialCompleted, saveTutorialState, recordProPromoShown, recordRateAppDialogShown, getNewAchievementsCount } from '@/lib/storage';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -18,10 +18,21 @@ export default function Home() {
     const [language, setCurrentLanguage] = useState<'en' | 'fr' | 'de' | 'it' | 'es'>('en');
     const [showPromo, setShowPromo] = useState(false);
     const [showRateDialog, setShowRateDialog] = useState(false);
+    const [newAchievementsCount, setNewAchievementsCount] = useState(0);
     const pathname = usePathname();
 
     useEffect(() => {
-        setCurrentLanguage(getLanguage());
+        const handleLanguageChange = () => {
+            setCurrentLanguage(getLanguage());
+            updateAchievementCount();
+        };
+
+        const updateAchievementCount = () => {
+            setNewAchievementsCount(getNewAchievementsCount());
+        };
+
+        handleLanguageChange();
+        updateAchievementCount();
         
         if (!isTutorialCompleted()) {
             saveTutorialState({ isActive: true, stage: 'initial', step: 0 });
@@ -34,6 +45,14 @@ export default function Home() {
                 recordRateAppDialogShown();
             }
         }
+
+        window.addEventListener('language-changed', handleLanguageChange);
+        window.addEventListener('achievements-count-changed', updateAchievementCount);
+
+        return () => {
+            window.removeEventListener('language-changed', handleLanguageChange);
+            window.removeEventListener('achievements-count-changed', updateAchievementCount);
+        };
     }, [pathname]);
 
 
@@ -217,8 +236,13 @@ export default function Home() {
                         </Button>
                     </Link>
                     <Link href="/achievements" passHref>
-                        <Button variant="outline" size="icon">
+                        <Button variant="outline" size="icon" className="relative">
                             <Trophy />
+                            {newAchievementsCount > 0 && (
+                                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-xs font-bold text-destructive-foreground">
+                                    {newAchievementsCount}
+                                </span>
+                            )}
                         </Button>
                     </Link>
                 </CardFooter>

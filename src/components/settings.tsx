@@ -8,7 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
-import { ArrowLeft, Trash2, ChevronDown, GraduationCap, Crown, Star, Settings } from "lucide-react";
+import { ArrowLeft, Trash2, ChevronDown, GraduationCap, Crown, Star, Settings as SettingsIcon } from "lucide-react";
 import { getSettings, saveSettings, clearSettings, type Settings as AppSettings, getLanguage, type Language, saveTutorialState } from "@/lib/storage";
 import {
   AlertDialog,
@@ -109,9 +109,11 @@ export default function SettingsPage() {
             <ProPromotionDialog open={showPromoDialog} onOpenChange={setShowPromoDialog} />
             <RateAppDialog open={showRateDialog} onOpenChange={setShowRateDialog} />
             <Card className="w-full max-w-md shadow-2xl" data-tutorial-id="settings-card">
-                <CardHeader className="flex flex-row items-center justify-center gap-4">
-                    <Settings className="h-8 w-8" />
-                    <CardTitle className="text-3xl">{getUIText('title')}</CardTitle>
+                <CardHeader className="flex justify-center items-center p-6">
+                    <div className="flex items-center gap-4 -translate-x-6">
+                        <SettingsIcon className="h-8 w-8" />
+                        <CardTitle className="text-3xl">{getUIText('title')}</CardTitle>
+                    </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div data-tutorial-id="settings-switches" className="space-y-4">

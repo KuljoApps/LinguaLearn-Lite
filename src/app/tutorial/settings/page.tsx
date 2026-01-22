@@ -27,9 +27,11 @@ export default function SettingsPage() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-md shadow-2xl" data-tutorial-id="settings-card">
-                <CardHeader className="flex flex-row items-center justify-center gap-4">
-                    <SettingsIcon className="h-8 w-8" />
-                    <CardTitle className="text-3xl">Settings</CardTitle>
+                <CardHeader className="flex justify-center items-center p-6">
+                    <div className="flex items-center gap-4 -translate-x-6">
+                        <SettingsIcon className="h-8 w-8" />
+                        <CardTitle className="text-3xl">Settings</CardTitle>
+                    </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div data-tutorial-id="settings-switches" className="space-y-4">

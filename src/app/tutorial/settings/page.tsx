@@ -10,7 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, Trash2, Settings as SettingsIcon, ChevronDown, GraduationCap, Crown, Star } from "lucide-react";
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
 
 export default function SettingsPage() {
@@ -25,29 +25,25 @@ export default function SettingsPage() {
             }, 3000);
             return () => clearTimeout(timer);
         }
-    }, [router]);
 
-    useEffect(() => {
-        const timer = setTimeout(() => setAnimate(true), 500);
-        return () => clearTimeout(timer);
-    }, []);
+        const animationTimer = setTimeout(() => setAnimate(true), 500);
+        return () => clearTimeout(animationTimer);
+    }, [router]);
     
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-md shadow-2xl" data-tutorial-id="settings-card">
-                <CardHeader className="flex justify-center items-center p-6 overflow-hidden">
-                    <div className={cn(
-                        "flex items-center gap-4 transition-transform duration-500 ease-out",
-                        animate ? "-translate-x-6" : "translate-x-0"
+                <CardHeader className="relative flex h-14 items-center justify-center overflow-hidden p-6">
+                    <SettingsIcon className={cn(
+                        "h-8 w-8 text-foreground",
+                        animate && "animate-icon-fly-out"
+                    )} />
+                    <CardTitle className={cn(
+                        "absolute whitespace-nowrap text-3xl",
+                        animate ? "animate-text-slide-in" : "opacity-0"
                     )}>
-                        <SettingsIcon className="h-8 w-8" />
-                        <CardTitle className={cn(
-                            "text-3xl whitespace-nowrap transition-all duration-500 ease-out",
-                            animate ? "max-w-40 opacity-100" : "max-w-0 opacity-0"
-                        )}>
-                            Settings
-                        </CardTitle>
-                    </div>
+                        Settings
+                    </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div data-tutorial-id="settings-switches" className="space-y-4">
@@ -82,8 +78,8 @@ export default function SettingsPage() {
                         </div>
                     </div>
                 </CardContent>
-                <CardFooter className="flex justify-center p-6 pt-2">
-                    <div className="flex flex-wrap justify-center gap-4">
+                <CardFooter className="flex-col justify-center p-6 pt-2">
+                    <div className="flex flex-wrap justify-center gap-4 w-full">
                         <Button variant="outline" className="pointer-events-none">
                             <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
                         </Button>
@@ -91,8 +87,23 @@ export default function SettingsPage() {
                             <Trash2 className="mr-2 h-4 w-4" /> Reset Settings
                         </Button>
                     </div>
+
+                    <div className="w-full pt-4 mt-4 border-t border-dashed">
+                        <Collapsible className="w-full">
+                            <div data-tutorial-id="dev-tools-trigger" className="flex items-center justify-center -mb-2">
+                                <Separator className="flex-grow" />
+                                <CollapsibleTrigger asChild>
+                                    <Button variant="ghost" className="flex items-center gap-2 px-3 pointer-events-none">
+                                        <span className="text-sm italic text-muted-foreground">Developer Tools</span>
+                                        <ChevronDown className={`h-4 w-4 transition-transform duration-200`} />
+                                    </Button>
+                                </CollapsibleTrigger>
+                                <Separator className="flex-grow" />
+                            </div>
+                        </Collapsible>
+                    </div>
                 </CardFooter>
             </Card>
-        </main>
+        </>
     );
 }

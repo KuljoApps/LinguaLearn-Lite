@@ -114,19 +114,17 @@ export default function SettingsPage() {
             <ProPromotionDialog open={showPromoDialog} onOpenChange={setShowPromoDialog} />
             <RateAppDialog open={showRateDialog} onOpenChange={setShowRateDialog} />
             <Card className="w-full max-w-md shadow-2xl" data-tutorial-id="settings-card">
-                <CardHeader className="flex justify-center items-center p-6 overflow-hidden">
-                    <div className={cn(
-                        "flex items-center gap-4 transition-transform duration-500 ease-out",
-                        animate ? "-translate-x-6" : "translate-x-0"
+                 <CardHeader className="relative flex h-14 items-center justify-center overflow-hidden p-6">
+                    <SettingsIcon className={cn(
+                        "h-8 w-8 text-foreground",
+                        animate && "animate-icon-fly-out"
+                    )} />
+                    <CardTitle className={cn(
+                        "absolute whitespace-nowrap text-3xl",
+                        animate ? "animate-text-slide-in" : "opacity-0"
                     )}>
-                        <SettingsIcon className="h-8 w-8" />
-                        <CardTitle className={cn(
-                            "text-3xl whitespace-nowrap transition-all duration-500 ease-out",
-                            animate ? "max-w-40 opacity-100" : "max-w-0 opacity-0"
-                        )}>
-                            {getUIText('title')}
-                        </CardTitle>
-                    </div>
+                        {getUIText('title')}
+                    </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div data-tutorial-id="settings-switches" className="space-y-4">

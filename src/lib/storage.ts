@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { allAchievements, devAchievements } from './achievements';
@@ -511,8 +512,8 @@ export const shouldShowProPromo = (): boolean => {
     const count = globalStats.quizCompletionCount || 0;
     const lastShown = globalStats.lastPromoShownAtQuizCount || 0;
     // Show after 15, 45, 75... completed quizzes
-    const shouldShow = count > 0 && (count - 15) % 30 === 0;
-    return shouldShow && count !== lastShown;
+    const shouldShow = count > 0 && count > lastShown && (count - 15) % 30 === 0;
+    return shouldShow;
 }
 
 export const shouldShowRateAppDialog = (): boolean => {
@@ -521,8 +522,8 @@ export const shouldShowRateAppDialog = (): boolean => {
     const count = globalStats.quizCompletionCount || 0;
     const lastShown = globalStats.lastRateAppShownAtQuizCount || 0;
     // Show after 30, 60, 90... completed quizzes
-    const shouldShow = count > 0 && count % 30 === 0;
-    return shouldShow && count !== lastShown;
+    const shouldShow = count > 0 && count > lastShown && count % 30 === 0;
+    return shouldShow;
 }
 
 export const recordProPromoShown = () => {
@@ -687,9 +688,34 @@ export const updateTimeSpent = (seconds: number): Achievement[] => {
     } catch (error) {
         console.error("Failed to save stats to localStorage", error);
     }
+    
+    // Check only time-based achievements
+    const achievements = getAchievements();
+    const newlyUnlocked: Achievement[] = [];
+    const allAchievementDefs = [...allAchievements, ...devAchievements];
+    const timeBasedAchievements = allAchievementDefs.filter(a =>
+        a.id.startsWith('time_') || a.id.startsWith('dev_time_')
+    );
 
-    return checkAndUnlockAchievements(stats);
-}
+    timeBasedAchievements.forEach(achievement => {
+        const status = achievements[achievement.id] || { progress: 0, unlockedAt: null };
+        if (status.unlockedAt) return; // Already unlocked
+
+        status.progress = stats.totalTimeSpent;
+
+        if (achievement.goal > 0 && status.progress >= achievement.goal) {
+            status.unlockedAt = Date.now();
+            newlyUnlocked.push(achievement);
+        }
+        achievements[achievement.id] = status;
+    });
+
+    if (newlyUnlocked.length > 0) {
+        saveAchievements(achievements);
+    }
+    
+    return newlyUnlocked;
+};
 
 export const clearStats = () => {
     if (typeof window === 'undefined') return;

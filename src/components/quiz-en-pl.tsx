@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
@@ -148,20 +149,23 @@ export default function QuizEnPl() {
 
   // Total quiz time and periodic time-based achievement check
   useEffect(() => {
-    if (currentQuestionIndex >= questions.length || isPaused) {
+    if (currentQuestionIndex >= questions.length || isPaused || !!answerStatus) {
       return;
     }
 
     const interval = setInterval(() => {
-      setTotalTime((prev) => prev + 1);
-      if ((totalTime + 1) % TIME_UPDATE_INTERVAL === 0) {
-          const unlocked = updateTimeSpent(TIME_UPDATE_INTERVAL);
-          unlocked.forEach(showAchievementToast);
-      }
+      setTotalTime((prev) => {
+          const newTotalTime = prev + 1;
+          if (newTotalTime > 0 && newTotalTime % TIME_UPDATE_INTERVAL === 0) {
+              const unlocked = updateTimeSpent(TIME_UPDATE_INTERVAL);
+              unlocked.forEach(showAchievementToast);
+          }
+          return newTotalTime;
+      });
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [currentQuestionIndex, questions.length, isPaused, totalTime, showAchievementToast]);
+  }, [currentQuestionIndex, questions.length, isPaused, answerStatus, showAchievementToast]);
 
 
   const currentQuestion = useMemo(() => questions[currentQuestionIndex], [questions, currentQuestionIndex]);
@@ -315,7 +319,7 @@ export default function QuizEnPl() {
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center p-6 space-y-8">
             <div className="w-full flex justify-around gap-4 text-center">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 text-card-foreground">
                     <Clock className="h-6 w-6" />
                     <span className={cn(
                         "text-2xl font-bold transition-colors duration-300 text-card-foreground",
@@ -324,9 +328,9 @@ export default function QuizEnPl() {
                         {questionTimer}s
                     </span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 text-card-foreground">
                     <Clock className="h-6 w-6" />
-                    <span className="text-2xl font-bold text-card-foreground">{formatTime(totalTime)}</span>
+                    <span className="text-2xl font-bold">{formatTime(totalTime)}</span>
                 </div>
             </div>
             <Progress value={questionTimeProgress} className="w-full h-2" />

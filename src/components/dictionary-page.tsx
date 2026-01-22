@@ -160,7 +160,7 @@ export default function DictionaryPage({ title, backHref, words, children }: Dic
                     <CardTitle className="text-3xl">{title}</CardTitle>
                 </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pl-6 pr-2 pt-2 pb-4">
                 <ScrollArea className="h-96 w-full pr-4">
                     <div className="flex flex-col">
                        <div data-tutorial-id="dictionary-word-list">

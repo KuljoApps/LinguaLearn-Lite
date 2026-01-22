@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useMemo } from 'react';
@@ -29,7 +28,7 @@ export default function StatsTutorialPage() {
       perQuizStats: {
         'English - Polish': { totalAnswers: 78, totalErrors: 12 },
         'Irregular Verbs': { totalAnswers: 50, totalErrors: 5 },
-      }
+      } as { [key: string]: { totalAnswers: number; totalErrors: number; } }
     };
     const successRate = Math.round(((fakeStats.totalAnswers - fakeStats.totalErrors) / fakeStats.totalAnswers) * 100);
     

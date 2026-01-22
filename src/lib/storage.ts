@@ -246,14 +246,22 @@ export const getAchievements = (): Record<string, AchievementStatus> => {
     }
 }
 
-const saveAchievements = (achievements: Record<string, AchievementStatus>) => {
+export const saveAchievements = (achievements: Record<string, AchievementStatus>) => {
     if (typeof window === 'undefined') return;
     try {
         localStorage.setItem(getKey('linguaLearnAchievements_v2'), JSON.stringify(achievements));
+        window.dispatchEvent(new CustomEvent('achievements-changed'));
     } catch (error) {
         console.error("Failed to save achievements to localStorage", error);
     }
 }
+
+export const clearAchievements = () => {
+    if (typeof window === 'undefined') return;
+    localStorage.removeItem(getKey('linguaLearnAchievements_v2'));
+    window.dispatchEvent(new CustomEvent('achievements-changed'));
+};
+
 
 const checkAndUnlockAchievements = (stats: Stats): Achievement[] => {
     const achievements = getAchievements();

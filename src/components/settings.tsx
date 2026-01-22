@@ -8,8 +8,8 @@ import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
-import { ArrowLeft, Trash2, ChevronDown, GraduationCap, Crown, Star, Settings } from "lucide-react";
-import { getSettings, saveSettings, clearSettings, type Settings as AppSettings, getLanguage, type Language, saveTutorialState } from "@/lib/storage";
+import { ArrowLeft, Trash, Sparkles, ChevronDown, GraduationCap, Crown, Star, Settings } from "lucide-react";
+import { getSettings, saveSettings, clearSettings, type Settings as AppSettings, getLanguage, type Language, saveTutorialState, saveAchievements, clearAchievements, type AchievementStatus } from "@/lib/storage";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,6 +24,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { useRouter } from "next/navigation";
 import ProPromotionDialog from "@/components/ProPromotionDialog";
 import RateAppDialog from "@/components/RateAppDialog";
+import { useToast } from "@/hooks/use-toast";
 
 const uiTexts = {
     title: { en: 'Settings', fr: 'Réglages', de: 'Einstellungen', it: 'Impostazioni', es: 'Ajustes' },
@@ -52,6 +53,7 @@ export default function SettingsPage() {
     const [showPromoDialog, setShowPromoDialog] = useState(false);
     const [showRateDialog, setShowRateDialog] = useState(false);
     const router = useRouter();
+    const { toast } = useToast();
 
     useEffect(() => {
         setSettings(getSettings());
@@ -102,6 +104,26 @@ export default function SettingsPage() {
     const handleDevToolsOpenChange = (open: boolean) => {
         setIsDevToolsOpen(open);
         localStorage.setItem(DEV_TOOLS_COLLAPSIBLE_STATE_KEY, JSON.stringify(open));
+    };
+
+    const handleCreateFakeAchievements = () => {
+        const fakeAchievements: Record<string, AchievementStatus> = {
+          novice: { progress: 50, unlockedAt: Date.now() },
+          streak25: { progress: 25, unlockedAt: Date.now() - 86400000},
+        };
+        saveAchievements(fakeAchievements);
+        toast({
+          title: "Sukces!",
+          description: "Utworzono fałszywe osiągnięcia.",
+        });
+    };
+
+    const handleDeleteFakeAchievements = () => {
+        clearAchievements();
+        toast({
+          title: "Sukces!",
+          description: "Usunięto osiągnięcia.",
+        });
     };
 
     return (
@@ -181,7 +203,7 @@ export default function SettingsPage() {
                             </Button>
                         </Link>
                         <Button variant="destructive" onClick={() => setIsResetAlertOpen(true)}>
-                            <Trash2 className="mr-2 h-4 w-4" /> {getUIText('resetSettings')}
+                            <Trash className="mr-2 h-4 w-4" /> {getUIText('resetSettings')}
                         </Button>
                     </div>
 
@@ -210,6 +232,14 @@ export default function SettingsPage() {
                                 <Button variant="secondary" size="sm" onClick={() => setShowRateDialog(true)}>
                                   <Star className="mr-2 h-4 w-4" />
                                   Pokaż okno oceny
+                                </Button>
+                                <Button variant="secondary" size="sm" onClick={handleCreateFakeAchievements}>
+                                    <Sparkles className="mr-2 h-4 w-4" />
+                                    Stwórz fake achievements
+                                </Button>
+                                <Button variant="destructive" size="sm" onClick={handleDeleteFakeAchievements}>
+                                    <Trash className="mr-2 h-4 w-4" />
+                                    Usuń fake achievements
                                 </Button>
                               </div>
                             </CollapsibleContent>

@@ -24,6 +24,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { useRouter } from "next/navigation";
 import ProPromotionDialog from "@/components/ProPromotionDialog";
 import RateAppDialog from "@/components/RateAppDialog";
+import { cn } from "@/lib/utils";
 
 const uiTexts = {
     title: { en: 'Settings', fr: 'Réglages', de: 'Einstellungen', it: 'Impostazioni', es: 'Ajustes' },
@@ -52,6 +53,7 @@ export default function SettingsPage() {
     const [showPromoDialog, setShowPromoDialog] = useState(false);
     const [showRateDialog, setShowRateDialog] = useState(false);
     const router = useRouter();
+    const [animate, setAnimate] = useState(false);
 
     useEffect(() => {
         setSettings(getSettings());
@@ -67,8 +69,11 @@ export default function SettingsPage() {
         handleLanguageChange();
         window.addEventListener('language-changed', handleLanguageChange);
 
+        const timer = setTimeout(() => setAnimate(true), 500);
+
         return () => {
             window.removeEventListener('language-changed', handleLanguageChange);
+            clearTimeout(timer);
         };
     }, []);
 
@@ -109,10 +114,18 @@ export default function SettingsPage() {
             <ProPromotionDialog open={showPromoDialog} onOpenChange={setShowPromoDialog} />
             <RateAppDialog open={showRateDialog} onOpenChange={setShowRateDialog} />
             <Card className="w-full max-w-md shadow-2xl" data-tutorial-id="settings-card">
-                <CardHeader className="flex justify-center items-center p-6">
-                    <div className="flex items-center gap-4 -translate-x-6">
+                <CardHeader className="flex justify-center items-center p-6 overflow-hidden">
+                    <div className={cn(
+                        "flex items-center gap-4 transition-transform duration-500 ease-out",
+                        animate ? "-translate-x-6" : "translate-x-0"
+                    )}>
                         <SettingsIcon className="h-8 w-8" />
-                        <CardTitle className="text-3xl">{getUIText('title')}</CardTitle>
+                        <CardTitle className={cn(
+                            "text-3xl whitespace-nowrap transition-all duration-500 ease-out",
+                            animate ? "max-w-40 opacity-100" : "max-w-0 opacity-0"
+                        )}>
+                            {getUIText('title')}
+                        </CardTitle>
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-4">

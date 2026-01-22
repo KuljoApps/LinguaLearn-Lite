@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getTutorialState } from '@/lib/storage';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -9,10 +9,13 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Trash2, Settings as SettingsIcon } from "lucide-react";
+import { ArrowLeft, Trash2, Settings as SettingsIcon, ChevronDown, GraduationCap, Crown, Star } from "lucide-react";
+import { cn } from '@/lib/utils';
+
 
 export default function SettingsPage() {
     const router = useRouter();
+    const [animate, setAnimate] = useState(false);
 
     useEffect(() => {
         const tutorialState = getTutorialState();
@@ -23,14 +26,27 @@ export default function SettingsPage() {
             return () => clearTimeout(timer);
         }
     }, [router]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setAnimate(true), 500);
+        return () => clearTimeout(timer);
+    }, []);
     
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-md shadow-2xl" data-tutorial-id="settings-card">
-                <CardHeader className="flex justify-center items-center p-6">
-                    <div className="flex items-center gap-4 -translate-x-6">
+                <CardHeader className="flex justify-center items-center p-6 overflow-hidden">
+                    <div className={cn(
+                        "flex items-center gap-4 transition-transform duration-500 ease-out",
+                        animate ? "-translate-x-6" : "translate-x-0"
+                    )}>
                         <SettingsIcon className="h-8 w-8" />
-                        <CardTitle className="text-3xl">Settings</CardTitle>
+                        <CardTitle className={cn(
+                            "text-3xl whitespace-nowrap transition-all duration-500 ease-out",
+                            animate ? "max-w-40 opacity-100" : "max-w-0 opacity-0"
+                        )}>
+                            Settings
+                        </CardTitle>
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-4">

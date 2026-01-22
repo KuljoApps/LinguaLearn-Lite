@@ -229,4 +229,11 @@ export default function SettingsPage() {
                     <AlertDialogFooter>
                         <AlertDialogCancel>{getUIText('cancel')}</AlertDialogCancel>
                         <AlertDialogAction onClick={handleResetSettings} className="bg-destructive hover:bg-destructive/90">
-                            {getUIText('reset
+                            {getUIText('reset')}
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+        </>
+    );
+}

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
@@ -207,4 +206,10 @@ export default function AchievementsPage() {
                         <AlertDialogCancel>{getUIText('cancel')}</AlertDialogCancel>
                         <AlertDialogAction onClick={handleClearAchievements} className="bg-destructive hover:bg-destructive/90">
                            {getUIText('confirmReset')}
-                        </
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+        </>
+    );
+}

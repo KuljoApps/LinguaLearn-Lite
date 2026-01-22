@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Link from "next/link";
 import { ArrowLeft, Trash2, ArrowUpDown, Trophy, ShieldX } from "lucide-react";
-import { getErrors, clearErrors, type ErrorRecord, type Achievement, getLanguage, type Language, getTutorialState } from '@/lib/storage';
+import { getErrors, clearErrors, type ErrorRecord, type Achievement, getLanguage, type Language, getTutorialState } from "@/lib/storage";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -111,6 +111,7 @@ export default function ErrorsPage() {
     const [language, setLanguageState] = useState<Language>('en');
     const [isTutorialActive, setIsTutorialActive] = useState(false);
     const { toast } = useToast();
+    const [animate, setAnimate] = useState(false);
 
     useEffect(() => {
         const handleStateUpdate = () => {
@@ -122,15 +123,20 @@ export default function ErrorsPage() {
             const tutorialState = getTutorialState();
             const isOnErrorsStep = tutorialState?.isActive &&
                                    tutorialState.stage === 'extended' &&
-                                   tutorialState.step >= 4 && tutorialState.step <= 6;
+                                   tutorialState.step >= 4 && tutorialState.step <= 5;
             setIsTutorialActive(isOnErrorsStep);
         };
         handleStateUpdate();
+        
+        const timer = setTimeout(() => setAnimate(true), 500);
+
         window.addEventListener('language-changed', handleStateUpdate);
         window.addEventListener('tutorial-state-changed', handleStateUpdate);
+
         return () => {
             window.removeEventListener('language-changed', handleStateUpdate);
             window.removeEventListener('tutorial-state-changed', handleStateUpdate);
+            clearTimeout(timer);
         };
     }, []);
 
@@ -374,14 +380,23 @@ export default function ErrorsPage() {
 
     return (
         <>
-            <Card className="w-full max-w-4xl shadow-2xl" data-tutorial-id="errors-card">
-                <CardHeader className="flex flex-col items-center gap-4 p-6 sm:flex-row sm:justify-between">
-                    <div className="flex items-center gap-4">
-                        <ShieldX className="h-8 w-8" />
-                        <CardTitle className="text-3xl">{getUIText('title')}</CardTitle>
+            <Card className="w-full max-w-4xl shadow-2xl overflow-hidden" data-tutorial-id="errors-card">
+                <CardHeader className="p-6">
+                    <div className="relative flex h-8 items-center justify-center">
+                        <div className={cn("absolute", animate ? "animate-icon-fly-out" : "")}>
+                            <ShieldX className="h-8 w-8 shrink-0 text-foreground" />
+                        </div>
+                        <CardTitle className={cn(
+                            "absolute whitespace-nowrap text-3xl",
+                            animate ? "animate-text-slide-in" : "opacity-0"
+                        )}>
+                            {getUIText('title')}
+                        </CardTitle>
                     </div>
-                    <div className="flex flex-col gap-2" data-tutorial-id="errors-controls">
-                        <Select value={quizFilter} onValueChange={(value) => handleFilterChange(value as QuizFilter)}>
+                </CardHeader>
+                <CardContent className="p-6 pt-2">
+                    <div className="flex flex-col gap-2 sm:flex-row sm:justify-end mb-4" data-tutorial-id="errors-controls">
+                         <Select value={quizFilter} onValueChange={(value) => handleFilterChange(value as QuizFilter)}>
                             <SelectTrigger>
                                 <SelectValue placeholder={getUIText('filterPlaceholder')} />
                             </SelectTrigger>
@@ -397,9 +412,9 @@ export default function ErrorsPage() {
                             {view === 'latest' ? getUIText('viewFrequent') : getUIText('viewLatest')}
                         </Button>
                     </div>
-                </CardHeader>
-                <CardContent className="h-96 w-full p-0" data-tutorial-id="errors-table">
-                    {renderTable()}
+                    <div className="h-96 w-full" data-tutorial-id="errors-table">
+                        {renderTable()}
+                    </div>
                 </CardContent>
                 <CardFooter className="flex justify-center p-6">
                     <div className="flex flex-wrap justify-center gap-4">

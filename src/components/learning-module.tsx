@@ -95,7 +95,7 @@ export default function QuestionBase({ uiTexts, questionSets, backHref }: Questi
                     />
                 </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pl-6 pr-2 pt-2 pb-4">
                 <ScrollArea className="h-96 w-full pr-4">
                     {filteredSets.length > 0 ? (
                         <Accordion type="multiple" className="w-full">

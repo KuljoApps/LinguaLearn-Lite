@@ -267,22 +267,22 @@ export const getAchievements = (): Record<string, AchievementStatus> => {
     }
 }
 
-export const saveAchievements = (achievements: Record<string, AchievementStatus>) => {
+export const saveAchievements = (achievementsToUpdate: Record<string, AchievementStatus>) => {
     if (typeof window === 'undefined') return;
     try {
         const oldAchievements = getAchievements();
         const currentCount = getNewAchievementsCount();
         let newlyUnlockedCount = 0;
 
-        Object.keys(achievements).forEach(id => {
+        Object.keys(achievementsToUpdate).forEach(id => {
             const oldStatus = oldAchievements[id];
-            const newStatus = achievements[id];
-            if (newStatus.unlockedAt && (!oldStatus || !oldStatus.unlockedAt)) {
+            const newStatus = achievementsToUpdate[id];
+            if (newStatus && newStatus.unlockedAt && (!oldStatus || !oldStatus.unlockedAt)) {
                 newlyUnlockedCount++;
             }
         });
 
-        localStorage.setItem(getKey('linguaLearnAchievements_v2'), JSON.stringify(achievements));
+        localStorage.setItem(getKey('linguaLearnAchievements_v2'), JSON.stringify(achievementsToUpdate));
         window.dispatchEvent(new CustomEvent('achievements-changed'));
         
         if (newlyUnlockedCount > 0) {
@@ -292,6 +292,7 @@ export const saveAchievements = (achievements: Record<string, AchievementStatus>
         console.error("Failed to save achievements to localStorage", error);
     }
 };
+
 
 export const clearAchievements = () => {
     if (typeof window === 'undefined') return;

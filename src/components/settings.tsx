@@ -9,7 +9,7 @@ import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { ArrowLeft, Trash, Sparkles, ChevronDown, GraduationCap, Crown, Star, Settings } from "lucide-react";
-import { getSettings, saveSettings, clearSettings, type Settings as AppSettings, getLanguage, type Language, saveTutorialState, saveAchievements, clearAchievements, type AchievementStatus } from "@/lib/storage";
+import { getSettings, saveSettings, clearSettings, type Settings as AppSettings, getLanguage, type Language, saveTutorialState, saveAchievements, clearAchievements, type AchievementStatus, getAchievements } from "@/lib/storage";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -107,14 +107,15 @@ export default function SettingsPage() {
     };
 
     const handleCreateFakeAchievements = () => {
-        const fakeAchievements: Record<string, AchievementStatus> = {
-          novice: { progress: 50, unlockedAt: Date.now() },
-          streak25: { progress: 25, unlockedAt: Date.now() - 86400000},
+        const achievements = getAchievements();
+        const newAchievements: Record<string, AchievementStatus> = {
+            ...achievements,
+            'novice': { progress: 50, unlockedAt: Date.now() },
         };
-        saveAchievements(fakeAchievements);
+        saveAchievements(newAchievements);
         toast({
           title: "Sukces!",
-          description: "Utworzono fałszywe osiągnięcia.",
+          description: "Dodano 1 fałszywe osiągnięcie ('Novice').",
         });
     };
 
@@ -122,7 +123,7 @@ export default function SettingsPage() {
         clearAchievements();
         toast({
           title: "Sukces!",
-          description: "Usunięto osiągnięcia.",
+          description: "Usunięto wszystkie osiągnięcia.",
         });
     };
 

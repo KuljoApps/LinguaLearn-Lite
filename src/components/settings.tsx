@@ -8,8 +8,8 @@ import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
-import { ArrowLeft, Trash, Sparkles, ChevronDown, GraduationCap, Crown, Star, Settings } from "lucide-react";
-import { getSettings, saveSettings, clearSettings, type Settings as AppSettings, getLanguage, type Language, saveTutorialState, saveAchievements, clearAchievements, type AchievementStatus, getAchievements } from "@/lib/storage";
+import { ArrowLeft, Trash, Sparkles, ChevronDown, GraduationCap, Crown, Star, Settings, Trophy } from "lucide-react";
+import { getSettings, saveSettings, clearSettings, type Settings as AppSettings, getLanguage, type Language, saveTutorialState, saveAchievements, getAchievements, clearFakeAchievements, type AchievementStatus } from "@/lib/storage";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 import ProPromotionDialog from "@/components/ProPromotionDialog";
 import RateAppDialog from "@/components/RateAppDialog";
 import { useToast } from "@/hooks/use-toast";
+import { playSound } from "@/lib/sounds";
 
 const uiTexts = {
     title: { en: 'Settings', fr: 'Réglages', de: 'Einstellungen', it: 'Impostazioni', es: 'Ajustes' },
@@ -105,25 +106,48 @@ export default function SettingsPage() {
         setIsDevToolsOpen(open);
         localStorage.setItem(DEV_TOOLS_COLLAPSIBLE_STATE_KEY, JSON.stringify(open));
     };
-
-    const handleCreateFakeAchievements = () => {
-        const achievements = getAchievements();
-        const newAchievements: Record<string, AchievementStatus> = {
-            ...achievements,
-            'novice': { progress: 50, unlockedAt: Date.now() },
-        };
-        saveAchievements(newAchievements);
+    
+    const showAchievementToast = (achievement: { name: string }) => {
+        playSound('achievement');
         toast({
-          title: "Sukces!",
-          description: "Dodano 1 fałszywe osiągnięcie ('Novice').",
+            title: (
+                <div className="flex items-center gap-2">
+                    <Trophy className="h-5 w-5 text-amber" />
+                    <span className="font-bold">Achievement Unlocked!</span>
+                </div>
+            ),
+            description: `You've earned: "${achievement.name}"`,
         });
     };
 
+    const handleCreateFakeAchievements = () => {
+        const achievements = getAchievements();
+        
+        const fakeAchievementKeys = Object.keys(achievements).filter(k => k.startsWith('fake_'));
+        const highestNum = fakeAchievementKeys.reduce((max, key) => {
+            const num = parseInt(key.split('_')[1], 10);
+            return isNaN(num) ? max : Math.max(max, num);
+        }, 0);
+        const newNum = highestNum + 1;
+
+        const fakeAchievementId = `fake_${newNum}`;
+        const fakeAchievementName = `Fake Achievement ${newNum}`;
+        
+        const newAchievements: Record<string, AchievementStatus> = {
+            ...achievements,
+            [fakeAchievementId]: { progress: 1, unlockedAt: Date.now() },
+        };
+        
+        saveAchievements(newAchievements);
+        
+        showAchievementToast({ name: fakeAchievementName });
+    };
+
     const handleDeleteFakeAchievements = () => {
-        clearAchievements();
+        clearFakeAchievements();
         toast({
           title: "Sukces!",
-          description: "Usunięto wszystkie osiągnięcia.",
+          description: "Usunięto wszystkie fałszywe osiągnięcia.",
         });
     };
 

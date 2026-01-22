@@ -301,6 +301,23 @@ export const clearAchievements = () => {
     window.dispatchEvent(new CustomEvent('achievements-changed'));
 };
 
+export const clearFakeAchievements = () => {
+    if (typeof window === 'undefined') return;
+    try {
+        const allAchievements = getAchievements();
+        const realAchievements: Record<string, AchievementStatus> = {};
+        for (const key in allAchievements) {
+            if (!key.startsWith('fake_')) {
+                realAchievements[key] = allAchievements[key];
+            }
+        }
+        localStorage.setItem(getKey('linguaLearnAchievements_v2'), JSON.stringify(realAchievements));
+        window.dispatchEvent(new CustomEvent('achievements-changed'));
+    } catch (error) {
+        console.error("Failed to clear fake achievements", error);
+    }
+}
+
 
 const checkAndUnlockAchievements = (stats: Stats): Achievement[] => {
     const achievements = getAchievements();

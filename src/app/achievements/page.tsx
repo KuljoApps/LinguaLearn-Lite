@@ -51,6 +51,7 @@ export default function AchievementsPage() {
     const [isClearAlertOpen, setIsClearAlertOpen] = useState(false);
     const [language, setLanguageState] = useState<Language>('en');
     const [isTutorialActive, setIsTutorialActive] = useState(false);
+    const [animate, setAnimate] = useState(false);
 
     useEffect(() => {
         // When the user visits this page, clear the "new" count.
@@ -70,6 +71,8 @@ export default function AchievementsPage() {
         };
 
         handleStateUpdate();
+        const timer = setTimeout(() => setAnimate(true), 500);
+
         window.addEventListener('language-changed', handleStateUpdate);
         window.addEventListener('tutorial-state-changed', handleStateUpdate);
         window.addEventListener('achievements-changed', handleStateUpdate);
@@ -78,6 +81,7 @@ export default function AchievementsPage() {
             window.removeEventListener('language-changed', handleStateUpdate);
             window.removeEventListener('tutorial-state-changed', handleStateUpdate);
             window.removeEventListener('achievements-changed', handleStateUpdate);
+            clearTimeout(timer);
         };
     }, []);
 
@@ -159,11 +163,22 @@ export default function AchievementsPage() {
 
     return (
         <>
-            <Card className="w-full max-w-2xl shadow-2xl">
-                <CardHeader className="text-center">
-                    <div className="flex items-center justify-center gap-4">
-                        <Trophy className="h-8 w-8" />
-                        <CardTitle className="text-3xl">{getUIText('title')}</CardTitle>
+            <Card className="w-full max-w-2xl shadow-2xl overflow-hidden">
+                <CardHeader className="p-6">
+                    <div className="relative flex h-8 items-center justify-center">
+                        <div className="flex items-center gap-4 invisible">
+                            <Trophy className="h-8 w-8 shrink-0" />
+                            <CardTitle className="text-3xl whitespace-nowrap">{getUIText('title')}</CardTitle>
+                        </div>
+                        <div className={cn("absolute", animate ? "animate-icon-fly-out" : "")}>
+                            <Trophy className="h-8 w-8 shrink-0 text-foreground" />
+                        </div>
+                        <CardTitle className={cn(
+                            "absolute whitespace-nowrap text-3xl",
+                            animate ? "animate-text-slide-in" : "opacity-0"
+                        )}>
+                            {getUIText('title')}
+                        </CardTitle>
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-4 max-h-[75vh] overflow-y-auto p-6">

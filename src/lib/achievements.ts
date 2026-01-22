@@ -44,7 +44,7 @@ export interface Achievement {
 
 export const allAchievements: Achievement[] = [
   // Total Correct Answers
-  { id: 'novice', name: 'Novice', name_fr: 'Débutant', name_de: 'Anfänger', name_it: 'Novizio', name_es: 'Novato', description: 'Answer 50 questions correctly.', description_fr: 'Répondre correctly à 50 questions.', description_de: 'Beantworte 50 Fragen richtig.', description_it: 'Rispondi correttamente a 50 domande.', description_es: 'Responde 50 preguntas correctamente.', icon: Sparkles, goal: 50 },
+  { id: 'novice', name: 'Novice', name_fr: 'Débutant', name_de: 'Anfänger', name_it: 'Novizio', name_es: 'Novato', description: 'Answer 5 questions correctly.', description_fr: 'Répondre correctly à 5 questions.', description_de: 'Beantworte 5 Fragen richtig.', description_it: 'Rispondi correttamente a 5 domande.', description_es: 'Responde 5 preguntas correctamente.', icon: Sparkles, goal: 5 },
   { id: 'apprentice', name: 'Apprentice', name_fr: 'Apprenti', name_de: 'Lehrling', name_it: 'Apprendista', name_es: 'Aprendiz', description: 'Answer 250 questions correctly.', description_fr: 'Répondre correctly à 250 questions.', description_de: 'Beantworte 250 Fragen richtig.', description_it: 'Rispondi correttamente a 250 domande.', description_es: 'Responde 250 preguntas correctamente.', icon: Star, goal: 250 },
   { id: 'master', name: 'Master', name_fr: 'Maître', name_de: 'Meister', name_it: 'Maestro', name_es: 'Maestro', description: 'Answer 1000 questions correctly.', description_fr: 'Répondre correctly à 1000 questions.', description_de: 'Beantworte 1000 Fragen richtig.', description_it: 'Rispondi correttamente a 1000 domande.', description_es: 'Responde 1000 preguntas correctamente.', icon: Crown, goal: 1000 },
 
@@ -103,3 +103,5 @@ export const allAchievements: Achievement[] = [
   { id: 'mastery_phrasal_es', name: 'False Friends Expert (ES)', name_es: 'Experto en Falsos Amigos (ES)', description: 'Correctly answer every false friend question.', description_es: 'Responde correctamente a cada pregunta sobre falsos amigos.', icon: Brain, goal: phrasalVerbsEsQuestions.length },
   { id: 'mastery_idioms_es', name: 'Idiom Idol (ES)', name_es: 'Ídolo de los Modismos (ES)', description: 'Correctly answer every idiom question.', description_es: 'Responde correctamente a cada pregunta de modismos.', icon: MessagesSquare, goal: idiomsEsQuestions.length },
 ];
+
+    

@@ -3,7 +3,7 @@ import { questions as enPlQuestions } from '@/lib/questions-en-pl';
 import { questions as plEnQuestions } from '@/lib/questions-pl-en';
 import { questions as irregularVerbsQuestions } from '@/lib/questions-irregular-verbs-en';
 import { questions as phrasalVerbsQuestions } from '@/lib/questions-phrasal-verbs';
-import { questions as idiomsQuestions } from '@/lib/questions-idioms';
+import { questions as idiomsQuestions } from '@/lib/questions-idioms-en';
 import type { Language } from '@/lib/storage';
 
 export default function LearningEnQuestionsPage() {
@@ -34,3 +34,5 @@ export default function LearningEnQuestionsPage() {
         </main>
     );
 }
+
+    

@@ -1,146 +1,105 @@
+import { Award, BarChart, Brain, BookMarked, BrainCircuit, CalendarClock, Clock, Crown, Flame, Globe, MessagesSquare, Sparkles, Star, Trophy, Webhook, Zap, type LucideIcon } from 'lucide-react';
+import { questions as enPlQuestions } from './questions-en-pl';
+import { questions as plEnQuestions } from './questions-pl-en';
+import { questions as irregularVerbsQuestions } from './questions-irregular-verbs-en';
+import { questions as phrasalVerbsQuestions } from './questions-phrasal-verbs-en';
+import { questions as idiomsQuestions } from './questions-idioms-en';
+import { questions as frPlQuestions } from './questions-fr-pl';
+import { questions as plFrQuestions } from './questions-pl-fr';
+import { questions as irregularVerbsFrQuestions } from './questions-irregular-verbs-fr';
+import { questions as fauxAmisFrQuestions } from './questions-phrasal-verbs-fr';
+import { questions as idiomsFrQuestions } from './questions-idioms-fr';
+import { questions as dePlQuestions } from './questions-de-pl';
+import { questions as plDeQuestions } from './questions-pl-de';
+import { questions as irregularVerbsDeQuestions } from './questions-irregular-verbs-de';
+import { questions as phrasalVerbsDeQuestions } from './questions-phrasal-verbs-de';
+import { questions as idiomsDeQuestions } from './questions-idioms-de';
+import { questions as itPlQuestions } from './questions-it-pl';
+import { questions as plItQuestions } from './questions-pl-it';
+import { questions as irregularVerbsItQuestions } from './questions-irregular-verbs-it';
+import { questions as phrasalVerbsItQuestions } from './questions-phrasal-verbs-it';
+import { questions as idiomsItQuestions } from './questions-idioms-it';
+import { questions as esPlQuestions } from './questions-es-pl';
+import { questions as plEsQuestions } from './questions-pl-es';
+import { questions as irregularVerbsEsQuestions } from './questions-irregular-verbs-es';
+import { questions as phrasalVerbsEsQuestions } from './questions-phrasal-verbs-es';
+import { questions as idiomsEsQuestions } from './questions-idioms-es';
 
-export interface Question {
-  id: number;
-  language: 'English';
-  word: string;
-  options: string[];
-  correctAnswer: string;
+
+export interface Achievement {
+  id: string;
+  name: string;
+  description: string;
+  name_fr?: string;
+  description_fr?: string;
+  name_de?: string;
+  description_de?: string;
+  name_it?: string;
+  description_it?: string;
+  name_es?: string;
+  description_es?: string;
+  icon: LucideIcon;
+  goal: number;
 }
 
-export const questions: Question[] = [
-  { id: 1, language: 'English', word: 'A blessing in disguise', options: ['Coś dobrego z problemu', 'Błogosławieństwo w przebraniu', 'Dar od losu', 'Pechowa sytuacja'], correctAnswer: 'Coś dobrego z problemu' },
-  { id: 2, language: 'English', word: 'A dime a dozen', options: ['Bardzo często spotykane', 'Tuzin za grosze', 'Tania rzecz', 'Rzadkie znalezisko'], correctAnswer: 'Bardzo często spotykane' },
-  { id: 3, language: 'English', word: 'A drop in the ocean', options: ['Bardzo mała część', 'Kropla w oceanie', 'Kropla w morzu potrzeb', 'Ogromna większość'], correctAnswer: 'Bardzo mała część' },
-  { id: 4, language: 'English', word: 'A piece of cake', options: ['Bardzo łatwe do zrobienia', 'Kawałek ciasta', 'Słodka nagroda', 'Trudne zadanie'], correctAnswer: 'Bardzo łatwe do zrobienia' },
-  { id: 5, language: 'English', word: 'A slap on the wrist', options: ['Lekka kara za coś', 'Klapnięcie w nadgarstek', 'Publiczna nagana', 'Surowa kara'], correctAnswer: 'Lekka kara za coś' },
-  { id: 6, language: 'English', word: 'A storm in a teacup', options: ['Mały problem wyolbrzymiony', 'Burza w filiżance', 'Poważny problem', 'Spokojna dyskusja'], correctAnswer: 'Mały problem wyolbrzymiony' },
-  { id: 7, language: 'English', word: 'Achilles’ heel', options: ['Czyjaś słaba strona', 'Pięta Achillesa', 'Najmocniejsza strona', 'Ukryty talent'], correctAnswer: 'Czyjaś słaba strona' },
-  { id: 8, language: 'English', word: 'Add fuel to the fire', options: ['Pogarszać sytuację', 'Dodawać paliwa do ognia', 'Gasić pożar', 'Rozpalać ognisko'], correctAnswer: 'Pogarszać sytuację' },
-  { id: 9, language: 'English', word: 'All ears', options: ['Bardzo uważnie słuchać', 'Same uszy', 'Puszczać mimo uszu', 'Słuchać jednym uchem'], correctAnswer: 'Bardzo uważnie słuchać' },
-  { id: 10, language: 'English', word: 'All in the same boat', options: ['Wszyscy mają ten sam problem', 'Wszyscy w tej samej łodzi', 'Być w różnych sytuacjach', 'Płynąć pod prąd'], correctAnswer: 'Wszyscy mają ten sam problem' },
-  { id: 11, language: 'English', word: 'Apple of my eye', options: ['Coś lub ktoś bardzo ważny', 'Jabłko mojego oka', 'Ulubiony owoc', 'Źrenica oka'], correctAnswer: 'Coś lub ktoś bardzo ważny' },
-  { id: 12, language: 'English', word: 'At the drop of a hat', options: ['Natychmiast, bez wahania', 'Po zrzuceniu kapelusza', 'Po długim namyśle', 'Z opóźnieniem'], correctAnswer: 'Natychmiast, bez wahania' },
-  { id: 13, language: 'English', word: 'Back to the drawing board', options: ['Zacząć od nowa', 'Wrócić do deski kreślarskiej', 'Skończyć projekt', 'Rysować plany'], correctAnswer: 'Zacząć od nowa' },
-  { id: 14, language: 'English', word: 'Barking up the wrong tree', options: ['Oskarżać niewłaściwie', 'Szczekać pod niewłaściwym drzewem', 'Szukać pod właściwym adresem', 'Gonić w piętkę'], correctAnswer: 'Oskarżać niewłaściwie' },
-  { id: 15, language: 'English', word: 'Beat around the bush', options: ['Owijać w bawełnę', 'Bić wokół krzaka', 'Mówić prosto z mostu', 'Chodzić po lesie'], correctAnswer: 'Owijać w bawełnę' },
-  { id: 16, language: 'English', word: 'Better late than never', options: ['Lepiej późno niż wcale', 'Zawsze na czas', 'Spóźnić się', 'Być pierwszym'], correctAnswer: 'Lepiej późno niż wcale' },
-  { id: 17, language: 'English', word: 'Bite off more than you can chew', options: ['Podjąć zbyt wiele', 'Odgryźć więcej niż można przeżuć', 'Być bardzo głodnym', 'Zachować umiar'], correctAnswer: 'Podjąć zbyt wiele' },
-  { id: 18, language: 'English', word: 'Bite the bullet', options: ['Przyjąć coś trudnego', 'Ugryźć nabój', 'Unikać problemu', 'Poddać się'], correctAnswer: 'Przyjąć coś trudnego' },
-  { id: 19, language: 'English', word: 'Break the ice', options: ['Przełamać pierwsze lody', 'Łamać lód', 'Tworzyć niezręczną ciszę', 'Rozpocząć kłótnię'], correctAnswer: 'Przełamać pierwsze lody' },
-  { id: 20, language: 'English', word: 'Bring home the bacon', options: ['Zarabiać na życie', 'Przynieść do domu boczek', 'Być bezrobotnym', 'Gotować obiad'], correctAnswer: 'Zarabiać na życie' },
-  { id: 21, language: 'English', word: 'Burn the midnight oil', options: ['Pracować bardzo długo', 'Palić nocną lampkę', 'Wcześnie chodzić spać', 'Oszczędzać energię'], correctAnswer: 'Pracować bardzo długo' },
-  { id: 22, language: 'English', word: 'Call it a day', options: ['Skończyć pracę na dziś', 'Nazwać to dniem', 'Zacząć pracę', 'Pracować cały dzień'], correctAnswer: 'Skończyć pracę na dziś' },
-  { id: 23, language: 'English', word: 'Calm before the storm', options: ['Spokój przed problemem', 'Cisza przed burzą', 'Cicha pogoda', 'Nerwowa atmosfera'], correctAnswer: 'Spokój przed problemem' },
-  { id: 24, language: 'English', word: 'Catch someone red-handed', options: ['Przyłapać na gorącym uczynku', 'Złapać kogoś z czerwoną ręką', 'Pomóc komuś w potrzebie', 'Puścić kogoś wolno'], correctAnswer: 'Przyłapać na gorącym uczynku' },
-  { id: 25, language: 'English', word: 'Costs an arm and a leg', options: ['Bardzo drogie coś kupić', 'Kosztować rękę i nogę', 'Być tanim jak barszcz', 'Być za darmo'], correctAnswer: 'Bardzo drogie coś kupić' },
-  { id: 26, language: 'English', word: 'Cross that bridge when you come to it', options: ['Zająć się problemem później', 'Przejść przez most, gdy do niego dojdziesz', 'Martwić się na zapas', 'Budować mosty'], correctAnswer: 'Zająć się problemem później' },
-  { id: 27, language: 'English', word: 'Cry over spilled milk', options: ['Rozpaczać nad przeszłością', 'Płakać nad rozlanym mlekiem', 'Martwić się o przyszłość', 'Sprzątać bałagan'], correctAnswer: 'Rozpaczać nad przeszłością' },
-  { id: 28, language: 'English', word: 'Cut corners', options: ['Iść na skróty', 'Obcinać rogi', 'Być dokładnym', 'Pracować ciężko'], correctAnswer: 'Iść na skróty' },
-  { id: 29, language: 'English', word: 'Devil’s advocate', options: ['Ktoś prowokuje dyskusję', 'Adwokat diabła', 'Zgadzać się ze wszystkimi', 'Bronić złej sprawy'], correctAnswer: 'Ktoś prowokuje dyskusję' },
-  { id: 30, language: 'English', word: 'Don’t count your chickens before they hatch', options: ['Nie chwalić przed czasem', 'Nie liczyć kurczaków przed wykluciem', 'Być optymistą', 'Planować z wyprzedzeniem'], correctAnswer: 'Nie chwalić przed czasem' },
-  { id: 31, language: 'English', word: 'Don’t put all your eggs in one basket', options: ['Nie ryzykować wszystkiego', 'Nie wkładać wszystkich jajek do jednego koszyka', 'Ryzykować wszystko', 'Robić omlet'], correctAnswer: 'Nie ryzykować wszystkiego' },
-  { id: 32, language: 'English', word: 'Down to the wire', options: ['Na ostatnią chwilę', 'Do samego drutu', 'Z dużym zapasem czasu', 'W połowie drogi'], correctAnswer: 'Na ostatnią chwilę' },
-  { id: 33, language: 'English', word: 'Draw the line', options: ['Postawić granicę działania', 'Narysować linię', 'Przekraczać granice', 'Zacząć od nowa'], correctAnswer: 'Postawić granicę działania' },
-  { id: 34, language: 'English', word: 'Drive someone up the wall', options: ['Doprowadzać do szaleństwa', 'Wjechać w ścianę', 'Uspokajać kogoś', 'Podwozić kogoś'], correctAnswer: 'Doprowadzać do szaleństwa' },
-  { id: 35, language: 'English', word: 'Drop a bombshell', options: ['Ogłosić coś szokującego', 'Zrzucić bombę', 'Zrobić niespodziankę', 'Powiedzieć coś nieistotnego'], correctAnswer: 'Ogłosić coś szokującego' },
-  { id: 36, language: 'English', word: 'Easier said than done', options: ['Łatwiej powiedzieć niż zrobić', 'Trudne do powiedzenia', 'Bardzo proste zadanie', 'Niemożliwe do wykonania'], correctAnswer: 'Łatwiej powiedzieć niż zrobić' },
-  { id: 37, language: 'English', word: 'Every cloud has a silver lining', options: ['Każda zła sytuacja ma plusy', 'Każda chmura ma srebrną podszewkę', 'Zawsze jest nadzieja', 'Po deszczu zawsze jest tęcza'], correctAnswer: 'Każda zła sytuacja ma plusy' },
-  { id: 38, language: 'English', word: 'Face the music', options: ['Stawić czoła konsekwencjom', 'Zmierz się z muzyką', 'Iść na koncert', 'Unikać problemów'], correctAnswer: 'Stawić czoła konsekwencjom' },
-  { id: 39, language: 'English', word: 'Fair and square', options: ['Uczciwie i bez oszustwa', 'Sprawiedliwie i kwadratowo', 'Oszukiwać', 'Wygrać nieuczciwie'], correctAnswer: 'Uczciwie i bez oszustwa' },
-  { id: 40, language: 'English', word: 'Far cry from', options: ['Dalekie od prawdy lub standardu', 'Daleki krzyk od', 'Bardzo podobne', 'Dokładnie to samo'], correctAnswer: 'Dalekie od prawdy lub standardu' },
-  { id: 41, language: 'English', word: 'Feel under the weather', options: ['Czuć się naprawdę źle', 'Czuć się pod pogodą', 'Być na zewnątrz w deszczu', 'Cieszyć się pogodą'], correctAnswer: 'Czuć się naprawdę źle' },
-  { id: 42, language: 'English', word: 'Fingers crossed', options: ['Trzymać mocno kciuki', 'Skrzyżowane palce', 'Modlić się o szczęście', 'Mieć pecha'], correctAnswer: 'Trzymać mocno kciuki' },
-  { id: 43, language: 'English', word: 'Fish out of water', options: ['Czuć się nieswojo', 'Ryba bez wody', 'Być w swoim żywiole', 'Pływać w oceanie'], correctAnswer: 'Czuć się nieswojo' },
-  { id: 44, language: 'English', word: 'Fly off the handle', options: ['Wybuchnąć gniewem', 'Oderwać się od klamki', 'Zachować spokój', 'Latać helikopterem'], correctAnswer: 'Wybuchnąć gniewem' },
-  { id: 45, language: 'English', word: 'For the time being', options: ['Na chwilę obecną', 'W międzyczasie', 'Na zawsze', 'W przyszłości'], correctAnswer: 'Na chwilę obecną' },
-  { id: 46, language: 'English', word: 'From the horse’s mouth', options: ['Z pierwszej ręki', 'Z końskich ust', 'Z wiarygodnego źródła', 'Z plotek'], correctAnswer: 'Z pierwszej ręki' },
-  { id: 47, language: 'English', word: 'Get a taste of your own medicine', options: ['Doświadczyć tego samego', 'Dostać swoją własną medycynę', 'Próbować lekarstwa', 'Zachorować'], correctAnswer: 'Doświadczyć tego samego' },
-  { id: 48, language: 'English', word: 'Get cold feet', options: ['Dostać nagle tremy', 'Dostać zimnych stóp', 'Zmarznąć', 'Być odważnym'], correctAnswer: 'Dostać nagle tremy' },
-  { id: 49, language: 'English', word: 'Get something off your chest', options: ['Wyrzucić coś z siebie', 'Zrzucić coś z klatki piersiowej', 'Ukrywać sekret', 'Ćwiczyć na siłowni'], correctAnswer: 'Wyrzucić coś z siebie' },
-  { id: 50, language: 'English', word: 'Get your act together', options: ['Wziąć się w garść', 'Zebrać swoje akta', 'Zorganizować przedstawienie', 'Robić bałagan'], correctAnswer: 'Wziąć się w garść' },
-  { id: 51, language: 'English', word: 'Go back to square one', options: ['Zacząć od początku', 'Wrócić na pole numer jeden', 'Skończyć grę', 'Cofnąć się o krok'], correctAnswer: 'Zacząć od początku' },
-  { id: 52, language: 'English', word: 'Go the extra mile', options: ['Zrobić więcej niż wymagane', 'Przejść dodatkową milę', 'Skończyć maraton', 'Iść na długi spacer'], correctAnswer: 'Zrobić więcej niż wymagane' },
-  { id: 53, language: 'English', word: 'Hit the books', options: ['Uczyć się bardzo intensywnie', 'Uderzyć w książki', 'Czytać dużo książek', 'Rzucać książkami'], correctAnswer: 'Uczyć się bardzo intensywnie' },
-  { id: 54, language: 'English', word: 'Hit the nail on the head', options: ['Trafić w sedno sprawy', 'Uderzyć gwoździem w głowę', 'Pomylić się', 'Pracować jako stolarz'], correctAnswer: 'Trafić w sedno sprawy' },
-  { id: 55, language: 'English', word: 'Hit the sack', options: ['Iść spać wcześnie', 'Uderzyć w worek', 'Być bardzo zmęczonym', 'Zacząć trening'], correctAnswer: 'Iść spać wcześnie' },
-  { id: 56, language: 'English', word: 'Hold your horses', options: ['Wstrzymać się chwilowo', 'Trzymaj swoje konie', 'Uspokój się', 'Iść do stajni'], correctAnswer: 'Wstrzymać się chwilowo' },
-  { id: 57, language: 'English', word: 'In a nutshell', options: ['Krótko mówiąc, w skrócie', 'W łupinie orzecha', 'Szczegółowo', 'W szczegółach'], correctAnswer: 'Krótko mówiąc, w skrócie' },
-  { id: 58, language: 'English', word: 'In hot water', options: ['W poważnych tarapatach', 'W gorącej wodzie', 'Być w saunie', 'Kąpać się w wannie'], correctAnswer: 'W poważnych tarapatach' },
-  { id: 59, language: 'English', word: 'In the nick of time', options: ['W ostatniej możliwej chwili', 'W samą porę', 'Za wcześnie', 'Za późno'], correctAnswer: 'W ostatniej możliwej chwili' },
-  { id: 60, language: 'English', word: 'It takes two to tango', options: ['Obie strony są winne', 'Do tanga trzeba dwojga', 'Tańczyć w parze', 'Pracować w zespole'], correctAnswer: 'Obie strony są winne' },
-  { id: 61, language: 'English', word: 'Jump on the bandwagon', options: ['Przyłączyć się do trendu', 'Wskoczyć do wagonu z orkiestrą', 'Iść na paradę', 'Być oryginalnym'], correctAnswer: 'Przyłączyć się do trendu' },
-  { id: 62, language: 'English', word: 'Keep an eye on', options: ['Pilnować czegoś dokładnie', 'Trzymać na czymś oko', 'Obserwować z daleka', 'Ignorować coś'], correctAnswer: 'Pilnować czegoś dokładnie' },
-  { id: 63, language: 'English', word: 'Keep your chin up', options: ['Trzymaj się mimo problemów', 'Głowa do góry', 'Patrzeć w górę', 'Być dumnym'], correctAnswer: 'Trzymaj się mimo problemów' },
-  { id: 64, language: 'English', word: 'Kill two birds with one stone', options: ['Załatwić dwie rzeczy naraz', 'Zabić dwa ptaki jednym kamieniem', 'Polować na ptaki', 'Robić dwie rzeczy naraz'], correctAnswer: 'Załatwić dwie rzeczy naraz' },
-  { id: 65, language: 'English', word: 'Knock on wood', options: ['Odpukać w niemalowane', 'Pukać w drewno', 'Na szczęście', 'Przynieść pecha'], correctAnswer: 'Odpukać w niemalowane' },
-  { id: 66, language: 'English', word: 'Know the ropes', options: ['Znać się dobrze na czymś', 'Znać liny', 'Uczyć się żeglarstwa', 'Być nowicjuszem'], correctAnswer: 'Znać się dobrze na czymś' },
-  { id: 67, language: 'English', word: 'Last straw', options: ['Ostatnia kropla cierpliwości', 'Ostatnia słomka', 'Ostatnia szansa', 'Koniec napoju'], correctAnswer: 'Ostatnia kropla cierpliwości' },
-  { id: 68, language: 'English', word: 'Let sleeping dogs lie', options: ['Nie wywołuj dawnych problemów', 'Zostaw śpiące psy w spokoju', 'Nie rozdrapuj starych ran', 'Obudzić psa'], correctAnswer: 'Nie wywołuj dawnych problemów' },
-  { id: 69, language: 'English', word: 'Let the cat out of the bag', options: ['Wyjawić sekret przypadkiem', 'Wypuścić kota z worka', 'Kupić kota w worku', 'Zrobić niespodziankę'], correctAnswer: 'Wyjawić sekret przypadkiem' },
-  { id: 70, language: 'English', word: 'Make a long story short', options: ['Krótko mówiąc', 'Uczynić długą historię krótką', 'Opowiadać długo', 'Pisać streszczenie'], correctAnswer: 'Krótko mówiąc' },
-  { id: 71, language: 'English', word: 'Make ends meet', options: ['Wiązać koniec z końcem finansowo', 'Oszczędzać pieniądze', 'Być bogatym', 'Wydawać pieniądze'], correctAnswer: 'Wiązać koniec z końcem finansowo' },
-  { id: 72, language: 'English', word: 'Method to the madness', options: ['Logika w tym chaosie', 'Metoda w szaleństwie', 'Być szalonym', 'Działać chaotycznie'], correctAnswer: 'Logika w tym chaosie' },
-  { id: 73, language: 'English', word: 'Miss the boat', options: ['Przegapić ważną okazję', 'Spóźnić się na statek', 'Być na czas', 'Płynąć łodzią'], correctAnswer: 'Przegapić ważną okazję' },
-  { id: 74, language: 'English', word: 'Mum’s the word', options: ['Zachować sekret całkowicie', 'Mama jest słowem', 'Ani mru-mru', 'Mówić głośno'], correctAnswer: 'Zachować sekret całkowicie' },
-  { id: 75, language: 'English', word: 'Neck of the woods', options: ['Okolica, w której ktoś mieszka', 'Szyja lasu', 'Daleko stąd', 'Głęboko w lesie'], correctAnswer: 'Okolica, w której ktoś mieszka' },
-  { id: 76, language: 'English', word: 'No pain, no gain', options: ['Bez wysiłku nie ma efektów', 'Nie ma bólu, nie ma zysku', 'Cierpieć w milczeniu', 'Unikać wysiłku'], correctAnswer: 'Bez wysiłku nie ma efektów' },
-  { id: 77, language: 'English', word: 'Not a chance', options: ['Nie ma szans', 'Nie szansa', 'Może później', 'Na pewno'], correctAnswer: 'Nie ma szans' },
-  { id: 78, language: 'English', word: 'Off the hook', options: ['Uwolniony od kłopotów', 'Zdjęty z haka', 'Mieć problem', 'Łowić ryby'], correctAnswer: 'Uwolniony od kłopotów' },
-  { id: 79, language: 'English', word: 'On cloud nine', options: ['Bardzo szczęśliwy i zadowolony', 'Na chmurze dziewiątej', 'Być smutnym', 'Marzyć'], correctAnswer: 'Bardzo szczęśliwy i zadowolony' },
-  { id: 80, language: 'English', word: 'On the ball', options: ['Być bardzo uważnym', 'Na piłce', 'Grać w piłkę', 'Być rozkojarzonym'], correctAnswer: 'Być bardzo uważnym' },
-  { id: 81, language: 'English', word: 'On thin ice', options: ['Na granicy ryzyka', 'Na cienkim lodzie', 'Jeździć na łyżwach', 'Być bezpiecznym'], correctAnswer: 'Na granicy ryzyka' },
-  { id: 82, language: 'English', word: 'Once in a blue moon', options: ['Bardzo rzadko', 'Raz na niebieski księżyc', 'Często', 'Nigdy'], correctAnswer: 'Bardzo rzadko' },
-  { id: 83, language: 'English', word: 'Out of the blue', options: ['Zupełnie niespodziewanie', 'Z niebieskiego', 'Spodziewanie', 'Zgodnie z planem'], correctAnswer: 'Zupełnie niespodziewanie' },
-  { id: 84, language: 'English', word: 'Out of the frying pan into the fire', options: ['Z deszczu pod rynnę', 'Z patelni do ognia', 'Unikać problemów', 'Rozwiązać problem'], correctAnswer: 'Z deszczu pod rynnę' },
-  { id: 85, language: 'English', word: 'Pass the buck', options: ['Zrzucić odpowiedzialność', 'Podać dolara', 'Przyjąć odpowiedzialność', 'Pożyczyć pieniądze'], correctAnswer: 'Zrzucić odpowiedzialność' },
-  { id: 86, language: 'English', word: 'Penny for your thoughts', options: ['Co myślisz teraz?', 'Grosz za twoje myśli', 'Cisza przed burzą', 'Płacić za pomysły'], correctAnswer: 'Co myślisz teraz?' },
-  { id: 87, language: 'English', word: 'Play it by ear', options: ['Działać spontanicznie', 'Grać na ucho', 'Trzymać się planu', 'Słuchać muzyki'], correctAnswer: 'Działać spontanicznie' },
-  { id: 88, language: 'English', word: 'Pull someone’s leg', options: ['Nabierać kogoś dla żartu', 'Ciągnąć kogoś za nogę', 'Mówić prawdę', 'Pomagać komuś'], correctAnswer: 'Nabierać kogoś dla żartu' },
-  { id: 89, language: 'English', word: 'Put your foot in your mouth', options: ['Powiedzieć coś głupiego', 'Włożyć stopę do ust', 'Powiedzieć coś mądrego', 'Być cicho'], correctAnswer: 'Powiedzieć coś głupiego' },
-  { id: 90, language: 'English', word: 'Rain on someone’s parade', options: ['Psuć komuś plany', 'Padać na czyjejś paradzie', 'Organizować paradę', 'Cieszyć się z deszczu'], correctAnswer: 'Psuć komuś plany' },
-  { id: 91, language: 'English', word: 'Read between the lines', options: ['Rozumieć ukryty sens', 'Czytać między wierszami', 'Czytać dosłownie', 'Czytać szybko'], correctAnswer: 'Rozumieć ukryty sens' },
-  { id: 92, language: 'English', word: 'Rome wasn’t built in a day', options: ['Wszystko wymaga czasu', 'Nie od razu Rzym zbudowano', 'Budować miasto', 'Szybka praca'], correctAnswer: 'Wszystko wymaga czasu' },
-  { id: 93, language: 'English', word: 'Run like the wind', options: ['Biec bardzo szybko', 'Biec jak wiatr', 'Biec wolno', 'Stać w miejscu'], correctAnswer: 'Biec bardzo szybko' },
-  { id: 94, language: 'English', word: 'See eye to eye', options: ['Zgadzać się całkowicie', 'Patrzeć sobie w oczy', 'Mieć inne zdanie', 'Kłócić się'], correctAnswer: 'Zgadzać się całkowicie' },
-  { id: 95, language: 'English', word: 'Shoot yourself in the foot', options: ['Zaszkodzić sobie samemu', 'Strzelić sobie w stopę', 'Odnieść sukces', 'Być ostrożnym'], correctAnswer: 'Zaszkodzić sobie samemu' },
-  { id: 96, language: 'English', word: 'Sit on the fence', options: ['Wahać się przy decyzji', 'Siedzieć na płocie', 'Podjąć decyzję', 'Odpoczywać w ogrodzie'], correctAnswer: 'Wahać się przy decyzji' },
-  { id: 97, language: 'English', word: 'Sleep on it', options: ['Przemyśleć przez noc', 'Przespać się z tym', 'Pójść spać', 'Podjąć szybką decyzję'], correctAnswer: 'Przemyśleć przez noc' },
-  { id: 98, language: 'English', word: 'Smell a rat', options: ['Podejrzewać podstęp', 'Czuć szczura', 'Węszyć kłopoty', 'Mieć zwierzaka'], correctAnswer: 'Podejrzewać podstęp' },
-  { id: 99, language: 'English', word: 'Spill the beans', options: ['Wyjawić sekret komuś', 'Wysypać fasolę', 'Gotować obiad', 'Trzymać język za zębami'], correctAnswer: 'Wyjawić sekret komuś' },
-  { id: 100, language: 'English', word: 'Steal someone’s thunder', options: ['Ukraść komuś zasługi', 'Ukraść komuś piorun', 'Być głośnym', 'Pomagać komuś'], correctAnswer: 'Ukraść komuś zasługi' },
-  { id: 101, language: 'English', word: 'Stick to your guns', options: ['Trzymać się swojego zdania', 'Trzymać się swoich pistoletów', 'Zmienić zdanie', 'Poddać się'], correctAnswer: 'Trzymać się swojego zdania' },
-  { id: 102, language: 'English', word: 'Take it with a grain of salt', options: ['Traktować z rezerwą', 'Brać to z ziarnem soli', 'Wierzyć we wszystko', 'Być sceptycznym'], correctAnswer: 'Traktować z rezerwą' },
-  { id: 103, language: 'English', word: 'Take the bull by the horns', options: ['Wziąć sprawy w swoje ręce', 'Wziąć byka za rogi', 'Unikać problemów', 'Iść na corridę'], correctAnswer: 'Wziąć sprawy w swoje ręce' },
-  { id: 104, language: 'English', word: 'The ball is in your court', options: ['Teraz twoja kolej', 'Piłka jest na twoim korcie', 'Grać w tenisa', 'Unikać odpowiedzialności'], correctAnswer: 'Teraz twoja kolej' },
-  { id: 105, language: 'English', word: 'The best of both worlds', options: ['Połączenie najlepszych rzeczy', 'Najlepsze z obu światów', 'Wybór jednej opcji', 'Kompromis'], correctAnswer: 'Połączenie najlepszych rzeczy' },
-  { id: 106, language: 'English', word: 'The early bird catches the worm', options: ['Kto rano wstaje, temu Pan Bóg daje', 'Wczesny ptak łapie robaka', 'Późno chodzić spać', 'Być leniwym'], correctAnswer: 'Kto rano wstaje, temu Pan Bóg daje' },
-  { id: 107, language: 'English', word: 'The tip of the iceberg', options: ['Tylko wierzchołek problemu', 'Wierzchołek góry lodowej', 'Cały problem', 'Rozwiązanie problemu'], correctAnswer: 'Tylko wierzchołek problemu' },
-  { id: 108, language: 'English', word: 'Through thick and thin', options: ['Na dobre i złe', 'Przez grube i cienkie', 'W każdych warunkach', 'Tylko w dobrych chwilach'], correctAnswer: 'Na dobre i złe' },
-  { id: 109, language: 'English', word: 'Time flies', options: ['Czas bardzo szybko mija', 'Czas leci', 'Czas się dłuży', 'Zegarek lata'], correctAnswer: 'Czas bardzo szybko mija' },
-  { id: 110, language: 'English', word: 'To be on the same page', options: ['Być zgodnym w sprawie', 'Być na tej samej stronie', 'Czytać tę samą książkę', 'Mieć inne zdanie'], correctAnswer: 'Być zgodnym w sprawie' },
-  { id: 111, language: 'English', word: 'To cost an arm and a leg', options: ['Być bardzo drogim', 'Kosztować rękę i nogę', 'Być tanim', 'Zapłacić częściami ciała'], correctAnswer: 'Być bardzo drogim' },
-  { id: 112, language: 'English', word: 'To cut corners', options: ['Robić coś po skrócie', 'Obcinać rogi', 'Iść na skróty', 'Być dokładnym'], correctAnswer: 'Robić coś po skrócie' },
-  { id: 113, language: 'English', word: 'To get out of hand', options: ['Wymknąć się spod kontroli', 'Wyjść z rąk', 'Trzymać coś w ręku', 'Uspokoić sytuację'], correctAnswer: 'Wymknąć się spod kontroli' },
-  { id: 114, language: 'English', word: 'To go the extra mile', options: ['Zrobić coś ponad wymagania', 'Przejść dodatkową milę', 'Robić minimum', 'Iść na długi spacer'], correctAnswer: 'Zrobić coś ponad wymagania' },
-  { id: 115, language: 'English', word: 'To hit the nail on the head', options: ['Trafić w sedno', 'Uderzyć gwoździem w głowę', 'Pomylić się', 'Uderzyć młotkiem'], correctAnswer: 'Trafić w sedno' },
-  { id: 116, language: 'English', word: 'To keep someone posted', options: ['Informować regularnie', 'Trzymać kogoś na poczcie', 'Wysyłać listy', 'Ukrywać informacje'], correctAnswer: 'Informować regularnie' },
-  { id: 117, language: 'English', word: 'To let someone off the hook', options: ['Uwolnić od odpowiedzialności', 'Zdjąć kogoś z haka', 'Złapać rybę', 'Oskarżyć kogoś'], correctAnswer: 'Uwolnić od odpowiedzialności' },
-  { id: 118, language: 'English', word: 'To miss the boat', options: ['Przegapić ważną okazję', 'Spóźnić się na łódkę', 'Płynąć statkiem', 'Wykorzystać szansę'], correctAnswer: 'Przegapić ważną okazję' },
-  { id: 119, language: 'English', word: 'To play devil’s advocate', options: ['Prowokować dyskusję', 'Grać adwokata diabła', 'Zgadzać się ze wszystkimi', 'Bronić zła'], correctAnswer: 'Prowokować dyskusję' },
-  { id: 120, language: 'English', word: 'To pull yourself together', options: ['Wziąć się w garść', 'Pociągnąć się razem', 'Rozpaść się', 'Odpocząć'], correctAnswer: 'Wziąć się w garść' },
-  { id: 121, language: 'English', word: 'To put two and two together', options: ['Połączyć fakty', 'Dodać dwa do dwóch', 'Mylić się w obliczeniach', 'Robić coś prostego'], correctAnswer: 'Połączyć fakty' },
-  { id: 122, language: 'English', word: 'To rock the boat', options: ['Psuć spokój sytuacji', 'Kołysać łodzią', 'Płynąć spokojnie', 'Naprawiać łódź'], correctAnswer: 'Psuć spokój sytuacji' },
-  { id: 123, language: 'English', word: 'To see eye to eye', options: ['Zgadzać się całkowicie', 'Patrzeć oko w oko', 'Kłócić się', 'Patrzeć w różnych kierunkach'], correctAnswer: 'Zgadzać się całkowicie' },
-  { id: 124, language: 'English', word: 'To sit tight', options: ['Czekać cierpliwie', 'Siedzieć ciasno', 'Wiercić się', 'Wstać i iść'], correctAnswer: 'Czekać cierpliwie' },
-  { id: 125, language: 'English', word: 'To spill the beans', options: ['Wyjawić sekret przypadkiem', 'Wysypać fasolę', 'Gotować obiad', 'Trzymać język za zębami'], correctAnswer: 'Wyjawić sekret przypadkiem' },
-  { id: 126, language: 'English', word: 'To take a rain check', options: ['Przełożyć na później', 'Wziąć czek na deszcz', 'Zgodzić się od razu', 'Iść w deszczu'], correctAnswer: 'Przełożyć na później' },
-  { id: 127, language: 'English', word: 'To throw in the towel', options: ['Poddawać się całkowicie', 'Rzucić ręcznik', 'Kontynuować walkę', 'Wziąć prysznic'], correctAnswer: 'Poddawać się całkowicie' },
-  { id: 128, language: 'English', word: 'To twist someone’s arm', options: ['Przekonać kogoś do czegoś', 'Wykręcić komuś rękę', 'Zrobić komuś krzywdę', 'Masować ramię'], correctAnswer: 'Przekonać kogoś do czegoś' },
-  { id: 129, language: 'English', word: 'Up in the air', options: ['Sytuacja niepewna', 'W powietrzu', 'Latać samolotem', 'Wszystko jasne'], correctAnswer: 'Sytuacja niepewna' },
-  { id: 130, language: 'English', word: 'Watch your back', options: ['Uważać na zagrożenie', 'Patrz na swoje plecy', 'Oglądać się za siebie', 'Być ostrożnym'], correctAnswer: 'Uważać na zagrożenie' },
-  { id: 131, language: 'English', word: 'Walking on air', options: ['Być bardzo szczęśliwym', 'Chodzić po powietrzu', 'Być lekkim jak piórko', 'Skakać z radości'], correctAnswer: 'Być bardzo szczęśliwym' },
-  { id: 132, language: 'English', word: 'When pigs fly', options: ['Coś niemożliwego', 'Kiedy świnie latają', 'Na święty nigdy', 'W dalekiej przyszłości'], correctAnswer: 'Coś niemożliwego' },
-  { id: 133, language: 'English', word: 'You can say that again', options: ['Zgadzam się całkowicie', 'Możesz to powtórzyć', 'Nie rozumiem', 'Mów głośniej'], correctAnswer: 'Zgadzam się całkowicie' },
-  { id: 134, language: 'English', word: 'Your guess is as good as mine', options: ['Nie wiem więcej niż ty', 'Twój domysł jest tak dobry jak mój', 'Zgadnij jeszcze raz', 'Masz rację'], correctAnswer: 'Nie wiem więcej niż ty' },
-];
+export const allAchievements: Achievement[] = [
+  // Total Correct Answers
+  { id: 'novice', name: 'Novice', name_fr: 'Débutant', name_de: 'Anfänger', name_it: 'Novizio', name_es: 'Novato', description: 'Answer 50 questions correctly.', description_fr: 'Répondre correctly à 50 questions.', description_de: 'Beantworte 50 Fragen richtig.', description_it: 'Rispondi correttamente a 50 domande.', description_es: 'Responde 50 preguntas correctamente.', icon: Sparkles, goal: 50 },
+  { id: 'apprentice', name: 'Apprentice', name_fr: 'Apprenti', name_de: 'Lehrling', name_it: 'Apprendista', name_es: 'Aprendiz', description: 'Answer 250 questions correctly.', description_fr: 'Répondre correctly à 250 questions.', description_de: 'Beantworte 250 Fragen richtig.', description_it: 'Rispondi correttamente a 250 domande.', description_es: 'Responde 250 preguntas correctamente.', icon: Star, goal: 250 },
+  { id: 'master', name: 'Master', name_fr: 'Maître', name_de: 'Meister', name_it: 'Maestro', name_es: 'Maestro', description: 'Answer 1000 questions correctly.', description_fr: 'Répondre correctly à 1000 questions.', description_de: 'Beantworte 1000 Fragen richtig.', description_it: 'Rispondi correttamente a 1000 domande.', description_es: 'Responde 1000 preguntas correctamente.', icon: Crown, goal: 1000 },
 
+  // Streaks
+  { id: 'streak25', name: 'On Fire', name_fr: 'En Feu', name_de: 'Heißgelaufen', name_it: 'Inarrestabile', name_es: 'En racha', description: 'Get 25 correct answers in a row.', description_fr: 'Obtenir 25 bonnes réponses d\'affilée.', description_de: 'Erhalte 25 richtige Antworten in Folge.', description_it: 'Ottieni 25 risposte corrette di fila.', description_es: 'Consigue 25 respuestas correctas seguidas.', icon: Flame, goal: 25 },
+  { id: 'streak50', name: 'Unstoppable', name_fr: 'Inarrêtable', name_de: 'Unaufhaltsam', name_it: 'Imbattibile', name_es: 'Imparable', description: 'Get 50 correct answers in a row.', description_fr: 'Obtenir 50 bonnes réponses d\'affilée.', description_de: 'Erhalte 50 richtige Antworten in Folge.', description_it: 'Ottieni 50 risposte corrette di fila.', description_es: 'Consigue 50 respuestas correctas seguidas.', icon: Zap, goal: 50 },
+  { id: 'streak100', name: 'Legendary', name_fr: 'Légendaire', name_de: 'Legendär', name_it: 'Leggendario', name_es: 'Legendario', description: 'Get 100 correct answers in a row.', description_fr: 'Obtenir 100 bonnes réponses d\'affilée.', description_de: 'Erhalte 100 richtige Antworten in Folge.', description_it: 'Ottieni 100 risposte corrette di fila.', description_es: 'Consigue 100 respuestas correctas seguidas.', icon: Trophy, goal: 100 },
+
+  // Time Spent
+  { id: 'time_1h', name: 'Time Traveler', name_fr: 'Voyageur Temporel', name_de: 'Zeitreisender', name_it: 'Viaggiatore del Tempo', name_es: 'Viajero del Tiempo', description: 'Spend 1 hour learning in total.', description_fr: 'Passer 1 heure à apprendre au total.', description_de: 'Verbringe insgesamt 1 Stunde mit Lernen.', description_it: 'Passa 1 ora a imparare in totale.', description_es: 'Pasa 1 hora aprendiendo en total.', icon: Clock, goal: 3600 },
+  { id: 'time_3h', name: 'Time Bender', name_fr: 'Maître du Temps', name_de: 'Zeitbeuger', name_it: 'Padrone del Tempo', name_es: 'Doblador del Tiempo', description: 'Spend 3 hours learning in total.', description_fr: 'Passer 3 heures à apprendre au total.', description_de: 'Verbringe insgesamt 3 Stunden mit Lernen.', description_it: 'Passa 3 ore a imparare in totale.', description_es: 'Pasa 3 horas aprendiendo en total.', icon: BarChart, goal: 10800 },
+  { id: 'time_6h', name: 'Time Lord', name_fr: 'Seigneur du Temps', name_de: 'Zeitlord', name_it: 'Signore del Tempo', name_es: 'Señor del Tiempo', description: 'Spend 6 hours learning in total.', description_fr: 'Passer 6 heures à apprendre au total.', description_de: 'Verbringe insgesamt 6 Stunden mit Lernen.', description_it: 'Passa 6 ore a imparare in totale.', description_es: 'Pasa 6 horas aprendiendo en total.', icon: BrainCircuit, goal: 21600 },
+
+  // Daily Play
+  { id: 'daily_7', name: 'Committed', name_fr: 'Engagé', name_de: 'Engagiert', name_it: 'Impegnato', name_es: 'Comprometido', description: 'Play on 7 separate days.', description_fr: 'Jouer pendant 7 jours distincts.', description_de: 'Spiele an 7 verschiedenen Tagen.', description_it: 'Gioca per 7 giorni separati.', description_es: 'Juega en 7 días diferentes.', icon: CalendarClock, goal: 7 },
+  { id: 'daily_14', name: 'Devoted', name_fr: 'Dévoué', name_de: 'Hingebungsvoll', name_it: 'Devoto', name_es: 'Dedicado', description: 'Play on 14 separate days.', description_fr: 'Jouer pendant 14 jours distincts.', description_de: 'Spiele an 14 verschiedenen Tagen.', description_it: 'Gioca per 14 giorni separati.', description_es: 'Juega en 14 días diferentes.', icon: CalendarClock, goal: 14 },
+  { id: 'daily_30', name: 'Habituated', name_fr: 'Habitué', name_de: 'Gewohnheitstier', name_it: 'Abituato', name_es: 'Habituado', description: 'Play on 30 separate days.', description_fr: 'Jouer pendant 30 jours distincts.', description_de: 'Spiele an 30 verschiedenen Tagen.', description_it: 'Gioca per 30 giorni separati.', description_es: 'Juega en 30 días diferentes.', icon: CalendarClock, goal: 30 },
+
+  // Perfect Scores
+  { id: 'perfectionist', name: 'Perfectionist', name_fr: 'Perfectionniste', name_de: 'Perfektionist', name_it: 'Perfezionista', name_es: 'Perfeccionista', description: 'Get a perfect score on 10 quizzes.', description_fr: 'Obtenir un score parfait à 10 quiz.', description_de: 'Erziele in 10 Quiz eine perfekte Punktzahl.', description_it: 'Ottieni un punteggio perfetto in 10 quiz.', description_es: 'Obtén una puntuación perfecta en 10 pruebas.', icon: Award, goal: 10 },
+  { id: 'virtuoso', name: 'Virtuoso', name_fr: 'Virtuose', name_de: 'Virtuose', name_it: 'Virtuoso', name_es: 'Virtuoso', description: 'Get a perfect score on 25 quizzes.', description_fr: 'Obtenir un score parfait à 25 quiz.', description_de: 'Erziele in 25 Quiz eine perfekte Punktzahl.', description_it: 'Ottieni un punteggio perfetto in 25 quiz.', description_es: 'Obtén una puntuación perfecta en 25 pruebas.', icon: Award, goal: 25 },
+  { id: 'grandmaster', name: 'Grand Master', name_fr: 'Grand Maître', name_de: 'Großmeister', name_it: 'Gran Maestro', name_es: 'Gran Maestro', description: 'Get a perfect score on 50 quizzes.', description_fr: 'Obtenir un score parfait à 50 quiz.', description_de: 'Erziele in 50 Quiz eine perfekte Punktzahl.', description_it: 'Ottieni un punteggio perfetto in 50 quiz.', description_es: 'Obtén una puntuación perfecta en 50 pruebas.', icon: Award, goal: 50 },
+  
+  // Mastery (English)
+  { id: 'mastery_en_pl', name: 'English-Polish Scholar', description: 'Correctly answer every English-Polish question.', icon: BookMarked, goal: enPlQuestions.length },
+  { id: 'mastery_pl_en', name: 'Polish-English Scholar', description: 'Correctly answer every Polish-English question.', icon: Globe, goal: plEnQuestions.length },
+  { id: 'mastery_irregular', name: 'Verb Virtuoso (EN)', description: 'Correctly answer every irregular verb question.', icon: Webhook, goal: irregularVerbsQuestions.length },
+  { id: 'mastery_phrasal', name: 'Phrasal Fanatic (EN)', description: 'Correctly answer every phrasal verb question.', icon: Brain, goal: phrasalVerbsQuestions.length },
+  { id: 'mastery_idioms', name: 'Idiom Idol (EN)', description: 'Correctly answer every idiom question.', icon: MessagesSquare, goal: idiomsQuestions.length },
+
+  // Mastery (French)
+  { id: 'mastery_fr_pl', name: 'French-Polish Scholar', name_fr: 'Érudit Français-Polonais', description: 'Correctly answer every French-Polish question.', description_fr: 'Répondre correctly à chaque question Français-Polonais.', icon: BookMarked, goal: frPlQuestions.length },
+  { id: 'mastery_pl_fr', name: 'Polish-French Scholar', name_fr: 'Érudit Polonais-Français', description: 'Correctly answer every Polish-French question.', description_fr: 'Répondre correctly à chaque question Polonais-Français.', icon: Globe, goal: plFrQuestions.length },
+  { id: 'mastery_irregular_fr', name: 'Verb Virtuoso (FR)', name_fr: 'Virtuose des Verbes (FR)', description: 'Correctly answer every irregular verb question.', description_fr: 'Répondre correctly à chaque question sur les verbes irréguliers.', icon: Webhook, goal: irregularVerbsFrQuestions.length },
+  { id: 'mastery_phrasal_fr', name: 'Faux Amis Expert (FR)', name_fr: 'Expert des Faux Amis (FR)', description: 'Correctly answer every false friend question.', description_fr: 'Répondre correctly à chaque question sur les faux amis.', icon: Brain, goal: fauxAmisFrQuestions.length },
+  { id: 'mastery_idioms_fr', name: 'Idiom Idol (FR)', name_fr: 'Idole des Idiomes (FR)', description: 'Correctly answer every idiom question.', description_fr: 'Répondre correctly à chaque question sur les idiomes.', icon: MessagesSquare, goal: idiomsFrQuestions.length },
+
+  // Mastery (German)
+  { id: 'mastery_de_pl', name: 'German-Polish Scholar', name_de: 'Deutsch-Polnisch-Gelehrter', description: 'Correctly answer every German-Polish question.', description_de: 'Beantworte jede Deutsch-Polnisch-Frage richtig.', icon: BookMarked, goal: dePlQuestions.length },
+  { id: 'mastery_pl_de', name: 'Polish-German Scholar', name_de: 'Polnisch-Deutsch-Gelehrter', description: 'Correctly answer every Polish-German question.', description_de: 'Beantworte jede Polnisch-Deutsch-Frage richtig.', icon: Globe, goal: plDeQuestions.length },
+  { id: 'mastery_irregular_de', name: 'Verb Virtuoso (DE)', name_de: 'Verben-Virtuose (DE)', description: 'Correctly answer every irregular verb question.', description_de: 'Beantworte jede Frage zu unregelmäßigen Verben richtig.', icon: Webhook, goal: irregularVerbsDeQuestions.length },
+  { id: 'mastery_phrasal_de', name: 'Separable Verb Fanatic (DE)', name_de: 'Fan der trennbaren Verben (DE)', description: 'Correctly answer every separable verb question.', description_de: 'Beantworte jede Frage zu trennbaren Verben richtig.', icon: Brain, goal: phrasalVerbsDeQuestions.length },
+  { id: 'mastery_idioms_de', name: 'Idiom Idol (DE)', name_de: 'Redewendungs-Idol (DE)', description: 'Correctly answer every idiom question.', description_de: 'Beantworte jede Frage zu Redewendungen richtig.', icon: MessagesSquare, goal: idiomsDeQuestions.length },
+
+  // Mastery (Italian)
+  { id: 'mastery_it_pl', name: 'Italian-Polish Scholar', name_it: 'Studioso Italo-Polacco', description: 'Correctly answer every Italian-Polish question.', description_it: 'Rispondi correttamente a ogni domanda Italiano-Polacco.', icon: BookMarked, goal: itPlQuestions.length },
+  { id: 'mastery_pl_it', name: 'Polish-Italian Scholar', name_it: 'Studioso Polacco-Italiano', description: 'Correctly answer every Polish-Italian question.', description_it: 'Rispondi correttamente a ogni domanda Polacco-Italiano.', icon: Globe, goal: plItQuestions.length },
+  { id: 'mastery_irregular_it', name: 'Verb Virtuoso (IT)', name_it: 'Virtuoso dei Verbi (IT)', description: 'Correctly answer every irregular verb question.', description_it: 'Rispondi correttamente a ogni domanda sui verbi irregolari.', icon: Webhook, goal: irregularVerbsItQuestions.length },
+  { id: 'mastery_phrasal_it', name: 'False Friends Expert (IT)', name_it: 'Esperto di Falsi Amici (IT)', description: 'Correctly answer every false friend question.', description_it: 'Rispondi correttamente a ogni domanda sui falsi amici.', icon: Brain, goal: phrasalVerbsItQuestions.length },
+  { id: 'mastery_idioms_it', name: 'Idiom Idol (IT)', name_it: 'Idolo dei Modi di dire (IT)', description: 'Correctly answer every idiom question.', description_it: 'Rispondi correttamente a ogni domanda sui modi di dire.', icon: MessagesSquare, goal: idiomsItQuestions.length },
+  
+  // Mastery (Spanish)
+  { id: 'mastery_es_pl', name: 'Spanish-Polish Scholar', name_es: 'Erudito Español-Polaco', description: 'Correctly answer every Spanish-Polish question.', description_es: 'Responde correctamente a cada pregunta de Español-Polaco.', icon: BookMarked, goal: esPlQuestions.length },
+  { id: 'mastery_pl_es', name: 'Polish-Spanish Scholar', name_es: 'Erudito Polaco-Español', description: 'Correctly answer every Polish-Spanish question.', description_es: 'Responde correctamente a cada pregunta de Polaco-Español.', icon: Globe, goal: plEsQuestions.length },
+  { id: 'mastery_irregular_es', name: 'Verb Virtuoso (ES)', name_es: 'Virtuoso de los Verbos (ES)', description: 'Correctly answer every irregular verb question.', description_es: 'Responde correctamente a cada pregunta de verbos irregulares.', icon: Webhook, goal: irregularVerbsEsQuestions.length },
+  { id: 'mastery_phrasal_es', name: 'False Friends Expert (ES)', name_es: 'Experto en Falsos Amigos (ES)', description: 'Correctly answer every false friend question.', description_es: 'Responde correctamente a cada pregunta sobre falsos amigos.', icon: Brain, goal: phrasalVerbsEsQuestions.length },
+  { id: 'mastery_idioms_es', name: 'Idiom Idol (ES)', name_es: 'Ídolo de los Modismos (ES)', description: 'Correctly answer every idiom question.', description_es: 'Responde correctamente a cada pregunta de modismos.', icon: MessagesSquare, goal: idiomsEsQuestions.length },
+];

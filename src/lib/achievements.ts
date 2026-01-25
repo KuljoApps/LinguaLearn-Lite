@@ -1,9 +1,9 @@
 import { Award, BarChart, Brain, BookMarked, BrainCircuit, CalendarClock, Clock, Crown, Flame, Globe, MessagesSquare, Sparkles, Star, Trophy, Webhook, Zap, type LucideIcon } from 'lucide-react';
 import { questions as enPlQuestions } from './questions-en-pl';
 import { questions as plEnQuestions } from './questions-pl-en';
-import { questions as irregularVerbsQuestions } from './questions-irregular-verbs';
+import { questions as irregularVerbsQuestions } from './questions-irregular-verbs-en';
 import { questions as phrasalVerbsQuestions } from './questions-phrasal-verbs';
-import { questions as idiomsQuestions } from './questions-idioms';
+import { questions as idiomsQuestions } from './questions-idioms-en';
 import { questions as frPlQuestions } from './questions-fr-pl';
 import { questions as plFrQuestions } from './questions-pl-fr';
 import { questions as irregularVerbsFrQuestions } from './questions-irregular-verbs-fr';

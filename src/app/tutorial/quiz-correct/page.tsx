@@ -68,7 +68,7 @@ export default function QuizCorrectPage() {
         return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
     };
 
-    const isAnswerView = activeStep === 2; // This is Slide 29
+    const isAnswerView = activeStep === 2; // This is Slide 29 (now 3/10)
     
     const displayTimer = activeStep === 0 ? questionTimer : isAnswerView ? 11 : 15;
     const displayTotalTime = activeStep === 0 ? totalTime : isAnswerView ? 4 : 0;
@@ -126,7 +126,7 @@ export default function QuizCorrectPage() {
                             <Button
                                 key={option}
                                 disabled
-                                className={cn("h-auto text-lg p-4 whitespace-normal", getButtonClass(option))}
+                                className={cn("h-auto text-lg p-4 whitespace-normal", getButtonClass(option), !isAnswerView && "disabled:opacity-100")}
                             >
                                 {option}
                             </Button>

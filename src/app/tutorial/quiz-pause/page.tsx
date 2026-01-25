@@ -78,7 +78,7 @@ export default function QuizPausePage() {
                             <Button
                                 key={option}
                                 disabled
-                                className={cn("h-auto text-lg p-4 whitespace-normal bg-primary text-primary-foreground opacity-50")}
+                                className={cn("h-auto text-lg p-4 whitespace-normal bg-primary text-primary-foreground disabled:opacity-100")}
                             >
                                 {option}
                             </Button>

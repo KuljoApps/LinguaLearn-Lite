@@ -77,8 +77,7 @@ export default function QuizPausePage() {
                         {question.options.map((option: string) => (
                             <Button
                                 key={option}
-                                disabled
-                                className={cn("h-auto text-lg p-4 whitespace-normal bg-primary text-primary-foreground disabled:opacity-100")}
+                                className={cn("h-auto text-lg p-4 whitespace-normal bg-primary text-primary-foreground pointer-events-none")}
                             >
                                 {option}
                             </Button>

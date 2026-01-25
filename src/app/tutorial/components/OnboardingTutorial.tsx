@@ -235,7 +235,7 @@ const extendedSteps: Step[] = [
 
 const quizSteps: Step[] = [
     { // Slajd 27
-        path: '/tutorial/quiz-correct',
+        path: '/tutorial/quiz-answers',
         elementId: 'quiz-timer',
         title: 'Czas na odpowiedź',
         description: 'Masz 15 sekund na każdą odpowiedź. Pasek postępu pokazuje, ile czasu pozostało. Nie marnuj go!',
@@ -249,14 +249,14 @@ const quizSteps: Step[] = [
         bubblePosition: 'top'
     },
     { // Slajd 29
-        path: '/tutorial/quiz-correct',
+        path: '/tutorial/quiz-answers',
         elementId: 'quiz-correct-answer',
         title: 'Poprawna odpowiedź',
         description: 'Świetnie! Poprawna odpowiedź zostanie podświetlona na zielono. Po chwili automatycznie przejdziesz do następnego pytania.',
         bubblePosition: 'top',
     },
     { // Slajd 30
-        path: '/tutorial/quiz-incorrect',
+        path: '/tutorial/quiz-answers',
         elementId: 'quiz-incorrect-answer',
         title: 'Błędna odpowiedź',
         description: 'Nie martw się! Twoja błędna odpowiedź podświetli się na czerwono, a prawidłowa — na zielono. Każdy błąd to okazja do nauki!',

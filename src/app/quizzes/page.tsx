@@ -111,10 +111,7 @@ export default function QuizzesPage() {
                     <p className="text-muted-foreground">
                         {getWelcomeMessage()}
                     </p>
-                    <div className="pt-4">
-                        <Separator />
-                        <CardTitle className="text-3xl font-bold tracking-tight pt-6">{getTitle()}</CardTitle>
-                    </div>
+                    <CardTitle className="text-3xl font-bold tracking-tight pt-4">{getTitle()}</CardTitle>
                 </CardHeader>
                 <CardContent data-tutorial-id="quiz-buttons" className="flex flex-col space-y-4 p-6 pt-2 pb-4">
                     <Link href={isFrench ? "/quiz/fr-pl" : isGerman ? "/quiz/de-pl" : isItalian ? "/quiz/it-pl" : isSpanish ? "/quiz/es-pl" : "/quiz/en-pl"} passHref>
@@ -148,7 +145,8 @@ export default function QuizzesPage() {
                         </Button>
                     </Link>
                 </CardContent>
-                <CardFooter className="flex justify-center p-6 pt-4">
+                <CardFooter className="flex flex-col p-6 pt-4 gap-4">
+                    <Separator />
                      <Link href="/" passHref>
                         <Button variant="outline">
                             <ArrowLeft className="mr-2 h-4 w-4" /> {getBackText()}

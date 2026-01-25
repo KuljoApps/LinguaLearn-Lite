@@ -45,7 +45,7 @@ export default function PhrasesAirport() {
                         <CardTitle className="text-3xl">Airport</CardTitle>
                     </div>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="pl-6 pr-2 pt-2 pb-4">
                     <ScrollArea className="h-96 w-full pr-4">
                         <div className="flex flex-col gap-3">
                             <div data-tutorial-id="airport-first-phrases" className="flex flex-col">

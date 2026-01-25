@@ -29,8 +29,6 @@ const QUESTION_TIME_LIMIT = 15;
 
 export default function QuizAnswersPage() {
     const [activeStep, setActiveStep] = useState<number | null>(null);
-    const [questionTimer, setQuestionTimer] = useState(QUESTION_TIME_LIMIT);
-    const [totalTime, setTotalTime] = useState(0);
     const router = useRouter();
 
     useEffect(() => {
@@ -55,22 +53,11 @@ export default function QuizAnswersPage() {
         updateStep(); // Initial check
         return () => window.removeEventListener('tutorial-state-changed', updateStep);
     }, [router]);
+    
+    if (activeStep !== 2 && activeStep !== 3) {
+        return null;
+    }
 
-    useEffect(() => {
-        let interval: NodeJS.Timeout;
-        if (activeStep === 0) { // Timer animation for the first step
-            interval = setInterval(() => {
-                setQuestionTimer(prev => (prev > 1 ? prev - 1 : QUESTION_TIME_LIMIT));
-                setTotalTime(prev => prev + 1);
-            }, 1000);
-        } else {
-            setQuestionTimer(QUESTION_TIME_LIMIT); // Reset for other views
-            setTotalTime(0);
-        }
-        return () => clearInterval(interval);
-    }, [activeStep]);
-
-    const isTimerView = activeStep === 0;
     const isCorrectView = activeStep === 2;
     const isIncorrectView = activeStep === 3;
 
@@ -80,7 +67,7 @@ export default function QuizAnswersPage() {
 
     const getButtonClass = (option: string) => {
         if (!answerStatus) {
-            return "bg-primary text-primary-foreground pointer-events-none"; // Timer view
+            return "bg-primary text-primary-foreground pointer-events-none";
         }
         const isCorrectAnswer = option === correctAnswer;
         const isSelected = option === selectedAnswer;
@@ -97,11 +84,11 @@ export default function QuizAnswersPage() {
 
     const formatTime = (seconds: number) => `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
 
-    const displayTimer = isTimerView ? questionTimer : (isCorrectView ? 11 : 8);
-    const displayTotalTime = isTimerView ? totalTime : (isCorrectView ? 4 : 12);
+    const displayTimer = isCorrectView ? 11 : 8;
+    const displayTotalTime = isCorrectView ? 4 : 12;
     const questionTimeProgress = (displayTimer / QUESTION_TIME_LIMIT) * 100;
-    const currentQuestionNumber = isTimerView ? 1 : (isCorrectView ? 1 : 2);
-    const score = isTimerView ? 0 : 1;
+    const currentQuestionNumber = isCorrectView ? 1 : 2;
+    const score = 1;
     const overallProgress = (currentQuestionNumber / QUIZ_LENGTH) * 100;
 
     return (
@@ -115,7 +102,7 @@ export default function QuizAnswersPage() {
                     <CardDescription className="pt-2">Wybierz poprawną odpowiedź</CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-col items-center justify-center p-6 space-y-8">
-                     <div className="w-full space-y-4" data-tutorial-id="quiz-timer">
+                     <div className="w-full space-y-4">
                         <div className="w-full flex justify-around gap-4 text-center">
                             <div className="flex items-center gap-2"><Clock className="h-6 w-6" /><span className="text-2xl font-bold">{displayTimer}s</span></div>
                             <div className="flex items-center gap-2"><Clock className="h-6 w-6" /><span className="text-2xl font-bold">{formatTime(displayTotalTime)}</span></div>
@@ -128,7 +115,7 @@ export default function QuizAnswersPage() {
                     </div>
                     <div data-tutorial-id={isCorrectView ? 'quiz-correct-answer' : 'quiz-incorrect-answer'} className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
                         {options.map((option: string) => (
-                            <Button key={option} className={cn("h-auto text-lg p-4 whitespace-normal", getButtonClass(option))}>
+                            <Button key={option} disabled className={cn("h-auto text-lg p-4 whitespace-normal", getButtonClass(option))}>
                                 {option}
                             </Button>
                         ))}

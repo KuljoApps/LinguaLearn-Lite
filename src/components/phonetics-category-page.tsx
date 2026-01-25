@@ -19,26 +19,17 @@ interface PhoneticsCategoryPageProps {
 
 export default function PhoneticsCategoryPage({ data, children }: PhoneticsCategoryPageProps) {
   const [activeAudio, setActiveAudio] = useState<HTMLAudioElement | null>(null);
-  const [openAccordionItem, setOpenAccordionItem] = useState<string | undefined>(undefined);
+  const [openAccordionItem, setOpenAccordionItem] = useState<string | undefined>('item-0');
   const [isTutorialActive, setIsTutorialActive] = useState(false);
 
   useEffect(() => {
     const handleStateUpdate = () => {
         const tutorialState = getTutorialState();
-        // The new step for 'basic-expressions' is at index 20
         const isOnThisStep = tutorialState?.isActive &&
                               tutorialState.stage === 'extended' &&
                               tutorialState.step === 20;
 
-        if (isOnThisStep) {
-            setIsTutorialActive(true);
-            setOpenAccordionItem('item-0'); // Expand the first item
-        } else {
-            setIsTutorialActive(false);
-            if (openAccordionItem === 'item-0') {
-              setOpenAccordionItem(undefined);
-            }
-        }
+        setIsTutorialActive(!!isOnThisStep);
     };
 
     handleStateUpdate(); // Initial check
@@ -47,7 +38,7 @@ export default function PhoneticsCategoryPage({ data, children }: PhoneticsCateg
     return () => {
         window.removeEventListener('tutorial-state-changed', handleStateUpdate);
     };
-  }, [openAccordionItem]);
+  }, []);
 
 
   useEffect(() => {
@@ -88,7 +79,7 @@ export default function PhoneticsCategoryPage({ data, children }: PhoneticsCateg
                 <CardTitle className="text-3xl">{data.title}</CardTitle>
             </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pl-6 pr-2 pt-2 pb-4">
             <ScrollArea className="h-96 w-full pr-4">
                 <Accordion 
                     type="single" 

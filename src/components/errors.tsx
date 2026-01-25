@@ -111,6 +111,12 @@ export default function ErrorsPage() {
     const [language, setLanguageState] = useState<Language>('en');
     const [isTutorialActive, setIsTutorialActive] = useState(false);
     const { toast } = useToast();
+    const [animate, setAnimate] = useState(false);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setAnimate(true), 500);
+        return () => clearTimeout(timer);
+    }, []);
 
     useEffect(() => {
         const handleStateUpdate = () => {
@@ -377,14 +383,25 @@ export default function ErrorsPage() {
     return (
         <>
             <Card className="w-full max-w-4xl shadow-2xl" data-tutorial-id="errors-card">
-                <CardHeader className="flex flex-col items-center gap-4 p-6 sm:flex-row sm:justify-between">
-                    <div className="flex items-center gap-4">
-                        <ShieldX className="h-8 w-8" />
-                        <CardTitle className="text-3xl">{getUIText('title')}</CardTitle>
+                 <CardHeader className="flex flex-col items-center gap-4 p-6">
+                    <div className="relative flex h-8 items-center justify-center">
+                        <div className="flex items-center gap-4 invisible">
+                            <ShieldX className="h-8 w-8 shrink-0" />
+                            <CardTitle className="text-3xl whitespace-nowrap">{getUIText('title')}</CardTitle>
+                        </div>
+                        <div className={cn("absolute", animate ? "animate-icon-fly-out" : "")}>
+                            <ShieldX className="h-8 w-8 shrink-0" />
+                        </div>
+                        <CardTitle className={cn(
+                            "absolute whitespace-nowrap text-3xl",
+                            animate ? "animate-text-slide-in" : "opacity-0"
+                        )}>
+                            {getUIText('title')}
+                        </CardTitle>
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-2" data-tutorial-id="errors-controls">
+                    <div className="flex flex-col gap-2 sm:flex-row" data-tutorial-id="errors-controls">
                          <Select value={quizFilter} onValueChange={(value) => handleFilterChange(value as QuizFilter)}>
-                            <SelectTrigger>
+                            <SelectTrigger className="w-full sm:w-[220px]">
                                 <SelectValue placeholder={getUIText('filterPlaceholder')} />
                             </SelectTrigger>
                             <SelectContent>

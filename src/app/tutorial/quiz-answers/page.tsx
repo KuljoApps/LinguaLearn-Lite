@@ -54,13 +54,15 @@ export default function QuizAnswersPage() {
     const isCorrectView = activeStep === 2;
     const isIncorrectView = activeStep === 3;
 
-    if (activeStep === null) {
-        return null;
-    }
-
     const question = isIncorrectView ? incorrectQuestion : correctQuestion;
     const answerStatus = isCorrectView ? "correct" : isIncorrectView ? "incorrect" : null;
     const { word, options, correctAnswer, selectedAnswer } = question;
+
+    const tutorialId = isCorrectView
+        ? 'quiz-correct-answer-grid'
+        : isIncorrectView
+        ? 'quiz-incorrect-answer-grid'
+        : undefined;
 
     const getButtonClass = (option: string) => {
         if (!answerStatus) {
@@ -111,7 +113,7 @@ export default function QuizAnswersPage() {
                         <p className={cn("font-headline font-bold text-4xl", word.length > 15 ? "text-3xl" : "text-4xl")}>"{word}"?</p>
                     </div>
                     <div
-                        data-tutorial-id="quiz-answers-grid"
+                        data-tutorial-id={tutorialId}
                         className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full"
                     >
                         {options.map((option: string) => (

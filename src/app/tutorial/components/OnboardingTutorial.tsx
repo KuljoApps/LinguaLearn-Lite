@@ -45,7 +45,7 @@ const tutorialBubbleOffsets: { [key: string]: number } = {
     'quiz-timer': 0,
     'quiz-pause-button': 16,
     'quiz-correct-answer-grid': 40,
-    'quiz-incorrect-answer-grid': 20,
+    'quiz-incorrect-answer-grid': 60,
     'irregular-quiz-part1': 0,
     'irregular-quiz-part2': -340,
     'irregular-quiz-hint': 80,

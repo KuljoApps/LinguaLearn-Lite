@@ -63,7 +63,7 @@ export default function IrregularVerbQuizPage() {
     };
 
     useEffect(() => {
-        // Krok 6/10 (indeks 5) - animacja wpisywania
+        // Animation for step 6/10 (index 5)
         if (activeStep === 5) {
             setShowHint(false);
             setForm2Input('');
@@ -82,20 +82,21 @@ export default function IrregularVerbQuizPage() {
                 await typeText(setForm3Input, "beed", 150);
                 setForm3Class('bg-destructive text-destructive-foreground');
                 
-                // Pokaż podpowiedź po zakończeniu animacji
                 await new Promise(res => setTimeout(res, 300));
                 setShowHint(true);
             };
             animate();
-        } else if (activeStep === 6) { // Krok 7/10 - focus na podpowiedzi
-            // Upewnij się, że stan jest poprawny dla tego kroku
+        } 
+        // For step 7/10 (index 6) and during the transition to 8/10, ensure the final state is displayed.
+        else if (activeStep && activeStep >= 6) { 
             setForm2Input('was');
             setForm3Input('beed');
-            setForm2Class('');
+            setForm2Class('bg-success text-success-foreground');
             setForm3Class('bg-destructive text-destructive-foreground');
             setShowHint(true);
-        } else {
-            // Reset dla innych kroków
+        } 
+        // Reset only for steps before this component's sequence.
+        else {
             setForm2Input('');
             setForm3Input('');
             setForm2Class('');

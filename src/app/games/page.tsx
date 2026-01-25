@@ -39,21 +39,13 @@ export default function GamesPage() {
                 </CardHeader>
                 <CardContent className="flex flex-col space-y-8 p-6 pt-0 pb-4 overflow-y-auto">
                     
-                    {/* CATEGORY 1: NEON CYBERPUNK */}
                     <div>
-                        <h2 className="text-2xl font-bold mb-4 text-center text-cyan-300 bg-gray-900 py-2 rounded-lg border border-cyan-500/30">
-                            NEON CYBERPUNK
+                        <h2 className="text-2xl font-bold mb-4 text-center text-amber-300 bg-gray-900 py-2 rounded-lg border border-amber-500/30">
+                           🏆 FINALISTS 🏆
                         </h2>
                         
                         <div className="mb-4">
-                            <h3 className="text-lg font-semibold mb-2 text-amber-300">Amber & Gold</h3>
-                            <Button 
-                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-black bg-gradient-to-r from-yellow-300 via-amber-500 to-orange-600 hover:brightness-125 transition-all shadow-[0_0_25px_#f59e0b] border border-amber-500/50' })}
-                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-yellow-300 via-amber-500 to-orange-600 hover:brightness-125 transition-all shadow-[0_0_25px_#f59e0b] border border-amber-500/50">
-                                {getIcon(0)}
-                                <span>GOLDEN CIRCUIT</span>
-                                {getIcon(0)}
-                            </Button>
+                            <h3 className="text-lg font-semibold mb-2 text-amber-300">Amber Network</h3>
                             <Button 
                                 onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-black bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 hover:brightness-125 transition-all shadow-[0_0_20px_#ff8c00] border border-yellow-400/50' })}
                                 className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 hover:brightness-125 transition-all shadow-[0_0_20px_#ff8c00] border border-yellow-400/50">
@@ -61,81 +53,53 @@ export default function GamesPage() {
                                 <span>AMBER NETWORK</span>
                                 {getIcon(1)}
                             </Button>
-                            <Button 
-                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-white bg-gradient-to-b from-red-500 via-orange-600 to-yellow-500 hover:brightness-125 transition-all shadow-[0_0_20px_#ef4444] border border-red-600/50' })}
-                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-white bg-gradient-to-b from-red-500 via-orange-600 to-yellow-500 hover:brightness-125 transition-all shadow-[0_0_20px_#ef4444] border border-red-600/50">
-                                {getIcon(2)}
-                                <span>SUNFIRE CORE</span>
-                                {getIcon(2)}
-                            </Button>
-                            <Button 
-                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-black bg-gradient-to-r from-orange-500 via-amber-400 to-yellow-300 hover:brightness-125 transition-all shadow-[0_0_25px_#f97316] border border-orange-500/50' })}
-                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-orange-500 via-amber-400 to-yellow-300 hover:brightness-125 transition-all shadow-[0_0_25px_#f97316] border border-orange-500/50">
-                                {getIcon(3)}
-                                <span>SOLARIS FLARE</span>
-                                {getIcon(3)}
-                            </Button>
-                            <Button 
-                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-yellow-200 bg-gradient-to-tr from-red-800 via-red-900 to-black hover:brightness-150 transition-all shadow-[0_0_30px_#b91c1c] border border-red-700/50' })}
-                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-yellow-200 bg-gradient-to-tr from-red-800 via-red-900 to-black hover:brightness-150 transition-all shadow-[0_0_30px_#b91c1c] border border-red-700/50">
-                                {getIcon(4)}
-                                <span>INFERNO CORE</span>
-                                {getIcon(4)}
-                            </Button>
-                            <Button 
-                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-yellow-300 bg-gradient-to-tr from-yellow-600 to-amber-800 hover:brightness-125 transition-all shadow-[0_0_20px_#b45309] border border-yellow-700/50' })}
-                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-yellow-300 bg-gradient-to-tr from-yellow-600 to-amber-800 hover:brightness-125 transition-all shadow-[0_0_20px_#b45309] border border-yellow-700/50">
+                             <Button 
+                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-black bg-gradient-to-b from-amber-500 via-yellow-400 to-orange-600 hover:brightness-125 transition-all shadow-[0_0_25px_#f59e0b] border border-amber-500/50' })}
+                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-b from-amber-500 via-yellow-400 to-orange-600 hover:brightness-125 transition-all shadow-[0_0_25px_#f59e0b] border border-amber-500/50">
                                 {getIcon(0)}
-                                <span>MOLTEN GOLD</span>
+                                <span>AMBER VARIANT 1</span>
                                 {getIcon(0)}
+                            </Button>
+                            <Button 
+                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-white bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-amber-400 via-orange-500 to-yellow-600 hover:brightness-125 transition-all shadow-[0_0_20px_#ef4444] border border-red-600/50' })}
+                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-white bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-amber-400 via-orange-500 to-yellow-600 hover:brightness-125 transition-all shadow-[0_0_20px_#ef4444] border border-red-600/50">
+                                {getIcon(2)}
+                                <span>AMBER VARIANT 2</span>
+                                {getIcon(2)}
                             </Button>
                         </div>
                         
                         <div className="mb-4">
-                            <h3 className="text-lg font-semibold mb-2 text-yellow-400">Yellow</h3>
-                            <Button 
-                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-black bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-600 hover:brightness-125 transition-all shadow-[0_0_25px_#ffdd00] border border-yellow-500/50' })}
-                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-600 hover:brightness-125 transition-all shadow-[0_0_25px_#ffdd00] border border-yellow-500/50">
-                                {getIcon(0)}
-                                <span>YELLOW GRID</span>
-                                {getIcon(0)}
-                            </Button>
-                            <Button 
-                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-black bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 hover:brightness-125 transition-all shadow-[0_0_20px_#ffcc00] border border-amber-500/50' })}
-                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 hover:brightness-125 transition-all shadow-[0_0_20px_#ffcc00] border border-amber-500/50">
-                                {getIcon(1)}
-                                <span>PULSE LIGHT</span>
-                                {getIcon(1)}
-                            </Button>
-                            <Button 
-                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-black bg-gradient-to-r from-yellow-200 via-white to-yellow-300 hover:brightness-125 transition-all shadow-[0_0_25px_#fde047] border border-yellow-300/50' })}
-                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-yellow-200 via-white to-yellow-300 hover:brightness-125 transition-all shadow-[0_0_25px_#fde047] border border-yellow-300/50">
-                                {getIcon(2)}
-                                <span>SOLAR FLARE</span>
-                                {getIcon(2)}
-                            </Button>
+                            <h3 className="text-lg font-semibold mb-2 text-yellow-400">Toxic Waste</h3>
                              <Button 
-                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-black bg-gradient-to-br from-lime-400 to-yellow-400 hover:brightness-125 transition-all shadow-[0_0_20px_#84cc16] border border-lime-500/50' })}
-                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-br from-lime-400 to-yellow-400 hover:brightness-125 transition-all shadow-[0_0_20px_#84cc16] border border-lime-500/50">
-                                {getIcon(3)}
-                                <span>LEMON RUSH</span>
-                                {getIcon(3)}
-                            </Button>
-                            <Button 
-                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-black bg-gradient-to-br from-lime-400 via-yellow-400 to-amber-500 hover:brightness-125 transition-all shadow-[0_0_25px_#a3e635] border border-lime-400/50' })}
-                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-br from-lime-400 via-yellow-400 to-amber-500 hover:brightness-125 transition-all shadow-[0_0_25px_#a3e635] border border-lime-400/50">
-                                {getIcon(4)}
-                                <span>CYBER BEE</span>
-                                {getIcon(4)}
-                            </Button>
-                            <Button 
                                 onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-amber-200 bg-yellow-600 hover:brightness-125 transition-all shadow-[0_0_15px_#ca8a04] border border-yellow-600/50' })}
                                 className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-amber-200 bg-yellow-600 hover:brightness-125 transition-all shadow-[0_0_15px_#ca8a04] border border-yellow-600/50">
                                 {getIcon(0)}
                                 <span>TOXIC WASTE</span>
                                 {getIcon(0)}
                             </Button>
+                            <Button 
+                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-black bg-gradient-to-r from-lime-400 via-yellow-500 to-lime-600 hover:brightness-125 transition-all shadow-[0_0_20px_#84cc16] border border-lime-500/50' })}
+                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-lime-400 via-yellow-500 to-lime-600 hover:brightness-125 transition-all shadow-[0_0_20px_#84cc16] border border-lime-500/50">
+                                {getIcon(3)}
+                                <span>TOXIC VARIANT 1</span>
+                                {getIcon(3)}
+                            </Button>
+                            <Button 
+                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-black bg-gradient-to-br from-yellow-600 via-lime-500 to-green-700 hover:brightness-125 transition-all shadow-[0_0_25px_#a3e635] border border-lime-400/50' })}
+                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-br from-yellow-600 via-lime-500 to-green-700 hover:brightness-125 transition-all shadow-[0_0_25px_#a3e635] border border-lime-400/50">
+                                {getIcon(4)}
+                                <span>TOXIC VARIANT 2</span>
+                                {getIcon(4)}
+                            </Button>
                         </div>
+                    </div>
+
+                    {/* CATEGORY 1: NEON CYBERPUNK */}
+                    <div>
+                        <h2 className="text-2xl font-bold mb-4 text-center text-cyan-300 bg-gray-900 py-2 rounded-lg border border-cyan-500/30">
+                            NEON CYBERPUNK
+                        </h2>
 
                         <div className="mb-4">
                             <h3 className="text-lg font-semibold mb-2 text-purple-400">Deep Purple</h3>
@@ -234,6 +198,72 @@ export default function GamesPage() {
                                 {getIcon(0)}
                                 <span>DEEP STREAM</span>
                                 {getIcon(0)}
+                            </Button>
+                        </div>
+                         <div>
+                            <h3 className="text-lg font-semibold mb-2 text-gray-400">Others</h3>
+                             <Button 
+                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-black bg-gradient-to-r from-yellow-300 via-amber-500 to-orange-600 hover:brightness-125 transition-all shadow-[0_0_25px_#f59e0b] border border-amber-500/50' })}
+                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-yellow-300 via-amber-500 to-orange-600 hover:brightness-125 transition-all shadow-[0_0_25px_#f59e0b] border border-amber-500/50">
+                                {getIcon(0)}
+                                <span>GOLDEN CIRCUIT</span>
+                                {getIcon(0)}
+                            </Button>
+                             <Button 
+                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-white bg-gradient-to-b from-red-500 via-orange-600 to-yellow-500 hover:brightness-125 transition-all shadow-[0_0_20px_#ef4444] border border-red-600/50' })}
+                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-white bg-gradient-to-b from-red-500 via-orange-600 to-yellow-500 hover:brightness-125 transition-all shadow-[0_0_20px_#ef4444] border border-red-600/50">
+                                {getIcon(2)}
+                                <span>SUNFIRE CORE</span>
+                                {getIcon(2)}
+                            </Button>
+                            <Button 
+                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-black bg-gradient-to-r from-orange-500 via-amber-400 to-yellow-300 hover:brightness-125 transition-all shadow-[0_0_25px_#f97316] border border-orange-500/50' })}
+                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-orange-500 via-amber-400 to-yellow-300 hover:brightness-125 transition-all shadow-[0_0_25px_#f97316] border border-orange-500/50">
+                                {getIcon(3)}
+                                <span>SOLARIS FLARE</span>
+                                {getIcon(3)}
+                            </Button>
+                            <Button 
+                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-yellow-200 bg-gradient-to-tr from-red-800 via-red-900 to-black hover:brightness-150 transition-all shadow-[0_0_30px_#b91c1c] border border-red-700/50' })}
+                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-yellow-200 bg-gradient-to-tr from-red-800 via-red-900 to-black hover:brightness-150 transition-all shadow-[0_0_30px_#b91c1c] border border-red-700/50">
+                                {getIcon(4)}
+                                <span>INFERNO CORE</span>
+                                {getIcon(4)}
+                            </Button>
+                             <Button 
+                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-yellow-300 bg-gradient-to-tr from-yellow-600 to-amber-800 hover:brightness-125 transition-all shadow-[0_0_20px_#b45309] border border-yellow-700/50' })}
+                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-yellow-300 bg-gradient-to-tr from-yellow-600 to-amber-800 hover:brightness-125 transition-all shadow-[0_0_20px_#b45309] border border-yellow-700/50">
+                                {getIcon(0)}
+                                <span>MOLTEN GOLD</span>
+                                {getIcon(0)}
+                            </Button>
+                            <Button 
+                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-black bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-600 hover:brightness-125 transition-all shadow-[0_0_25px_#ffdd00] border border-yellow-500/50' })}
+                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-600 hover:brightness-125 transition-all shadow-[0_0_25px_#ffdd00] border border-yellow-500/50">
+                                {getIcon(0)}
+                                <span>YELLOW GRID</span>
+                                {getIcon(0)}
+                            </Button>
+                            <Button 
+                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-black bg-gradient-to-r from-yellow-200 via-white to-yellow-300 hover:brightness-125 transition-all shadow-[0_0_25px_#fde047] border border-yellow-300/50' })}
+                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-yellow-200 via-white to-yellow-300 hover:brightness-125 transition-all shadow-[0_0_25px_#fde047] border border-yellow-300/50">
+                                {getIcon(2)}
+                                <span>SOLAR FLARE</span>
+                                {getIcon(2)}
+                            </Button>
+                             <Button 
+                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-black bg-gradient-to-br from-lime-400 to-yellow-400 hover:brightness-125 transition-all shadow-[0_0_20px_#84cc16] border border-lime-500/50' })}
+                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-br from-lime-400 to-yellow-400 hover:brightness-125 transition-all shadow-[0_0_20px_#84cc16] border border-lime-500/50">
+                                {getIcon(3)}
+                                <span>LEMON RUSH</span>
+                                {getIcon(3)}
+                            </Button>
+                            <Button 
+                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-black bg-gradient-to-br from-lime-400 via-yellow-400 to-amber-500 hover:brightness-125 transition-all shadow-[0_0_25px_#a3e635] border border-lime-400/50' })}
+                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-br from-lime-400 via-yellow-400 to-amber-500 hover:brightness-125 transition-all shadow-[0_0_25px_#a3e635] border border-lime-400/50">
+                                {getIcon(4)}
+                                <span>CYBER BEE</span>
+                                {getIcon(4)}
                             </Button>
                         </div>
                     </div>

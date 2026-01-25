@@ -21,18 +21,8 @@ const QUIZ_LENGTH = 3;
 
 export default function QuizPausePage() {
     const router = useRouter();
-    const [isThisStepActive, setIsThisStepActive] = useState(false);
 
     useEffect(() => {
-        const updateStep = () => {
-            const state = getTutorialState();
-            if (state?.stage === 'quiz' && state.step === 1) { // This component is for step 1 of the quiz stage
-                setIsThisStepActive(true);
-            } else {
-                setIsThisStepActive(false);
-            }
-        };
-
         const tutorialState = getTutorialState();
         if (!tutorialState || !tutorialState.isActive) {
             const timer = setTimeout(() => {
@@ -40,10 +30,6 @@ export default function QuizPausePage() {
             }, 3000);
             return () => clearTimeout(timer);
         }
-
-        updateStep(); // Check on initial render
-        window.addEventListener('tutorial-state-changed', updateStep);
-        return () => window.removeEventListener('tutorial-state-changed', updateStep);
     }, [router]);
     
     const questionTimer = 10;
@@ -54,10 +40,6 @@ export default function QuizPausePage() {
         const remainingSeconds = seconds % 60;
         return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
     };
-
-    if (!isThisStepActive) {
-        return null;
-    }
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -95,7 +77,7 @@ export default function QuizPausePage() {
                         {question.options.map((option: string) => (
                             <Button
                                 key={option}
-                                className={cn("h-auto text-lg p-4 whitespace-normal bg-primary text-primary-foreground pointer-events-none opacity-50")}
+                                className={cn("h-auto text-lg p-4 whitespace-normal bg-primary text-primary-foreground pointer-events-none")}
                             >
                                 {option}
                             </Button>

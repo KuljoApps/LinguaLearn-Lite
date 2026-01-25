@@ -166,7 +166,7 @@ export default function Home() {
                             {getQuizTitle2()}
                         </Button>
                     </Link>
-                    <Link href={isFrench ? "/quiz/irregular-verbs-fr" : isGerman ? "/quiz/irregular-verbs-de" : isItalian ? "/quiz/irregular-verbs-it" : isSpanish ? "/quiz/irregular-verbs-es" : "/quiz/irregular-verbs"} passHref>
+                    <Link href={isFrench ? "/quiz/irregular-verbs-fr" : isGerman ? "/quiz/irregular-verbs-de" : isItalian ? "/quiz/irregular-verbs-it" : isSpanish ? "/quiz/irregular-verbs-es" : "/quiz/irregular-verbs-en"} passHref>
                         <Button className="w-full h-12 text-lg" size="lg">
                             <Sparkles className="mr-2 h-5 w-5" />
                             {getQuizTitle3()}

@@ -62,6 +62,11 @@ export default function QuizCorrectPage() {
         return () => clearInterval(interval);
     }, [activeStep]);
     
+    // Prevent rendering if not the correct step to avoid flickering
+    if (activeStep !== 2) {
+        return null;
+    }
+
     const formatTime = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
@@ -82,7 +87,7 @@ export default function QuizCorrectPage() {
             }
             return "bg-muted text-muted-foreground opacity-70";
         }
-        return "bg-primary text-primary-foreground";
+        return "bg-primary text-primary-foreground disabled:opacity-100";
     };
 
     const overallProgress = (1 / QUIZ_LENGTH) * 100;

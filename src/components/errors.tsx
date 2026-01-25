@@ -417,7 +417,7 @@ export default function ErrorsPage() {
                     </div>
                 </CardContent>
                 <CardFooter className="flex justify-center p-6">
-                    <div className="flex flex-wrap justify-center gap-4">
+                    <div className="inline-flex flex-wrap justify-center gap-4">
                         <Link href="/" passHref>
                             <Button variant="outline">
                                 <ArrowLeft className="mr-2 h-4 w-4" /> {getUIText('backToHome')}

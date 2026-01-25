@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -93,7 +92,7 @@ export default function PhoneticsCategoryPage({ data, children }: PhoneticsCateg
                             <AccordionTrigger className="text-lg font-semibold hover:no-underline text-left">
                                 {item.phrase}
                             </AccordionTrigger>
-                            <AccordionContent className="space-y-3 pt-2">
+                            <AccordionContent className="space-y-3">
                                 <div className="flex items-center justify-between">
                                     <div className="space-y-1">
                                         <p className="text-muted-foreground font-mono text-sm">{item.phonetic}</p>

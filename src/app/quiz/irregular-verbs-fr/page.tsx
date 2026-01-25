@@ -1,4 +1,4 @@
-import QuizIrregularVerbsFr from '@/components/quiz-irregular-verbs-fr';
+import QuizIrregularVerbsFr from '@/components/quizzes/irregulars/quiz-irregular-verbs-fr';
 
 export default function QuizIrregularVerbsFrPage() {
   return (

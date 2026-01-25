@@ -1,5 +1,5 @@
 
-import QuizFalsiAmiciIt from '@/components/quiz-phrasal-verbs-it';
+import QuizFalsiAmiciIt from '@/components/quizzes/phrasals/quiz-phrasal-verbs-it';
 
 export default function QuizFalsiAmiciItPage() {
   return (

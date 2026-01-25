@@ -1,5 +1,5 @@
 
-import QuizIrregularVerbsDe from '@/components/quiz-irregular-verbs-de';
+import QuizIrregularVerbsDe from '@/components/quizzes/irregulars/quiz-irregular-verbs-de';
 
 export default function QuizIrregularVerbsDePage() {
   return (

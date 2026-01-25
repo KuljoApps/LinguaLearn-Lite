@@ -1,5 +1,5 @@
 
-import QuizIdiomsDe from '@/components/quiz-idioms-de';
+import QuizIdiomsDe from '@/components/quizzes/idioms/quiz-idioms-de';
 
 export default function QuizIdiomsDePage() {
   return (

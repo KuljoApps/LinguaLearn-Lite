@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { Home, RefreshCw, Pause, Play, Clock, Trophy } from "lucide-react";
-import { questions as initialQuestions, type Question } from "@/lib/questions-pl-en";
+import { questions as initialQuestions, type Question } from "@/lib/questions/idioms/questions-idioms-fr";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -24,8 +24,7 @@ import { playSound } from "@/lib/sounds";
 import LinguaLearnLogo from '@/components/LinguaLearnLogo';
 import { vibrate } from "@/lib/vibrations";
 import { useToast } from "@/hooks/use-toast";
-import QuizResults from "./quiz-results";
-
+import QuizResults from "../../quiz-results";
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
@@ -39,12 +38,12 @@ function shuffleArray<T>(array: T[]): T[] {
 const QUESTION_TIME_LIMIT = 15;
 const PAUSE_PENALTY = 5;
 const MIN_TIME_FOR_PAUSE = 6;
-const QUIZ_NAME = 'Polish - English';
+const QUIZ_NAME = 'Idioms (FR)';
 const TIME_UPDATE_INTERVAL = 5; // seconds
 const QUIZ_LENGTH = 10;
 
 
-export default function QuizPlEn() {
+export default function QuizIdiomsFr() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -125,7 +124,7 @@ export default function QuizPlEn() {
             setSelectedAnswer(null);
             playSound("incorrect");
             vibrate("incorrect");
-
+            
             const unlocked = updateStats(false, QUIZ_NAME, questions[currentQuestionIndex].id);
             unlocked.forEach(showAchievementToast);
 
@@ -180,7 +179,7 @@ export default function QuizPlEn() {
     const isCorrect = answer === currentQuestion.correctAnswer;
     const unlocked = updateStats(isCorrect, QUIZ_NAME, currentQuestion.id);
     unlocked.forEach(showAchievementToast);
-
+    
     if (isCorrect) {
       setScore((prevScore) => prevScore + 1);
       setAnswerStatus("correct");
@@ -312,7 +311,7 @@ export default function QuizPlEn() {
                   </span>
               </CardTitle>
           </div>
-          <CardDescription className="pt-2">Select the correct translation</CardDescription>
+          <CardDescription className="pt-2">Sélectionnez la bonne traduction de l'idiome</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center p-6 space-y-8">
             <div className="w-full flex justify-around gap-4 text-center">
@@ -333,7 +332,7 @@ export default function QuizPlEn() {
             <Progress value={questionTimeProgress} className="w-full h-2" />
 
           <div className="text-center space-y-2">
-              <p className="text-muted-foreground">What is the English meaning of</p>
+              <p className="text-muted-foreground">Quelle est la signification polonaise de l'idiome</p>
               <p className={cn(
                   "font-headline font-bold text-card-foreground",
                   currentQuestion.word.length > 20 ? "text-3xl" : "text-4xl"
@@ -374,7 +373,7 @@ export default function QuizPlEn() {
         <CardFooter className="flex-col gap-4 p-6 pt-0">
           <div className="flex justify-between w-full items-center">
               <div className="text-sm text-muted-foreground">
-                  Question {currentQuestionIndex + 1} of {questions.length}
+                  Question {currentQuestionIndex + 1} de {questions.length}
               </div>
               <div className="flex items-center gap-2">
                   <span className="text-sm font-medium">Score:</span>
@@ -393,14 +392,14 @@ export default function QuizPlEn() {
       <AlertDialog open={isRestartAlertOpen} onOpenChange={setIsRestartAlertOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure you want to restart?</AlertDialogTitle>
+            <AlertDialogTitle>Êtes-vous sûr de vouloir recommencer ?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will restart the quiz and all your current progress will be lost.
+              Cela redémarrera le quiz et toute votre progression actuelle sera perdue.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={restartTest}>Restart</AlertDialogAction>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={restartTest}>Recommencer</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -408,14 +407,14 @@ export default function QuizPlEn() {
       <AlertDialog open={isHomeAlertOpen} onOpenChange={setIsHomeAlertOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure you want to go home?</AlertDialogTitle>
+            <AlertDialogTitle>Êtes-vous sûr de vouloir retourner à l'accueil ?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will end the current quiz and all your progress will be lost.
+              Cela mettra fin au quiz en cours et toute votre progression sera perdue.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={goHome}>Go to Home</AlertDialogAction>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={goHome}>Retour à l'accueil</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

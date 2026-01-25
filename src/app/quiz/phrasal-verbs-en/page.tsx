@@ -1,4 +1,4 @@
-import QuizPhrasalVerbsEn from '@/components/quiz-phrasal-verbs-en';
+import QuizPhrasalVerbsEn from '@/components/quizzes/phrasals/quiz-phrasal-verbs-en';
 
 export default function QuizPhrasalVerbsEnPage() {
   return (

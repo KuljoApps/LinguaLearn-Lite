@@ -1,5 +1,5 @@
 
-import QuizItPl from '@/components/quiz-it-pl';
+import QuizItPl from '@/components/quizzes/native-PL/quiz-it-pl';
 
 export default function QuizItPlPage() {
   return (

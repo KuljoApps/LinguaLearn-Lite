@@ -1,10 +1,12 @@
+
 "use client";
 
-import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { Home, RefreshCw, Pause, Play, Clock, Trophy } from "lucide-react";
-import { questions as initialQuestions, type Question } from "@/lib/questions-phrasal-verbs-it";
+import { questions as initialQuestions, type IrregularVerbQuestion } from "@/lib/questions/irregulars/questions-irregular-verbs-de";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import Link from 'next/link';
@@ -24,7 +26,8 @@ import { playSound } from "@/lib/sounds";
 import LinguaLearnLogo from '@/components/LinguaLearnLogo';
 import { vibrate } from "@/lib/vibrations";
 import { useToast } from "@/hooks/use-toast";
-import QuizResults from "./quiz-results";
+import QuizResults from "../../quiz-results";
+import { Label } from "../../ui/label";
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
@@ -35,31 +38,37 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
-const QUESTION_TIME_LIMIT = 15;
-const PAUSE_PENALTY = 5;
-const MIN_TIME_FOR_PAUSE = 6;
-const QUIZ_NAME = 'Falsi Amici (IT)';
+const QUESTION_TIME_LIMIT = 30;
+const PAUSE_PENALTY = 10;
+const MIN_TIME_FOR_PAUSE = 11;
+const QUIZ_NAME = 'Irregular Verbs (DE)';
 const TIME_UPDATE_INTERVAL = 5; // seconds
 const QUIZ_LENGTH = 10;
 
 
-export default function QuizFalsiAmiciIt() {
-  const [questions, setQuestions] = useState<Question[]>([]);
+export default function QuizIrregularVerbsDe() {
+  const [questions, setQuestions] = useState<IrregularVerbQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [selectedTranslation, setSelectedTranslation] = useState<string | null>(null);
+  const [form2Input, setForm2Input] = useState("");
+  const [form3Input, setForm3Input] = useState("");
+  const [sessionErrors, setSessionErrors] = useState<Omit<ErrorRecord, 'id'>[]>([]);
+  const [isLongText, setIsLongText] = useState(false);
+
   const [answerStatus, setAnswerStatus] = useState<"correct" | "incorrect" | "timeout" | null>(null);
+  const [translationStatus, setTranslationStatus] = useState<"correct" | "incorrect" | null>(null);
   const [isRestartAlertOpen, setIsRestartAlertOpen] = useState(false);
   const [isHomeAlertOpen, setIsHomeAlertOpen] = useState(false);
   const [questionTimer, setQuestionTimer] = useState(QUESTION_TIME_LIMIT);
   const [totalTime, setTotalTime] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [showTimePenalty, setShowTimePenalty] = useState(false);
-  const [shuffledOptions, setShuffledOptions] = useState<string[]>([]);
-  const [sessionErrors, setSessionErrors] = useState<Omit<ErrorRecord, 'id'>[]>([]);
+  const [shuffledTranslationOptions, setShuffledTranslationOptions] = useState<string[]>([]);
   const timeoutFiredRef = useRef(false);
   
   const router = useRouter();
+  const form2InputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   const showAchievementToast = useCallback((achievement: Achievement) => {
@@ -68,10 +77,10 @@ export default function QuizFalsiAmiciIt() {
         title: (
             <div className="flex items-center gap-2">
                 <Trophy className="h-5 w-5 text-amber" />
-                <span className="font-bold">Obiettivo Raggiunto!</span>
+                <span className="font-bold">Erfolg freigeschaltet!</span>
             </div>
         ),
-        description: `Hai guadagnato: "${achievement.name_it || achievement.name}"`,
+        description: `Du hast verdient: "${achievement.name_de || achievement.name}"`,
     });
   }, [toast]);
   
@@ -80,7 +89,7 @@ export default function QuizFalsiAmiciIt() {
     setQuestions(newQuestions);
     timeoutFiredRef.current = false;
   }, []);
-
+  
   useEffect(() => {
       timeoutFiredRef.current = false;
   }, [currentQuestionIndex]);
@@ -100,10 +109,13 @@ export default function QuizFalsiAmiciIt() {
     if (answerStatus) {
       timer = setTimeout(() => {
         setAnswerStatus(null);
-        setSelectedAnswer(null);
+        setSelectedTranslation(null);
+        setForm2Input("");
+        setForm3Input("");
+        setTranslationStatus(null);
         setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
         setQuestionTimer(QUESTION_TIME_LIMIT);
-      }, 1500);
+      }, 3000);
     }
     return () => clearTimeout(timer);
   }, [answerStatus]);
@@ -121,7 +133,7 @@ export default function QuizFalsiAmiciIt() {
           if (!timeoutFiredRef.current) {
             timeoutFiredRef.current = true;
             setAnswerStatus("timeout");
-            setSelectedAnswer(null);
+            setSelectedTranslation(null);
             playSound("incorrect");
             vibrate("incorrect");
             
@@ -129,9 +141,9 @@ export default function QuizFalsiAmiciIt() {
             unlocked.forEach(showAchievementToast);
 
             const errorRecord = {
-              word: questions[currentQuestionIndex].word,
+              word: questions[currentQuestionIndex].verb,
               userAnswer: 'No answer',
-              correctAnswer: questions[currentQuestionIndex].correctAnswer,
+              correctAnswer: `${questions[currentQuestionIndex].correctTranslation}, ${questions[currentQuestionIndex].form2}, ${questions[currentQuestionIndex].auxiliary} ${questions[currentQuestionIndex].form3}`,
               quiz: QUIZ_NAME,
             };
             addError(errorRecord);
@@ -162,37 +174,85 @@ export default function QuizFalsiAmiciIt() {
 
     return () => clearInterval(interval);
   }, [currentQuestionIndex, questions.length, isPaused, totalTime, showAchievementToast]);
-
-
+  
   const currentQuestion = useMemo(() => questions[currentQuestionIndex], [questions, currentQuestionIndex]);
 
   useEffect(() => {
     if (currentQuestion) {
-      setShuffledOptions(shuffleArray(currentQuestion.options));
+      const options = shuffleArray(currentQuestion.translationOptions);
+      setShuffledTranslationOptions(options);
+      
+      const hasLongOption = options.some(option => option.length > 10);
+      setIsLongText(hasLongOption);
     }
   }, [currentQuestion]);
+
+  useEffect(() => {
+    if (answerStatus === 'timeout' && currentQuestion) {
+      setForm2Input(currentQuestion.form2);
+      setForm3Input(currentQuestion.form3);
+    }
+  }, [answerStatus, currentQuestion]);
+
+  useEffect(() => {
+    if (translationStatus === 'correct') {
+      form2InputRef.current?.focus();
+    }
+  }, [translationStatus]);
   
-  const handleAnswerClick = (answer: string) => {
+  const handleTranslationClick = (option: string) => {
+    if (answerStatus || isPaused || translationStatus) return;
+
+    setSelectedTranslation(option);
+    const isCorrect = option === currentQuestion.correctTranslation;
+
+    if (isCorrect) {
+      setTranslationStatus('correct');
+      playSound('correct');
+      vibrate('correct');
+    } else {
+      setTranslationStatus('incorrect');
+      setAnswerStatus('incorrect');
+      playSound('incorrect');
+      vibrate('incorrect');
+
+      const unlocked = updateStats(false, QUIZ_NAME, currentQuestion.id);
+      unlocked.forEach(showAchievementToast);
+
+      const errorRecord = {
+        word: currentQuestion.verb,
+        userAnswer: option,
+        correctAnswer: currentQuestion.correctTranslation,
+        quiz: QUIZ_NAME,
+      };
+      addError(errorRecord);
+      setSessionErrors(prev => [...prev, errorRecord]);
+    }
+  };
+  
+  const handleConfirmClick = () => {
     if (answerStatus || isPaused) return;
 
-    setSelectedAnswer(answer);
-    const isCorrect = answer === currentQuestion.correctAnswer;
+    const isForm2Correct = form2Input.trim().toLowerCase() === currentQuestion.form2.toLowerCase();
+    const isForm3Correct = form3Input.trim().toLowerCase() === currentQuestion.form3.toLowerCase();
+    const isCorrect = isForm2Correct && isForm3Correct && translationStatus === 'correct';
+
     const unlocked = updateStats(isCorrect, QUIZ_NAME, currentQuestion.id);
     unlocked.forEach(showAchievementToast);
-    
+
     if (isCorrect) {
       setScore((prevScore) => prevScore + 1);
       setAnswerStatus("correct");
-      playSound("correct");
-      vibrate("correct");
+      playSound('correct');
+      vibrate('correct');
     } else {
       setAnswerStatus("incorrect");
-      playSound("incorrect");
-      vibrate("incorrect");
-      const errorRecord = {
-        word: currentQuestion.word,
-        userAnswer: answer,
-        correctAnswer: currentQuestion.correctAnswer,
+      playSound('incorrect');
+      vibrate('incorrect');
+       const errorRecord = {
+        word: currentQuestion.verb,
+        userAnswer: `${form2Input}, ${currentQuestion.auxiliary} ${form3Input}`,
+        correctAnswer: `${currentQuestion.form2}, ${currentQuestion.auxiliary} ${currentQuestion.form3}`,
         quiz: QUIZ_NAME,
       };
       addError(errorRecord);
@@ -201,7 +261,7 @@ export default function QuizFalsiAmiciIt() {
   };
 
   const handleRestartClick = () => {
-    if (currentQuestionIndex > 0) {
+    if (currentQuestionIndex > 0 || form2Input || form3Input || selectedTranslation) {
       setIsRestartAlertOpen(true);
     } else {
       restartTest();
@@ -209,7 +269,7 @@ export default function QuizFalsiAmiciIt() {
   };
   
   const handleHomeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (currentQuestionIndex > 0) {
+    if (currentQuestionIndex > 0 || form2Input || form3Input || selectedTranslation) {
       e.preventDefault();
       setIsHomeAlertOpen(true);
     }
@@ -231,8 +291,11 @@ export default function QuizFalsiAmiciIt() {
     setQuestions(shuffleArray(initialQuestions).slice(0, QUIZ_LENGTH));
     setCurrentQuestionIndex(0);
     setScore(0);
-    setSelectedAnswer(null);
+    setSelectedTranslation(null);
+    setForm2Input("");
+    setForm3Input("");
     setAnswerStatus(null);
+    setTranslationStatus(null);
     setQuestionTimer(QUESTION_TIME_LIMIT);
     setTotalTime(0);
     setIsPaused(false);
@@ -246,27 +309,48 @@ export default function QuizFalsiAmiciIt() {
     router.push('/');
   }
 
-  const getButtonClass = (option: string) => {
-    if (!answerStatus) {
-      return "bg-primary text-primary-foreground hover:bg-primary/90";
-    }
+  const getTranslationButtonClass = (option: string) => {
+    const isCorrectAnswer = option === currentQuestion.correctTranslation;
+    const isSelectedAnswer = option === selectedTranslation;
 
-    const isCorrectAnswer = option === currentQuestion.correctAnswer;
-    const isSelectedAnswer = option === selectedAnswer;
+    if (answerStatus) {
+        if (answerStatus === 'timeout') {
+            if(isCorrectAnswer) return "bg-success text-success-foreground hover:bg-success/90 disabled:opacity-100";
+            return "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
+        }
 
-    if (answerStatus === 'timeout') {
-        if(isCorrectAnswer) return "bg-success text-success-foreground hover:bg-success/90";
+        if (isCorrectAnswer) {
+          return "bg-success text-success-foreground hover:bg-success/90 disabled:opacity-100";
+        }
+        if (isSelectedAnswer && !isCorrectAnswer) {
+          return "bg-destructive text-destructive-foreground hover:bg-destructive/90 disabled:opacity-100";
+        }
         return "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
     }
 
-    if (isCorrectAnswer) {
-      return "bg-success text-success-foreground hover:bg-success/90";
+    if (translationStatus && isSelectedAnswer) {
+      return translationStatus === 'correct' 
+          ? "bg-success text-success-foreground disabled:opacity-100" 
+          : "bg-destructive text-destructive-foreground disabled:opacity-100";
     }
-    if (isSelectedAnswer && !isCorrectAnswer) {
-      return "bg-destructive text-destructive-foreground hover:bg-destructive/90";
+    if (translationStatus && !isSelectedAnswer) {
+      return "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
     }
-    return "bg-muted text-muted-foreground opacity-70 cursor-not-allowed";
+
+    return "bg-primary text-primary-foreground hover:bg-primary/90";
   };
+
+  const getInputClass = (inputValue: string, correctValue: string) => {
+    if (!answerStatus) return "";
+    
+    if (answerStatus === 'timeout') {
+      return "bg-success text-success-foreground";
+    }
+
+    const isCorrect = inputValue.trim().toLowerCase() === correctValue.toLowerCase();
+
+    return isCorrect ? "bg-success text-success-foreground" : "bg-destructive text-destructive-foreground";
+  }
   
   if (questions.length > 0 && currentQuestionIndex >= questions.length) {
     return (
@@ -281,10 +365,9 @@ export default function QuizFalsiAmiciIt() {
     );
   }
   
-  if (questions.length === 0) {
-    return null; // Loading or empty state
+  if (questions.length === 0 || !currentQuestion) {
+    return null;
   }
-
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -298,7 +381,7 @@ export default function QuizFalsiAmiciIt() {
   return (
     <>
       <Card className="w-full max-w-lg shadow-2xl">
-        <CardHeader className="text-center pb-2">
+        <CardHeader className="text-center pb-4">
           <div className="flex items-center justify-center gap-2">
               <LinguaLearnLogo className="h-8 w-8" />
               <CardTitle className="text-3xl font-bold tracking-tight">
@@ -311,9 +394,9 @@ export default function QuizFalsiAmiciIt() {
                   </span>
               </CardTitle>
           </div>
-          <CardDescription className="pt-2">Attenzione ai falsi amici! Scegli la traduzione corretta</CardDescription>
+          <CardDescription className="pt-2">Wähle die Übersetzung und fülle die Verbformen aus</CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col items-center justify-center p-6 space-y-8">
+        <CardContent className="flex flex-col items-center justify-center p-6 space-y-6">
             <div className="w-full flex justify-around gap-4 text-center">
                 <div className="flex items-center gap-2">
                     <Clock className="h-6 w-6" />
@@ -332,25 +415,88 @@ export default function QuizFalsiAmiciIt() {
             <Progress value={questionTimeProgress} className="w-full h-2" />
 
           <div className="text-center space-y-2">
-              <p className="text-muted-foreground">Qual è il significato polacco di</p>
-              <p className={cn(
-                  "font-headline font-bold text-card-foreground",
-                  currentQuestion.word.length > 20 ? "text-3xl" : "text-4xl"
-              )}>"{currentQuestion.word}"?</p>
+              <p className="text-muted-foreground">Unregelmäßiges Verb:</p>
+              <p className="text-4xl font-headline font-bold text-card-foreground">"{currentQuestion.verb}"</p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-            {shuffledOptions.map((option) => (
-              <Button
-                key={option}
-                onClick={() => handleAnswerClick(option)}
-                disabled={!!answerStatus || isPaused}
-                className={cn("h-auto text-lg p-4 whitespace-normal transition-all duration-300", getButtonClass(option))}
+          <div className="w-full space-y-4">
+            <p className="text-center text-muted-foreground">1. Wähle die richtige Übersetzung</p>
+            <div className={cn(
+                "grid grid-cols-3 gap-2 w-full",
+                isLongText && "grid-cols-2"
+            )}>
+                {shuffledTranslationOptions.map((option, index) => {
+                    const button = (
+                        <Button
+                            key={option}
+                            onClick={() => handleTranslationClick(option)}
+                            disabled={!!answerStatus || isPaused || translationStatus !== null}
+                            className={cn(
+                                "h-auto text-base p-2 whitespace-normal transition-all duration-300",
+                                getTranslationButtonClass(option),
+                                isLongText && index === 2 ? 'col-span-2' : ''
+                            )}
+                        >
+                            {option}
+                        </Button>
+                    );
+
+                    if (isLongText && index === 2) {
+                        return <div key={option} className="col-span-2 flex justify-center">{button}</div>
+                    }
+                    return button;
+                })}
+            </div>
+
+            <p className="text-center text-muted-foreground pt-4">2. Gib die Formen für Präteritum & Partizip II ein</p>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 w-full text-center">
+                <div>
+                    <Label htmlFor="form2" className="text-sm font-medium text-muted-foreground">Präteritum</Label>
+                    <Input
+                        id="form2"
+                        ref={form2InputRef}
+                        value={form2Input}
+                        onChange={(e) => setForm2Input(e.target.value)}
+                        placeholder=""
+                        disabled={!!answerStatus || isPaused || translationStatus !== 'correct'}
+                        className={cn("text-center transition-colors duration-300 mt-1", getInputClass(form2Input, currentQuestion.form2))}
+                    />
+                </div>
+                <div>
+                    <Label htmlFor="form3" className="text-sm font-medium text-muted-foreground">Partizip II</Label>
+                    <div className="flex items-center gap-2 mt-1">
+                        <span className="text-sm font-medium text-muted-foreground">{currentQuestion.auxiliary}</span>
+                        <Input
+                            id="form3"
+                            value={form3Input}
+                            onChange={(e) => setForm3Input(e.target.value)}
+                            placeholder=""
+                            disabled={!!answerStatus || isPaused || translationStatus !== 'correct'}
+                            className={cn(
+                                "text-center transition-colors duration-300",
+                                getInputClass(form3Input, currentQuestion.form3)
+                            )}
+                        />
+                    </div>
+                </div>
+            </div>
+            {(answerStatus === 'incorrect' || (answerStatus === 'timeout' && (!form2Input || !form3Input))) && (
+              <div className="text-center text-success font-medium animate-in fade-in">
+                  Korrekte Formen: {currentQuestion.form2}, {currentQuestion.auxiliary} {currentQuestion.form3}
+              </div>
+            )}
+            
+            {translationStatus === 'correct' && (
+              <Button 
+                  className="w-full mt-4 h-12 text-lg"
+                  onClick={handleConfirmClick}
+                  disabled={!!answerStatus || isPaused || !form2Input || !form3Input}
               >
-                {option}
+                  Antwort bestätigen
               </Button>
-            ))}
+            )}
           </div>
+
           <div className="flex justify-center gap-4 w-full pt-4 border-t">
             <Link href="/" passHref>
               <Button variant="outline" size="icon" onClick={handleHomeClick}>
@@ -373,10 +519,10 @@ export default function QuizFalsiAmiciIt() {
         <CardFooter className="flex-col gap-4 p-6 pt-0">
           <div className="flex justify-between w-full items-center">
               <div className="text-sm text-muted-foreground">
-                  Domanda {currentQuestionIndex + 1} di {questions.length}
+                  Frage {currentQuestionIndex + 1} von {questions.length}
               </div>
               <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium">Punti:</span>
+                  <span className="text-sm font-medium">Punkte:</span>
                   <div
                       key={score}
                       className="text-2xl font-bold text-primary animate-in fade-in zoom-in-125 duration-300"
@@ -392,14 +538,14 @@ export default function QuizFalsiAmiciIt() {
       <AlertDialog open={isRestartAlertOpen} onOpenChange={setIsRestartAlertOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Sei sicuro di voler ricominciare?</AlertDialogTitle>
+            <AlertDialogTitle>Bist du sicher, dass du neu starten möchtest?</AlertDialogTitle>
             <AlertDialogDescription>
-              Questo riavvierà il quiz e tutti i tuoi progressi attuali andranno persi.
+              Dadurch wird das Quiz neu gestartet und dein gesamter Fortschritt geht verloren.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Annulla</AlertDialogCancel>
-            <AlertDialogAction onClick={restartTest}>Ricomincia</AlertDialogAction>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction onClick={restartTest}>Neu starten</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -407,17 +553,19 @@ export default function QuizFalsiAmiciIt() {
       <AlertDialog open={isHomeAlertOpen} onOpenChange={setIsHomeAlertOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Sei sicuro di voler tornare alla home?</AlertDialogTitle>
+            <AlertDialogTitle>Bist du sicher, dass du zur Startseite zurückkehren möchtest?</AlertDialogTitle>
             <AlertDialogDescription>
-              Questo terminerà il quiz attuale e tutti i tuoi progressi andranno persi.
+              Dadurch wird das aktuelle Quiz beendet und dein gesamter Fortschritt geht verloren.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Annulla</AlertDialogCancel>
-            <AlertDialogAction onClick={goHome}>Torna alla Home</AlertDialogAction>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction onClick={goHome}>Zur Startseite</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
     </>
   );
 }
+
+    

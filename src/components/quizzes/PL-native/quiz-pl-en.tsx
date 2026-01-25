@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { Home, RefreshCw, Pause, Play, Clock, Trophy } from "lucide-react";
-import { questions as initialQuestions, type Question } from "@/lib/questions-idioms-en";
+import { questions as initialQuestions, type Question } from "@/lib/questions/PL-native/questions-pl-en";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -24,7 +24,8 @@ import { playSound } from "@/lib/sounds";
 import LinguaLearnLogo from '@/components/LinguaLearnLogo';
 import { vibrate } from "@/lib/vibrations";
 import { useToast } from "@/hooks/use-toast";
-import QuizResults from "./quiz-results";
+import QuizResults from "../../quiz-results";
+
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
@@ -38,12 +39,12 @@ function shuffleArray<T>(array: T[]): T[] {
 const QUESTION_TIME_LIMIT = 15;
 const PAUSE_PENALTY = 5;
 const MIN_TIME_FOR_PAUSE = 6;
-const QUIZ_NAME = 'Idioms';
+const QUIZ_NAME = 'Polish - English';
 const TIME_UPDATE_INTERVAL = 5; // seconds
 const QUIZ_LENGTH = 10;
 
 
-export default function QuizIdiomsEn() {
+export default function QuizPlEn() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -124,7 +125,7 @@ export default function QuizIdiomsEn() {
             setSelectedAnswer(null);
             playSound("incorrect");
             vibrate("incorrect");
-            
+
             const unlocked = updateStats(false, QUIZ_NAME, questions[currentQuestionIndex].id);
             unlocked.forEach(showAchievementToast);
 
@@ -179,7 +180,7 @@ export default function QuizIdiomsEn() {
     const isCorrect = answer === currentQuestion.correctAnswer;
     const unlocked = updateStats(isCorrect, QUIZ_NAME, currentQuestion.id);
     unlocked.forEach(showAchievementToast);
-    
+
     if (isCorrect) {
       setScore((prevScore) => prevScore + 1);
       setAnswerStatus("correct");
@@ -311,7 +312,7 @@ export default function QuizIdiomsEn() {
                   </span>
               </CardTitle>
           </div>
-          <CardDescription className="pt-2">Select the correct translation for the idiom</CardDescription>
+          <CardDescription className="pt-2">Select the correct translation</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center p-6 space-y-8">
             <div className="w-full flex justify-around gap-4 text-center">
@@ -332,7 +333,7 @@ export default function QuizIdiomsEn() {
             <Progress value={questionTimeProgress} className="w-full h-2" />
 
           <div className="text-center space-y-2">
-              <p className="text-muted-foreground">What is the Polish meaning of the idiom</p>
+              <p className="text-muted-foreground">What is the English meaning of</p>
               <p className={cn(
                   "font-headline font-bold text-card-foreground",
                   currentQuestion.word.length > 20 ? "text-3xl" : "text-4xl"

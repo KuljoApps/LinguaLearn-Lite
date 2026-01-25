@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { Home, RefreshCw, Pause, Play, Clock, Trophy } from "lucide-react";
-import { questions as initialQuestions, type Question } from "@/lib/questions-phrasal-verbs-es";
+import { questions as initialQuestions, type Question } from "@/lib/questions/native-PL/questions-es-pl";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -24,7 +24,7 @@ import { playSound } from "@/lib/sounds";
 import LinguaLearnLogo from '@/components/LinguaLearnLogo';
 import { vibrate } from "@/lib/vibrations";
 import { useToast } from "@/hooks/use-toast";
-import QuizResults from "./quiz-results";
+import QuizResults from "../../quiz-results";
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
@@ -38,12 +38,12 @@ function shuffleArray<T>(array: T[]): T[] {
 const QUESTION_TIME_LIMIT = 15;
 const PAUSE_PENALTY = 5;
 const MIN_TIME_FOR_PAUSE = 6;
-const QUIZ_NAME = 'Falsos Amigos (ES)';
+const QUIZ_NAME = 'Español - Polaco';
 const TIME_UPDATE_INTERVAL = 5; // seconds
 const QUIZ_LENGTH = 10;
 
 
-export default function QuizFalsosAmigosEs() {
+export default function QuizEsPl() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -311,7 +311,7 @@ export default function QuizFalsosAmigosEs() {
                   </span>
               </CardTitle>
           </div>
-          <CardDescription className="pt-2">¡Cuidado con los falsos amigos! Elige la traducción correcta</CardDescription>
+          <CardDescription className="pt-2">Selecciona la traducción correcta</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center p-6 space-y-8">
             <div className="w-full flex justify-around gap-4 text-center">

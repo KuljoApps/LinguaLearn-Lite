@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { Home, RefreshCw, Pause, Play, Clock, Trophy } from "lucide-react";
-import { questions as initialQuestions, type Question } from "@/lib/questions-it-pl";
+import { questions as initialQuestions, type Question } from "@/lib/questions/phrasals/questions-phrasal-verbs-de";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -24,7 +24,7 @@ import { playSound } from "@/lib/sounds";
 import LinguaLearnLogo from '@/components/LinguaLearnLogo';
 import { vibrate } from "@/lib/vibrations";
 import { useToast } from "@/hooks/use-toast";
-import QuizResults from "./quiz-results";
+import QuizResults from "../../quiz-results";
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
@@ -38,12 +38,12 @@ function shuffleArray<T>(array: T[]): T[] {
 const QUESTION_TIME_LIMIT = 15;
 const PAUSE_PENALTY = 5;
 const MIN_TIME_FOR_PAUSE = 6;
-const QUIZ_NAME = 'Italiano - Polacco';
+const QUIZ_NAME = 'Separable Verbs (DE)';
 const TIME_UPDATE_INTERVAL = 5; // seconds
 const QUIZ_LENGTH = 10;
 
 
-export default function QuizItPl() {
+export default function QuizPhrasalVerbsDe() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -57,6 +57,7 @@ export default function QuizItPl() {
   const [showTimePenalty, setShowTimePenalty] = useState(false);
   const [shuffledOptions, setShuffledOptions] = useState<string[]>([]);
   const [sessionErrors, setSessionErrors] = useState<Omit<ErrorRecord, 'id'>[]>([]);
+  const timeoutFiredRef = useRef(false);
   
   const router = useRouter();
   const { toast } = useToast();
@@ -67,16 +68,22 @@ export default function QuizItPl() {
         title: (
             <div className="flex items-center gap-2">
                 <Trophy className="h-5 w-5 text-amber" />
-                <span className="font-bold">Obiettivo Raggiunto!</span>
+                <span className="font-bold">Erfolg freigeschaltet!</span>
             </div>
         ),
-        description: `Hai guadagnato: "${achievement.name_it || achievement.name}"`,
+        description: `Du hast verdient: "${achievement.name_de || achievement.name}"`,
     });
   }, [toast]);
   
   useEffect(() => {
-    setQuestions(shuffleArray(initialQuestions).slice(0, QUIZ_LENGTH));
+    const newQuestions = shuffleArray(initialQuestions).slice(0, QUIZ_LENGTH);
+    setQuestions(newQuestions);
+    timeoutFiredRef.current = false;
   }, []);
+
+  useEffect(() => {
+      timeoutFiredRef.current = false;
+  }, [currentQuestionIndex]);
 
   // Finalize session achievements
   useEffect(() => {
@@ -111,23 +118,25 @@ export default function QuizItPl() {
       setQuestionTimer((prev) => {
         if (prev <= 1) {
           clearInterval(interval);
-          setAnswerStatus("timeout");
-          setSelectedAnswer(null);
-          playSound("incorrect");
-          vibrate("incorrect");
-          
-          const unlocked = updateStats(false, QUIZ_NAME, questions[currentQuestionIndex].id);
-          unlocked.forEach(showAchievementToast);
+          if (!timeoutFiredRef.current) {
+            timeoutFiredRef.current = true;
+            setAnswerStatus("timeout");
+            setSelectedAnswer(null);
+            playSound("incorrect");
+            vibrate("incorrect");
+            
+            const unlocked = updateStats(false, QUIZ_NAME, questions[currentQuestionIndex].id);
+            unlocked.forEach(showAchievementToast);
 
-          const errorRecord = {
-            word: questions[currentQuestionIndex].word,
-            userAnswer: 'No answer',
-            correctAnswer: questions[currentQuestionIndex].correctAnswer,
-            quiz: QUIZ_NAME,
-          };
-          addError(errorRecord);
-          setSessionErrors(prev => [...prev, errorRecord]);
-
+            const errorRecord = {
+              word: questions[currentQuestionIndex].word,
+              userAnswer: 'No answer',
+              correctAnswer: questions[currentQuestionIndex].correctAnswer,
+              quiz: QUIZ_NAME,
+            };
+            addError(errorRecord);
+            setSessionErrors(prev => [...prev, errorRecord]);
+          }
           return 0;
         }
         return prev - 1;
@@ -228,6 +237,7 @@ export default function QuizItPl() {
     setTotalTime(0);
     setIsPaused(false);
     setSessionErrors([]);
+    timeoutFiredRef.current = false;
     setIsRestartAlertOpen(false);
   }
 
@@ -301,7 +311,7 @@ export default function QuizItPl() {
                   </span>
               </CardTitle>
           </div>
-          <CardDescription>Seleziona la traduzione corretta</CardDescription>
+          <CardDescription className="pt-2">Wähle die richtige Übersetzung für das trennbare Verb</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center p-6 space-y-8">
             <div className="w-full flex justify-around gap-4 text-center">
@@ -322,7 +332,7 @@ export default function QuizItPl() {
             <Progress value={questionTimeProgress} className="w-full h-2" />
 
           <div className="text-center space-y-2">
-              <p className="text-muted-foreground">Qual è il significato polacco di</p>
+              <p className="text-muted-foreground">Was ist die polnische Bedeutung von</p>
               <p className={cn(
                   "font-headline font-bold text-card-foreground",
                   currentQuestion.word.length > 20 ? "text-3xl" : "text-4xl"
@@ -363,10 +373,10 @@ export default function QuizItPl() {
         <CardFooter className="flex-col gap-4 p-6 pt-0">
           <div className="flex justify-between w-full items-center">
               <div className="text-sm text-muted-foreground">
-                  Domanda {currentQuestionIndex + 1} di {questions.length}
+                  Frage {currentQuestionIndex + 1} von {questions.length}
               </div>
               <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium">Punti:</span>
+                  <span className="text-sm font-medium">Punkte:</span>
                   <div
                       key={score}
                       className="text-2xl font-bold text-primary animate-in fade-in zoom-in-125 duration-300"
@@ -382,14 +392,14 @@ export default function QuizItPl() {
       <AlertDialog open={isRestartAlertOpen} onOpenChange={setIsRestartAlertOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Sei sicuro di voler ricominciare?</AlertDialogTitle>
+            <AlertDialogTitle>Bist du sicher, dass du neu starten möchtest?</AlertDialogTitle>
             <AlertDialogDescription>
-              Questo riavvierà il quiz e tutti i tuoi progressi attuali andranno persi.
+              Dadurch wird das Quiz neu gestartet und dein gesamter Fortschritt geht verloren.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Annulla</AlertDialogCancel>
-            <AlertDialogAction onClick={restartTest}>Ricomincia</AlertDialogAction>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction onClick={restartTest}>Neu starten</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -397,14 +407,14 @@ export default function QuizItPl() {
       <AlertDialog open={isHomeAlertOpen} onOpenChange={setIsHomeAlertOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Sei sicuro di voler tornare alla home?</AlertDialogTitle>
+            <AlertDialogTitle>Bist du sicher, dass du zur Startseite zurückkehren möchtest?</AlertDialogTitle>
             <AlertDialogDescription>
-              Questo terminerà il quiz attuale e tutti i tuoi progressi andranno persi.
+              Dadurch wird das aktuelle Quiz beendet und dein gesamter Fortschritt geht verloren.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Annulla</AlertDialogCancel>
-            <AlertDialogAction onClick={goHome}>Torna alla Home</AlertDialogAction>
+            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogAction onClick={goHome}>Zur Startseite</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

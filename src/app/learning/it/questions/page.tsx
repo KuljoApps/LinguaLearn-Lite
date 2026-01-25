@@ -1,9 +1,9 @@
 import QuestionBase from '@/components/learning-module';
-import { questions as itPlQuestions } from '@/lib/questions-it-pl';
-import { questions as plItQuestions } from '@/lib/questions-pl-it';
-import { questions as irregularVerbsItQuestions } from '@/lib/questions-irregular-verbs-it';
-import { questions as falsiAmiciItQuestions } from '@/lib/questions-phrasal-verbs-it';
-import { questions as idiomsItQuestions } from '@/lib/questions-idioms-it';
+import { questions as itPlQuestions } from '@/lib/questions/native-PL/questions-it-pl';
+import { questions as plItQuestions } from '@/lib/questions/PL-native/questions-pl-it';
+import { questions as irregularVerbsItQuestions } from '@/lib/questions/irregulars/questions-irregular-verbs-it';
+import { questions as falsiAmiciItQuestions } from '@/lib/questions/phrasals/questions-phrasal-verbs-it';
+import { questions as idiomsItQuestions } from '@/lib/questions/idioms/questions-idioms-it';
 import type { Language } from '@/lib/storage';
 
 export default function LearningItQuestionsPage() {

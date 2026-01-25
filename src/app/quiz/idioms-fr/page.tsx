@@ -1,4 +1,4 @@
-import QuizIdiomsFr from '@/components/quiz-idioms-fr';
+import QuizIdiomsFr from '@/components/quizzes/idioms/quiz-idioms-fr';
 
 export default function QuizIdiomsFrPage() {
   return (

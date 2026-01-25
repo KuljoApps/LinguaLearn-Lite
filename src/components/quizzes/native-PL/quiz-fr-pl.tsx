@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { Home, RefreshCw, Pause, Play, Clock, Trophy } from "lucide-react";
-import { questions as initialQuestions, type Question } from "@/lib/questions-pl-it";
+import { questions as initialQuestions, type Question } from "@/lib/questions/native-PL/questions-fr-pl";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -24,7 +24,7 @@ import { playSound } from "@/lib/sounds";
 import LinguaLearnLogo from '@/components/LinguaLearnLogo';
 import { vibrate } from "@/lib/vibrations";
 import { useToast } from "@/hooks/use-toast";
-import QuizResults from "./quiz-results";
+import QuizResults from "../../quiz-results";
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
@@ -38,12 +38,12 @@ function shuffleArray<T>(array: T[]): T[] {
 const QUESTION_TIME_LIMIT = 15;
 const PAUSE_PENALTY = 5;
 const MIN_TIME_FOR_PAUSE = 6;
-const QUIZ_NAME = 'Polacco - Italiano';
+const QUIZ_NAME = 'French - Polish';
 const TIME_UPDATE_INTERVAL = 5; // seconds
 const QUIZ_LENGTH = 10;
 
 
-export default function QuizPlIt() {
+export default function QuizFrPl() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -68,10 +68,10 @@ export default function QuizPlIt() {
         title: (
             <div className="flex items-center gap-2">
                 <Trophy className="h-5 w-5 text-amber" />
-                <span className="font-bold">Obiettivo Raggiunto!</span>
+                <span className="font-bold">Achievement Unlocked!</span>
             </div>
         ),
-        description: `Hai guadagnato: "${achievement.name_it || achievement.name}"`,
+        description: `You've earned: "${achievement.name}"`,
     });
   }, [toast]);
   
@@ -311,7 +311,7 @@ export default function QuizPlIt() {
                   </span>
               </CardTitle>
           </div>
-          <CardDescription className="pt-2">Seleziona la traduzione corretta</CardDescription>
+          <CardDescription className="pt-2">Sélectionnez la bonne traduction</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center justify-center p-6 space-y-8">
             <div className="w-full flex justify-around gap-4 text-center">
@@ -332,7 +332,7 @@ export default function QuizPlIt() {
             <Progress value={questionTimeProgress} className="w-full h-2" />
 
           <div className="text-center space-y-2">
-              <p className="text-muted-foreground">Qual è il significato italiano di</p>
+              <p className="text-muted-foreground">Quelle est la signification polonaise de</p>
               <p className={cn(
                   "font-headline font-bold text-card-foreground",
                   currentQuestion.word.length > 20 ? "text-3xl" : "text-4xl"
@@ -373,10 +373,10 @@ export default function QuizPlIt() {
         <CardFooter className="flex-col gap-4 p-6 pt-0">
           <div className="flex justify-between w-full items-center">
               <div className="text-sm text-muted-foreground">
-                  Domanda {currentQuestionIndex + 1} di {questions.length}
+                  Question {currentQuestionIndex + 1} de {questions.length}
               </div>
               <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium">Punti:</span>
+                  <span className="text-sm font-medium">Score:</span>
                   <div
                       key={score}
                       className="text-2xl font-bold text-primary animate-in fade-in zoom-in-125 duration-300"
@@ -392,14 +392,14 @@ export default function QuizPlIt() {
       <AlertDialog open={isRestartAlertOpen} onOpenChange={setIsRestartAlertOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Sei sicuro di voler ricominciare?</AlertDialogTitle>
+            <AlertDialogTitle>Êtes-vous sûr de vouloir recommencer ?</AlertDialogTitle>
             <AlertDialogDescription>
-              Questo riavvierà il quiz e tutti i tuoi progressi attuali andranno persi.
+              Cela redémarrera le quiz et toute votre progression actuelle sera perdue.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Annulla</AlertDialogCancel>
-            <AlertDialogAction onClick={restartTest}>Ricomincia</AlertDialogAction>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={restartTest}>Recommencer</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -407,14 +407,14 @@ export default function QuizPlIt() {
       <AlertDialog open={isHomeAlertOpen} onOpenChange={setIsHomeAlertOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Sei sicuro di voler tornare alla home?</AlertDialogTitle>
+            <AlertDialogTitle>Êtes-vous sûr de vouloir retourner à l'accueil ?</AlertDialogTitle>
             <AlertDialogDescription>
-              Questo terminerà il quiz attuale e tutti i tuoi progressi andranno persi.
+              Cela mettra fin au quiz en cours et toute votre progression sera perdue.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Annulla</AlertDialogCancel>
-            <AlertDialogAction onClick={goHome}>Torna alla Home</AlertDialogAction>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={goHome}>Retour à l'accueil</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

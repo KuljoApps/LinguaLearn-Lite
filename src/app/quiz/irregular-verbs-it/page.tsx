@@ -1,5 +1,5 @@
 
-import QuizIrregularVerbsIt from '@/components/quiz-irregular-verbs-it';
+import QuizIrregularVerbsIt from '@/components/quizzes/irregulars/quiz-irregular-verbs-it';
 
 export default function QuizIrregularVerbsItPage() {
   return (

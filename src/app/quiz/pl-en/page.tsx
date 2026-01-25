@@ -1,4 +1,4 @@
-import QuizPlEn from '@/components/quiz-pl-en';
+import QuizPlEn from '@/components/quizzes/PL-native/quiz-pl-en';
 
 export default function QuizPlEnPage() {
   return (

@@ -1,9 +1,9 @@
 import QuestionBase from '@/components/learning-module';
-import { questions as enPlQuestions } from '@/lib/questions-en-pl';
-import { questions as plEnQuestions } from '@/lib/questions-pl-en';
-import { questions as irregularVerbsQuestions } from '@/lib/questions-irregular-verbs-en';
-import { questions as phrasalVerbsQuestions } from '@/lib/questions-phrasal-verbs';
-import { questions as idiomsQuestions } from '@/lib/questions-idioms-en';
+import { questions as enPlQuestions } from '@/lib/questions/native-PL/questions-en-pl';
+import { questions as plEnQuestions } from '@/lib/questions/PL-native/questions-pl-en';
+import { questions as irregularVerbsQuestions } from '@/lib/questions/irregulars/questions-irregular-verbs-en';
+import { questions as phrasalVerbsQuestions } from '@/lib/questions/phrasals/questions-phrasal-verbs-en';
+import { questions as idiomsQuestions } from '@/lib/questions/idioms/questions-idioms-en';
 import type { Language } from '@/lib/storage';
 
 export default function LearningEnQuestionsPage() {

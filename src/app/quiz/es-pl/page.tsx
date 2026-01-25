@@ -1,5 +1,5 @@
 
-import QuizEsPl from '@/components/quiz-es-pl';
+import QuizEsPl from '@/components/quizzes/native-PL/quiz-es-pl';
 
 export default function QuizEsPlPage() {
   return (

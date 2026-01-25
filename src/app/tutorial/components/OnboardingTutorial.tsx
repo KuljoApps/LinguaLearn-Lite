@@ -44,8 +44,8 @@ const tutorialBubbleOffsets: { [key: string]: number } = {
     'phonetics-first-item': 0,
     'quiz-timer': 0,
     'quiz-pause-button': 16,
-    'correct-answer-button': 0,
-    'incorrect-answer-button': 0,
+    'quiz-correct-answers-grid': 0,
+    'quiz-incorrect-answers-grid': 0,
     'irregular-quiz-part1': 0,
     'irregular-quiz-part2': -340,
     'irregular-quiz-hint': 80,
@@ -250,14 +250,14 @@ const quizSteps: Step[] = [
     },
     { // Slajd 3/10
         path: '/tutorial/quiz-answers',
-        elementId: 'correct-answer-button',
+        elementId: 'quiz-correct-answers-grid',
         title: 'Poprawna odpowiedź',
         description: 'Świetnie! Poprawna odpowiedź zostanie podświetlona na zielono. Po chwili automatycznie przejdziesz do następnego pytania.',
         bubblePosition: 'top',
     },
     { // Slajd 4/10
         path: '/tutorial/quiz-answers',
-        elementId: 'incorrect-answer-button',
+        elementId: 'quiz-incorrect-answers-grid',
         title: 'Błędna odpowiedź',
         description: 'Nie martw się! Twoja błędna odpowiedź podświetli się na czerwono, a prawidłowa — na zielono. Każdy błąd to okazja do nauki!',
         bubblePosition: 'top'

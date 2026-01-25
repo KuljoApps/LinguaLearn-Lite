@@ -1,263 +1,304 @@
 "use client";
 
 import { 
-    ArrowLeft, Gamepad2, Swords, Puzzle, BrainCircuit,
-    Rocket, Star, Atom, Flame, Droplets, Wind, Mountain, Trees, Sun, Castle, Crown, Shield,
-    BookOpen, Pencil, Lightbulb, Heart, Smile, Users, Ship, Anchor, Map, Code,
-    Terminal, GitBranch, Music, Film, Camera
+    ArrowLeft, Gamepad2, Zap, Sparkles, Heart, 
+    Star, Rocket, Cloud, Sun, Moon
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardFooter, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
+// 5 podstawowych ikon do rotacji
+const icons = [Zap, Sparkles, Heart, Star, Rocket];
+
 export default function GamesPage() {
+    // Funkcja do pobierania ikony na podstawie indeksu
+    const getIcon = (index: number) => {
+        const IconComponent = icons[index % icons.length];
+        return <IconComponent className="h-10 w-10" />;
+    };
+
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
-            <Card className="w-full max-w-md shadow-2xl">
+            <Card className="w-full max-w-2xl shadow-2xl">
                 <CardHeader className="text-center p-6">
                     <div className="flex items-center justify-center gap-4">
                         <Gamepad2 className="h-8 w-8" />
                         <h1 className="text-3xl font-bold tracking-tight">Design Showcase</h1>
                     </div>
-                     <p className="text-muted-foreground pt-2">Here is the chosen design applied to various themes.</p>
+                    <p className="text-muted-foreground pt-2">Color variations for selected styles</p>
                 </CardHeader>
-                <CardContent className="flex flex-col space-y-6 p-6 pt-0 pb-4 max-h-[70vh] overflow-y-auto">
+                <CardContent className="flex flex-col space-y-8 p-6 pt-0 pb-4 max-h-[80vh] overflow-y-auto">
                     
-                    {/* Proposal 1: Combat */}
+                    {/* CATEGORY 1: NEON CYBERPUNK */}
                     <div>
-                        <h2 className="text-lg font-semibold mb-2 text-center">Proposal 1: Combat</h2>
-                        <div className="grid grid-cols-2 gap-4">
-                            <Button className="w-full h-28 flex-col gap-2 text-lg text-primary-foreground bg-gradient-to-br from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 hover:shadow-lg hover:shadow-indigo-500/50 transition-all pointer-events-none">
-                                <Swords className="h-12 w-12" />
-                                <span>Duel</span>
+                        <h2 className="text-2xl font-bold mb-4 text-center text-cyan-300 bg-gray-900 py-2 rounded-lg border border-cyan-500/30">
+                            ⚡ NEON CYBERPUNK ⚡
+                        </h2>
+                        
+                        {/* NEON AMBER/GOLD - 3 ODCIENIE - WSZYSTKIE PROSTE KOLORY */}
+                        <div className="mb-4">
+                            <h3 className="text-lg font-semibold mb-2 text-amber-300">Amber & Gold</h3>
+                            {/* ZMIENIONO: Prosty kolor - Golden Circuit */}
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-amber-500 hover:brightness-125 transition-all pointer-events-none shadow-[0_0_25px_#ff6b00] border border-amber-600/50">
+                                {getIcon(0)}
+                                <span>GOLDEN CIRCUIT</span>
+                                {getIcon(0)}
                             </Button>
-                             <Button className="w-full h-28 flex-col gap-2 text-lg text-primary-foreground bg-gradient-to-br from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 hover:shadow-lg hover:shadow-indigo-500/50 transition-all pointer-events-none">
-                                <Puzzle className="h-12 w-12" />
-                                <span>Puzzle</span>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 hover:brightness-125 transition-all pointer-events-none shadow-[0_0_20px_#ff8c00] border border-yellow-400/50">
+                                {getIcon(1)}
+                                <span>AMBER NETWORK</span>
+                                {getIcon(1)}
+                            </Button>
+                            {/* ZMIENIONO: Prosty kolor - Sunfire Core */}
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-white bg-amber-700 hover:brightness-125 transition-all pointer-events-none shadow-[0_0_15px_#b35900] border border-amber-700/50">
+                                {getIcon(2)}
+                                <span>SUNFIRE CORE</span>
+                                {getIcon(2)}
                             </Button>
                         </div>
-                        <div className="mt-4 flex flex-col space-y-2">
-                             <Button className="w-full h-12 text-lg text-primary-foreground bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 hover:shadow-md hover:shadow-indigo-500/40 transition-all pointer-events-none">
-                                <BrainCircuit className="h-5 w-5 mr-2" />
-                                <span>Logic Game</span>
+
+                        {/* NEON DEEP PURPLE - 3 ODCIENIE */}
+                        <div className="mb-4">
+                            <h3 className="text-lg font-semibold mb-2 text-purple-400">Deep Purple</h3>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-purple-500 via-violet-600 to-purple-700 hover:brightness-125 transition-all pointer-events-none shadow-[0_0_25px_#9d4edd] border border-purple-500/50">
+                                {getIcon(2)}
+                                <span>DEEP MATRIX</span>
+                                {getIcon(2)}
+                            </Button>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-violet-600 via-purple-700 to-indigo-600 hover:brightness-125 transition-all pointer-events-none shadow-[0_0_20px_#7b2cbf] border border-violet-500/50">
+                                {getIcon(3)}
+                                <span>VOID NETWORK</span>
+                                {getIcon(3)}
+                            </Button>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-purple-600 via-indigo-500 to-violet-700 hover:brightness-125 transition-all pointer-events-none shadow-[0_0_15px_#5a189a] border border-purple-700/50">
+                                {getIcon(4)}
+                                <span>NEXUS VOID</span>
+                                {getIcon(4)}
+                            </Button>
+                        </div>
+
+                        {/* NEON GREEN - 3 ODCIENIE */}
+                        <div className="mb-4">
+                            <h3 className="text-lg font-semibold mb-2 text-green-400">Green</h3>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-green-400 via-emerald-500 to-lime-500 hover:brightness-125 transition-all pointer-events-none shadow-[0_0_25px_#00ff88] border border-green-400/50">
+                                {getIcon(4)}
+                                <span>GREEN CORE</span>
+                                {getIcon(4)}
+                            </Button>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-lime-500 via-green-500 to-emerald-600 hover:brightness-125 transition-all pointer-events-none shadow-[0_0_20px_#38b000] border border-lime-400/50">
+                                {getIcon(0)}
+                                <span>SYSTEM ROOT</span>
+                                {getIcon(0)}
+                            </Button>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-emerald-400 via-green-600 to-lime-600 hover:brightness-125 transition-all pointer-events-none shadow-[0_0_15px_#007200] border border-emerald-600/50">
+                                {getIcon(1)}
+                                <span>BIOSPHERE GRID</span>
+                                {getIcon(1)}
+                            </Button>
+                        </div>
+
+                        {/* NEON RED - 3 ODCIENIE */}
+                        <div className="mb-4">
+                            <h3 className="text-lg font-semibold mb-2 text-red-400">Red</h3>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-red-500 via-rose-600 to-red-600 hover:brightness-125 transition-all pointer-events-none shadow-[0_0_25px_#ff3c00] border border-red-500/50">
+                                {getIcon(1)}
+                                <span>RED ALERT</span>
+                                {getIcon(1)}
+                            </Button>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-rose-600 via-red-600 to-pink-600 hover:brightness-125 transition-all pointer-events-none shadow-[0_0_20px_#ff0055] border border-rose-500/50">
+                                {getIcon(2)}
+                                <span>CRITICAL SYSTEM</span>
+                                {getIcon(2)}
+                            </Button>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-red-600 via-rose-700 to-red-700 hover:brightness-125 transition-all pointer-events-none shadow-[0_0_15px_#cc0000] border border-red-700/50">
+                                {getIcon(3)}
+                                <span>BLOOD CODE</span>
+                                {getIcon(3)}
+                            </Button>
+                        </div>
+
+                        {/* NEON BLUE - 3 ODCIENIE */}
+                        <div className="mb-4">
+                            <h3 className="text-lg font-semibold mb-2 text-blue-400">Blue</h3>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-600 hover:brightness-125 transition-all pointer-events-none shadow-[0_0_25px_#0099ff] border border-blue-500/50">
+                                {getIcon(3)}
+                                <span>BLUE MATRIX</span>
+                                {getIcon(3)}
+                            </Button>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-500 hover:brightness-125 transition-all pointer-events-none shadow-[0_0_20px_#0066ff] border border-sky-500/50">
+                                {getIcon(4)}
+                                <span>DATA OCEAN</span>
+                                {getIcon(4)}
+                            </Button>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-blue-600 via-cyan-600 to-sky-700 hover:brightness-125 transition-all pointer-events-none shadow-[0_0_15px_#0044cc] border border-blue-700/50">
+                                {getIcon(0)}
+                                <span>DEEP STREAM</span>
+                                {getIcon(0)}
+                            </Button>
+                        </div>
+
+                        {/* NEON YELLOW - 3 ODCIENIE */}
+                        <div className="mb-4">
+                            <h3 className="text-lg font-semibold mb-2 text-yellow-400">Yellow</h3>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-600 hover:brightness-125 transition-all pointer-events-none shadow-[0_0_25px_#ffdd00] border border-yellow-500/50">
+                                {getIcon(0)}
+                                <span>YELLOW GRID</span>
+                                {getIcon(0)}
+                            </Button>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 hover:brightness-125 transition-all pointer-events-none shadow-[0_0_20px_#ffcc00] border border-amber-500/50">
+                                {getIcon(1)}
+                                <span>PULSE LIGHT</span>
+                                {getIcon(1)}
+                            </Button>
+                            {/* ZMIENIONO: Prosty kolor - Solar Flare */}
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-amber-600 hover:brightness-125 transition-all pointer-events-none shadow-[0_0_15px_#e68a00] border border-yellow-700/50">
+                                {getIcon(2)}
+                                <span>SOLAR FLARE</span>
+                                {getIcon(2)}
                             </Button>
                         </div>
                     </div>
 
-                    <Separator />
-                    
-                    {/* Proposal 2: Sci-Fi */}
+                    <Separator className="my-6" />
+
+                    {/* CATEGORY 2: PASTEL DREAM */}
                     <div>
-                        <h2 className="text-lg font-semibold mb-2 text-center">Proposal 2: Sci-Fi</h2>
-                        <div className="grid grid-cols-2 gap-4">
-                            <Button className="w-full h-28 flex-col gap-2 text-lg text-primary-foreground bg-gradient-to-br from-cyan-500 to-blue-600 hover:shadow-lg hover:shadow-cyan-500/50 transition-all pointer-events-none">
-                                <Rocket className="h-12 w-12" />
-                                <span>Space</span>
+                        <h2 className="text-2xl font-bold mb-4 text-center text-pink-500 bg-gradient-to-r from-pink-100 to-purple-100 py-2 rounded-lg border border-pink-300">
+                            ✨ PASTEL DREAM ✨
+                        </h2>
+
+                        {/* PASTEL AMBER/GOLD - 3 ODCIENIE - WSZYSTKIE PROSTE KOLORY */}
+                        <div className="mb-4">
+                            <h3 className="text-lg font-semibold mb-2 text-amber-600">Amber & Gold</h3>
+                            {/* ZMIENIONO: Prosty kolor - Golden Hour */}
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl text-gray-800 bg-amber-300 hover:opacity-90 transition-all pointer-events-none rounded-2xl shadow-inner border border-amber-400/50">
+                                <Sun className="h-10 w-10 text-amber-700" />
+                                <span className="font-semibold">GOLDEN HOUR</span>
+                                <Sun className="h-10 w-10 text-amber-700" />
                             </Button>
-                             <Button className="w-full h-28 flex-col gap-2 text-lg text-primary-foreground bg-gradient-to-br from-cyan-500 to-blue-600 hover:shadow-lg hover:shadow-blue-500/50 transition-all pointer-events-none">
-                                <Star className="h-12 w-12" />
-                                <span>Galaxy</span>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl text-gray-800 bg-gradient-to-r from-yellow-200 via-amber-100 to-yellow-100 hover:opacity-90 transition-all pointer-events-none rounded-2xl shadow-inner border border-yellow-300/50">
+                                {getIcon(1)}
+                                <span className="font-semibold">AMBER GLOW</span>
+                                {getIcon(1)}
+                            </Button>
+                            {/* ZMIENIONO: Prosty kolor - Honey Sundrop */}
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl text-gray-800 bg-amber-400 hover:opacity-90 transition-all pointer-events-none rounded-2xl shadow-inner border border-amber-500/30">
+                                {getIcon(2)}
+                                <span className="font-semibold">HONEY SUNDROP</span>
+                                {getIcon(2)}
                             </Button>
                         </div>
-                        <div className="mt-4 flex flex-col space-y-2">
-                             <Button className="w-full h-12 text-lg text-primary-foreground bg-gradient-to-r from-cyan-500 to-blue-600 hover:shadow-md hover:shadow-cyan-500/40 transition-all pointer-events-none">
-                                <Atom className="h-5 w-5 mr-2" />
-                                <span>Quantum Leap</span>
+
+                        {/* PASTEL DEEP PURPLE - 3 ODCIENIE */}
+                        <div className="mb-4">
+                            <h3 className="text-lg font-semibold mb-2 text-purple-600">Deep Purple</h3>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl text-gray-800 bg-gradient-to-r from-purple-200 via-violet-200 to-purple-100 hover:opacity-90 transition-all pointer-events-none rounded-2xl shadow-inner border border-purple-300/50">
+                                <Moon className="h-10 w-10 text-purple-500" />
+                                <span className="font-semibold">DEEP TWILIGHT</span>
+                                <Moon className="h-10 w-10 text-purple-500" />
+                            </Button>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl text-gray-800 bg-gradient-to-r from-violet-200 via-purple-100 to-indigo-200 hover:opacity-90 transition-all pointer-events-none rounded-2xl shadow-inner border border-violet-300/50">
+                                {getIcon(3)}
+                                <span className="font-semibold">ROYAL DREAM</span>
+                                {getIcon(3)}
+                            </Button>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl text-gray-800 bg-gradient-to-r from-purple-100 via-violet-300 to-purple-200 hover:opacity-90 transition-all pointer-events-none rounded-2xl shadow-inner border border-purple-400/30">
+                                {getIcon(4)}
+                                <span className="font-semibold">LAVENDER MIST</span>
+                                {getIcon(4)}
+                            </Button>
+                        </div>
+
+                        {/* PASTEL GREEN - 3 ODCIENIE */}
+                        <div className="mb-4">
+                            <h3 className="text-lg font-semibold mb-2 text-emerald-600">Green</h3>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl text-gray-800 bg-gradient-to-r from-emerald-200 via-green-200 to-teal-200 hover:opacity-90 transition-all pointer-events-none rounded-2xl shadow-inner border border-emerald-300/50">
+                                {getIcon(4)}
+                                <span className="font-semibold">GREEN MEADOW</span>
+                                {getIcon(4)}
+                            </Button>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl text-gray-800 bg-gradient-to-r from-green-200 via-emerald-100 to-green-100 hover:opacity-90 transition-all pointer-events-none rounded-2xl shadow-inner border border-green-300/50">
+                                {getIcon(0)}
+                                <span className="font-semibold">FRESH LEAVES</span>
+                                {getIcon(0)}
+                            </Button>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl text-gray-800 bg-gradient-to-r from-teal-200 via-emerald-300 to-green-100 hover:opacity-90 transition-all pointer-events-none rounded-2xl shadow-inner border border-emerald-400/30">
+                                {getIcon(1)}
+                                <span className="font-semibold">MINT BREEZE</span>
+                                {getIcon(1)}
+                            </Button>
+                        </div>
+
+                        {/* PASTEL RED - 3 ODCIENIE */}
+                        <div className="mb-4">
+                            <h3 className="text-lg font-semibold mb-2 text-rose-600">Red</h3>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl text-gray-800 bg-gradient-to-r from-rose-200 via-pink-200 to-rose-100 hover:opacity-90 transition-all pointer-events-none rounded-2xl shadow-inner border border-rose-300/50">
+                                {getIcon(1)}
+                                <span className="font-semibold">ROSE PETALS</span>
+                                {getIcon(1)}
+                            </Button>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl text-gray-800 bg-gradient-to-r from-pink-200 via-rose-100 to-red-200 hover:opacity-90 transition-all pointer-events-none rounded-2xl shadow-inner border border-pink-300/50">
+                                {getIcon(2)}
+                                <span className="font-semibold">SWEET BERRIES</span>
+                                {getIcon(2)}
+                            </Button>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl text-gray-800 bg-gradient-to-r from-rose-100 via-pink-300 to-rose-200 hover:opacity-90 transition-all pointer-events-none rounded-2xl shadow-inner border border-rose-400/30">
+                                {getIcon(3)}
+                                <span className="font-semibold">BLUSHING PEACH</span>
+                                {getIcon(3)}
+                            </Button>
+                        </div>
+
+                        {/* PASTEL BLUE - 3 ODCIENIE */}
+                        <div className="mb-4">
+                            <h3 className="text-lg font-semibold mb-2 text-blue-600">Blue</h3>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl text-gray-800 bg-gradient-to-r from-blue-200 via-cyan-200 to-blue-100 hover:opacity-90 transition-all pointer-events-none rounded-2xl shadow-inner border border-blue-300/50">
+                                <Cloud className="h-10 w-10 text-blue-500" />
+                                <span className="font-semibold">SERENE SKY</span>
+                                <Cloud className="h-10 w-10 text-blue-500" />
+                            </Button>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl text-gray-800 bg-gradient-to-r from-sky-200 via-blue-200 to-cyan-100 hover:opacity-90 transition-all pointer-events-none rounded-2xl shadow-inner border border-sky-300/50">
+                                {getIcon(4)}
+                                <span className="font-semibold">CALM WATERS</span>
+                                {getIcon(4)}
+                            </Button>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl text-gray-800 bg-gradient-to-r from-blue-100 via-sky-300 to-cyan-200 hover:opacity-90 transition-all pointer-events-none rounded-2xl shadow-inner border border-blue-400/30">
+                                {getIcon(0)}
+                                <span className="font-semibold">OCEAN BREEZE</span>
+                                {getIcon(0)}
+                            </Button>
+                        </div>
+
+                        {/* PASTEL YELLOW - 3 ODCIENIE */}
+                        <div className="mb-4">
+                            <h3 className="text-lg font-semibold mb-2 text-yellow-600">Yellow</h3>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl text-gray-800 bg-gradient-to-r from-yellow-200 via-yellow-100 to-amber-100 hover:opacity-90 transition-all pointer-events-none rounded-2xl shadow-inner border border-yellow-300/50">
+                                {getIcon(0)}
+                                <span className="font-semibold">SUNNY DAY</span>
+                                {getIcon(0)}
+                            </Button>
+                            {/* ZMIENIONO: Prosty kolor - Lemon Drops */}
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl text-gray-800 bg-yellow-300 hover:opacity-90 transition-all pointer-events-none rounded-2xl shadow-inner border border-amber-400/30">
+                                {getIcon(1)}
+                                <span className="font-semibold">LEMON DROPS</span>
+                                {getIcon(1)}
+                            </Button>
+                            <Button className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl text-gray-800 bg-gradient-to-r from-yellow-100 via-amber-200 to-yellow-300 hover:opacity-90 transition-all pointer-events-none rounded-2xl shadow-inner border border-yellow-400/30">
+                                {getIcon(2)}
+                                <span className="font-semibold">BUTTERCUP GLOW</span>
+                                {getIcon(2)}
                             </Button>
                         </div>
                     </div>
-
-                    <Separator />
-
-                    {/* Proposal 3: Elements */}
-                    <div>
-                        <h2 className="text-lg font-semibold mb-2 text-center">Proposal 3: Elements</h2>
-                        <div className="grid grid-cols-2 gap-4">
-                            <Button className="w-full h-28 flex-col gap-2 text-lg text-primary-foreground bg-gradient-to-br from-red-500 to-orange-600 hover:shadow-lg hover:shadow-orange-500/50 transition-all pointer-events-none">
-                                <Flame className="h-12 w-12" />
-                                <span>Fire</span>
-                            </Button>
-                             <Button className="w-full h-28 flex-col gap-2 text-lg text-primary-foreground bg-gradient-to-br from-blue-400 to-cyan-500 hover:shadow-lg hover:shadow-cyan-500/50 transition-all pointer-events-none">
-                                <Droplets className="h-12 w-12" />
-                                <span>Water</span>
-                            </Button>
-                        </div>
-                        <div className="mt-4 flex flex-col space-y-2">
-                             <Button className="w-full h-12 text-lg text-primary-foreground bg-gradient-to-r from-gray-400 to-gray-600 hover:shadow-md hover:shadow-gray-500/40 transition-all pointer-events-none">
-                                <Wind className="h-5 w-5 mr-2" />
-                                <span>Elemental</span>
-                            </Button>
-                        </div>
-                    </div>
-
-                    <Separator />
-
-                    {/* Proposal 4: Adventure */}
-                    <div>
-                        <h2 className="text-lg font-semibold mb-2 text-center">Proposal 4: Adventure</h2>
-                        <div className="grid grid-cols-2 gap-4">
-                            <Button className="w-full h-28 flex-col gap-2 text-lg text-primary-foreground bg-gradient-to-br from-lime-600 to-green-700 hover:shadow-lg hover:shadow-lime-500/50 transition-all pointer-events-none">
-                                <Mountain className="h-12 w-12" />
-                                <span>Explore</span>
-                            </Button>
-                             <Button className="w-full h-28 flex-col gap-2 text-lg text-primary-foreground bg-gradient-to-br from-emerald-500 to-teal-700 hover:shadow-lg hover:shadow-emerald-500/50 transition-all pointer-events-none">
-                                <Trees className="h-12 w-12" />
-                                <span>Forest</span>
-                            </Button>
-                        </div>
-                        <div className="mt-4 flex flex-col space-y-2">
-                             <Button className="w-full h-12 text-lg text-primary-foreground bg-gradient-to-r from-yellow-400 to-orange-500 hover:shadow-md hover:shadow-yellow-500/40 transition-all pointer-events-none">
-                                <Sun className="h-5 w-5 mr-2" />
-                                <span>Sunrise</span>
-                            </Button>
-                        </div>
-                    </div>
-
-                    <Separator />
-
-                    {/* Proposal 5: Fantasy */}
-                    <div>
-                        <h2 className="text-lg font-semibold mb-2 text-center">Proposal 5: Fantasy</h2>
-                        <div className="grid grid-cols-2 gap-4">
-                            <Button className="w-full h-28 flex-col gap-2 text-lg text-primary-foreground border-2 border-amber-300 bg-gray-800 hover:bg-gray-700 hover:shadow-lg hover:shadow-amber-400/30 transition-all pointer-events-none">
-                                <Castle className="h-12 w-12 text-amber-400" />
-                                <span>Kingdom</span>
-                            </Button>
-                             <Button className="w-full h-28 flex-col gap-2 text-lg text-primary-foreground border-2 border-purple-400 bg-gray-800 hover:bg-gray-700 hover:shadow-lg hover:shadow-purple-400/30 transition-all pointer-events-none">
-                                <Crown className="h-12 w-12 text-purple-400" />
-                                <span>Royalty</span>
-                            </Button>
-                        </div>
-                        <div className="mt-4 flex flex-col space-y-2">
-                             <Button className="w-full h-12 text-lg text-primary-foreground border border-gray-500 bg-gray-700 hover:bg-gray-600 hover:shadow-md hover:shadow-gray-500/40 transition-all pointer-events-none">
-                                <Shield className="h-5 w-5 mr-2" />
-                                <span>Defense</span>
-                            </Button>
-                        </div>
-                    </div>
-
-                    <Separator />
-
-                    {/* Proposal 6: Knowledge */}
-                    <div>
-                        <h2 className="text-lg font-semibold mb-2 text-center">Proposal 6: Knowledge</h2>
-                        <div className="grid grid-cols-2 gap-4">
-                            <Button className="w-full h-28 flex-col gap-2 text-lg text-amber-900 bg-amber-100 border-2 border-amber-300 hover:bg-amber-200 transition-all pointer-events-none">
-                                <BookOpen className="h-12 w-12" />
-                                <span>Story</span>
-                            </Button>
-                             <Button className="w-full h-28 flex-col gap-2 text-lg text-gray-800 bg-gray-200 border-2 border-gray-400 hover:bg-gray-300 transition-all pointer-events-none">
-                                <Pencil className="h-12 w-12" />
-                                <span>Create</span>
-                            </Button>
-                        </div>
-                        <div className="mt-4 flex flex-col space-y-2">
-                             <Button className="w-full h-12 text-lg text-yellow-900 bg-yellow-300 border border-yellow-500 hover:bg-yellow-400 transition-all pointer-events-none">
-                                <Lightbulb className="h-5 w-5 mr-2" />
-                                <span>Idea</span>
-                            </Button>
-                        </div>
-                    </div>
-                    
-                    <Separator />
-
-                    {/* Proposal 7: Social */}
-                    <div>
-                        <h2 className="text-lg font-semibold mb-2 text-center">Proposal 7: Social</h2>
-                        <div className="grid grid-cols-2 gap-4">
-                            <Button className="w-full h-28 flex-col gap-2 text-lg text-primary-foreground rounded-2xl bg-gradient-to-br from-pink-500 to-red-500 hover:scale-105 transition-transform pointer-events-none">
-                                <Heart className="h-12 w-12" />
-                                <span>Love</span>
-                            </Button>
-                             <Button className="w-full h-28 flex-col gap-2 text-lg text-primary-foreground rounded-2xl bg-gradient-to-br from-yellow-400 to-orange-400 hover:scale-105 transition-transform pointer-events-none">
-                                <Smile className="h-12 w-12" />
-                                <span>Joy</span>
-                            </Button>
-                        </div>
-                        <div className="mt-4 flex flex-col space-y-2">
-                             <Button className="w-full h-12 text-lg text-primary-foreground rounded-full bg-gradient-to-r from-teal-400 to-cyan-500 hover:shadow-lg hover:shadow-cyan-400/50 transition-all pointer-events-none">
-                                <Users className="h-5 w-5 mr-2" />
-                                <span>Community</span>
-                            </Button>
-                        </div>
-                    </div>
-
-                    <Separator />
-
-                    {/* Proposal 8: Nautical */}
-                    <div>
-                        <h2 className="text-lg font-semibold mb-2 text-center">Proposal 8: Nautical</h2>
-                        <div className="grid grid-cols-2 gap-4">
-                            <Button className="w-full h-28 flex-col gap-2 text-lg text-blue-900 bg-white border-4 border-blue-800 hover:bg-blue-100 transition-all pointer-events-none">
-                                <Ship className="h-12 w-12" />
-                                <span>Voyage</span>
-                            </Button>
-                             <Button className="w-full h-28 flex-col gap-2 text-lg text-blue-900 bg-white border-4 border-blue-800 hover:bg-blue-100 transition-all pointer-events-none">
-                                <Anchor className="h-12 w-12" />
-                                <span>Harbor</span>
-                            </Button>
-                        </div>
-                        <div className="mt-4 flex flex-col space-y-2">
-                             <Button className="w-full h-12 text-lg text-blue-900 bg-white border-2 border-blue-800 hover:bg-blue-100 transition-all pointer-events-none">
-                                <Map className="h-5 w-5 mr-2" />
-                                <span>Exploration</span>
-                            </Button>
-                        </div>
-                    </div>
-
-                    <Separator />
-
-                    {/* Proposal 9: Tech */}
-                    <div>
-                        <h2 className="text-lg font-semibold mb-2 text-center">Proposal 9: Tech</h2>
-                        <div className="grid grid-cols-2 gap-4">
-                            <Button className="w-full h-28 flex-col gap-2 text-lg font-mono text-lime-300 bg-black border border-lime-300/50 hover:bg-gray-900 hover:border-lime-300 transition-all pointer-events-none">
-                                <Code className="h-12 w-12" />
-                                <span>Code</span>
-                            </Button>
-                             <Button className="w-full h-28 flex-col gap-2 text-lg font-mono text-lime-300 bg-black border border-lime-300/50 hover:bg-gray-900 hover:border-lime-300 transition-all pointer-events-none">
-                                <Terminal className="h-12 w-12" />
-                                <span>Shell</span>
-                            </Button>
-                        </div>
-                        <div className="mt-4 flex flex-col space-y-2">
-                             <Button className="w-full h-12 text-lg font-mono text-lime-300 bg-black border border-lime-300/50 hover:bg-gray-900 hover:border-lime-300 transition-all pointer-events-none">
-                                <GitBranch className="h-5 w-5 mr-2" />
-                                <span>Version Control</span>
-                            </Button>
-                        </div>
-                    </div>
-
-                    <Separator />
-
-                    {/* Proposal 10: Media */}
-                    <div>
-                        <h2 className="text-lg font-semibold mb-2 text-center">Proposal 10: Media</h2>
-                        <div className="grid grid-cols-2 gap-4">
-                            <Button className="w-full h-28 flex-col gap-2 text-lg text-primary-foreground bg-slate-700 shadow-inner-lg hover:bg-slate-600 transition-colors pointer-events-none">
-                                <Music className="h-12 w-12" />
-                                <span>Rhythm</span>
-                            </Button>
-                             <Button className="w-full h-28 flex-col gap-2 text-lg text-primary-foreground bg-slate-700 shadow-inner-lg hover:bg-slate-600 transition-colors pointer-events-none">
-                                <Film className="h-12 w-12" />
-                                <span>Cinema</span>
-                            </Button>
-                        </div>
-                        <div className="mt-4 flex flex-col space-y-2">
-                             <Button className="w-full h-12 text-lg text-primary-foreground bg-slate-800 shadow-inner-md hover:bg-slate-700 transition-colors pointer-events-none">
-                                <Camera className="h-5 w-5 mr-2" />
-                                <span>Snapshot</span>
-                            </Button>
-                        </div>
-                    </div>
-
 
                 </CardContent>
                 <CardFooter className="flex justify-center p-6">
                     <Link href="/" passHref>
-                        <Button variant="outline">
-                            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
+                        <Button variant="outline" className="gap-2">
+                            <ArrowLeft className="h-4 w-4" /> 
+                            <span>Back to Home</span>
                         </Button>
                     </Link>
                 </CardFooter>
@@ -265,5 +306,3 @@ export default function GamesPage() {
         </main>
     );
 }
-
-    

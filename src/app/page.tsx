@@ -1,6 +1,9 @@
 "use client";
 
-import { BookOpen, Dumbbell, Sparkles, Settings, BarChart, ShieldX, MessageSquareQuote, Layers, Trophy, GraduationCap } from 'lucide-react';
+import {
+    BookOpen, Dumbbell, Sparkles, Settings, BarChart, ShieldX, MessageSquareQuote, Layers, Trophy, GraduationCap,
+    LayoutGrid, Gamepad2, PencilLine, BookOpenText, Ear
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -12,7 +15,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Separator } from '@/components/ui/separator';
 import ProPromotionDialog from '@/components/ProPromotionDialog';
 import RateAppDialog from '@/components/RateAppDialog';
-
 
 export default function Home() {
     const [language, setCurrentLanguage] = useState<'en' | 'fr' | 'de' | 'it' | 'es'>('en');
@@ -55,7 +57,6 @@ export default function Home() {
         };
     }, [pathname]);
 
-
     const handleLanguageChange = (lang: 'en' | 'fr' | 'de' | 'it' | 'es') => {
         setLanguage(lang);
         setCurrentLanguage(lang);
@@ -73,47 +74,7 @@ export default function Home() {
         if (isSpanish) return "¿Listo para cuestionar tus elecciones de vida en otro idioma? ¡Vamos!";
         return "Ready to question your life choices in another language? Let's go!";
     };
-
-    const getQuizTitle1 = () => {
-        if (isFrench) return "Français - Polonais";
-        if (isGerman) return "Deutsch - Polnisch";
-        if (isItalian) return "Italiano - Polacco";
-        if (isSpanish) return "Español - Polaco";
-        return "English - Polish";
-    };
-
-    const getQuizTitle2 = () => {
-        if (isFrench) return "Polonais - Français";
-        if (isGerman) return "Polnisch - Deutsch";
-        if (isItalian) return "Polacco - Italiano";
-        if (isSpanish) return "Polaco - Español";
-        return "Polish - English";
-    };
     
-    const getQuizTitle3 = () => {
-        if (isFrench) return "Verbes & Aux.";
-        if (isGerman) return "Unregelmäßige Verben";
-        if (isItalian) return "Verbi Irregolari";
-        if (isSpanish) return "Verbos Irregulares";
-        return "Irregular Verbs";
-    }
-
-    const getQuizTitle4 = () => {
-        if (isFrench) return "Faux Amis";
-        if (isGerman) return "Trennbare Verben";
-        if (isItalian) return "Falsi Amici";
-        if (isSpanish) return "Falsos Amigos";
-        return "Phrasal Verbs";
-    }
-    
-    const getQuizTitle5 = () => {
-        if (isFrench) return "Idiomes";
-        if (isGerman) return "Redewendungen";
-        if (isItalian) return "Modi di dire";
-        if (isSpanish) return "Modismos";
-        return "Idioms";
-    }
-
     const getLearningButtonText = () => {
         if (isFrench) return "Apprentissage";
         if (isGerman) return "Lernen";
@@ -129,7 +90,6 @@ export default function Home() {
         if (isSpanish) return '🇪🇸';
         return '🇬🇧';
     }
-
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -153,37 +113,33 @@ export default function Home() {
                         {getWelcomeMessage()}
                     </p>
                 </CardHeader>
-                <CardContent data-tutorial-id="quiz-buttons" className="flex flex-col space-y-4 p-6 pt-0 pb-4">
-                    <Link href={isFrench ? "/quiz/fr-pl" : isGerman ? "/quiz/de-pl" : isItalian ? "/quiz/it-pl" : isSpanish ? "/quiz/es-pl" : "/quiz/en-pl"} passHref>
-                        <Button className="w-full h-12 text-lg" size="lg">
-                            <BookOpen className="mr-2 h-5 w-5" />
-                            {getQuizTitle1()}
+                <CardContent className="flex flex-col space-y-4 p-6 pt-0 pb-4">
+                    <div className="grid grid-cols-2 gap-4">
+                        <Link href="/quizzes" passHref>
+                            <Button variant="outline" className="w-full h-28 flex-col gap-2 text-lg border-2 border-primary">
+                                <LayoutGrid className="h-12 w-12 text-deep-purple" />
+                                <span>Quizzes</span>
+                            </Button>
+                        </Link>
+                        <Button variant="outline" className="w-full h-28 flex-col gap-2 text-lg border-2 border-primary pointer-events-none">
+                            <Gamepad2 className="h-12 w-12 text-deep-purple" />
+                            <span>Games</span>
                         </Button>
-                    </Link>
-                    <Link href={isFrench ? "/quiz/pl-fr" : isGerman ? "/quiz/pl-de" : isItalian ? "/quiz/pl-it" : isSpanish ? "/quiz/pl-es" : "/quiz/pl-en"} passHref>
-                        <Button className="w-full h-12 text-lg" size="lg">
-                            <Dumbbell className="mr-2 h-5 w-5" />
-                            {getQuizTitle2()}
+                    </div>
+                    <div className="flex flex-col space-y-2">
+                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary pointer-events-none">
+                            <PencilLine className="mr-2 h-5 w-5 text-deep-purple" />
+                            <span>Fill the Gap</span>
                         </Button>
-                    </Link>
-                    <Link href={isFrench ? "/quiz/irregular-verbs-fr" : isGerman ? "/quiz/irregular-verbs-de" : isItalian ? "/quiz/irregular-verbs-it" : isSpanish ? "/quiz/irregular-verbs-es" : "/quiz/irregular-verbs-en"} passHref>
-                        <Button className="w-full h-12 text-lg" size="lg">
-                            <Sparkles className="mr-2 h-5 w-5" />
-                            {getQuizTitle3()}
+                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary pointer-events-none">
+                            <BookOpenText className="mr-2 h-5 w-5 text-deep-purple" />
+                            <span>Reading</span>
                         </Button>
-                    </Link>
-                    <Link href={isFrench ? "/quiz/phrasal-verbs-fr" : isGerman ? "/quiz/phrasal-verbs-de" : isItalian ? "/quiz/phrasal-verbs-it" : isSpanish ? "/quiz/phrasal-verbs-es" : "/quiz/phrasal-verbs-en"} passHref>
-                        <Button className="w-full h-12 text-lg" size="lg">
-                            <Layers className="mr-2 h-5 w-5" />
-                            {getQuizTitle4()}
+                        <Button variant="outline" className="w-full h-12 text-lg border-2 border-primary pointer-events-none">
+                            <Ear className="mr-2 h-5 w-5 text-deep-purple" />
+                            <span>Listening</span>
                         </Button>
-                    </Link>
-                    <Link href={isFrench ? "/quiz/idioms-fr" : isGerman ? "/quiz/idioms-de" : isItalian ? "/quiz/idioms-it" : isSpanish ? "/quiz/idioms-es" : "/quiz/idioms-en"} passHref>
-                        <Button className="w-full h-12 text-lg" size="lg">
-                            <MessageSquareQuote className="mr-2 h-5 w-5" />
-                            {getQuizTitle5()}
-                        </Button>
-                    </Link>
+                    </div>
                 </CardContent>
                 <div data-tutorial-id="learning-button" className="px-6 pb-2">
                     <Separator className="mb-2"/>
@@ -194,7 +150,7 @@ export default function Home() {
                         </Button>
                     </Link>
                 </div>
-                <CardFooter data-tutorial-id="toolbar" className="flex justify-center gap-4 p-4 pt-4">
+                <CardFooter data-tutorial-id="toolbar" className="flex justify-center gap-4 p-4">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button data-tutorial-id="language-switcher" variant="outline" size="icon" title="Change language">

@@ -58,6 +58,7 @@ const GLOBAL_STATS_KEY = 'linguaLearnGlobalStats_v2';
 const TUTORIAL_COMPLETED_KEY = 'linguaLearnTutorialCompleted_v2';
 export const NEW_ACHIEVEMENTS_COUNT_KEY = 'linguaLearnNewAchievementsCount';
 const APP_THEME_KEY = 'linguaLearnAppTheme_v1';
+const APP_ICON_COLOR_KEY = 'linguaLearnAppIconColor_v1';
 
 
 export interface GlobalStats {
@@ -161,6 +162,24 @@ export const clearAppTheme = () => {
     if (typeof window === 'undefined') return;
     localStorage.removeItem(APP_THEME_KEY);
     window.dispatchEvent(new CustomEvent('theme-changed'));
+};
+
+// --- Icon Color Functions ---
+export const getIconColor = (): string | null => {
+    if (typeof window === 'undefined') return null;
+    return localStorage.getItem(APP_ICON_COLOR_KEY);
+};
+
+export const setIconColor = (color: string) => {
+    if (typeof window === 'undefined') return;
+    localStorage.setItem(APP_ICON_COLOR_KEY, color);
+    window.dispatchEvent(new CustomEvent('icon-color-changed'));
+};
+
+export const clearIconColor = () => {
+    if (typeof window === 'undefined') return;
+    localStorage.removeItem(APP_ICON_COLOR_KEY);
+    window.dispatchEvent(new CustomEvent('icon-color-changed'));
 };
 
 
@@ -284,6 +303,11 @@ const setNewAchievementsCount = (count: number) => {
 export const clearNewAchievementsCount = () => {
     setNewAchievementsCount(0);
 };
+
+export interface AchievementStatus {
+    progress: number;
+    unlockedAt: number | null;
+}
 
 export const getAchievements = (): Record<string, AchievementStatus> => {
     if (typeof window === 'undefined') return {};
@@ -578,6 +602,7 @@ export const clearSettings = () => {
     if (typeof window === 'undefined') return;
     localStorage.removeItem(SETTINGS_KEY);
     clearAppTheme();
+    clearIconColor();
     // After clearing, save default settings to trigger update
     saveSettings(getSettings());
 };

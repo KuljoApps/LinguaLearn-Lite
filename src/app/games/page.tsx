@@ -2,24 +2,58 @@
 
 import { 
     ArrowLeft, Gamepad2, Zap, Sparkles, Heart, 
-    Star, Rocket, Cloud, Sun, Moon
+    Star, Rocket, Cloud, Sun, Moon, Check
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { setAppTheme, type AppTheme } from '@/lib/storage';
+import { setAppTheme, type AppTheme, setIconColor, getIconColor } from '@/lib/storage';
 import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { cn } from '@/lib/utils';
 
 // 5 podstawowych ikon do rotacji
 const icons = [Zap, Sparkles, Heart, Star, Rocket];
 
+const paletteColors = [
+    { name: 'Default Purple', textClass: 'text-deep-purple', bgClass: 'bg-deep-purple' },
+    { name: 'White', textClass: 'text-white', bgClass: 'bg-white border-2' },
+    { name: 'Slate', textClass: 'text-slate-400', bgClass: 'bg-slate-400' },
+    { name: 'Red', textClass: 'text-red-500', bgClass: 'bg-red-500' },
+    { name: 'Orange', textClass: 'text-orange-500', bgClass: 'bg-orange-500' },
+    { name: 'Amber', textClass: 'text-amber-500', bgClass: 'bg-amber-500' },
+    { name: 'Yellow', textClass: 'text-yellow-400', bgClass: 'bg-yellow-400' },
+    { name: 'Lime', textClass: 'text-lime-500', bgClass: 'bg-lime-500' },
+    { name: 'Green', textClass: 'text-green-500', bgClass: 'bg-green-500' },
+    { name: 'Emerald', textClass: 'text-emerald-500', bgClass: 'bg-emerald-500' },
+    { name: 'Teal', textClass: 'text-teal-500', bgClass: 'bg-teal-500' },
+    { name: 'Cyan', textClass: 'text-cyan-400', bgClass: 'bg-cyan-400' },
+    { name: 'Sky', textClass: 'text-sky-500', bgClass: 'bg-sky-500' },
+    { name: 'Blue', textClass: 'text-blue-500', bgClass: 'bg-blue-500' },
+    { name: 'Indigo', textClass: 'text-indigo-500', bgClass: 'bg-indigo-500' },
+    { name: 'Violet', textClass: 'text-violet-500', bgClass: 'bg-violet-500' },
+    { name: 'Fuchsia', textClass: 'text-fuchsia-500', bgClass: 'bg-fuchsia-500' },
+    { name: 'Pink', textClass: 'text-pink-500', bgClass: 'bg-pink-500' },
+    { name: 'Rose', textClass: 'text-rose-500', bgClass: 'bg-rose-500' },
+];
+
 export default function GamesPage() {
     const router = useRouter();
+    const [selectedIconColor, setSelectedIconColor] = useState<string | null>(null);
+
+    useEffect(() => {
+        setSelectedIconColor(getIconColor());
+    }, []);
 
     const handleThemeSelect = (theme: AppTheme) => {
         setAppTheme(theme);
         router.push('/');
+    };
+    
+    const handleIconColorSelect = (colorClass: string) => {
+        setIconColor(colorClass);
+        setSelectedIconColor(colorClass);
     };
 
     // Funkcja do pobierania ikony na podstawie indeksu
@@ -43,10 +77,9 @@ export default function GamesPage() {
                     {/* CATEGORY 1: NEON CYBERPUNK */}
                     <div>
                         <h2 className="text-2xl font-bold mb-4 text-center text-cyan-300 bg-gray-900 py-2 rounded-lg border border-cyan-500/30">
-                            ⚡ NEON CYBERPUNK ⚡
+                            NEON CYBERPUNK
                         </h2>
                         
-                        {/* NEON AMBER/GOLD - 3 ODCIENIE - WSZYSTKIE PROSTE KOLORY */}
                         <div className="mb-4">
                             <h3 className="text-lg font-semibold mb-2 text-amber-300">Amber & Gold</h3>
                             <Button 
@@ -72,7 +105,6 @@ export default function GamesPage() {
                             </Button>
                         </div>
 
-                        {/* NEON DEEP PURPLE - 3 ODCIENIE */}
                         <div className="mb-4">
                             <h3 className="text-lg font-semibold mb-2 text-purple-400">Deep Purple</h3>
                             <Button 
@@ -98,7 +130,6 @@ export default function GamesPage() {
                             </Button>
                         </div>
 
-                        {/* NEON GREEN - 3 ODCIENIE */}
                         <div className="mb-4">
                             <h3 className="text-lg font-semibold mb-2 text-green-400">Green</h3>
                             <Button 
@@ -124,7 +155,6 @@ export default function GamesPage() {
                             </Button>
                         </div>
 
-                        {/* NEON RED - 3 ODCIENIE */}
                         <div className="mb-4">
                             <h3 className="text-lg font-semibold mb-2 text-red-400">Red</h3>
                             <Button 
@@ -150,7 +180,6 @@ export default function GamesPage() {
                             </Button>
                         </div>
 
-                        {/* NEON BLUE - 3 ODCIENIE */}
                         <div className="mb-4">
                             <h3 className="text-lg font-semibold mb-2 text-blue-400">Blue</h3>
                             <Button 
@@ -176,7 +205,6 @@ export default function GamesPage() {
                             </Button>
                         </div>
 
-                        {/* NEON YELLOW - 3 ODCIENIE */}
                         <div className="mb-4">
                             <h3 className="text-lg font-semibold mb-2 text-yellow-400">Yellow</h3>
                             <Button 
@@ -261,6 +289,27 @@ export default function GamesPage() {
                             </Button>
                         </div>
                     </div>
+                    <Separator />
+                    <div>
+                        <h2 className="text-2xl font-bold mb-4 text-center">Icon & Text Color</h2>
+                         <div className="grid grid-cols-6 sm:grid-cols-9 gap-4 justify-center px-4">
+                            {paletteColors.map((color) => (
+                                <button
+                                    key={color.name}
+                                    title={color.name}
+                                    onClick={() => handleIconColorSelect(color.textClass)}
+                                    className={cn(
+                                        'h-12 w-12 rounded-md border-2 flex items-center justify-center transition-all',
+                                        color.bgClass,
+                                        selectedIconColor === color.textClass ? 'border-ring ring-2 ring-ring' : 'border-transparent'
+                                    )}
+                                >
+                                    {selectedIconColor === color.textClass && <Check className="h-6 w-6 text-white mix-blend-difference" />}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
                 </CardContent>
                 <CardFooter className="flex justify-center p-6 mt-auto border-t">
                     <Link href="/" passHref>

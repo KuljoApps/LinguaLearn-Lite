@@ -115,7 +115,7 @@ export default function SettingsPage() {
             <ProPromotionDialog open={showPromoDialog} onOpenChange={setShowPromoDialog} />
             <RateAppDialog open={showRateDialog} onOpenChange={setShowRateDialog} />
             <Card className="shadow-2xl overflow-hidden">
-                 <CardHeader>
+                 <CardHeader className="p-6">
                     <div className="relative flex items-center justify-center">
                         {/* Invisible placeholder for centering */}
                         <div className="flex items-center gap-2 invisible">

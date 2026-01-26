@@ -29,6 +29,7 @@ const WordChainPage = () => {
 
     const handleWordSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (wordChain.length === 0) return;
         const lastWord = wordChain[wordChain.length - 1];
         const lastLetter = lastWord.slice(-1).toUpperCase();
         
@@ -66,7 +67,7 @@ const WordChainPage = () => {
         <CardContent className="p-6 space-y-6">
             <div className="text-center">
                 <p className="text-muted-foreground">Last word in chain:</p>
-                <p className="text-4xl font-bold tracking-wider">{wordChain[wordChain.length - 1]}</p>
+                <p className="text-4xl font-bold tracking-wider">{wordChain.length > 0 ? wordChain[wordChain.length - 1] : '...'}</p>
             </div>
             
             <form onSubmit={handleWordSubmit} className="flex justify-center items-start gap-2">
@@ -74,12 +75,13 @@ const WordChainPage = () => {
                     <Input 
                         value={currentInput}
                         onChange={e => setCurrentInput(e.target.value)}
-                        placeholder={`Word starting with '${wordChain[wordChain.length - 1].slice(-1).toUpperCase()}'...`}
+                        placeholder={wordChain.length > 0 ? `Word starting with '${wordChain[wordChain.length - 1].slice(-1).toUpperCase()}'...` : 'Loading game...'}
                         className="text-lg text-center"
+                        disabled={wordChain.length === 0}
                     />
                     {error && <p className="text-destructive text-sm mt-1 text-center">{error}</p>}
                 </div>
-                <Button type="submit">Add Word</Button>
+                <Button type="submit" disabled={wordChain.length === 0}>Add Word</Button>
             </form>
 
             <div className="flex flex-wrap gap-2 justify-center bg-muted/50 p-4 rounded-lg">

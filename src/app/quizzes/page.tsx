@@ -173,11 +173,12 @@ export default function QuizzesPage() {
                         <p className="text-muted-foreground">
                             {getWelcomeMessage()}
                         </p>
-                        <div className="relative flex items-center justify-center pt-4">
-                             <CardTitle className="text-3xl font-bold tracking-tight">{getTitle()}</CardTitle>
-                             <Tooltip>
+                        <div className="flex items-center justify-between pt-4">
+                            <div className="w-10" /> {/* Spacer for centering title */}
+                            <CardTitle className="text-3xl font-bold tracking-tight">{getTitle()}</CardTitle>
+                            <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <Button variant="ghost" size="icon" onClick={handleToggleDescriptions} className="absolute right-0 top-1/2 -translate-y-1/2">
+                                    <Button variant="ghost" size="icon" onClick={handleToggleDescriptions}>
                                         <Info className="h-5 w-5" />
                                     </Button>
                                 </TooltipTrigger>

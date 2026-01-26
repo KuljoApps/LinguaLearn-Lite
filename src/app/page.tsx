@@ -178,7 +178,7 @@ export default function Home() {
                     </div>
                     <div className="flex flex-col space-y-2">
                         <Link href="/fill-the-gap" passHref>
-                            <Button className={cn(rectButtonClasses, "w-full gap-2 items-end", "rounded-xl", themeClasses, "font-normal")}>
+                            <Button className={cn(rectButtonClasses, "w-full gap-2 items-center", "rounded-xl", themeClasses, "font-normal")}>
                                 <PencilLine className={cn("mr-2 h-5 w-5", iconClasses)} />
                                 <span className={cn("flex items-center", iconClasses)}>
                                     <span>Fill</span>

@@ -64,7 +64,7 @@ export default function ReadingPage() {
             Array(readingTasks.length)
                 .fill(0)
                 .map(() => {
-                    const completed = Math.floor(10 + Math.random() * 21);
+                    const completed = Math.floor(10 + Math.random() * 86);
                     const total = 100;
                     const progress = (completed / total) * 100;
                     return {
@@ -94,7 +94,7 @@ export default function ReadingPage() {
                         <h1 className="text-3xl font-bold tracking-tight">
                             <span className="relative inline-block">
                                 Reading
-                                <span className="absolute -left-2 -bottom-2 text-sm font-semibold tracking-normal text-amber">
+                                <span className="absolute -left-[10px] -bottom-2 text-sm font-semibold tracking-normal text-amber">
                                 Lite
                                 </span>
                             </span>

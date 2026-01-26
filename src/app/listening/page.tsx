@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Ear, Keyboard, BookOpen, LayoutGrid, List, MapPin, Users } from 'lucide-react';
+import { ArrowLeft, Ear, Keyboard, BookOpen, LayoutGrid, List, MapPin, Users, HelpCircle, AudioLines, FileInput, PencilRuler } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardFooter, CardTitle } from '@/components/ui/card';
@@ -54,7 +54,7 @@ export default function ListeningPage() {
             Array(listeningTasks.length)
                 .fill(0)
                 .map(() => {
-                    const completed = Math.floor(10 + Math.random() * 21);
+                    const completed = Math.floor(10 + Math.random() * 86);
                     const total = 100;
                     const progress = (completed / total) * 100;
                     return {

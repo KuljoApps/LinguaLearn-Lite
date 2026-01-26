@@ -46,7 +46,7 @@ export default function FillTheGapPage() {
             Array(tasks.length)
                 .fill(0)
                 .map(() => {
-                    const completed = Math.floor(10 + Math.random() * 21);
+                    const completed = Math.floor(10 + Math.random() * 86);
                     const total = 100;
                     const progress = (completed / total) * 100;
                     return {

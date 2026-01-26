@@ -162,7 +162,7 @@ export default function QuizzesPage() {
             Array(quizTasks.length)
                 .fill(0)
                 .map(() => {
-                    const completed = Math.floor(10 + Math.random() * 21); // 10-30
+                    const completed = Math.floor(10 + Math.random() * 86);
                     const total = 100;
                     const progress = (completed / total) * 100;
                     return {

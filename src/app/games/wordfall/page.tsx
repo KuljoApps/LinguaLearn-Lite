@@ -1,127 +1,120 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, Type, Heart, Star } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Progress } from '@/components/ui/progress';
+import { ArrowLeft, Shuffle, CheckCircle, XCircle } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-const wordList = ['apple', 'banana', 'cherry', 'orange', 'grape', 'lemon', 'melon'];
+const wordList = [
+  { en: 'APPLE', pl: 'Jabłko' },
+  { en: 'HOUSE', pl: 'Dom' },
+  { en: 'WATER', pl: 'Woda' },
+  { en: 'TABLE', pl: 'Stół' },
+  { en: 'CHAIR', pl: 'Krzesło' },
+  { en: 'BANANA', pl: 'Banan' },
+  { en: 'CHERRY', pl: 'Wiśnia' },
+  { en: 'ORANGE', pl: 'Pomarańcza' },
+];
 
-const WordfallPage = () => {
-  const [currentWord, setCurrentWord] = useState('');
-  const [typedWord, setTypedWord] = useState('');
-  const [score, setScore] = useState(0);
-  const [lives, setLives] = useState(3);
-  const [timeLeft, setTimeLeft] = useState(10);
-  const [isGameOver, setIsGameOver] = useState(false);
+const shuffle = (array: string[]) => {
+  let currentIndex = array.length,  randomIndex;
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+  }
+  return array;
+};
 
-  const selectNewWord = useCallback(() => {
+const WordScramblePage = () => {
+  const [currentWord, setCurrentWord] = useState(wordList[0]);
+  const [scrambledLetters, setScrambledLetters] = useState<string[]>([]);
+  const [playerAnswer, setPlayerAnswer] = useState<string[]>([]);
+  const [feedback, setFeedback] = useState<'correct' | 'incorrect' | null>(null);
+
+  const setupNewWord = () => {
     const newWord = wordList[Math.floor(Math.random() * wordList.length)];
     setCurrentWord(newWord);
-    setTimeLeft(10);
-  }, []);
-
-  useEffect(() => {
-    if (!isGameOver) {
-      selectNewWord();
-    }
-  }, [isGameOver, selectNewWord]);
-
-  useEffect(() => {
-    if (isGameOver) return;
-
-    if (timeLeft <= 0) {
-      setLives(prev => prev - 1);
-      if (lives - 1 <= 0) {
-        setIsGameOver(true);
-      } else {
-        selectNewWord();
-      }
-      return;
-    }
-
-    const timer = setInterval(() => {
-      setTimeLeft(prev => prev - 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [timeLeft, lives, isGameOver, selectNewWord]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTypedWord(e.target.value);
-  };
-
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (typedWord.toLowerCase() === currentWord.toLowerCase()) {
-      setScore(prev => prev + 10);
-      setTypedWord('');
-      selectNewWord();
-    }
+    setScrambledLetters(shuffle(newWord.en.split('')));
+    setPlayerAnswer([]);
+    setFeedback(null);
   };
   
-  const restartGame = () => {
-    setScore(0);
-    setLives(3);
-    setIsGameOver(false);
-    setTypedWord('');
-  }
+  useEffect(() => {
+    setupNewWord();
+  }, []);
+
+  const handleLetterClick = (letter: string, from: 'scrambled' | 'player', index: number) => {
+    if (from === 'scrambled') {
+      if (playerAnswer.length < currentWord.en.length) {
+        setPlayerAnswer([...playerAnswer, letter]);
+        const newScrambled = [...scrambledLetters];
+        newScrambled.splice(index, 1);
+        setScrambledLetters(newScrambled);
+      }
+    } else { // from 'player'
+      const newPlayerAnswer = [...playerAnswer];
+      newPlayerAnswer.splice(index, 1);
+      setPlayerAnswer(newPlayerAnswer);
+      setScrambledLetters(shuffle([...scrambledLetters, letter]));
+    }
+     setFeedback(null);
+  };
+
+  const checkAnswer = () => {
+    if (playerAnswer.length !== currentWord.en.length) return;
+    const constructedWord = playerAnswer.join('');
+    if (constructedWord === currentWord.en) {
+      setFeedback('correct');
+    } else {
+      setFeedback('incorrect');
+    }
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4">
-      <Card className="w-full max-w-md shadow-2xl">
+      <Card className="w-full max-w-2xl shadow-2xl">
         <CardHeader className="text-center p-6">
           <div className="flex items-center justify-center gap-4">
-            <Type className="h-8 w-8" />
-            <CardTitle className="text-3xl font-bold tracking-tight">Wordfall</CardTitle>
+            <Shuffle className="h-8 w-8" />
+            <CardTitle className="text-3xl font-bold tracking-tight">Word Scramble</CardTitle>
           </div>
+          <p className="text-muted-foreground pt-2">Unscramble the letters to form the English word.</p>
         </CardHeader>
         <CardContent className="p-6 space-y-6">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <Star className="h-6 w-6 text-amber" />
-              <span className="text-xl font-bold">{score}</span>
+            <div className="text-center">
+              <p className="text-muted-foreground">Polish hint:</p>
+              <p className="text-2xl font-bold">{currentWord.pl}</p>
             </div>
-            <div className="flex items-center gap-2">
-              {[...Array(lives)].map((_, i) => (
-                <Heart key={i} className="h-6 w-6 text-red-500 fill-current" />
-              ))}
-              {[...Array(3 - lives)].map((_, i) => (
-                  <Heart key={i} className="h-6 w-6 text-muted-foreground/50" />
-              ))}
-            </div>
-          </div>
-          
-          {isGameOver ? (
-             <div className="text-center space-y-4 py-10">
-              <h2 className="text-2xl font-bold">Game Over!</h2>
-              <p>Your final score is {score}.</p>
-              <Button onClick={restartGame}>Play Again</Button>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              <div className="relative h-24 bg-muted rounded-lg overflow-hidden">
-                <p className="text-4xl font-bold text-center absolute left-1/2 -translate-x-1/2 transition-all duration-1000 linear" style={{ top: `${(10 - timeLeft) * 10}%` }}>
-                  {currentWord}
-                </p>
-              </div>
-              <Progress value={timeLeft * 10} className="h-2" />
-              <form onSubmit={handleFormSubmit}>
-                <Input
-                  type="text"
-                  value={typedWord}
-                  onChange={handleInputChange}
-                  placeholder="Type the word..."
-                  className="text-center text-lg h-12"
-                  autoFocus
-                />
-              </form>
-            </div>
-          )}
 
+            <div className="min-h-[4rem] p-4 bg-muted/50 rounded-lg border-2 border-dashed flex items-center justify-center gap-2 flex-wrap">
+              {playerAnswer.map((letter, index) => (
+                  <Button key={`${letter}-${index}`} variant="secondary" onClick={() => handleLetterClick(letter, 'player', index)} className="text-2xl font-bold w-12 h-12">{letter}</Button>
+              ))}
+              {Array(currentWord.en.length - playerAnswer.length).fill(0).map((_, index) => (
+                <div key={`placeholder-${index}`} className="w-12 h-12 bg-muted/20 rounded-md border border-dashed" />
+              ))}
+            </div>
+
+            <div className="min-h-[6rem] flex items-center justify-center gap-2 flex-wrap">
+                {scrambledLetters.map((letter, index) => (
+                    <Button key={`${letter}-${index}`} variant="outline" onClick={() => handleLetterClick(letter, 'scrambled', index)} className="text-2xl font-bold w-12 h-12">{letter}</Button>
+                ))}
+            </div>
+
+            {feedback && (
+                <div className={cn("flex items-center justify-center gap-2 p-2 rounded-lg", feedback === 'correct' ? 'bg-success/20 text-success' : 'bg-destructive/20 text-destructive')}>
+                    {feedback === 'correct' ? <CheckCircle /> : <XCircle />}
+                    <p className="font-semibold">{feedback === 'correct' ? 'Correct!' : `Not quite. The word was ${currentWord.en}.`}</p>
+                </div>
+            )}
+
+            <div className="flex justify-center gap-4">
+                <Button onClick={checkAnswer} disabled={playerAnswer.length !== currentWord.en.length || !!feedback}>Check Answer</Button>
+                <Button onClick={setupNewWord} variant="secondary">New Word</Button>
+            </div>
         </CardContent>
         <CardFooter className="flex justify-center p-6 border-t">
           <Link href="/games" passHref>
@@ -136,4 +129,4 @@ const WordfallPage = () => {
   );
 };
 
-export default WordfallPage;
+export default WordScramblePage;

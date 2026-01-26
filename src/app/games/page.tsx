@@ -33,11 +33,11 @@ export default function GamesPage() {
                     </Card>
                     <Card>
                         <CardHeader className="items-center">
-                            <Type className="h-12 w-12 text-primary" />
-                            <CardTitle className="pt-2">Wordfall</CardTitle>
+                            <Shuffle className="h-12 w-12 text-primary" />
+                            <CardTitle className="pt-2">Word Scramble</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-sm text-center text-muted-foreground">Words are falling from the top. Type them correctly before they hit the bottom to score points. Great for spelling!</p>
+                            <p className="text-sm text-center text-muted-foreground">Unscramble the letters to form a word based on the hint. A great test of your vocabulary and spelling.</p>
                         </CardContent>
                         <CardFooter>
                             <Link href="/games/wordfall" className="w-full">

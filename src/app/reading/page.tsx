@@ -77,7 +77,7 @@ export default function ReadingPage() {
                         <h1 className="text-3xl font-bold tracking-tight">
                             <span className="relative inline-block">
                                 Reading
-                                <span className="absolute right-[11px] -bottom-[8px] text-sm font-semibold tracking-normal text-amber">
+                                <span className="absolute right-[13px] -bottom-[8px] text-sm font-semibold tracking-normal text-amber">
                                 Lite
                                 </span>
                             </span>

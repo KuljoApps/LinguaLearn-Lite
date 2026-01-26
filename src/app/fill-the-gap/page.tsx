@@ -145,7 +145,7 @@ export default function FillTheGapPage() {
                     <div className="flex items-center justify-center gap-4">
                         <PencilLine className="h-8 w-8" />
                         <h1 className="text-3xl font-bold tracking-tight">
-                            Fill{' '}
+                            Fill the{' '}
                             <span className="relative inline-block">
                                 Gap
                                 <span className="absolute -left-[30px] -bottom-3 text-sm font-semibold tracking-normal text-amber">

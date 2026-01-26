@@ -3,36 +3,40 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 import { ArrowLeft, AlignLeft } from 'lucide-react';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
+
+const textPart1 = "The sun is a star at the center of the Solar System. It is a nearly perfect sphere of hot plasma. ";
+const textPart2 = " It is by far the most important source of energy for life on Earth.";
+const options = [
+    "Its surface is called the photosphere.",
+    "This energy is released through nuclear fusion.",
+    "It has a diameter of about 1.39 million kilometers."
+];
+const correctAnswer = "This energy is released through nuclear fusion.";
 
 export default function GapTextPage() {
-    const [input1, setInput1] = useState('');
-    const [input2, setInput2] = useState('');
+    const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
     const { toast } = useToast();
 
-    const correctAnswer1 = 'learning';
-    const correctAnswer2 = 'fun';
-
-    const checkAnswers = () => {
-        const isCorrect1 = input1.toLowerCase().trim() === correctAnswer1;
-        const isCorrect2 = input2.toLowerCase().trim() === correctAnswer2;
-
-        if (isCorrect1 && isCorrect2) {
-            toast({ title: 'Perfect!', description: 'You got everything right!' });
+    const checkAnswer = () => {
+        if (!selectedAnswer) {
+            toast({ variant: 'destructive', title: 'No answer selected', description: 'Please choose a sentence to complete the text.' });
+            return;
+        }
+        if (selectedAnswer === correctAnswer) {
+            toast({ title: 'Correct!', description: 'This sentence fits perfectly!' });
         } else {
-            let incorrectFields = [];
-            if (!isCorrect1) incorrectFields.push('first blank');
-            if (!isCorrect2) incorrectFields.push('second blank');
-            toast({ variant: 'destructive', title: 'Some are incorrect', description: `Check the ${incorrectFields.join(' and ')}.` });
+            toast({ variant: 'destructive', title: 'Incorrect', description: `The correct answer was: "${correctAnswer}"` });
         }
     };
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
-            <Card className="w-full max-w-xl shadow-2xl">
+            <Card className="w-full max-w-2xl shadow-2xl">
                 <CardHeader className="text-center">
                     <div className="flex items-center justify-center gap-4">
                         <AlignLeft className="h-8 w-8" />
@@ -40,24 +44,26 @@ export default function GapTextPage() {
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-6 p-6">
-                    <p className="text-muted-foreground text-center">Complete the text:</p>
-                    <div className="text-lg leading-relaxed text-center">
-                        I am really enjoying {' '}
-                        <Input 
-                            value={input1}
-                            onChange={(e) => setInput1(e.target.value)}
-                            className="inline-block w-32 h-8 text-center"
-                        />
-                        {' '} a new language. It is a lot of {' '}
-                        <Input 
-                             value={input2}
-                            onChange={(e) => setInput2(e.target.value)}
-                            className="inline-block w-24 h-8 text-center"
-                        />
-                        {' '} and very rewarding.
+                    <div className="rounded-lg border bg-muted/30 p-4">
+                        <p className="text-lg leading-relaxed text-justify">
+                            {textPart1}
+                            <span className="font-bold text-primary">[...]</span>
+                            {textPart2}
+                        </p>
                     </div>
-                    <div className="text-center">
-                        <Button onClick={checkAnswers}>Check</Button>
+                    <div className="space-y-4">
+                        <h3 className="text-xl font-semibold">Choose the best sentence to fill the blank:</h3>
+                        <RadioGroup onValueChange={setSelectedAnswer}>
+                            {options.map((option, index) => (
+                                <div key={index} className="flex items-start space-x-3 p-3 rounded-lg border bg-card">
+                                    <RadioGroupItem value={option} id={`option-${index}`} />
+                                    <Label htmlFor={`option-${index}`} className="text-base leading-snug">{option}</Label>
+                                </div>
+                            ))}
+                        </RadioGroup>
+                    </div>
+                    <div className="text-center pt-4">
+                        <Button onClick={checkAnswer}>Check Answer</Button>
                     </div>
                 </CardContent>
                 <CardFooter className="flex justify-center p-6 border-t">

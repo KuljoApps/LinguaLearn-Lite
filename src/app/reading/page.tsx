@@ -91,15 +91,6 @@ export default function ReadingPage() {
                             </Link>
                              {showDescriptions && <p className="text-xs italic text-muted-foreground mt-1 px-2">Identify the meaning of highlighted words based on their context within the passage.</p>}
                         </div>
-                        <div>
-                            <Link href="/reading/summarization" passHref>
-                                <Button className="w-full h-16 text-lg" size="lg">
-                                    <Tally5 className="mr-2 h-5 w-5" />
-                                    Summarization
-                                </Button>
-                            </Link>
-                             {showDescriptions && <p className="text-xs italic text-muted-foreground mt-1 px-2">Read a text and choose the summary that best captures its main idea.</p>}
-                        </div>
                          <div>
                             <Link href="/reading/matching-headings" passHref>
                                 <Button className="w-full h-16 text-lg" size="lg">
@@ -126,15 +117,6 @@ export default function ReadingPage() {
                                 </Button>
                             </Link>
                              {showDescriptions && <p className="text-xs italic text-muted-foreground mt-1 px-2">Przeczytaj tekst i rozróżnij stwierdzenia oparte na faktach od tych, które wyrażają opinię autora, rozwijając swoje krytyczne myślenie.</p>}
-                        </div>
-                        <div>
-                            <Link href="/reading/text-completion" passHref>
-                                <Button className="w-full h-16 text-lg" size="lg">
-                                    <Puzzle className="mr-2 h-5 w-5" />
-                                    Text Completion
-                                </Button>
-                            </Link>
-                             {showDescriptions && <p className="text-xs italic text-muted-foreground mt-1 px-2">Uzupełnij brakujące zdanie w tekście, wybierając najlepszą opcję, aby sprawdzić zrozumienie jego spójności i logicznego przepływu.</p>}
                         </div>
                     </CardContent>
                     <CardFooter className="flex flex-col p-6 pt-4 gap-4">

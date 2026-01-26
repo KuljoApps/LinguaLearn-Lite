@@ -101,7 +101,7 @@ export default function FillTheGapPage() {
                                     Gap in the Text
                                 </Button>
                             </Link>
-                             {showDescriptions && <p className="text-xs italic text-muted-foreground mt-1 px-2">Read a short text and fill in multiple missing words to test your comprehension.</p>}
+                             {showDescriptions && <p className="text-xs italic text-muted-foreground mt-1 px-2">Uzupełnij brakujące zdanie w tekście, wybierając najlepszą opcję, aby sprawdzić zrozumienie jego spójności i logicznego przepływu.</p>}
                         </div>
                     </CardContent>
                     <CardFooter className="flex flex-col p-6 pt-4 gap-4">

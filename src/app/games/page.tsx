@@ -54,8 +54,8 @@ export default function GamesPage() {
                                 {getIcon(1)}
                             </Button>
                              <Button 
-                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-black bg-amber-500 hover:brightness-125 transition-all shadow-[0_0_25px_#f59e0b] border border-amber-500/50' })}
-                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-amber-500 hover:brightness-125 transition-all shadow-[0_0_25px_#f59e0b] border border-amber-500/50">
+                                onClick={() => handleThemeSelect({ className: 'text-xl font-bold text-black bg-yellow-600 hover:brightness-125 transition-all shadow-[0_0_25px_#f59e0b] border border-yellow-600/50' })}
+                                className="w-full h-20 mb-2 flex items-center justify-center gap-4 text-xl font-bold text-black bg-yellow-600 hover:brightness-125 transition-all shadow-[0_0_25px_#f59e0b] border border-yellow-500/50">
                                 {getIcon(0)}
                                 <span>AMBER VARIANT 1</span>
                                 {getIcon(0)}

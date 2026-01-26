@@ -18,6 +18,7 @@ const allGames = [
 ]
 
 const SCROLL_POSITION_KEY = 'gamesScrollPosition';
+const VIEW_MODE_KEY = 'gamesViewMode';
 
 const cardColors = [
     { border: 'border-amber', bg: 'bg-orange-500/10' },
@@ -46,6 +47,11 @@ export default function GamesPage() {
         const loadFavorites = () => setFavorites(getFavoriteGames());
         loadFavorites();
 
+        const savedView = localStorage.getItem(VIEW_MODE_KEY);
+        if (savedView === 'list' || savedView === 'grid') {
+            setView(savedView);
+        }
+
         window.addEventListener('favorites-changed', loadFavorites);
         return () => {
             window.removeEventListener('favorites-changed', loadFavorites);
@@ -63,11 +69,16 @@ export default function GamesPage() {
         }
     };
 
+    const handleViewToggle = () => {
+        const newView = view === 'grid' ? 'list' : 'grid';
+        setView(newView);
+        localStorage.setItem(VIEW_MODE_KEY, newView);
+    };
+
     const sortedGames = useMemo(() => {
         const favoriteGames = allGames.filter(game => favorites.includes(game.href));
         const otherGames = allGames.filter(game => !favorites.includes(game.href));
 
-        // Sort favorite games based on the order in the favorites array
         favoriteGames.sort((a, b) => favorites.indexOf(a.href) - favorites.indexOf(b.href));
 
         return [...favoriteGames, ...otherGames];
@@ -162,7 +173,7 @@ export default function GamesPage() {
                             <span>Back to Home</span>
                         </Button>
                     </Link>
-                    <Button variant="outline" onClick={() => setView(prev => prev === 'grid' ? 'list' : 'grid')} className="gap-2">
+                    <Button variant="outline" onClick={handleViewToggle} className="gap-2">
                         {view === 'grid' ? <List className="h-4 w-4" /> : <LayoutGrid className="h-4 w-4" />}
                         <span>View</span>
                     </Button>

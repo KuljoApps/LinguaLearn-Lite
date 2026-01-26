@@ -129,6 +129,10 @@ export default {
           '0%': { transform: 'translateY(-150%)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
         },
+        'dancing-dots': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-3px)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -140,6 +144,7 @@ export default {
         'text-slide-in': 'text-slide-in 0.8s ease-out forwards',
         'gradient-flow': 'gradient-flow 8s ease-in-out infinite',
         'text-fall-down': 'text-fall-down 0.5s ease-out forwards',
+        'dancing-dots': 'dancing-dots 1.2s infinite ease-in-out',
       },
     },
   },

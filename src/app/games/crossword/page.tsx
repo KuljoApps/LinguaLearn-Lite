@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { ArrowLeft, Puzzle, Award } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
-import { allCrosswordPuzzles, type CrosswordPuzzle, type CrosswordClue } from '@/lib/games/crossword';
+import { allCrosswordPuzzles, type CrosswordPuzzle } from '@/lib/games/crossword';
 import { getLanguage, type Language } from '@/lib/storage';
 
 type CellStatus = 'default' | 'correct' | 'incorrect';
@@ -45,7 +45,7 @@ const CrosswordPage = () => {
     const [isGameWon, setIsGameWon] = useState(false);
     const inputRefs = useRef<Array<Array<HTMLInputElement | null>>>([]);
     const [activeClue, setActiveClue] = useState<{ number: number; direction: 'across' | 'down' } | null>(null);
-
+    
     const generateGrid = useCallback((p: CrosswordPuzzle): Cell[][] => {
         const newGrid: Cell[][] = Array(p.gridSize).fill(null).map(() => Array(p.gridSize).fill(null).map(() => ({ char: '', number: null, isInput: false })));
         p.clues.forEach(clue => {
@@ -95,30 +95,39 @@ const CrosswordPage = () => {
         });
     }, [puzzle]);
 
-    const handleCellClick = useCallback((y: number, x: number) => {
-        const cluesForCell = getCluesForCell(y, x);
-        if (cluesForCell.length === 0) {
+    const handleFocus = useCallback((y: number, x: number) => {
+        const clues = getCluesForCell(y, x);
+        if (!clues.length) {
             setActiveClue(null);
             return;
-        }
+        };
 
-        const acrossClue = cluesForCell.find(c => c.direction === 'across');
-        const downClue = cluesForCell.find(c => c.direction === 'down');
+        const isCellInActiveClue = activeClue && clues.some(c => c.number === activeClue.number && c.direction === activeClue.direction);
         
-        if (acrossClue && downClue) { // It's an intersection
-            if (activeClue && activeClue.direction === 'across' && activeClue.number === acrossClue.number) {
-                // Currently on 'across', switch to 'down'
+        if (!isCellInActiveClue) {
+             const acrossClue = clues.find(c => c.direction === 'across');
+            if (acrossClue) {
+                setActiveClue({ number: acrossClue.number, direction: 'across' });
+            } else {
+                setActiveClue({ number: clues[0].number, direction: clues[0].direction });
+            }
+        }
+    }, [activeClue, getCluesForCell]);
+
+    const handleClick = useCallback((y: number, x: number) => {
+        const clues = getCluesForCell(y, x);
+        const acrossClue = clues.find(c => c.direction === 'across');
+        const downClue = clues.find(c => c.direction === 'down');
+        
+        if (acrossClue && downClue) {
+            if (activeClue?.direction === 'across') {
                 setActiveClue({ number: downClue.number, direction: 'down' });
             } else {
-                // Default to 'across' or switch from 'down' to 'across'
                 setActiveClue({ number: acrossClue.number, direction: 'across' });
             }
-        } else if (acrossClue) { // Only an 'across' clue
-            setActiveClue({ number: acrossClue.number, direction: 'across' });
-        } else if (downClue) { // Only a 'down' clue
-            setActiveClue({ number: downClue.number, direction: 'down' });
         }
-    }, [getCluesForCell, activeClue]);
+    }, [activeClue, getCluesForCell]);
+
 
     const handleInputChange = (y: number, x: number, value: string) => {
         const upperValue = value.toUpperCase().slice(-1);
@@ -168,8 +177,8 @@ const CrosswordPage = () => {
         const newCellStates: Record<string, CellStatus> = {};
         let allCorrect = true;
 
-        for (const y in inputRefs.current) {
-            for (const x in inputRefs.current[y]) {
+        for (let y = 0; y < puzzle.gridSize; y++) {
+            for (let x = 0; x < puzzle.gridSize; x++) {
                 const key = `${y}-${x}`;
                 if (grid[y][x].isInput) {
                     const userAnswer = userAnswers[key] || '';
@@ -221,7 +230,7 @@ const CrosswordPage = () => {
                 <div className="flex flex-col md:flex-row gap-8 items-center md:items-start justify-center">
                     <div className="grid gap-1 bg-background" style={{gridTemplateColumns: `repeat(${puzzle.gridSize}, minmax(0, 1fr))`}}>
                         {grid.map((row, y) => row.map((cell, x) => (
-                            <div key={`${y}-${x}`} className="relative" onClick={() => cell.isInput && handleCellClick(y,x)}>
+                            <div key={`${y}-${x}`} className="relative">
                                 {cell.number && <span className="absolute top-0.5 left-0.5 text-xs text-muted-foreground select-none pointer-events-none">{cell.number}</span>}
                                 <Input
                                     ref={el => { if(inputRefs.current[y]) inputRefs.current[y][x] = el }}
@@ -238,7 +247,8 @@ const CrosswordPage = () => {
                                     value={userAnswers[`${y}-${x}`] || ''}
                                     onChange={(e) => handleInputChange(y, x, e.target.value)}
                                     onKeyDown={(e) => handleKeyDown(e, y, x)}
-                                    onFocus={() => handleCellClick(y,x)}
+                                    onFocus={() => handleFocus(y,x)}
+                                    onClick={() => handleClick(y,x)}
                                 />
                             </div>
                         )))}
@@ -273,5 +283,3 @@ const CrosswordPage = () => {
 };
 
 export default CrosswordPage;
-
-    

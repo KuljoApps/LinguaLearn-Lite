@@ -19,6 +19,15 @@ const allGames = [
 
 const SCROLL_POSITION_KEY = 'gamesScrollPosition';
 
+const cardColors = [
+    { border: 'border-amber', bg: 'bg-amber-500/10' },
+    { border: 'border-destructive', bg: 'bg-destructive/10' },
+    { border: 'border-success', bg: 'bg-success/10' },
+    { border: 'border-blue-500', bg: 'bg-blue-500/10' },
+    { border: 'border-deep-purple', bg: 'bg-deep-purple/10' },
+    { border: 'border-yellow-500', bg: 'bg-yellow-500/10' },
+]
+
 export default function GamesPage() {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const [favorites, setFavorites] = useState<string[]>([]);
@@ -78,8 +87,9 @@ export default function GamesPage() {
                         {sortedGames.map((game) => {
                             const Icon = game.icon;
                             const isFavorite = favorites.includes(game.href);
+                            const color = cardColors[allGames.findIndex(g => g.href === game.href) % cardColors.length];
                             return (
-                                <Card key={game.title} className="relative border-2 border-amber">
+                                <Card key={game.title} className={cn("relative border-2", color.border, color.bg)}>
                                     <Button
                                         variant="ghost"
                                         size="icon"

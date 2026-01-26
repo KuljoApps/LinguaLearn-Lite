@@ -20,7 +20,7 @@ const allGames = [
 const SCROLL_POSITION_KEY = 'gamesScrollPosition';
 
 const cardColors = [
-    { border: 'border-amber', bg: 'bg-amber-500/10' },
+    { border: 'border-amber', bg: 'bg-orange-500/10' },
     { border: 'border-destructive', bg: 'bg-destructive/10' },
     { border: 'border-success', bg: 'bg-success/10' },
     { border: 'border-blue-500', bg: 'bg-blue-500/10' },

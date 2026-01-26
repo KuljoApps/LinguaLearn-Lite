@@ -134,7 +134,7 @@ export default {
         'pulse-strong': 'pulse-strong 1.5s ease-in-out infinite',
         'icon-fly-out': 'icon-fly-out 0.8s ease-out forwards',
         'text-slide-in': 'text-slide-in 0.8s ease-out forwards',
-        'background-shine': 'background-shine 2s linear infinite',
+        'background-shine': 'background-shine 2s linear infinite alternate',
       },
     },
   },

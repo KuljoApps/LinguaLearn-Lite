@@ -69,7 +69,7 @@ export default function Home() {
         };
 
         runAnimations();
-        const animationInterval = setInterval(runAnimations, 5 * 60 * 1000); // 5 minutes
+        const animationInterval = setInterval(runAnimations, 5000);
 
         return () => {
             window.removeEventListener('language-changed', handleStateUpdate);
@@ -159,9 +159,9 @@ export default function Home() {
                     <div className="flex flex-col space-y-2">
                         <Button variant={theme ? undefined : "outline"} className={cn(rectButtonClasses, "gap-2 text-lg", "rounded-xl", theme ? theme.className : defaultThemeClasses, "font-normal", isGradientTheme && 'bg-[length:300%_300%] animate-gradient-flow')}>
                             <PencilLine className={cn("mr-2 h-5 w-5", theme ? 'text-white' : 'text-deep-purple')} />
-                             <span className={cn("flex items-baseline", theme ? 'text-white' : '')}>
+                             <span className={cn("flex items-center", theme ? 'text-white' : '')}>
                                 <span>Fill</span>
-                                <span className="relative inline-block h-7 w-12 text-center overflow-hidden">
+                                <span className="relative inline-block h-6 w-12 text-center overflow-hidden">
                                     <span
                                         key={fillTheGapText}
                                         className="absolute inset-0 flex items-center justify-center animate-text-fall-down"

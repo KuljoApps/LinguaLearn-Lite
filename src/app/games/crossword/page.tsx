@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, Puzzle, Award } from 'lucide-react';
+import { ArrowLeft, Puzzle, Award, Wrench } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { allCrosswordPuzzles, type CrosswordPuzzle, type CrosswordClue } from '@/lib/games/crossword';
 import { getLanguage, type Language } from '@/lib/storage';
@@ -34,6 +34,8 @@ const uiTexts = {
     winTitle: { en: 'Congratulations!', fr: 'Félicitations !', de: 'Herzlichen Glückwunsch!', it: 'Congratulazioni!', es: '¡Felicidades!' },
     winDesc: { en: 'You solved the crossword!', fr: 'Vous avez résolu les mots croisés !', de: 'Du hast das Kreuzworträtsel gelöst!', it: 'Hai risolto il cruciverba!', es: '¡Has resuelto el crucigrama!' },
     playAgain: { en: 'Play Again', fr: 'Rejouer', de: 'Nochmal spielen', it: 'Gioca di nuovo', es: 'Jugar de nuevo' },
+    generator: { en: 'Generator', fr: 'Générateur', de: 'Generator', it: 'Generatore', es: 'Generador' },
+    noPuzzles: { en: 'No crossword puzzles available for this language yet.', fr: 'Aucun mot croisé disponible pour cette langue pour le moment.', de: 'Für diese Sprache sind noch keine Kreuzworträtsel verfügbar.', it: 'Nessun cruciverba disponibile per questa lingua al momento.', es: 'No hay crucigramas disponibles para este idioma todavía.' }
 };
 
 const CrosswordPage = () => {
@@ -81,9 +83,14 @@ const CrosswordPage = () => {
         const lang = getLanguage();
         setLanguage(lang);
         const puzzles = allCrosswordPuzzles[lang];
-        const randomPuzzle = puzzles[Math.floor(Math.random() * puzzles.length)];
-        setPuzzle(randomPuzzle);
-        setGrid(generateGrid(randomPuzzle));
+        if (puzzles && puzzles.length > 0) {
+            const randomPuzzle = puzzles[Math.floor(Math.random() * puzzles.length)];
+            setPuzzle(randomPuzzle);
+            setGrid(generateGrid(randomPuzzle));
+        } else {
+            setPuzzle(null);
+            setGrid([]);
+        }
         setUserAnswers({});
         setCellStates({});
         setIsGameWon(false);
@@ -126,8 +133,9 @@ const CrosswordPage = () => {
 
         for (let y = 0; y < height; y++) {
             for (let x = 0; x < width; x++) {
+                if (!grid[y] || !grid[y][x]) continue;
                 const key = `${y}-${x}`;
-                if (grid[y] && grid[y][x] && grid[y][x].isInput) {
+                if (grid[y][x].isInput) {
                     const userAnswer = userAnswers[key] || '';
                     const correctAnswer = grid[y][x].char;
                     if (userAnswer.toUpperCase() === correctAnswer.toUpperCase()) {
@@ -149,7 +157,35 @@ const CrosswordPage = () => {
     const getUIText = (key: keyof typeof uiTexts) => uiTexts[key][language] || uiTexts[key]['en'];
     
     if (!puzzle) {
-        return null;
+        return (
+            <main className="flex min-h-screen flex-col items-center justify-center p-4">
+                <Card className="w-full max-w-md shadow-2xl">
+                    <CardHeader className="text-center p-6">
+                        <div className="flex items-center justify-center gap-4">
+                            <Puzzle className="h-8 w-8" />
+                            <CardTitle className="text-3xl font-bold tracking-tight">{getUIText('title')}</CardTitle>
+                        </div>
+                    </CardHeader>
+                    <CardContent className="p-6 text-center">
+                        <p className="text-muted-foreground">{getUIText('noPuzzles')}</p>
+                    </CardContent>
+                    <CardFooter className="flex-col items-center gap-4 p-6 border-t">
+                        <Link href="/games" passHref>
+                            <Button variant="outline" className="gap-2">
+                                <ArrowLeft className="h-4 w-4" />
+                                <span>{getUIText('back')}</span>
+                            </Button>
+                        </Link>
+                         <Link href="/games/crossword/generator" passHref>
+                            <Button variant="secondary" className="gap-2 text-muted-foreground">
+                                <Wrench className="h-4 w-4" />
+                                <span>{getUIText('generator')}</span>
+                            </Button>
+                        </Link>
+                    </CardFooter>
+                </Card>
+            </main>
+        );
     }
 
     const acrossClues = puzzle.clues.filter((c: CrosswordClue) => c.direction === 'across').sort((a: CrosswordClue, b: CrosswordClue) => a.number - b.number);
@@ -255,13 +291,19 @@ const CrosswordPage = () => {
                     </div>
                 )}
             </CardContent>
-            <CardFooter className="flex justify-center p-6 border-t">
-            <Link href="/games" passHref>
-                <Button variant="outline" className="gap-2">
-                <ArrowLeft className="h-4 w-4" />
-                <span>{getUIText('back')}</span>
-                </Button>
-            </Link>
+             <CardFooter className="flex-col items-center gap-4 p-6 border-t">
+                <Link href="/games" passHref>
+                    <Button variant="outline" className="gap-2">
+                    <ArrowLeft className="h-4 w-4" />
+                    <span>{getUIText('back')}</span>
+                    </Button>
+                </Link>
+                <Link href="/games/crossword/generator" passHref>
+                    <Button variant="secondary" className="gap-2 text-muted-foreground">
+                        <Wrench className="h-4 w-4" />
+                        <span>{getUIText('generator')}</span>
+                    </Button>
+                </Link>
             </CardFooter>
         </Card>
         </main>

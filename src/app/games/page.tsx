@@ -245,14 +245,6 @@ export default function GamesPage() {
                             <span>{getUIText('view')}</span>
                         </Button>
                     </div>
-                    <div className="pt-2">
-                         <Link href="/games/crossword/generator" passHref>
-                            <Button variant="secondary" className="gap-2 text-muted-foreground">
-                                <Wrench className="h-4 w-4" />
-                                <span>{getUIText('generator')}</span>
-                            </Button>
-                        </Link>
-                    </div>
                 </CardFooter>
             </Card>
         </main>

@@ -194,7 +194,7 @@ export default function Home() {
                                     </span>
                                     <span>Gap</span>
                                 </span>
-                                <div></div>
+                                <div />
                             </Button>
                         </Link>
                         <Link href="/reading" passHref>
@@ -212,7 +212,7 @@ export default function Home() {
                                         </span>
                                     )}
                                 </span>
-                                <div></div>
+                                <div />
                             </Button>
                         </Link>
                         <Link href="/listening" passHref>
@@ -221,7 +221,7 @@ export default function Home() {
                                     <Ear className={cn("h-5 w-5 mr-2", iconClasses, showListeningPulse && "animate-pulse-strong")} />
                                 </div>
                                 <span className={cn("col-start-2", iconClasses)}>Listening</span>
-                                <div></div>
+                                <div />
                             </Button>
                         </Link>
                     </div>
@@ -229,9 +229,12 @@ export default function Home() {
                 <div data-tutorial-id="learning-button" className="px-6 pb-2">
                     <Separator className="mb-2"/>
                     <Link href={isFrench ? "/learning/fr" : isGerman ? "/learning/de" : isItalian ? "/learning/it" : isSpanish ? "/learning/es" : "/learning/en"} passHref>
-                        <Button variant="outline" className="w-full h-12 mt-2 border-2 border-primary">
-                            <GraduationCap className="mr-2 h-5 w-5 text-deep-purple" />
-                            {getLearningButtonText()}
+                        <Button variant="outline" className="w-full h-12 mt-2 text-lg border-2 border-amber bg-orange-500/10 hover:bg-orange-500/20 text-amber grid grid-cols-[1fr_auto_1fr] items-center">
+                            <div className="flex justify-end">
+                                <GraduationCap className="mr-2 h-5 w-5" />
+                            </div>
+                            <span className="col-start-2">{getLearningButtonText()}</span>
+                            <div />
                         </Button>
                     </Link>
                 </div>
@@ -239,7 +242,7 @@ export default function Home() {
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button data-tutorial-id="language-switcher" variant="outline" size="icon" title="Change language">
-                                <span className="text-2xl">{getFlag()}</span>
+                                <span className="text-xl">{getFlag()}</span>
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="center">
@@ -263,22 +266,22 @@ export default function Home() {
 
                     <Link href="/settings" passHref>
                         <Button variant="outline" size="icon">
-                            <Settings className="h-5 w-5" />
+                            <Settings className="h-4 w-4" />
                         </Button>
                     </Link>
                     <Link href="/stats" passHref>
                         <Button variant="outline" size="icon">
-                            <BarChart className="h-5 w-5" />
+                            <BarChart className="h-4 w-4" />
                         </Button>
                     </Link>
                     <Link href="/errors" passHref>
                         <Button variant="outline" size="icon">
-                            <ShieldX className="h-5 w-5" />
+                            <ShieldX className="h-4 w-4" />
                         </Button>
                     </Link>
                     <Link href="/achievements" passHref>
                         <Button variant="outline" size="icon" className="relative">
-                            <Trophy className="h-5 w-5" />
+                            <Trophy className="h-4 w-4" />
                             {newAchievementsCount > 0 && (
                                 <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground">
                                     {newAchievementsCount}

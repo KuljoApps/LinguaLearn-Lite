@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { ArrowLeft, BookOpenText, HelpCircle, Shuffle, CheckCircle2, ScanSearch, Tally5, Info } from 'lucide-react';
+import { ArrowLeft, BookOpenText, HelpCircle, Puzzle, CheckCircle2, ScanSearch, Tally5, Info, ListCollapse, PenTool, Scale } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -74,15 +74,6 @@ export default function ReadingPage() {
                              {showDescriptions && <p className="text-xs italic text-muted-foreground mt-1 px-2">Read a short text and answer comprehension questions to test your understanding.</p>}
                         </div>
                         <div>
-                            <Link href="/reading/sentence-reordering" passHref>
-                                <Button className="w-full h-16 text-lg" size="lg">
-                                    <Shuffle className="mr-2 h-5 w-5" />
-                                    Sentence Reordering
-                                </Button>
-                            </Link>
-                            {showDescriptions && <p className="text-xs italic text-muted-foreground mt-1 px-2">Organize a scrambled set of sentences into a coherent paragraph to practice text flow.</p>}
-                        </div>
-                        <div>
                             <Link href="/reading/true-false" passHref>
                                 <Button className="w-full h-16 text-lg" size="lg">
                                     <CheckCircle2 className="mr-2 h-5 w-5" />
@@ -108,6 +99,42 @@ export default function ReadingPage() {
                                 </Button>
                             </Link>
                              {showDescriptions && <p className="text-xs italic text-muted-foreground mt-1 px-2">Read a text and choose the summary that best captures its main idea.</p>}
+                        </div>
+                         <div>
+                            <Link href="/reading/matching-headings" passHref>
+                                <Button className="w-full h-16 text-lg" size="lg">
+                                    <ListCollapse className="mr-2 h-5 w-5" />
+                                    Matching Headings
+                                </Button>
+                            </Link>
+                             {showDescriptions && <p className="text-xs italic text-muted-foreground mt-1 px-2">Dopasuj nagłówki do odpowiednich akapitów tekstu, aby sprawdzić swoje zrozumienie głównej myśli każdej części.</p>}
+                        </div>
+                        <div>
+                            <Link href="/reading/tone-analysis" passHref>
+                                <Button className="w-full h-16 text-lg" size="lg">
+                                    <PenTool className="mr-2 h-5 w-5" />
+                                    Tone Analysis
+                                </Button>
+                            </Link>
+                             {showDescriptions && <p className="text-xs italic text-muted-foreground mt-1 px-2">Określ ton autora tekstu (np. informacyjny, perswazyjny, humorystyczny), aby nauczyć się rozpoznawać głębsze intencje piszącego.</p>}
+                        </div>
+                        <div>
+                            <Link href="/reading/fact-or-opinion" passHref>
+                                <Button className="w-full h-16 text-lg" size="lg">
+                                    <Scale className="mr-2 h-5 w-5" />
+                                    Fact or Opinion
+                                </Button>
+                            </Link>
+                             {showDescriptions && <p className="text-xs italic text-muted-foreground mt-1 px-2">Przeczytaj tekst i rozróżnij stwierdzenia oparte na faktach od tych, które wyrażają opinię autora, rozwijając swoje krytyczne myślenie.</p>}
+                        </div>
+                        <div>
+                            <Link href="/reading/text-completion" passHref>
+                                <Button className="w-full h-16 text-lg" size="lg">
+                                    <Puzzle className="mr-2 h-5 w-5" />
+                                    Text Completion
+                                </Button>
+                            </Link>
+                             {showDescriptions && <p className="text-xs italic text-muted-foreground mt-1 px-2">Uzupełnij brakujące zdanie w tekście, wybierając najlepszą opcję, aby sprawdzić zrozumienie jego spójności i logicznego przepływu.</p>}
                         </div>
                     </CardContent>
                     <CardFooter className="flex flex-col p-6 pt-4 gap-4">

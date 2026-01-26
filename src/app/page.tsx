@@ -198,19 +198,21 @@ export default function Home() {
                                 </span>
                             </Button>
                         </Link>
-                        <Button variant={theme ? undefined : "outline"} className={cn(rectButtonClasses, "w-full gap-2", "rounded-xl", theme ? theme.className : defaultThemeClasses, "font-normal", isGradientTheme && 'bg-[length:300%_300%] animate-gradient-flow')}>
-                            <BookOpenText className={cn("mr-2 h-5 w-5" /* ICON SIZE */, theme ? 'text-white' : 'text-deep-purple')} />
-                            <span className={cn("flex items-baseline", theme ? 'text-white' : '')}>
-                                <span>Reading</span>
-                                {showReadingDots && (
-                                    <span className="flex pl-1">
-                                        <span className="animate-dancing-dots" style={{ animationDelay: '0s' }}>.</span>
-                                        <span className="animate-dancing-dots" style={{ animationDelay: '0.2s' }}>.</span>
-                                        <span className="animate-dancing-dots" style={{ animationDelay: '0.4s' }}>.</span>
-                                    </span>
-                                )}
-                            </span>
-                        </Button>
+                        <Link href="/reading" passHref>
+                            <Button variant={theme ? undefined : "outline"} className={cn(rectButtonClasses, "w-full gap-2", "rounded-xl", theme ? theme.className : defaultThemeClasses, "font-normal", isGradientTheme && 'bg-[length:300%_300%] animate-gradient-flow')}>
+                                <BookOpenText className={cn("mr-2 h-5 w-5" /* ICON SIZE */, theme ? 'text-white' : 'text-deep-purple')} />
+                                <span className={cn("flex items-baseline", theme ? 'text-white' : '')}>
+                                    <span>Reading</span>
+                                    {showReadingDots && (
+                                        <span className="flex pl-1">
+                                            <span className="animate-dancing-dots" style={{ animationDelay: '0s' }}>.</span>
+                                            <span className="animate-dancing-dots" style={{ animationDelay: '0.2s' }}>.</span>
+                                            <span className="animate-dancing-dots" style={{ animationDelay: '0.4s' }}>.</span>
+                                        </span>
+                                    )}
+                                </span>
+                            </Button>
+                        </Link>
                         <Link href="/listening" passHref>
                             <Button variant={theme ? undefined : "outline"} className={cn(rectButtonClasses, "w-full gap-2", "rounded-xl", theme ? theme.className : defaultThemeClasses, "font-normal", isGradientTheme && 'bg-[length:300%_300%] animate-gradient-flow')}>
                                 <Ear className={cn("mr-2 h-5 w-5" /* ICON SIZE */, theme ? 'text-white' : 'text-deep-purple', showListeningPulse && "animate-pulse-strong")} />

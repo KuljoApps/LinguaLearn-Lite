@@ -122,10 +122,11 @@ export default {
           '100%': { transform: 'translateX(0)', opacity: '1' },
         },
         'gradient-flow': {
-          '0%, 100%': { 'background-position': '0% 50%' },
+          '0%': { 'background-position': '0% 50%' },
           '25%': { 'background-position': '100% 0%' },
           '50%': { 'background-position': '100% 100%' },
           '75%': { 'background-position': '0% 100%' },
+          '100%': { 'background-position': '0% 50%' },
         },
       },
       animation: {

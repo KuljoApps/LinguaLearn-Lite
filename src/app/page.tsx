@@ -137,7 +137,7 @@ export default function Home() {
         return '🇬🇧';
     }
     
-    const buttonBaseClasses = "flex-col gap-2 text-lg";
+    const buttonBaseClasses = "flex-col gap-2";
     const squareButtonClasses = "w-full h-28";
     const rectButtonClasses = "w-full h-12";
     const defaultThemeClasses = "border-2 border-primary";
@@ -169,21 +169,21 @@ export default function Home() {
                     <div className="grid grid-cols-2 gap-4">
                         <Link href="/quizzes" passHref>
                              <Button variant={theme ? undefined : "outline"} className={cn(buttonBaseClasses, squareButtonClasses, "rounded-xl", theme ? theme.className : defaultThemeClasses, "font-normal", isGradientTheme && 'bg-[length:300%_300%] animate-gradient-flow')}>
-                                <LayoutGrid className={cn("h-16 w-16" /* ICON SIZE */, theme ? 'text-white' : 'text-deep-purple', showQuizzesSpin && "animate-spin-once")} />
+                                <LayoutGrid className={cn("h-14 w-14" /* ICON SIZE */, theme ? 'text-white' : 'text-deep-purple', showQuizzesSpin && "animate-spin-once")} />
                                 <span className={cn(theme ? 'text-white' : '')}>Quizzes</span>
                             </Button>
                         </Link>
                          <Link href="/games" passHref>
                             <Button variant={theme ? undefined : "outline"} className={cn(buttonBaseClasses, squareButtonClasses, "rounded-xl", theme ? theme.className : defaultThemeClasses, "font-normal", isGradientTheme && 'bg-[length:300%_300%] animate-gradient-flow')}>
-                                <Gamepad2 className={cn("h-20 w-20" /* ICON SIZE */, theme ? 'text-white' : 'text-deep-purple', showGamesTilt && "animate-joystick-tilt")} />
+                                <Gamepad2 className={cn("h-16 w-16" /* ICON SIZE */, theme ? 'text-white' : 'text-deep-purple', showGamesTilt && "animate-joystick-tilt")} />
                                 <span className={cn(theme ? 'text-white' : '')}>Games</span>
                             </Button>
                         </Link>
                     </div>
                     <div className="flex flex-col space-y-2">
-                        <Button variant={theme ? undefined : "outline"} className={cn(rectButtonClasses, "gap-2 text-lg items-baseline", "rounded-xl", theme ? theme.className : defaultThemeClasses, "font-normal", isGradientTheme && 'bg-[length:300%_300%] animate-gradient-flow')}>
-                            <PencilLine className={cn("mr-2 h-6 w-6" /* ICON SIZE */, theme ? 'text-white' : 'text-deep-purple')} />
-                             <span className={cn("flex items-baseline", theme ? 'text-white' : '')}>
+                        <Button variant={theme ? undefined : "outline"} className={cn(rectButtonClasses, "gap-2 items-end", "rounded-xl", theme ? theme.className : defaultThemeClasses, "font-normal", isGradientTheme && 'bg-[length:300%_300%] animate-gradient-flow')}>
+                            <PencilLine className={cn("mr-2 h-5 w-5" /* ICON SIZE */, theme ? 'text-white' : 'text-deep-purple')} />
+                             <span className={cn("flex items-center", theme ? 'text-white' : '')}>
                                 <span>Fill</span>
                                 <span className="relative inline-block h-6 w-12 text-center overflow-hidden">
                                     <span
@@ -196,8 +196,8 @@ export default function Home() {
                                 <span>Gap</span>
                             </span>
                         </Button>
-                        <Button variant={theme ? undefined : "outline"} className={cn(rectButtonClasses, "gap-2 text-lg", "rounded-xl", theme ? theme.className : defaultThemeClasses, "font-normal", isGradientTheme && 'bg-[length:300%_300%] animate-gradient-flow')}>
-                            <BookOpenText className={cn("mr-2 h-6 w-6" /* ICON SIZE */, theme ? 'text-white' : 'text-deep-purple')} />
+                        <Button variant={theme ? undefined : "outline"} className={cn(rectButtonClasses, "gap-2", "rounded-xl", theme ? theme.className : defaultThemeClasses, "font-normal", isGradientTheme && 'bg-[length:300%_300%] animate-gradient-flow')}>
+                            <BookOpenText className={cn("mr-2 h-5 w-5" /* ICON SIZE */, theme ? 'text-white' : 'text-deep-purple')} />
                             <span className={cn("flex items-baseline", theme ? 'text-white' : '')}>
                                 <span>Reading</span>
                                 {showReadingDots && (
@@ -209,8 +209,8 @@ export default function Home() {
                                 )}
                             </span>
                         </Button>
-                        <Button variant={theme ? undefined : "outline"} className={cn(rectButtonClasses, "gap-2 text-lg", "rounded-xl", theme ? theme.className : defaultThemeClasses, "font-normal", isGradientTheme && 'bg-[length:300%_300%] animate-gradient-flow')}>
-                            <Ear className={cn("mr-2 h-6 w-6" /* ICON SIZE */, theme ? 'text-white' : 'text-deep-purple', showListeningPulse && "animate-pulse-strong")} />
+                        <Button variant={theme ? undefined : "outline"} className={cn(rectButtonClasses, "gap-2", "rounded-xl", theme ? theme.className : defaultThemeClasses, "font-normal", isGradientTheme && 'bg-[length:300%_300%] animate-gradient-flow')}>
+                            <Ear className={cn("mr-2 h-5 w-5" /* ICON SIZE */, theme ? 'text-white' : 'text-deep-purple', showListeningPulse && "animate-pulse-strong")} />
                             <span className={cn(theme ? 'text-white' : '')}>Listening</span>
                         </Button>
                     </div>
@@ -218,8 +218,8 @@ export default function Home() {
                 <div data-tutorial-id="learning-button" className="px-6 pb-2">
                     <Separator className="mb-2"/>
                     <Link href={isFrench ? "/learning/fr" : isGerman ? "/learning/de" : isItalian ? "/learning/it" : isSpanish ? "/learning/es" : "/learning/en"} passHref>
-                        <Button variant="outline" className="w-full h-12 text-lg mt-2 border-2 border-primary">
-                            <GraduationCap className="mr-2 h-6 w-6 text-deep-purple" /* ICON SIZE */ />
+                        <Button variant="outline" className="w-full h-12 mt-2 border-2 border-primary">
+                            <GraduationCap className="mr-2 h-5 w-5 text-deep-purple" /* ICON SIZE */ />
                             {getLearningButtonText()}
                         </Button>
                     </Link>

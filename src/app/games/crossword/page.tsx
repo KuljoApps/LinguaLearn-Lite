@@ -1,67 +1,204 @@
 'use client';
 
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, Puzzle } from 'lucide-react';
+import { ArrowLeft, Puzzle, Award } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
+import { allCrosswordPuzzles, type CrosswordPuzzle, type CrosswordClue } from '@/lib/games/crossword';
+import { getLanguage, type Language } from '@/lib/storage';
+
+type CellStatus = 'default' | 'correct' | 'incorrect';
+
+interface Cell {
+  char: string;
+  number: number | null;
+  isInput: boolean;
+}
+
+const uiTexts = {
+    title: { en: 'Crossword', fr: 'Mots Croisés', de: 'Kreuzworträtsel', it: 'Cruciverba', es: 'Crucigrama' },
+    description: {
+        en: 'Translate the Polish clues to fill in the English words.',
+        fr: 'Traduisez les indices polonais pour remplir les mots français.',
+        de: 'Übersetze die polnischen Hinweise, um die deutschen Wörter einzutragen.',
+        it: 'Traduci gli indizi polacchi per inserire le parole italiane.',
+        es: 'Traduce las pistas en polaco para rellenar las palabras en español.',
+    },
+    across: { en: 'Across', fr: 'Horizontalement', de: 'Waagerecht', it: 'Orizzontali', es: 'Horizontales' },
+    down: { en: 'Down', fr: 'Verticalement', de: 'Senkrecht', it: 'Verticali', es: 'Verticales' },
+    check: { en: 'Check Answers', fr: 'Vérifier', de: 'Antworten prüfen', it: 'Controlla', es: 'Comprobar' },
+    back: { en: 'Back to Game Center', fr: 'Retour aux Jeux', de: 'Zurück zur Spielzentrale', it: 'Torna ai Giochi', es: 'Volver a Juegos' },
+    winTitle: { en: 'Congratulations!', fr: 'Félicitations !', de: 'Herzlichen Glückwunsch!', it: 'Congratulazioni!', es: '¡Felicidades!' },
+    winDesc: { en: 'You solved the crossword!', fr: 'Vous avez résolu les mots croisés !', de: 'Du hast das Kreuzworträtsel gelöst!', it: 'Hai risolto il cruciverba!', es: '¡Has resuelto el crucigrama!' },
+    playAgain: { en: 'Play Again', fr: 'Rejouer', de: 'Nochmal spielen', it: 'Gioca di nuovo', es: 'Jugar de nuevo' },
+};
 
 const CrosswordPage = () => {
+    const [language, setLanguage] = useState<Language>('en');
+    const [puzzle, setPuzzle] = useState<CrosswordPuzzle | null>(null);
+    const [grid, setGrid] = useState<Cell[][]>([]);
+    const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
+    const [cellStates, setCellStates] = useState<Record<string, CellStatus>>({});
+    const [isGameWon, setIsGameWon] = useState(false);
+    const inputRefs = useRef<Array<Array<HTMLInputElement | null>>>([]);
+
+    const generateGrid = useCallback((p: CrosswordPuzzle): Cell[][] => {
+        const newGrid: Cell[][] = Array(p.gridSize).fill(null).map(() => Array(p.gridSize).fill(null).map(() => ({ char: '', number: null, isInput: false })));
+        p.clues.forEach(clue => {
+            let { x, y } = clue;
+            if (newGrid[y][x].number === null) {
+                newGrid[y][x].number = clue.number;
+            }
+            for (let i = 0; i < clue.answer.length; i++) {
+                if (y < p.gridSize && x < p.gridSize) {
+                    newGrid[y][x].isInput = true;
+                    newGrid[y][x].char = clue.answer[i];
+                    if (clue.direction === 'across') x++; else y++;
+                }
+            }
+        });
+        return newGrid;
+    }, []);
+
+    const initializeGame = useCallback(() => {
+        const lang = getLanguage();
+        setLanguage(lang);
+        const puzzles = allCrosswordPuzzles[lang];
+        const randomPuzzle = puzzles[Math.floor(Math.random() * puzzles.length)];
+        setPuzzle(randomPuzzle);
+        setGrid(generateGrid(randomPuzzle));
+        setUserAnswers({});
+        setCellStates({});
+        setIsGameWon(false);
+        inputRefs.current = Array(randomPuzzle.gridSize).fill(null).map(() => Array(randomPuzzle.gridSize).fill(null));
+    }, [generateGrid]);
+
+    useEffect(() => {
+        initializeGame();
+        window.addEventListener('language-changed', initializeGame);
+        return () => window.removeEventListener('language-changed', initializeGame);
+    }, [initializeGame]);
+
+    const handleInputChange = (y: number, x: number, value: string) => {
+        const upperValue = value.toUpperCase();
+        setUserAnswers(prev => ({ ...prev, [`${y}-${x}`]: upperValue }));
+        
+        if (upperValue && x + 1 < (puzzle?.gridSize || 0) && grid[y][x+1]?.isInput) {
+            inputRefs.current[y]?.[x + 1]?.focus();
+        }
+    };
+    
+    const checkAnswers = () => {
+        if (!puzzle) return;
+        const newCellStates: Record<string, CellStatus> = {};
+        let allCorrect = true;
+
+        puzzle.clues.forEach(clue => {
+            let correct = true;
+            let currentWord = '';
+            for (let i = 0; i < clue.answer.length; i++) {
+                const y = clue.y + (clue.direction === 'down' ? i : 0);
+                const x = clue.x + (clue.direction === 'across' ? i : 0);
+                const userAnswer = userAnswers[`${y}-${x}`] || '';
+                currentWord += userAnswer;
+            }
+            
+            if (currentWord.toUpperCase() !== clue.answer.toUpperCase()) {
+                correct = false;
+                allCorrect = false;
+            }
+
+            for (let i = 0; i < clue.answer.length; i++) {
+                 const y = clue.y + (clue.direction === 'down' ? i : 0);
+                 const x = clue.x + (clue.direction === 'across' ? i : 0);
+                 const key = `${y}-${x}`;
+                 
+                 // Don't mark a cell incorrect if it's part of another, correct word.
+                 if (newCellStates[key] !== 'correct') {
+                     newCellStates[key] = correct ? 'correct' : 'incorrect';
+                 }
+            }
+        });
+        setCellStates(newCellStates);
+        if (allCorrect) {
+            setIsGameWon(true);
+        }
+    };
+    
+    const getUIText = (key: keyof typeof uiTexts) => uiTexts[key][language] || uiTexts[key]['en'];
+    
+    if (!puzzle) {
+        return null;
+    }
+
+    const acrossClues = puzzle.clues.filter(c => c.direction === 'across').sort((a,b) => a.number - b.number);
+    const downClues = puzzle.clues.filter(c => c.direction === 'down').sort((a,b) => a.number - b.number);
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4">
       <Card className="w-full max-w-4xl shadow-2xl">
         <CardHeader className="text-center p-6">
           <div className="flex items-center justify-center gap-4">
             <Puzzle className="h-8 w-8" />
-            <CardTitle className="text-3xl font-bold tracking-tight">Crossword</CardTitle>
+            <CardTitle className="text-3xl font-bold tracking-tight">{getUIText('title')}</CardTitle>
           </div>
-          <p className="text-muted-foreground pt-2">Translate the Polish clues to fill in the Spanish words.</p>
+          <p className="text-muted-foreground pt-2">{getUIText('description')}</p>
         </CardHeader>
-        <CardContent className="p-6 flex flex-col md:flex-row gap-8 items-center md:items-start justify-center">
-            <div className="grid grid-cols-3 gap-1 bg-background relative">
-              {/* Clue numbers */}
-              <span className="absolute top-1 left-1 text-xs text-muted-foreground">1</span>
-
-              {Array(9).fill(0).map((_, index) => {
-                const row = Math.floor(index / 3);
-                const col = index % 3;
-                let disabled = true;
-                
-                // L-shape for SOL and SAL
-                if (row === 0 || col === 0) {
-                   disabled = false;
-                }
-                
-                return (
-                    <Input
-                        key={index}
-                        type="text"
-                        maxLength={1}
-                        className="w-12 h-12 text-center text-2xl font-bold border-2 border-primary rounded-none disabled:bg-muted"
-                        disabled={disabled}
-                    />
-                )
-              })}
-            </div>
-            <div className="space-y-4">
-                <div>
-                    <h3 className="font-bold text-lg">Across</h3>
-                    <p className="text-muted-foreground">1. Słońce</p>
+        <CardContent className="p-6">
+            {isGameWon ? (
+                <div className="text-center space-y-4 flex flex-col items-center">
+                    <Award className="h-24 w-24 text-amber animate-shake"/>
+                    <h2 className="text-2xl font-bold">{getUIText('winTitle')}</h2>
+                    <p>{getUIText('winDesc')}</p>
+                    <Button onClick={initializeGame}>{getUIText('playAgain')}</Button>
                 </div>
-                 <div>
-                    <h3 className="font-bold text-lg">Down</h3>
-                    <p className="text-muted-foreground">1. Sól</p>
+            ) : (
+                <div className="flex flex-col md:flex-row gap-8 items-center md:items-start justify-center">
+                    <div className="grid gap-1 bg-background" style={{gridTemplateColumns: `repeat(${puzzle.gridSize}, minmax(0, 1fr))`}}>
+                        {grid.map((row, y) => row.map((cell, x) => (
+                            <div key={`${y}-${x}`} className="relative">
+                                {cell.number && <span className="absolute top-0.5 left-0.5 text-xs text-muted-foreground select-none">{cell.number}</span>}
+                                <Input
+                                    ref={el => inputRefs.current[y][x] = el}
+                                    type="text"
+                                    maxLength={1}
+                                    className={cn(
+                                        "w-10 h-10 sm:w-12 sm:h-12 text-center text-lg sm:text-2xl font-bold border-2 rounded-none uppercase disabled:bg-muted disabled:opacity-40",
+                                        cellStates[`${y}-${x}`] === 'correct' && 'border-success bg-success/10 text-success-foreground',
+                                        cellStates[`${y}-${x}`] === 'incorrect' && 'border-destructive bg-destructive/10 text-destructive-foreground',
+                                        !cell.isInput && 'border-muted/20 bg-muted/20',
+                                    )}
+                                    disabled={!cell.isInput}
+                                    value={userAnswers[`${y}-${x}`] || ''}
+                                    onChange={(e) => handleInputChange(y, x, e.target.value)}
+                                />
+                            </div>
+                        )))}
+                    </div>
+                    <div className="space-y-4 flex-1">
+                        <div>
+                            <h3 className="font-bold text-lg">{getUIText('across')}</h3>
+                            {acrossClues.map(c => <p key={c.number} className="text-muted-foreground text-sm">{c.number}. {c.clue}</p>)}
+                        </div>
+                        <div>
+                            <h3 className="font-bold text-lg">{getUIText('down')}</h3>
+                            {downClues.map(c => <p key={c.number} className="text-muted-foreground text-sm">{c.number}. {c.clue}</p>)}
+                        </div>
+                        <div className="pt-4">
+                        <Button onClick={checkAnswers}>{getUIText('check')}</Button>
+                        </div>
+                    </div>
                 </div>
-                <div className="pt-4">
-                  <Button disabled>Check Answers</Button>
-                </div>
-            </div>
+            )}
         </CardContent>
         <CardFooter className="flex justify-center p-6 border-t">
           <Link href="/games" passHref>
             <Button variant="outline" className="gap-2">
               <ArrowLeft className="h-4 w-4" />
-              <span>Back to Game Center</span>
+              <span>{getUIText('back')}</span>
             </Button>
           </Link>
         </CardFooter>

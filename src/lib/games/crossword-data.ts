@@ -1,0 +1,14 @@
+export interface CrosswordClue {
+  number: number;
+  clue: string;
+  answer: string;
+  x: number;
+  y: number;
+  direction: 'across' | 'down';
+}
+
+export interface CrosswordPuzzle {
+  id: number;
+  gridSize: number;
+  clues: CrosswordClue[];
+}

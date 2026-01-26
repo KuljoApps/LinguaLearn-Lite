@@ -94,7 +94,7 @@ export default function GamesPage() {
                             Game{' '}
                             <span className="relative inline-block">
                                 Center
-                                <span className="absolute -right-1 -bottom-3 text-sm font-semibold tracking-normal text-amber">
+                                <span className="absolute -right-1 -bottom-[10px] text-sm font-semibold tracking-normal text-amber">
                                 Lite
                                 </span>
                             </span>

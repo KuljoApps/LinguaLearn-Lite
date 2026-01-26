@@ -19,7 +19,7 @@ const DESCRIPTIONS_VISIBLE_KEY = 'quizzesDescriptionsVisible';
 
 export default function QuizzesPage() {
     const [language, setCurrentLanguage] = useState<'en' | 'fr' | 'de' | 'it' | 'es'>('en');
-    const [showDescriptions, setShowDescriptions] = useState(true);
+    const [showDescriptions, setShowDescriptions] = useState(false);
 
     useEffect(() => {
         const handleLanguageChange = () => {
@@ -173,9 +173,9 @@ export default function QuizzesPage() {
                         <p className="text-muted-foreground">
                             {getWelcomeMessage()}
                         </p>
-                        <div className="flex items-center justify-between pt-4">
-                            <div className="w-10" /> {/* Spacer for centering title */}
-                            <CardTitle className="text-3xl font-bold tracking-tight">{getTitle()}</CardTitle>
+                        <div className="flex items-center justify-center pt-4">
+                             <div className="w-10" />
+                            <CardTitle className="text-3xl font-bold tracking-tight flex-1">{getTitle()}</CardTitle>
                             <Tooltip>
                                 <TooltipTrigger asChild>
                                     <Button variant="ghost" size="icon" onClick={handleToggleDescriptions}>

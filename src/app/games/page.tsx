@@ -26,7 +26,9 @@ export default function GamesPage() {
                             <p className="text-sm text-center text-muted-foreground">Match pairs of words and their translations. A classic game to test and improve your vocabulary retention.</p>
                         </CardContent>
                         <CardFooter>
-                            <Button className="w-full" disabled>Play</Button>
+                            <Link href="/games/memory" className="w-full">
+                                <Button className="w-full">Play</Button>
+                            </Link>
                         </CardFooter>
                     </Card>
                     <Card>
@@ -38,7 +40,9 @@ export default function GamesPage() {
                             <p className="text-sm text-center text-muted-foreground">Words are falling from the top. Type them correctly before they hit the bottom to score points. Great for spelling!</p>
                         </CardContent>
                         <CardFooter>
-                            <Button className="w-full" disabled>Play</Button>
+                            <Link href="/games/wordfall" className="w-full">
+                                <Button className="w-full">Play</Button>
+                            </Link>
                         </CardFooter>
                     </Card>
                     <Card>
@@ -50,7 +54,9 @@ export default function GamesPage() {
                             <p className="text-sm text-center text-muted-foreground">Unscramble the words to form a correct sentence. A perfect way to practice grammar and sentence structure.</p>
                         </CardContent>
                         <CardFooter>
-                            <Button className="w-full" disabled>Play</Button>
+                            <Link href="/games/sentence-scramble" className="w-full">
+                                <Button className="w-full">Play</Button>
+                            </Link>
                         </CardFooter>
                     </Card>
                     <Card>
@@ -62,7 +68,9 @@ export default function GamesPage() {
                             <p className="text-sm text-center text-muted-foreground">Solve the crossword puzzle where clues are in one language and answers in another. A fun vocabulary challenge.</p>
                         </CardContent>
                         <CardFooter>
-                            <Button className="w-full" disabled>Play</Button>
+                            <Link href="/games/crossword" className="w-full">
+                                <Button className="w-full">Play</Button>
+                            </Link>
                         </CardFooter>
                     </Card>
                 </CardContent>

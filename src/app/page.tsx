@@ -25,8 +25,8 @@ export default function Home() {
     const [fillTheGapText, setFillTheGapText] = useState('the');
     const [showReadingDots, setShowReadingDots] = useState(false);
     const [showQuizzesSpin, setShowQuizzesSpin] = useState(false);
-    const [showListeningPulse, setShowListeningPulse] = useState(false);
     const [showGamesTilt, setShowGamesTilt] = useState(false);
+    const [showListeningPulse, setShowListeningPulse] = useState(false);
     const pathname = usePathname();
 
     useEffect(() => {
@@ -89,9 +89,10 @@ export default function Home() {
             animationTimeoutId = setTimeout(scheduleNextAnimation, 3000 + 5000); // 3s anim + 5s pause
         };
 
-        scheduleNextAnimation();
+        const initialAnimTimeout = setTimeout(scheduleNextAnimation, 3000);
 
         return () => {
+            clearTimeout(initialAnimTimeout);
             clearTimeout(animationTimeoutId);
             timers.forEach(clearTimeout);
             window.removeEventListener('language-changed', handleStateUpdate);
@@ -135,7 +136,6 @@ export default function Home() {
     
     const buttonBaseClasses = "flex-col gap-2";
     const squareButtonClasses = "w-full h-28";
-    const rectButtonClasses = "h-12";
     const themeClasses = "text-xl font-bold text-white bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 hover:brightness-125 transition-all shadow-[0_0_20px_#ff8c00] border border-yellow-400/50 bg-[length:300%_300%] animate-gradient-flow";
     const iconClasses = "text-white";
 
@@ -165,27 +165,27 @@ export default function Home() {
                     <div className="grid grid-cols-2 gap-4">
                         <Link href="/quizzes" passHref>
                              <Button className={cn(buttonBaseClasses, squareButtonClasses, "rounded-xl", themeClasses, "font-normal")}>
-                                <LayoutGrid className={cn("h-14 w-14", iconClasses, showQuizzesSpin && "animate-spin-once")} />
+                                <LayoutGrid className={cn("h-12 w-12", iconClasses, showQuizzesSpin && "animate-spin-once")} />
                                 <span>Quizzes</span>
                             </Button>
                         </Link>
                          <Link href="/games" passHref>
-                            <Button className={cn(buttonBaseClasses, squareButtonClasses, "rounded-xl", themeClasses, "font-normal")}>
+                            <Button className={cn(buttonBaseClasses, squareButtonClasses, "rounded-xl", themeClasses, "font-normal", "!gap-0")}>
                                 <Gamepad2 className={cn("h-20 w-20", iconClasses, showGamesTilt && "animate-joystick-tilt")} />
-                                <span>Games</span>
+                                <span className="-mt-1">Games</span>
                             </Button>
                         </Link>
                     </div>
                     <div className="flex flex-col space-y-2">
                         <Link href="/fill-the-gap" passHref>
-                            <Button className={cn(rectButtonClasses, "w-full gap-2 items-center", "rounded-xl", themeClasses, "font-normal")}>
+                            <Button className={cn("h-12", "w-full gap-2 items-center", "rounded-xl", themeClasses, "font-normal")}>
                                 <PencilLine className={cn("mr-2 h-5 w-5", iconClasses)} />
                                 <span className={cn("flex items-center", iconClasses)}>
                                     <span>Fill</span>
                                     <span className="relative inline-block h-6 w-12 text-center overflow-hidden">
                                         <span
                                             key={fillTheGapText}
-                                            className="absolute inset-0 flex items-end justify-center animate-text-fall-down"
+                                            className="absolute inset-0 flex items-center justify-center animate-text-fall-down"
                                         >
                                             {fillTheGapText}
                                         </span>
@@ -195,7 +195,7 @@ export default function Home() {
                             </Button>
                         </Link>
                         <Link href="/reading" passHref>
-                            <Button className={cn(rectButtonClasses, "w-full gap-2", "rounded-xl", themeClasses, "font-normal")}>
+                            <Button className={cn("h-12", "w-full gap-2", "rounded-xl", themeClasses, "font-normal")}>
                                 <BookOpenText className={cn("mr-2 h-5 w-5", iconClasses)} />
                                 <span className={cn("flex items-baseline", iconClasses)}>
                                     <span>Reading</span>
@@ -210,7 +210,7 @@ export default function Home() {
                             </Button>
                         </Link>
                         <Link href="/listening" passHref>
-                            <Button className={cn(rectButtonClasses, "w-full gap-2", "rounded-xl", themeClasses, "font-normal")}>
+                            <Button className={cn("h-12", "w-full gap-2", "rounded-xl", themeClasses, "font-normal")}>
                                 <Ear className={cn("mr-2 h-5 w-5", iconClasses, showListeningPulse && "animate-pulse-strong")} />
                                 <span className={iconClasses}>Listening</span>
                             </Button>

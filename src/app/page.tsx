@@ -26,6 +26,7 @@ export default function Home() {
     const [fillTheGapText, setFillTheGapText] = useState('the');
     const [showReadingDots, setShowReadingDots] = useState(false);
     const [showQuizzesSpin, setShowQuizzesSpin] = useState(false);
+    const [showListeningPulse, setShowListeningPulse] = useState(false);
     const pathname = usePathname();
 
     useEffect(() => {
@@ -60,20 +61,28 @@ export default function Home() {
         let animationStep = 0;
         
         const runAnimations = () => {
-          const currentAnimation = animationStep % 3;
+          const currentAnimation = animationStep % 4;
 
           if (currentAnimation === 0) {
             setFillTheGapText(prev => (prev === 'the' ? '___' : 'the'));
             setShowReadingDots(false);
             setShowQuizzesSpin(false);
+            setShowListeningPulse(false);
           } else if (currentAnimation === 1) {
             setShowReadingDots(true);
             setShowQuizzesSpin(false);
+            setShowListeningPulse(false);
             setTimeout(() => setShowReadingDots(false), 3000);
           } else if (currentAnimation === 2) {
             setShowQuizzesSpin(true);
             setShowReadingDots(false);
+            setShowListeningPulse(false);
             setTimeout(() => setShowQuizzesSpin(false), 3000);
+          } else if (currentAnimation === 3) {
+            setShowListeningPulse(true);
+            setShowQuizzesSpin(false); 
+            setShowReadingDots(false);
+            setTimeout(() => setShowListeningPulse(false), 1500); 
           }
           animationStep++;
         };
@@ -169,7 +178,7 @@ export default function Home() {
                     <div className="flex flex-col space-y-2">
                         <Button variant={theme ? undefined : "outline"} className={cn(rectButtonClasses, "gap-2 text-lg", "rounded-xl", theme ? theme.className : defaultThemeClasses, "font-normal", isGradientTheme && 'bg-[length:300%_300%] animate-gradient-flow')}>
                             <PencilLine className={cn("mr-2 h-5 w-5", theme ? 'text-white' : 'text-deep-purple')} />
-                             <span className={cn("flex items-center", theme ? 'text-white' : '')}>
+                             <span className={cn("flex items-baseline", theme ? 'text-white' : '')}>
                                 <span>Fill</span>
                                 <span className="relative inline-block h-6 w-12 text-center overflow-hidden">
                                     <span
@@ -196,7 +205,7 @@ export default function Home() {
                             </span>
                         </Button>
                         <Button variant={theme ? undefined : "outline"} className={cn(rectButtonClasses, "gap-2 text-lg", "rounded-xl", theme ? theme.className : defaultThemeClasses, "font-normal", isGradientTheme && 'bg-[length:300%_300%] animate-gradient-flow')}>
-                            <Ear className={cn("mr-2 h-5 w-5", theme ? 'text-white' : 'text-deep-purple')} />
+                            <Ear className={cn("mr-2 h-5 w-5", theme ? 'text-white' : 'text-deep-purple', showListeningPulse && "animate-pulse-strong")} />
                             <span className={cn(theme ? 'text-white' : '')}>Listening</span>
                         </Button>
                     </div>

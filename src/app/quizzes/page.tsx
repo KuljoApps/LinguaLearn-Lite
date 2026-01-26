@@ -51,39 +51,39 @@ const quizContent: Record<Language, {
     'idioms': { title: string; description: string };
 }> = {
     en: {
-        'native-pl': { title: 'English - Polish', description: 'Translate words from English to Polish. An excellent way to test and expand your basic vocabulary.' },
-        'pl-native': { title: 'Polish - English', description: 'Reverse the roles! See if you can translate Polish words into English to strengthen your skills.' },
-        'irregulars': { title: 'Irregular Verbs', description: 'Test your knowledge of irregular verbs. This quiz will help you remember their key forms and usage.' },
-        'phrasals': { title: 'Phrasal Verbs', description: 'Tackle tricky phrasal verbs. Master common expressions to make your speech sound more natural.' },
-        'idioms': { title: 'Idioms', description: 'Guess the meaning of popular idioms. A great way to understand cultural nuances and enrich your speech.' }
+        'native-pl': { title: 'English - Polish', description: 'Przetłumacz słowa z języka obcego na polski. Doskonały sposób na sprawdzenie i poszerzenie podstawowego słownictwa.' },
+        'pl-native': { title: 'Polish - English', description: 'Odwróć role! Sprawdź, czy potrafisz przetłumaczyć polskie słowa na język obcy, aby wzmocnić swoje umiejętności.' },
+        'irregulars': { title: 'Irregular Verbs', description: 'Sprawdź swoją wiedzę o czasownikach nieregularnych. Ten quiz pomoże Ci zapamiętać ich kluczowe formy i użycie.' },
+        'phrasals': { title: 'Phrasal Verbs', description: 'Zmierz się z podchwytliwymi "phrasal verbs". Opanuj popularne wyrażenia, aby Twoja mowa brzmiała bardziej naturalnie.' },
+        'idioms': { title: 'Idioms', description: 'Zgadnij znaczenie popularnych idiomów. Świetny sposób na zrozumienie niuansów kulturowych i wzbogacenie mowy.' }
     },
     fr: {
-        'native-pl': { title: 'Français - Polonais', description: 'Traduisez des mots du français vers le polonais. Un excellent moyen de tester et d\'élargir votre vocabulaire de base.' },
-        'pl-native': { title: 'Polonais - Français', description: 'Inversez les rôles ! Voyez si vous pouvez traduire des mots polonais en français pour renforcer vos compétences.' },
-        'irregulars': { title: 'Verbes & Aux.', description: 'Testez vos connaissances sur les verbes irréguliers et leurs auxiliaires. Ce quiz vous aidera à mémoriser leurs formes clés.' },
-        'phrasals': { title: 'Faux Amis', description: 'Affrontez les "faux amis" piégeux. Maîtrisez ces mots pour éviter les malentendus courants.' },
-        'idioms': { title: 'Idiomes', description: 'Devinez le sens des idiomes populaires. C\'est un excellent moyen de comprendre les nuances culturelles de la langue et d\'enrichir votre discours.' }
+        'native-pl': { title: 'Français - Polonais', description: 'Przetłumacz słowa z języka obcego na polski. Doskonały sposób na sprawdzenie i poszerzenie podstawowego słownictwa.' },
+        'pl-native': { title: 'Polonais - Français', description: 'Odwróć role! Sprawdź, czy potrafisz przetłumaczyć polskie słowa na język obcy, aby wzmocnić swoje umiejętności.' },
+        'irregulars': { title: 'Verbes & Aux.', description: 'Sprawdź swoją wiedzę o czasownikach nieregularnych i posiłkowych. Ten quiz pomoże Ci zapamiętać ich kluczowe formy.' },
+        'phrasals': { title: 'Faux Amis', description: 'Zmierz się z podchwytliwymi "fałszywymi przyjaciółmi". Opanuj te słowa, aby uniknąć typowych nieporozumień.' },
+        'idioms': { title: 'Idiomes', description: 'Zgadnij znaczenie popularnych idiomów. Świetny sposób na zrozumienie niuansów kulturowych i wzbogacenie mowy.' }
     },
     de: {
-        'native-pl': { title: 'Deutsch - Polnisch', description: 'Übersetze Wörter aus dem Deutschen ins Polnische. Eine ausgezeichnete Möglichkeit, deinen Grundwortschatz zu testen und zu erweitern.' },
-        'pl-native': { title: 'Polnisch - Deutsch', description: 'Tausche die Rollen! Sieh, ob du polnische Wörter ins Deutsche übersetzen kannst, um deine Fähigkeiten zu stärken.' },
-        'irregulars': { title: 'Unregelmäßige Verben', description: 'Teste dein Wissen über unregelmäßige Verben. Dieses Quiz hilft dir, dich an ihre Schlüsselformen und deren Verwendung zu erinnern.' },
-        'phrasals': { title: 'Trennbare Verben', description: 'Meistere trennbare Verben. Lerne, wie man sie korrekt im Satz verwendet, um natürlicher zu klingen.' },
-        'idioms': { title: 'Redewendungen', description: 'Errate die Bedeutung populärer Redewendungen. Eine großartige Möglichkeit, kulturelle Nuancen der Sprache zu verstehen und deinen Ausdruck zu bereichern.' }
+        'native-pl': { title: 'Deutsch - Polnisch', description: 'Przetłumacz słowa z języka obcego na polski. Doskonały sposób na sprawdzenie i poszerzenie podstawowego słownictwa.' },
+        'pl-native': { title: 'Polnisch - Deutsch', description: 'Odwróć role! Sprawdź, czy potrafisz przetłumaczyć polskie słowa na język obcy, aby wzmocnić swoje umiejętności.' },
+        'irregulars': { title: 'Unregelmäßige Verben', description: 'Sprawdź swoją wiedzę o czasownikach nieregularnych. Ten quiz pomoże Ci zapamiętać ich kluczowe formy i użycie.' },
+        'phrasals': { title: 'Trennbare Verben', description: 'Opanuj czasowniki rozdzielnie złożone. Naucz się, jak poprawnie używać ich w zdaniu, aby brzmieć bardziej naturalnie.' },
+        'idioms': { title: 'Redewendungen', description: 'Zgadnij znaczenie popularnych idiomów. Świetny sposób na zrozumienie niuansów kulturowych i wzbogacenie mowy.' }
     },
     it: {
-        'native-pl': { title: 'Italiano - Polacco', description: 'Traduci parole dall\'italiano al polacco. Un ottimo modo per testare ed espandere il tuo vocabolario di base.' },
-        'pl-native': { title: 'Polacco - Italiano', description: 'Inverti i ruoli! Vedi se riesci a tradurre parole polacche in italiano per rafforzare le tue abilità.' },
-        'irregulars': { title: 'Verbi Irregolari', description: 'Metti alla prova la tua conoscenza dei verbi irregolari. Questo quiz ti aiuterà a ricordare le loro forme chiave e il loro utilizzo.' },
-        'phrasals': { title: 'Falsi Amici', description: 'Affronta i "falsi amici" ingannevoli. Padroneggia queste parole per evitare malintesi comuni.' },
-        'idioms': { title: 'Modi di dire', description: 'Indovina il significato dei modi di dire popolari. Questo è un ottimo modo per comprendere le sfumature culturali della lingua e arricchire il tuo discorso.' }
+        'native-pl': { title: 'Italiano - Polacco', description: 'Przetłumacz słowa z języka obcego na polski. Doskonały sposób na sprawdzenie i poszerzenie podstawowego słownictwa.' },
+        'pl-native': { title: 'Polacco - Italiano', description: 'Odwróć role! Sprawdź, czy potrafisz przetłumaczyć polskie słowa na język obcy, aby wzmocnić swoje umiejętności.' },
+        'irregulars': { title: 'Verbi Irregolari', description: 'Sprawdź swoją wiedzę o czasownikach nieregularnych. Ten quiz pomoże Ci zapamiętać ich kluczowe formy i użycie.' },
+        'phrasals': { title: 'Falsi Amici', description: 'Zmierz się z podchwytliwymi "fałszywymi przyjaciółmi". Opanuj te słowa, aby uniknąć typowych nieporozumień.' },
+        'idioms': { title: 'Modi di dire', description: 'Zgadnij znaczenie popularnych idiomów. Świetny sposób na zrozumienie niuansów kulturowych i wzbogacenie mowy.' }
     },
     es: {
-        'native-pl': { title: 'Español - Polaco', description: 'Traduce palabras del español al polaco. Una excelente manera de probar y ampliar tu vocabulario básico.' },
-        'pl-native': { title: 'Polaco - Español', description: '¡Invierte los papeles! Comprueba si puedes traducir palabras polacas al español para fortalecer tus habilidades.' },
-        'irregulars': { title: 'Verbos Irregulares', description: 'Pon a prueba tus conocimientos sobre los verbos irregulares. Este cuestionario te ayudará a recordar sus formas clave y su uso.' },
-        'phrasals': { title: 'Falsos Amigos', description: 'Enfréntate a los "falsos amigos" engañosos. Domina estas palabras para evitar malentendidos comunes.' },
-        'idioms': { title: 'Modismos', description: 'Adivina el significado de los modismos populares. Es una excelente manera de entender los matices culturales del idioma y enriquecer tu habla.' }
+        'native-pl': { title: 'Español - Polaco', description: 'Przetłumacz słowa z języka obcego na polski. Doskonały sposób na sprawdzenie i poszerzenie podstawowego słownictwa.' },
+        'pl-native': { title: 'Polaco - Español', description: 'Odwróć role! Sprawdź, czy potrafisz przetłumaczyć polskie słowa na język obcy, aby wzmocnić swoje umiejętności.' },
+        'irregulars': { title: 'Verbos Irregulares', description: 'Sprawdź swoją wiedzę o czasownikach nieregularnych. Ten quiz pomoże Ci zapamiętać ich kluczowe formy i użycie.' },
+        'phrasals': { title: 'Falsos Amigos', description: 'Zmierz się z podchwytliwymi "fałszywymi przyjaciółmi". Opanuj te słowa, aby uniknąć typowych nieporozumień.' },
+        'idioms': { title: 'Modismos', description: 'Zgadnij znaczenie popularnych idiomów. Świetny sposób na zrozumienie niuansów kulturowych i wzbogacenie mowy.' }
     }
 };
 
@@ -193,7 +193,7 @@ export default function QuizzesPage() {
                 </CardHeader>
                 <CardContent data-tutorial-id="quiz-buttons" className={cn(
                     "p-6 pt-0 pb-4",
-                    view === 'grid' ? "flex-1 overflow-y-auto" : "flex flex-col space-y-2"
+                    view === 'grid' ? "flex-1 overflow-y-auto" : "flex flex-col"
                 )}>
                     <p className="text-muted-foreground text-center pb-4">
                         {getUIText('welcome')}

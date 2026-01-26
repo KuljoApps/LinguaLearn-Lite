@@ -21,8 +21,8 @@ export default function QuizzesPage() {
         };
         handleLanguageChange();
 
-        const savedView = localStorage.getItem(VIEW_MODE_KEY);
-        if (savedView === 'list' || savedView === 'grid') {
+        const savedView = localStorage.getItem(VIEW_MODE_KEY) as 'grid' | 'list' | null;
+        if (savedView) {
             setView(savedView);
         }
 
@@ -161,13 +161,13 @@ export default function QuizzesPage() {
                 "w-full max-w-md shadow-2xl text-center",
                 view === 'grid' && "flex flex-col h-[90vh]"
             )}>
-                <CardHeader className="text-center p-6">
+                <CardHeader className="text-center p-6 pb-2">
                     <div className="flex items-center justify-center gap-4">
                         <LayoutGrid className="h-8 w-8" />
                         <h1 className="text-3xl font-bold tracking-tight">
                             <span className="relative inline-block">
                                 {getTitle()}
-                                <span className="absolute right-px -bottom-[10px] text-sm font-semibold tracking-normal text-amber">
+                                <span className="absolute right-0 -bottom-[9px] text-sm font-semibold tracking-normal text-amber">
                                 Lite
                                 </span>
                             </span>
@@ -176,7 +176,7 @@ export default function QuizzesPage() {
                 </CardHeader>
                 <CardContent data-tutorial-id="quiz-buttons" className={cn(
                     "p-6 pt-0 pb-4",
-                    view === 'grid' ? "overflow-y-auto" : "flex flex-col space-y-2"
+                    view === 'grid' ? "flex-1 overflow-y-auto" : "flex flex-col space-y-2"
                 )}>
                     <p className="text-muted-foreground text-center pb-4">{getWelcomeMessage()}</p>
                     {view === 'list' ? (

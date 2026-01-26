@@ -53,8 +53,8 @@ export default function ReadingPage() {
     const [view, setView] = useState<'grid' | 'list'>('list');
 
     useEffect(() => {
-        const savedView = localStorage.getItem(VIEW_MODE_KEY);
-        if (savedView === 'grid' || savedView === 'list') {
+        const savedView = localStorage.getItem(VIEW_MODE_KEY) as 'grid' | 'list' | null;
+        if (savedView) {
             setView(savedView);
         }
     }, []);
@@ -71,13 +71,13 @@ export default function ReadingPage() {
                 "w-full max-w-md shadow-2xl text-center",
                 view === 'grid' && "flex flex-col h-[90vh]"
             )}>
-                <CardHeader className="text-center p-6">
+                 <CardHeader className="text-center p-6 pb-2">
                     <div className="flex items-center justify-center gap-4">
                         <BookOpenText className="h-8 w-8" />
                         <h1 className="text-3xl font-bold tracking-tight">
                             <span className="relative inline-block">
                                 Reading
-                                <span className="absolute right-px -bottom-[10px] text-sm font-semibold tracking-normal text-amber">
+                                <span className="absolute right-[11px] -bottom-[8px] text-sm font-semibold tracking-normal text-amber">
                                 Lite
                                 </span>
                             </span>
@@ -86,7 +86,7 @@ export default function ReadingPage() {
                 </CardHeader>
                 <CardContent className={cn(
                     "p-6 pt-0 pb-4",
-                    view === 'grid' && "overflow-y-auto"
+                    view === 'grid' && "flex-1 overflow-y-auto"
                 )}>
                     <p className="text-muted-foreground text-center pb-4">Doskonal swoje umiejętności czytania ze zrozumieniem i słownictwo.</p>
                     {view === 'list' ? (

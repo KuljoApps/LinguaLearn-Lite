@@ -5,20 +5,51 @@ import { ArrowLeft, Gamepad2, Brain, Puzzle, Keyboard, EyeOff, Timer, ArrowRight
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { getFavoriteGames, toggleFavoriteGame } from '@/lib/storage';
+import { getFavoriteGames, toggleFavoriteGame, getLanguage, type Language } from '@/lib/storage';
 import { cn } from '@/lib/utils';
 
-const allGames = [
-    { title: 'Memory', href: '/games/memory', icon: Brain, description: 'Match pairs of words and their translations. A classic game to test and improve your vocabulary retention.' },
-    { title: 'Crossword', href: '/games/crossword', icon: Puzzle, description: 'Solve the crossword puzzle where clues are in one language and answers in another. A fun vocabulary challenge.' },
-    { title: 'Hangman', href: '/games/hangman', icon: Keyboard, description: 'Guess the hidden word letter by letter based on a Polish hint. A classic word-guessing game.' },
-    { title: 'Odd One Out', href: '/games/odd-one-out', icon: EyeOff, description: 'From a group of words, find the one that doesn\'t belong to the category. A test of logic and vocabulary.' },
-    { title: 'Translation Race', href: '/games/translation-race', icon: Timer, description: 'Translate as many words as you can in 60 seconds. A fast-paced challenge for quick thinkers.' },
-    { title: 'Synonym Match', href: '/games/synonym-match', icon: ArrowRightLeft, description: 'Match words from two columns that have the same or similar meaning. A great way to expand your vocabulary.' },
+const allGamesData = [
+    { href: '/games/memory', icon: Brain, titles: { en: 'Memory', fr: 'Mémoire', de: 'Memory', it: 'Memory', es: 'Memoria' }, description: 'Dopasuj pary słów i ich tłumaczeń. Klasyczna gra do testowania i poprawiania zapamiętywania słownictwa.' },
+    { href: '/games/crossword', icon: Puzzle, titles: { en: 'Crossword', fr: 'Mots Croisés', de: 'Kreuzworträtsel', it: 'Cruciverba', es: 'Crucigrama' }, description: 'Rozwiąż krzyżówkę, w której wskazówki są w jednym języku, a odpowiedzi w drugim. Zabawne wyzwanie słownikowe.' },
+    { href: '/games/hangman', icon: Keyboard, titles: { en: 'Hangman', fr: 'Pendu', de: 'Galgenmännchen', it: 'Impiccato', es: 'Ahorcado' }, description: 'Zgadnij ukryte słowo litera po literze na podstawie polskiej wskazówki. Klasyczna gra w odgadywanie słów.' },
+    { href: '/games/odd-one-out', icon: EyeOff, titles: { en: 'Odd One Out', fr: 'L\'intrus', de: 'Der Ausreißer', it: 'L\'intruso', es: 'El Intruso' }, description: 'Z grupy słów znajdź to, które nie pasuje do kategorii. Test na logikę i słownictwo.' },
+    { href: '/games/translation-race', icon: Timer, titles: { en: 'Translation Race', fr: 'Course de Traduction', de: 'Übersetzungsrennen', it: 'Gara di Traduzione', es: 'Carrera de Traducción' }, description: 'Przetłumacz jak najwięcej słów w 60 sekund. Szybkie wyzwanie dla bystrych umysłów.' },
+    { href: '/games/synonym-match', icon: ArrowRightLeft, titles: { en: 'Synonym Match', fr: 'Jeu des Synonymes', de: 'Synonym-Paare', it: 'Abbinamento Sinonimi', es: 'Coincidencia de Sinónimos' }, description: 'Dopasuj słowa z dwóch kolumn, które mają takie samo lub podobne znaczenie. Świetny sposób na poszerzenie słownictwa.' },
 ]
 
 const SCROLL_POSITION_KEY = 'gamesScrollPosition';
 const VIEW_MODE_KEY = 'gamesViewMode';
+
+const uiTexts = {
+    welcome: {
+        en: 'Choose a game to practice your language skills in a fun way!',
+        fr: 'Choisissez un jeu pour pratiquer vos compétences linguistiques de manière amusante !',
+        de: 'Wähle ein Spiel, um deine Sprachkenntnisse auf spielerische Weise zu üben!',
+        it: 'Scegli un gioco per praticare le tue abilità linguistiche in modo divertente!',
+        es: '¡Elige un juego para practicar tus habilidades lingüísticas de forma divertida!'
+    },
+    backToHome: {
+        en: 'Back to Home',
+        fr: "Retour à l'accueil",
+        de: 'Zurück zur Startseite',
+        it: 'Torna alla Home',
+        es: 'Volver al Inicio'
+    },
+    view: {
+        en: 'View',
+        fr: 'Vue',
+        de: 'Ansicht',
+        it: 'Vista',
+        es: 'Vista'
+    },
+    play: {
+        en: 'Play',
+        fr: 'Jouer',
+        de: 'Spielen',
+        it: 'Gioca',
+        es: 'Jugar'
+    }
+};
 
 const cardColors = [
     { border: 'border-amber', bg: 'bg-orange-500/10' },
@@ -33,8 +64,15 @@ export default function GamesPage() {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const [favorites, setFavorites] = useState<string[]>([]);
     const [view, setView] = useState<'grid' | 'list'>('grid');
+    const [language, setLanguageState] = useState<Language>('en');
 
     useEffect(() => {
+        const handleLanguageChange = () => {
+            setLanguageState(getLanguage());
+        };
+        handleLanguageChange();
+        window.addEventListener('language-changed', handleLanguageChange);
+
         const container = scrollContainerRef.current;
         if (container) {
             const scrollPosition = sessionStorage.getItem(SCROLL_POSITION_KEY);
@@ -53,7 +91,9 @@ export default function GamesPage() {
         }
 
         window.addEventListener('favorites-changed', loadFavorites);
+        
         return () => {
+            window.removeEventListener('language-changed', handleLanguageChange);
             window.removeEventListener('favorites-changed', loadFavorites);
         }
     }, []);
@@ -75,14 +115,23 @@ export default function GamesPage() {
         localStorage.setItem(VIEW_MODE_KEY, newView);
     };
 
+    const getUIText = (key: keyof typeof uiTexts) => {
+        return uiTexts[key][language] || uiTexts[key]['en'];
+    };
+
+    const games = useMemo(() => allGamesData.map(game => ({
+        ...game,
+        title: game.titles[language] || game.titles.en
+    })), [language]);
+
     const sortedGames = useMemo(() => {
-        const favoriteGames = allGames.filter(game => favorites.includes(game.href));
-        const otherGames = allGames.filter(game => !favorites.includes(game.href));
+        const favoriteGames = games.filter(game => favorites.includes(game.href));
+        const otherGames = games.filter(game => !favorites.includes(game.href));
 
         favoriteGames.sort((a, b) => favorites.indexOf(a.href) - favorites.indexOf(b.href));
 
         return [...favoriteGames, ...otherGames];
-    }, [favorites]);
+    }, [favorites, games]);
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -102,16 +151,16 @@ export default function GamesPage() {
                     </div>
                 </CardHeader>
                 <CardContent ref={scrollContainerRef} className="px-6 pb-6 pt-0 max-h-[70vh] overflow-y-auto">
-                    <p className="text-muted-foreground text-center pb-4">Choose a game to practice your language skills in a fun way!</p>
+                    <p className="text-muted-foreground text-center pb-4">{getUIText('welcome')}</p>
                     <div className={cn(
                         view === 'grid' 
                         ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4' 
                         : 'flex flex-col gap-2'
                     )}>
-                        {sortedGames.map((game) => {
+                        {sortedGames.map((game, index) => {
                             const Icon = game.icon;
                             const isFavorite = favorites.includes(game.href);
-                            const color = cardColors[allGames.findIndex(g => g.href === game.href) % cardColors.length];
+                            const color = cardColors[index % cardColors.length];
                             
                             if (view === 'list') {
                                 return (
@@ -166,7 +215,7 @@ export default function GamesPage() {
                                     </CardContent>
                                     <CardFooter>
                                         <Link href={game.href} className="w-full" onClick={handleGameClick}>
-                                            <Button className="w-full">Play</Button>
+                                            <Button className="w-full">{getUIText('play')}</Button>
                                         </Link>
                                     </CardFooter>
                                 </Card>
@@ -178,12 +227,12 @@ export default function GamesPage() {
                     <Link href="/" passHref>
                         <Button variant="outline" className="gap-2">
                             <ArrowLeft className="h-4 w-4" /> 
-                            <span>Back to Home</span>
+                            <span>{getUIText('backToHome')}</span>
                         </Button>
                     </Link>
                     <Button variant="outline" onClick={handleViewToggle} className="gap-2">
                         {view === 'grid' ? <List className="h-4 w-4" /> : <LayoutGrid className="h-4 w-4" />}
-                        <span>View</span>
+                        <span>{getUIText('view')}</span>
                     </Button>
                 </CardFooter>
             </Card>

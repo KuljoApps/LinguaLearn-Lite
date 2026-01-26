@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, Puzzle, Save, Trash2, ClipboardCopy, Settings } from 'lucide-react';
+import { ArrowLeft, Puzzle, Save, Trash2, ClipboardCopy, Settings, Wrench } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { type CrosswordPuzzle, type CrosswordClue } from '@/lib/games/crossword';
 import { Input } from '@/components/ui/input';

@@ -137,6 +137,14 @@ export default {
             'from': { transform: 'rotate(0deg)' },
             'to': { transform: 'rotate(360deg)' },
         },
+        'joystick-tilt': {
+            '0%, 100%': { transform: 'rotate(0deg)' },
+            '16%': { transform: 'rotate(-15deg)' },
+            '33%': { transform: 'rotate(15deg)' },
+            '50%': { transform: 'rotate(-15deg)' },
+            '66%': { transform: 'rotate(15deg)' },
+            '83%': { transform: 'rotate(-15deg)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -150,6 +158,7 @@ export default {
         'text-fall-down': 'text-fall-down 0.5s ease-out forwards',
         'dancing-dots': 'dancing-dots 1.2s infinite ease-in-out',
         'spin-once': 'spin-once 3s linear',
+        'joystick-tilt': 'joystick-tilt 3s ease-in-out',
       },
     },
   },

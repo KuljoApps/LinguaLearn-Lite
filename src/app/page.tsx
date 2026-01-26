@@ -27,6 +27,7 @@ export default function Home() {
     const [showReadingDots, setShowReadingDots] = useState(false);
     const [showQuizzesSpin, setShowQuizzesSpin] = useState(false);
     const [showListeningPulse, setShowListeningPulse] = useState(false);
+    const [showGamesTilt, setShowGamesTilt] = useState(false);
     const pathname = usePathname();
 
     useEffect(() => {
@@ -58,43 +59,47 @@ export default function Home() {
         window.addEventListener('achievements-count-changed', updateAchievementCount);
         window.addEventListener('theme-changed', handleStateUpdate);
 
-        let animationStep = 0;
+        const timers: NodeJS.Timeout[] = [];
+        let animationTimeoutId: NodeJS.Timeout;
+        let currentIndex = 0;
         
-        const runAnimations = () => {
-          const currentAnimation = animationStep % 4;
+        const animations = [
+            () => {
+                setFillTheGapText('___');
+                timers.push(setTimeout(() => setFillTheGapText('the'), 3000));
+            },
+            () => {
+                setShowReadingDots(true);
+                timers.push(setTimeout(() => setShowReadingDots(false), 3000));
+            },
+            () => {
+                setShowQuizzesSpin(true);
+                timers.push(setTimeout(() => setShowQuizzesSpin(false), 3000));
+            },
+            () => {
+                setShowListeningPulse(true);
+                timers.push(setTimeout(() => setShowListeningPulse(false), 3000));
+            },
+            () => {
+                setShowGamesTilt(true);
+                timers.push(setTimeout(() => setShowGamesTilt(false), 3000));
+            }
+        ];
 
-          if (currentAnimation === 0) {
-            setFillTheGapText(prev => (prev === 'the' ? '___' : 'the'));
-            setShowReadingDots(false);
-            setShowQuizzesSpin(false);
-            setShowListeningPulse(false);
-          } else if (currentAnimation === 1) {
-            setShowReadingDots(true);
-            setShowQuizzesSpin(false);
-            setShowListeningPulse(false);
-            setTimeout(() => setShowReadingDots(false), 3000);
-          } else if (currentAnimation === 2) {
-            setShowQuizzesSpin(true);
-            setShowReadingDots(false);
-            setShowListeningPulse(false);
-            setTimeout(() => setShowQuizzesSpin(false), 3000);
-          } else if (currentAnimation === 3) {
-            setShowListeningPulse(true);
-            setShowQuizzesSpin(false); 
-            setShowReadingDots(false);
-            setTimeout(() => setShowListeningPulse(false), 1500); 
-          }
-          animationStep++;
+        const scheduleNextAnimation = () => {
+            animations[currentIndex]();
+            currentIndex = (currentIndex + 1) % animations.length;
+            animationTimeoutId = setTimeout(scheduleNextAnimation, 3000 + 5000); // 3s anim + 5s pause
         };
 
-        runAnimations();
-        const animationInterval = setInterval(runAnimations, 5000);
+        scheduleNextAnimation();
 
         return () => {
+            clearTimeout(animationTimeoutId);
+            timers.forEach(clearTimeout);
             window.removeEventListener('language-changed', handleStateUpdate);
             window.removeEventListener('achievements-count-changed', updateAchievementCount);
             window.removeEventListener('theme-changed', handleStateUpdate);
-            clearInterval(animationInterval);
         };
     }, [pathname]);
 
@@ -170,7 +175,7 @@ export default function Home() {
                         </Link>
                          <Link href="/games" passHref>
                             <Button variant={theme ? undefined : "outline"} className={cn(buttonBaseClasses, squareButtonClasses, "rounded-xl", theme ? theme.className : defaultThemeClasses, "font-normal", isGradientTheme && 'bg-[length:300%_300%] animate-gradient-flow')}>
-                                <Gamepad2 className={cn("h-24 w-24", theme ? 'text-white' : 'text-deep-purple')} />
+                                <Gamepad2 className={cn("h-24 w-24", theme ? 'text-white' : 'text-deep-purple', showGamesTilt && "animate-joystick-tilt")} />
                                 <span className={cn(theme ? 'text-white' : '')}>Games</span>
                             </Button>
                         </Link>

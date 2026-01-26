@@ -11,5 +11,6 @@ export interface CrosswordClue {
 export interface CrosswordPuzzle {
   id: number;
   gridSize: number;
+  gridHeight?: number;
   clues: CrosswordClue[];
 }

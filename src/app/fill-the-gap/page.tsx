@@ -60,7 +60,7 @@ export default function FillTheGapPage() {
                             Fill the{' '}
                             <span className="relative inline-block">
                                 Gap
-                                <span className="absolute right-[-24px] -bottom-3.5 text-sm font-semibold tracking-normal text-amber">
+                                <span className="absolute right-1.5 -bottom-9 text-sm font-semibold tracking-normal text-amber">
                                     Lite
                                 </span>
                             </span>

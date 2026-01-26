@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from 'react';
-import { ArrowLeft, Gamepad2, Brain, Shuffle, Puzzle, Keyboard, EyeOff, Timer, ArrowRightLeft } from 'lucide-react';
+import { ArrowLeft, Gamepad2, Brain, Puzzle, Keyboard, EyeOff, Timer, ArrowRightLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 
 const games = [
     { title: 'Memory', href: '/games/memory', icon: Brain, description: 'Match pairs of words and their translations. A classic game to test and improve your vocabulary retention.' },
-    { title: 'Sentence Scramble', href: '/games/sentence-scramble', icon: Shuffle, description: 'Unscramble the words to form a correct sentence. A perfect way to practice grammar and sentence structure.' },
     { title: 'Crossword', href: '/games/crossword', icon: Puzzle, description: 'Solve the crossword puzzle where clues are in one language and answers in another. A fun vocabulary challenge.' },
     { title: 'Hangman', href: '/games/hangman', icon: Keyboard, description: 'Guess the hidden word letter by letter based on a Polish hint. A classic word-guessing game.' },
     { title: 'Odd One Out', href: '/games/odd-one-out', icon: EyeOff, description: 'From a group of words, find the one that doesn\'t belong to the category. A test of logic and vocabulary.' },
@@ -47,28 +46,30 @@ export default function GamesPage() {
                         <Gamepad2 className="h-8 w-8" />
                         <h1 className="text-3xl font-bold tracking-tight">Game Center</h1>
                     </div>
-                     <p className="text-muted-foreground pt-2">Choose a game to practice your language skills in a fun way!</p>
                 </CardHeader>
-                <CardContent ref={scrollContainerRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-6 max-h-[70vh] overflow-y-auto">
-                    {games.map((game) => {
-                        const Icon = game.icon;
-                        return (
-                            <Card key={game.title}>
-                                <CardHeader className="items-center">
-                                    <Icon className="h-12 w-12 text-primary" />
-                                    <CardTitle className="pt-2 text-center">{game.title}</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-sm text-center text-muted-foreground h-20">{game.description}</p>
-                                </CardContent>
-                                <CardFooter>
-                                    <Link href={game.href} className="w-full" onClick={handleGameClick}>
-                                        <Button className="w-full">Play</Button>
-                                    </Link>
-                                </CardFooter>
-                            </Card>
-                        );
-                    })}
+                <CardContent ref={scrollContainerRef} className="p-6 max-h-[70vh] overflow-y-auto">
+                    <p className="text-muted-foreground text-center pb-4">Choose a game to practice your language skills in a fun way!</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {games.map((game) => {
+                            const Icon = game.icon;
+                            return (
+                                <Card key={game.title}>
+                                    <CardHeader className="items-center">
+                                        <Icon className="h-12 w-12 text-primary" />
+                                        <CardTitle className="pt-2 text-center">{game.title}</CardTitle>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <p className="text-sm text-center text-muted-foreground h-20">{game.description}</p>
+                                    </CardContent>
+                                    <CardFooter>
+                                        <Link href={game.href} className="w-full" onClick={handleGameClick}>
+                                            <Button className="w-full">Play</Button>
+                                        </Link>
+                                    </CardFooter>
+                                </Card>
+                            );
+                        })}
+                    </div>
                 </CardContent>
                 <CardFooter className="flex justify-center p-6 border-t">
                     <Link href="/" passHref>

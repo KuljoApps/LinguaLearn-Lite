@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { ArrowLeft, BookOpenText, HelpCircle, Puzzle, CheckCircle2, ScanSearch, Tally5, Info, ListCollapse, PenTool, Scale } from 'lucide-react';
+import { ArrowLeft, HelpCircle, CheckCircle2, ScanSearch, Info, ListCollapse, PenTool, Scale, LayoutGrid, List } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -13,18 +13,65 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from '@/lib/utils';
 
 const DESCRIPTIONS_VISIBLE_KEY = 'readingDescriptionsVisible';
+const VIEW_MODE_KEY = 'readingViewMode';
+
+const readingTasks = [
+    {
+        href: '/reading/read-and-answer',
+        icon: HelpCircle,
+        title: 'Read and Answer',
+        description: 'Przeczytaj krótki tekst i odpowiedz na pytania, aby sprawdzić swoje zrozumienie.',
+    },
+    {
+        href: '/reading/true-false',
+        icon: CheckCircle2,
+        title: 'True or False',
+        description: 'Przeczytaj stwierdzenia i zdecyduj, czy są prawdziwe, fałszywe, czy też informacja nie została podana w tekście.',
+    },
+    {
+        href: '/reading/vocabulary-in-context',
+        icon: ScanSearch,
+        title: 'Vocabulary in Context',
+        description: 'Zidentyfikuj znaczenie wyróżnionych słów na podstawie kontekstu, w którym występują w tekście.',
+    },
+    {
+        href: '/reading/matching-headings',
+        icon: ListCollapse,
+        title: 'Matching Headings',
+        description: 'Dopasuj nagłówki do odpowiednich akapitów tekstu, aby sprawdzić swoje zrozumienie głównej myśli każdej części.',
+    },
+    {
+        href: '/reading/tone-analysis',
+        icon: PenTool,
+        title: 'Tone Analysis',
+        description: 'Określ ton autora tekstu (np. informacyjny, perswazyjny, humorystyczny), aby nauczyć się rozpoznawać głębsze intencje piszącego.',
+    },
+    {
+        href: '/reading/fact-or-opinion',
+        icon: Scale,
+        title: 'Fact or Opinion',
+        description: 'Przeczytaj tekst i rozróżnij stwierdzenia oparte na faktach od tych, które wyrażają opinię autora, rozwijając swoje krytyczne myślenie.',
+    },
+];
 
 export default function ReadingPage() {
     const [showDescriptions, setShowDescriptions] = useState(false);
+    const [view, setView] = useState<'grid' | 'list'>('list');
 
     useEffect(() => {
-        const savedPreference = localStorage.getItem(DESCRIPTIONS_VISIBLE_KEY);
-        if (savedPreference !== null) {
-            setShowDescriptions(JSON.parse(savedPreference));
+        const savedDescPreference = localStorage.getItem(DESCRIPTIONS_VISIBLE_KEY);
+        if (savedDescPreference !== null) {
+            setShowDescriptions(JSON.parse(savedDescPreference));
         } else {
             setShowDescriptions(false);
+        }
+
+        const savedView = localStorage.getItem(VIEW_MODE_KEY);
+        if (savedView === 'grid' || savedView === 'list') {
+            setView(savedView);
         }
     }, []);
 
@@ -34,11 +81,17 @@ export default function ReadingPage() {
         localStorage.setItem(DESCRIPTIONS_VISIBLE_KEY, JSON.stringify(newValue));
     };
 
+    const handleViewToggle = () => {
+        const newView = view === 'grid' ? 'list' : 'grid';
+        setView(newView);
+        localStorage.setItem(VIEW_MODE_KEY, newView);
+    };
+
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <TooltipProvider>
                 <Card className="w-full max-w-md shadow-2xl text-center">
-                    <CardHeader>
+                    <CardHeader className="pt-6 pb-2">
                         <div className="flex items-center justify-center gap-4 mb-4">
                             <LinguaLearnLogo width="48" height="48" />
                             <h1 className="text-4xl font-bold tracking-tight whitespace-nowrap">
@@ -49,85 +102,77 @@ export default function ReadingPage() {
                             Doskonal swoje umiejętności czytania ze zrozumieniem i słownictwo.
                         </p>
                         <div className="flex items-center justify-center">
-                            <div className="w-10" />
+                             <div className={cn(view === 'list' ? 'w-10' : '')} />
                             <CardTitle className="text-3xl font-bold tracking-tight flex-1">
                                 Reading
                             </CardTitle>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Button variant="ghost" size="icon" onClick={handleToggleDescriptions}>
-                                        <Info className="h-5 w-5" />
-                                    </Button>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                    <p>{showDescriptions ? 'Ukryj opisy' : 'Pokaż opisy'}</p>
-                                </TooltipContent>
-                            </Tooltip>
+                            {view === 'list' && (
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button variant="ghost" size="icon" onClick={handleToggleDescriptions}>
+                                            <Info className="h-5 w-5" />
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>{showDescriptions ? 'Ukryj opisy' : 'Pokaż opisy'}</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            )}
                         </div>
                     </CardHeader>
-                    <CardContent className="flex flex-col space-y-2 p-6 pt-2 pb-4">
-                        <div>
-                            <Link href="/reading/read-and-answer" passHref>
-                                <Button className="w-full h-12 text-lg" size="lg">
-                                    <HelpCircle className="mr-2 h-5 w-5" />
-                                    Read and Answer
-                                </Button>
-                            </Link>
-                             {showDescriptions && <p className="text-xs italic text-muted-foreground mt-1 px-2">Przeczytaj krótki tekst i odpowiedz na pytania, aby sprawdzić swoje zrozumienie.</p>}
-                        </div>
-                        <div>
-                            <Link href="/reading/true-false" passHref>
-                                <Button className="w-full h-12 text-lg" size="lg">
-                                    <CheckCircle2 className="mr-2 h-5 w-5" />
-                                    True or False
-                                </Button>
-                            </Link>
-                             {showDescriptions && <p className="text-xs italic text-muted-foreground mt-1 px-2">Przeczytaj stwierdzenia i zdecyduj, czy są prawdziwe, fałszywe, czy też informacja nie została podana w tekście.</p>}
-                        </div>
-                        <div>
-                            <Link href="/reading/vocabulary-in-context" passHref>
-                                <Button className="w-full h-12 text-lg" size="lg">
-                                    <ScanSearch className="mr-2 h-5 w-5" />
-                                    Vocabulary in Context
-                                </Button>
-                            </Link>
-                             {showDescriptions && <p className="text-xs italic text-muted-foreground mt-1 px-2">Zidentyfikuj znaczenie wyróżnionych słów na podstawie kontekstu, w którym występują w tekście.</p>}
-                        </div>
-                         <div>
-                            <Link href="/reading/matching-headings" passHref>
-                                <Button className="w-full h-12 text-lg" size="lg">
-                                    <ListCollapse className="mr-2 h-5 w-5" />
-                                    Matching Headings
-                                </Button>
-                            </Link>
-                             {showDescriptions && <p className="text-xs italic text-muted-foreground mt-1 px-2">Dopasuj nagłówki do odpowiednich akapitów tekstu, aby sprawdzić swoje zrozumienie głównej myśli każdej części.</p>}
-                        </div>
-                        <div>
-                            <Link href="/reading/tone-analysis" passHref>
-                                <Button className="w-full h-12 text-lg" size="lg">
-                                    <PenTool className="mr-2 h-5 w-5" />
-                                    Tone Analysis
-                                </Button>
-                            </Link>
-                             {showDescriptions && <p className="text-xs italic text-muted-foreground mt-1 px-2">Określ ton autora tekstu (np. informacyjny, perswazyjny, humorystyczny), aby nauczyć się rozpoznawać głębsze intencje piszącego.</p>}
-                        </div>
-                        <div>
-                            <Link href="/reading/fact-or-opinion" passHref>
-                                <Button className="w-full h-12 text-lg" size="lg">
-                                    <Scale className="mr-2 h-5 w-5" />
-                                    Fact or Opinion
-                                </Button>
-                            </Link>
-                             {showDescriptions && <p className="text-xs italic text-muted-foreground mt-1 px-2">Przeczytaj tekst i rozróżnij stwierdzenia oparte na faktach od tych, które wyrażają opinię autora, rozwijając swoje krytyczne myślenie.</p>}
-                        </div>
+                    <CardContent className="p-6 pt-2 pb-4">
+                        {view === 'list' && (
+                            <div className="flex flex-col space-y-2">
+                                {readingTasks.map((task) => (
+                                    <div key={task.href}>
+                                        <Link href={task.href} passHref>
+                                            <Button className="w-full h-12 text-lg" size="lg">
+                                                <task.icon className="mr-2 h-5 w-5" />
+                                                {task.title}
+                                            </Button>
+                                        </Link>
+                                        {showDescriptions && <p className="text-xs italic text-muted-foreground mt-1 px-2">{task.description}</p>}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        {view === 'grid' && (
+                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                {readingTasks.map((task) => {
+                                    const Icon = task.icon;
+                                    return (
+                                        <Card key={task.title} className="relative border-2">
+                                            <CardHeader className="items-center">
+                                                <Icon className="h-12 w-12 text-primary" />
+                                                <CardTitle className="pt-2 text-center">{task.title}</CardTitle>
+                                            </CardHeader>
+                                            <CardContent>
+                                                <p className="text-sm text-center text-muted-foreground h-20">{task.description}</p>
+                                            </CardContent>
+                                            <CardFooter>
+                                                <Link href={task.href} className="w-full">
+                                                    <Button className="w-full">Start</Button>
+                                                </Link>
+                                            </CardFooter>
+                                        </Card>
+                                    );
+                                })}
+                            </div>
+                        )}
                     </CardContent>
                     <CardFooter className="flex flex-col p-6 pt-4 gap-4">
                         <Separator />
-                         <Link href="/" passHref>
-                            <Button variant="outline">
-                                <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
+                        <div className="flex justify-center gap-4">
+                             <Link href="/" passHref>
+                                <Button variant="outline">
+                                    <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
+                                </Button>
+                            </Link>
+                            <Button variant="outline" onClick={handleViewToggle} className="gap-2">
+                                {view === 'grid' ? <List className="h-4 w-4" /> : <LayoutGrid className="h-4 w-4" />}
+                                <span>View</span>
                             </Button>
-                        </Link>
+                        </div>
                     </CardFooter>
                 </Card>
             </TooltipProvider>

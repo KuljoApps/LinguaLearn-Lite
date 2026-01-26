@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState, useMemo } from 'react';
-import { ArrowLeft, Gamepad2, Brain, Puzzle, Keyboard, EyeOff, Timer, ArrowRightLeft, Star, List, LayoutGrid } from 'lucide-react';
+import { ArrowLeft, Gamepad2, Brain, Puzzle, Keyboard, EyeOff, Timer, ArrowRightLeft, Star, List, LayoutGrid, Wrench } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { getFavoriteGames, toggleFavoriteGame, getLanguage, type Language } from '@/lib/storage';
 import { cn } from '@/lib/utils';
+import { Separator } from '@/components/ui/separator';
 
 const allGamesData = [
     { href: '/games/memory', icon: Brain, titles: { en: 'Memory', fr: 'Mémoire', de: 'Memory', it: 'Memory', es: 'Memoria' }, description: 'Dopasuj pary słów i ich tłumaczeń. Klasyczna gra do testowania i poprawiania zapamiętywania słownictwa.' },
@@ -48,6 +49,13 @@ const uiTexts = {
         de: 'Spielen',
         it: 'Gioca',
         es: 'Jugar'
+    },
+    generator: {
+        en: 'Generator',
+        fr: 'Générateur',
+        de: 'Generator',
+        it: 'Generatore',
+        es: 'Generador'
     }
 };
 
@@ -223,17 +231,28 @@ export default function GamesPage() {
                         })}
                     </div>
                 </CardContent>
-                <CardFooter className="flex justify-center p-6 border-t gap-4">
-                    <Link href="/" passHref>
-                        <Button variant="outline" className="gap-2">
-                            <ArrowLeft className="h-4 w-4" /> 
-                            <span>{getUIText('backToHome')}</span>
+                <CardFooter className="flex-col p-6 pt-2 border-t gap-4">
+                    <Separator />
+                    <div className="flex justify-center gap-4">
+                        <Link href="/" passHref>
+                            <Button variant="outline" className="gap-2">
+                                <ArrowLeft className="h-4 w-4" /> 
+                                <span>{getUIText('backToHome')}</span>
+                            </Button>
+                        </Link>
+                        <Button variant="outline" onClick={handleViewToggle} className="gap-2">
+                            {view === 'grid' ? <List className="h-4 w-4" /> : <LayoutGrid className="h-4 w-4" />}
+                            <span>{getUIText('view')}</span>
                         </Button>
-                    </Link>
-                    <Button variant="outline" onClick={handleViewToggle} className="gap-2">
-                        {view === 'grid' ? <List className="h-4 w-4" /> : <LayoutGrid className="h-4 w-4" />}
-                        <span>{getUIText('view')}</span>
-                    </Button>
+                    </div>
+                    <div className="pt-2">
+                         <Link href="/games/crossword/generator" passHref>
+                            <Button variant="secondary" className="gap-2 text-muted-foreground">
+                                <Wrench className="h-4 w-4" />
+                                <span>{getUIText('generator')}</span>
+                            </Button>
+                        </Link>
+                    </div>
                 </CardFooter>
             </Card>
         </main>

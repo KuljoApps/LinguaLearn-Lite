@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
-import { ArrowLeft, Gamepad2, Brain, Puzzle, Keyboard, EyeOff, Timer, ArrowRightLeft } from 'lucide-react';
+import { useEffect, useRef, useState, useMemo } from 'react';
+import { ArrowLeft, Gamepad2, Brain, Puzzle, Keyboard, EyeOff, Timer, ArrowRightLeft, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { getFavoriteGames, toggleFavoriteGame } from '@/lib/storage';
+import { cn } from '@/lib/utils';
 
-const games = [
+const allGames = [
     { title: 'Memory', href: '/games/memory', icon: Brain, description: 'Match pairs of words and their translations. A classic game to test and improve your vocabulary retention.' },
     { title: 'Crossword', href: '/games/crossword', icon: Puzzle, description: 'Solve the crossword puzzle where clues are in one language and answers in another. A fun vocabulary challenge.' },
     { title: 'Hangman', href: '/games/hangman', icon: Keyboard, description: 'Guess the hidden word letter by letter based on a Polish hint. A classic word-guessing game.' },
@@ -19,6 +21,7 @@ const SCROLL_POSITION_KEY = 'gamesScrollPosition';
 
 export default function GamesPage() {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const [favorites, setFavorites] = useState<string[]>([]);
 
     useEffect(() => {
         const container = scrollContainerRef.current;
@@ -29,7 +32,19 @@ export default function GamesPage() {
                 sessionStorage.removeItem(SCROLL_POSITION_KEY);
             }
         }
+        
+        const loadFavorites = () => setFavorites(getFavoriteGames());
+        loadFavorites();
+
+        window.addEventListener('favorites-changed', loadFavorites);
+        return () => {
+            window.removeEventListener('favorites-changed', loadFavorites);
+        }
     }, []);
+
+    const handleFavoriteToggle = (href: string) => {
+        setFavorites(toggleFavoriteGame(href));
+    }
 
     const handleGameClick = () => {
         const container = scrollContainerRef.current;
@@ -37,6 +52,16 @@ export default function GamesPage() {
             sessionStorage.setItem(SCROLL_POSITION_KEY, String(container.scrollTop));
         }
     };
+
+    const sortedGames = useMemo(() => {
+        const favoriteGames = allGames.filter(game => favorites.includes(game.href));
+        const otherGames = allGames.filter(game => !favorites.includes(game.href));
+
+        // Sort favorite games based on the order in the favorites array
+        favoriteGames.sort((a, b) => favorites.indexOf(a.href) - favorites.indexOf(b.href));
+
+        return [...favoriteGames, ...otherGames];
+    }, [favorites]);
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -50,10 +75,22 @@ export default function GamesPage() {
                 <CardContent ref={scrollContainerRef} className="px-6 pb-6 pt-0 max-h-[70vh] overflow-y-auto">
                     <p className="text-muted-foreground text-center pb-4">Choose a game to practice your language skills in a fun way!</p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {games.map((game) => {
+                        {sortedGames.map((game) => {
                             const Icon = game.icon;
+                            const isFavorite = favorites.includes(game.href);
                             return (
-                                <Card key={game.title}>
+                                <Card key={game.title} className="relative">
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="absolute top-2 right-2 z-10 h-8 w-8"
+                                        onClick={() => handleFavoriteToggle(game.href)}
+                                    >
+                                        <Star className={cn(
+                                            "h-5 w-5 transition-colors",
+                                            isFavorite ? "text-amber fill-amber" : "text-muted-foreground/50 hover:text-muted-foreground"
+                                        )} />
+                                    </Button>
                                     <CardHeader className="items-center">
                                         <Icon className="h-12 w-12 text-primary" />
                                         <CardTitle className="pt-2 text-center">{game.title}</CardTitle>

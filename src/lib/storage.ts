@@ -58,6 +58,7 @@ const GLOBAL_STATS_KEY = 'linguaLearnGlobalStats_v2';
 const TUTORIAL_COMPLETED_KEY = 'linguaLearnTutorialCompleted_v2';
 export const NEW_ACHIEVEMENTS_COUNT_KEY = 'linguaLearnNewAchievementsCount';
 const APP_THEME_KEY = 'linguaLearnAppTheme_v1';
+const FAVORITE_GAMES_KEY = 'linguaLearnFavoriteGames';
 
 
 export interface GlobalStats {
@@ -206,6 +207,40 @@ export const toggleFavorite = (category: string, word: string): string[] => {
         return getFavorites(category);
     }
 };
+
+export const getFavoriteGames = (): string[] => {
+    if (typeof window === 'undefined') return [];
+    try {
+        const favoritesJson = localStorage.getItem(FAVORITE_GAMES_KEY);
+        return favoritesJson ? JSON.parse(favoritesJson) : [];
+    } catch (e) {
+        console.error("Failed to get favorite games", e);
+        return [];
+    }
+}
+
+export const toggleFavoriteGame = (gameHref: string): string[] => {
+    if (typeof window === 'undefined') return [];
+    const currentFavorites = getFavoriteGames();
+    const gameIndex = currentFavorites.indexOf(gameHref);
+
+    if (gameIndex > -1) {
+        // Remove from favorites
+        currentFavorites.splice(gameIndex, 1);
+    } else {
+        // Add to favorites
+        currentFavorites.push(gameHref);
+    }
+
+    try {
+        localStorage.setItem(FAVORITE_GAMES_KEY, JSON.stringify(currentFavorites));
+    } catch (e) {
+        console.error("Failed to save favorite games", e);
+    }
+    
+    window.dispatchEvent(new CustomEvent('favorites-changed'));
+    return currentFavorites;
+}
 
 
 // --- Global Stats Functions ---

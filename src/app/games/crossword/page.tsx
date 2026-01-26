@@ -44,6 +44,7 @@ const CrosswordPage = () => {
     const [cellStates, setCellStates] = useState<Record<string, CellStatus>>({});
     const [isGameWon, setIsGameWon] = useState(false);
     const inputRefs = useRef<Array<Array<HTMLInputElement | null>>>([]);
+    const [activeClue, setActiveClue] = useState<{ number: number; direction: 'across' | 'down' } | null>(null);
 
     const generateGrid = useCallback((p: CrosswordPuzzle): Cell[][] => {
         const newGrid: Cell[][] = Array(p.gridSize).fill(null).map(() => Array(p.gridSize).fill(null).map(() => ({ char: '', number: null, isInput: false })));
@@ -73,6 +74,7 @@ const CrosswordPage = () => {
         setUserAnswers({});
         setCellStates({});
         setIsGameWon(false);
+        setActiveClue(null);
         inputRefs.current = Array(randomPuzzle.gridSize).fill(null).map(() => Array(randomPuzzle.gridSize).fill(null));
     }, [generateGrid]);
 
@@ -82,46 +84,95 @@ const CrosswordPage = () => {
         return () => window.removeEventListener('language-changed', initializeGame);
     }, [initializeGame]);
 
-    const handleInputChange = (y: number, x: number, value: string) => {
-        const upperValue = value.toUpperCase();
-        setUserAnswers(prev => ({ ...prev, [`${y}-${x}`]: upperValue }));
+    const getCluesForCell = useCallback((y: number, x: number) => {
+        if (!puzzle) return [];
+        return puzzle.clues.filter(c => {
+            if (c.direction === 'across') {
+                return c.y === y && x >= c.x && x < c.x + c.answer.length;
+            } else { // down
+                return c.x === x && y >= c.y && y < c.y + c.answer.length;
+            }
+        });
+    }, [puzzle]);
+
+    const handleCellClick = useCallback((y: number, x: number) => {
+        const clues = getCluesForCell(y, x);
+        if (clues.length === 0) {
+            setActiveClue(null);
+            return;
+        }
+
+        const isIntersection = clues.length > 1;
+        const currentActiveClueDef = activeClue ? clues.find(c => c.number === activeClue.number && c.direction === activeClue.direction) : undefined;
         
-        if (upperValue && x + 1 < (puzzle?.gridSize || 0) && grid[y][x+1]?.isInput) {
-            inputRefs.current[y]?.[x + 1]?.focus();
+        if (isIntersection && currentActiveClueDef) {
+            const otherDirection = activeClue.direction === 'across' ? 'down' : 'across';
+            const nextClue = clues.find(c => c.direction === otherDirection);
+            if (nextClue) setActiveClue({ number: nextClue.number, direction: nextClue.direction });
+        } else {
+            const preferredClue = clues.find(c => c.direction === (activeClue?.direction || 'across')) || clues[0];
+            setActiveClue({ number: preferredClue.number, direction: preferredClue.direction });
+        }
+    }, [getCluesForCell, activeClue]);
+
+    const handleInputChange = (y: number, x: number, value: string) => {
+        const upperValue = value.toUpperCase().slice(-1);
+        setUserAnswers(prev => ({ ...prev, [`${y}-${x}`]: upperValue }));
+
+        if (upperValue && activeClue) {
+            if (activeClue.direction === 'across' && x + 1 < (puzzle?.gridSize || 0)) {
+                inputRefs.current[y]?.[x + 1]?.focus();
+            } else if (activeClue.direction === 'down' && y + 1 < (puzzle?.gridSize || 0)) {
+                inputRefs.current[y + 1]?.[x]?.focus();
+            }
         }
     };
+    
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, y: number, x: number) => {
+        if (e.key === 'Backspace' && !userAnswers[`${y}-${x}`]) {
+            if (activeClue) {
+                if (activeClue.direction === 'across' && x > 0) {
+                    inputRefs.current[y]?.[x - 1]?.focus();
+                } else if (activeClue.direction === 'down' && y > 0) {
+                    inputRefs.current[y - 1]?.[x]?.focus();
+                }
+            }
+        }
+    };
+
+    const isCellActive = useCallback((y: number, x: number) => {
+        if (!activeClue || !puzzle) return false;
+        const clue = puzzle.clues.find(c => c.number === activeClue.number && c.direction === activeClue.direction);
+        if (!clue) return false;
+
+        if (clue.direction === 'across') {
+            return clue.y === y && x >= clue.x && x < clue.x + clue.answer.length;
+        } else { // down
+            return clue.x === x && y >= clue.y && y < clue.y + clue.answer.length;
+        }
+    }, [activeClue, puzzle]);
     
     const checkAnswers = () => {
         if (!puzzle) return;
         const newCellStates: Record<string, CellStatus> = {};
         let allCorrect = true;
 
-        puzzle.clues.forEach(clue => {
-            let correct = true;
-            let currentWord = '';
-            for (let i = 0; i < clue.answer.length; i++) {
-                const y = clue.y + (clue.direction === 'down' ? i : 0);
-                const x = clue.x + (clue.direction === 'across' ? i : 0);
-                const userAnswer = userAnswers[`${y}-${x}`] || '';
-                currentWord += userAnswer;
+        for (const y in inputRefs.current) {
+            for (const x in inputRefs.current[y]) {
+                const key = `${y}-${x}`;
+                if (grid[y][x].isInput) {
+                    const userAnswer = userAnswers[key] || '';
+                    const correctAnswer = grid[y][x].char;
+                    if (userAnswer.toUpperCase() === correctAnswer.toUpperCase()) {
+                        newCellStates[key] = 'correct';
+                    } else {
+                        newCellStates[key] = 'incorrect';
+                        allCorrect = false;
+                    }
+                }
             }
-            
-            if (currentWord.toUpperCase() !== clue.answer.toUpperCase()) {
-                correct = false;
-                allCorrect = false;
-            }
-
-            for (let i = 0; i < clue.answer.length; i++) {
-                 const y = clue.y + (clue.direction === 'down' ? i : 0);
-                 const x = clue.x + (clue.direction === 'across' ? i : 0);
-                 const key = `${y}-${x}`;
-                 
-                 // Don't mark a cell incorrect if it's part of another, correct word.
-                 if (newCellStates[key] !== 'correct') {
-                     newCellStates[key] = correct ? 'correct' : 'incorrect';
-                 }
-            }
-        });
+        }
+        
         setCellStates(newCellStates);
         if (allCorrect) {
             setIsGameWon(true);
@@ -159,14 +210,15 @@ const CrosswordPage = () => {
                 <div className="flex flex-col md:flex-row gap-8 items-center md:items-start justify-center">
                     <div className="grid gap-1 bg-background" style={{gridTemplateColumns: `repeat(${puzzle.gridSize}, minmax(0, 1fr))`}}>
                         {grid.map((row, y) => row.map((cell, x) => (
-                            <div key={`${y}-${x}`} className="relative">
-                                {cell.number && <span className="absolute top-0.5 left-0.5 text-xs text-muted-foreground select-none">{cell.number}</span>}
+                            <div key={`${y}-${x}`} className="relative" onClick={() => cell.isInput && handleCellClick(y,x)}>
+                                {cell.number && <span className="absolute top-0.5 left-0.5 text-xs text-muted-foreground select-none pointer-events-none">{cell.number}</span>}
                                 <Input
-                                    ref={el => inputRefs.current[y][x] = el}
+                                    ref={el => { if(inputRefs.current[y]) inputRefs.current[y][x] = el }}
                                     type="text"
                                     maxLength={1}
                                     className={cn(
-                                        "w-10 h-10 sm:w-12 sm:h-12 text-center text-lg sm:text-2xl font-bold border-2 rounded-none uppercase disabled:bg-muted disabled:opacity-40",
+                                        "w-10 h-10 sm:w-12 sm:h-12 text-center text-lg sm:text-2xl font-bold border-2 rounded-none uppercase disabled:bg-muted disabled:opacity-40 transition-colors",
+                                        isCellActive(y,x) ? 'bg-primary/10 border-primary/50' : 'border-input',
                                         cellStates[`${y}-${x}`] === 'correct' && 'border-success bg-success/10 text-success-foreground',
                                         cellStates[`${y}-${x}`] === 'incorrect' && 'border-destructive bg-destructive/10 text-destructive-foreground',
                                         !cell.isInput && 'border-muted/20 bg-muted/20',
@@ -174,6 +226,8 @@ const CrosswordPage = () => {
                                     disabled={!cell.isInput}
                                     value={userAnswers[`${y}-${x}`] || ''}
                                     onChange={(e) => handleInputChange(y, x, e.target.value)}
+                                    onKeyDown={(e) => handleKeyDown(e, y, x)}
+                                    onFocus={() => handleCellClick(y,x)}
                                 />
                             </div>
                         )))}
@@ -181,14 +235,14 @@ const CrosswordPage = () => {
                     <div className="space-y-4 flex-1">
                         <div>
                             <h3 className="font-bold text-lg">{getUIText('across')}</h3>
-                            {acrossClues.map(c => <p key={c.number} className="text-muted-foreground text-sm">{c.number}. {c.clue}</p>)}
+                            {acrossClues.map(c => <p key={`across-${c.number}`} className={cn("text-muted-foreground text-sm", activeClue?.number === c.number && activeClue.direction === 'across' && 'text-primary font-semibold')}>{c.number}. {c.clue}</p>)}
                         </div>
                         <div>
                             <h3 className="font-bold text-lg">{getUIText('down')}</h3>
-                            {downClues.map(c => <p key={c.number} className="text-muted-foreground text-sm">{c.number}. {c.clue}</p>)}
+                            {downClues.map(c => <p key={`down-${c.number}`} className={cn("text-muted-foreground text-sm", activeClue?.number === c.number && activeClue.direction === 'down' && 'text-primary font-semibold')}>{c.number}. {c.clue}</p>)}
                         </div>
                         <div className="pt-4">
-                        <Button onClick={checkAnswers}>{getUIText('check')}</Button>
+                            <Button onClick={checkAnswers}>{getUIText('check')}</Button>
                         </div>
                     </div>
                 </div>
@@ -208,3 +262,5 @@ const CrosswordPage = () => {
 };
 
 export default CrosswordPage;
+
+    

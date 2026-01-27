@@ -57,7 +57,9 @@ export default function GapWordsListPage() {
             )}>
                 <div className="flex items-center gap-4">
                     <span className="text-muted-foreground font-mono w-6 text-right">{index + 1}.</span>
-                    <span className="font-semibold text-lg">{question.fullWord}</span>
+                    <span className={cn("font-semibold text-lg", !isCompleted && "font-mono tracking-wider")}>
+                        {isCompleted ? question.fullWord : question.wordWithGap}
+                    </span>
                 </div>
                 {isCompleted ? <CheckCircle className="h-5 w-5 text-success" /> : <Pencil className="h-5 w-5 text-muted-foreground/50" />}
             </div>

@@ -80,7 +80,7 @@ export default function GapWordExercisePage() {
     }
 
     const { wordWithGap, missingLetters, fullWord, hint } = question;
-    const parts = wordWithGap.split('_');
+    const parts = wordWithGap.replace(/_+/, '_').split('_');
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">

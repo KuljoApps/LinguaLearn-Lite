@@ -1,20 +1,22 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRightLeft, Clock, ShieldX, Percent, Trophy, ThumbsUp, Brain, Flame } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { getLanguage, type Language } from '@/lib/storage';
-import { allSynonymQuestions } from '@/lib/games/synonym-match';
+import { allSynonymQuestions, type SynonymPair } from '@/lib/games/synonym-match';
 import { playSound } from '@/lib/sounds';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 
 const shuffle = <T,>(array: T[]): T[] => [...array].sort(() => Math.random() - 0.5);
-const GAME_SIZE = 5;
+
+const TOTAL_PAIRS = 10;
+const BOARD_SIZE = 5;
 const USED_SYNONYMS_KEY_PREFIX = 'linguaLearnUsedSynonyms_';
 
 type SessionError = {
@@ -46,11 +48,22 @@ const uiTexts = {
 
 const SynonymMatchPage = () => {
     const [language, setLanguage] = useState<Language>('en');
-    const [wordSet, setWordSet] = useState<{ words1: string[], words2: string[], matches: Record<string, string> } | null>(null);
+    
+    // Game state
+    const [matches, setMatches] = useState<Record<string, string>>({});
+    const [deck, setDeck] = useState<SynonymPair[]>([]);
+    const [activeWords1, setActiveWords1] = useState<string[]>([]);
+    const [activeWords2, setActiveWords2] = useState<string[]>([]);
+    
     const [selected1, setSelected1] = useState<string | null>(null);
     const [selected2, setSelected2] = useState<string | null>(null);
     const [correctPairs, setCorrectPairs] = useState<string[]>([]);
     const [incorrectPair, setIncorrectPair] = useState<[string, string] | null>(null);
+    
+    const [isFrozen, setIsFrozen] = useState(false);
+    const [stage, setStage] = useState(0);
+
+    // Stats
     const [mistakes, setMistakes] = useState(0);
     const [startTime, setStartTime] = useState<number | null>(null);
     const [gameWonTime, setGameWonTime] = useState<number | null>(null);
@@ -66,7 +79,7 @@ const SynonymMatchPage = () => {
     
     const aggregatedErrors = useMemo(() => Array.from(sessionErrors.values()), [sessionErrors]);
     const totalTime = gameWonTime && startTime ? Math.round((gameWonTime - startTime) / 1000) : 0;
-    const successRate = GAME_SIZE + mistakes > 0 ? Math.round((GAME_SIZE / (GAME_SIZE + mistakes)) * 100) : 0;
+    const successRate = TOTAL_PAIRS + mistakes > 0 ? Math.round((TOTAL_PAIRS / (TOTAL_PAIRS + mistakes)) * 100) : 0;
 
     const motivationalMessage = useMemo(() => {
         if (successRate === 100) return { icon: <Trophy className="h-16 w-16 text-amber animate-shake" />, title: 'Perfect Match!' };
@@ -75,14 +88,14 @@ const SynonymMatchPage = () => {
     }, [successRate]);
 
 
-    const getUIText = (key: keyof typeof uiTexts, replacements: Record<string, string> = {}) => {
+    const getUIText = (key: keyof typeof uiTexts) => {
       let text = uiTexts[key][language] || uiTexts[key]['en'];
       for (const placeholder in replacements) {
           text = text.replace(`{${placeholder}}`, replacements[placeholder]);
       }
       return text;
     };
-
+    
     const setupNewGame = useCallback((lang: Language) => {
         const STORAGE_KEY = `${USED_SYNONYMS_KEY_PREFIX}${lang}`;
         const allPairsForLang = allSynonymQuestions[lang];
@@ -95,24 +108,28 @@ const SynonymMatchPage = () => {
 
         let availablePairs = allPairsForLang.filter(p => !usedWords.includes(p.word1));
 
-        if (availablePairs.length < GAME_SIZE) {
+        if (availablePairs.length < TOTAL_PAIRS) {
             availablePairs = allPairsForLang;
             usedWords = [];
             localStorage.removeItem(STORAGE_KEY);
         }
 
-        const gamePairs = shuffle(availablePairs).slice(0, GAME_SIZE);
+        const gamePairs = shuffle(availablePairs).slice(0, TOTAL_PAIRS);
         const newUsedWords = [...usedWords, ...gamePairs.map(p => p.word1)];
-        
         try { localStorage.setItem(STORAGE_KEY, JSON.stringify(newUsedWords)); } catch (e) { console.error("Failed to save used synonyms", e); }
-
-        const words1 = shuffle(gamePairs.map(p => p.word1));
-        const words2 = shuffle(gamePairs.map(p => p.word2));
         
-        const matches: Record<string, string> = {};
-        gamePairs.forEach(p => { matches[p.word1] = p.word2; matches[p.word2] = p.word1; });
+        const newMatches: Record<string, string> = {};
+        gamePairs.forEach(p => { newMatches[p.word1] = p.word2; newMatches[p.word2] = p.word1; });
+        
+        const initialBoardPairs = gamePairs.slice(0, BOARD_SIZE);
+        const initialDeck = gamePairs.slice(BOARD_SIZE);
 
-        setWordSet({ words1, words2, matches });
+        setMatches(newMatches);
+        setDeck(initialDeck);
+        setActiveWords1(shuffle(initialBoardPairs.map(p => p.word1)));
+        setActiveWords2(shuffle(initialBoardPairs.map(p => p.word2)));
+
+        setStage(0);
         setSelected1(null);
         setSelected2(null);
         setCorrectPairs([]);
@@ -124,6 +141,7 @@ const SynonymMatchPage = () => {
         setLines([]);
         setCurrentStreak(0);
         setLongestStreak(0);
+        setIsFrozen(false);
     }, []);
 
     useEffect(() => {
@@ -140,14 +158,60 @@ const SynonymMatchPage = () => {
     }, [currentStreak, longestStreak]);
 
     useEffect(() => {
-        if (correctPairs.length > 0 && correctPairs.length === GAME_SIZE * 2 && !gameWonTime) {
+        if (correctPairs.length > 0 && correctPairs.length === TOTAL_PAIRS * 2 && !gameWonTime) {
             setGameWonTime(Date.now());
             playSound('achievement');
         }
     }, [correctPairs, gameWonTime]);
     
+    const replaceAndShuffle = useCallback(() => {
+        const currentlyMatchedWords = new Set(correctPairs);
+    
+        const currentBoardWords = [...activeWords1, ...activeWords2];
+        const unmatchedWordsOnBoard = currentBoardWords.filter(w => !currentlyMatchedWords.has(w));
+    
+        const remainingPairsOnBoard: SynonymPair[] = [];
+        const seenWords = new Set();
+        for (const word of unmatchedWordsOnBoard) {
+            if (!seenWords.has(word)) {
+                const partner = matches[word];
+                remainingPairsOnBoard.push({ word1: word, word2: partner });
+                seenWords.add(word);
+                seenWords.add(partner);
+            }
+        }
+    
+        const numToTakeFromDeck = BOARD_SIZE - remainingPairsOnBoard.length;
+        const newPairsFromDeck = deck.slice(0, numToTakeFromDeck);
+        const remainingDeck = deck.slice(numToTakeFromDeck);
+    
+        const nextBoardPairs = [...remainingPairsOnBoard, ...newPairsFromDeck];
+    
+        setActiveWords1(shuffle(nextBoardPairs.map(p => p.word1)));
+        setActiveWords2(shuffle(nextBoardPairs.map(p => p.word2)));
+        setDeck(remainingDeck);
+        setStage(prev => prev + 1);
+        setIsFrozen(false);
+        setSelected1(null);
+        setSelected2(null);
+    }, [correctPairs, activeWords1, activeWords2, deck, matches]);
+
     useEffect(() => {
-        if (!wordSet || !gameContainerRef.current) return;
+        if (isFrozen) return;
+
+        const correctPairCount = correctPairs.length / 2;
+
+        if (stage === 0 && correctPairCount === 3) {
+            setIsFrozen(true);
+            setTimeout(replaceAndShuffle, 1000);
+        } else if (stage === 1 && correctPairCount === 5) {
+            setIsFrozen(true);
+            setTimeout(replaceAndShuffle, 1000);
+        }
+    }, [correctPairs, stage, replaceAndShuffle, isFrozen]);
+
+    useEffect(() => {
+        if (!gameContainerRef.current) return;
 
         const newLines: typeof lines = [];
         const containerRect = gameContainerRef.current.getBoundingClientRect();
@@ -179,19 +243,19 @@ const SynonymMatchPage = () => {
         }
         setLines(newLines);
 
-    }, [correctPairs, wordSet]);
+    }, [correctPairs, activeWords1, activeWords2]);
 
 
     const handleSelect1 = (word: string) => {
-        if (correctPairs.includes(word) || incorrectPair) return;
+        if (correctPairs.includes(word) || incorrectPair || isFrozen) return;
         setSelected1(prev => prev === word ? null : word);
     };
 
     const handleSelect2 = (word: string) => {
-        if (correctPairs.includes(word) || !selected1 || incorrectPair) return;
+        if (correctPairs.includes(word) || !selected1 || incorrectPair || isFrozen) return;
         setSelected2(word);
 
-        if (wordSet && wordSet.matches[selected1] === word) {
+        if (matches && matches[selected1] === word) {
             setCorrectPairs(prev => [...prev, selected1, word]);
             setCurrentStreak(prev => prev + 1);
             toast({ title: getUIText('correctToastTitle'), description: getUIText('correctToastDesc', { word1: selected1, word2: word }), duration: 2000 });
@@ -201,7 +265,7 @@ const SynonymMatchPage = () => {
             setIncorrectPair([selected1, word]);
             setMistakes(prev => prev + 1);
             setCurrentStreak(0);
-            if(wordSet) {
+            if(matches) {
               const errorKey = [selected1!, word].sort().join('-');
               setSessionErrors(prev => {
                 const newErrors = new Map(prev);
@@ -209,7 +273,7 @@ const SynonymMatchPage = () => {
                 if(existingError) {
                   existingError.count++;
                 } else {
-                  newErrors.set(errorKey, { word1: selected1!, word2: word, correct: wordSet.matches[selected1!], count: 1 });
+                  newErrors.set(errorKey, { word1: selected1!, word2: word, correct: matches[selected1!], count: 1 });
                 }
                 return newErrors;
               });
@@ -222,8 +286,6 @@ const SynonymMatchPage = () => {
             }, 800);
         }
     };
-
-    if (!wordSet) return null;
     
     const isGameWon = !!gameWonTime;
 
@@ -234,6 +296,7 @@ const SynonymMatchPage = () => {
         
         return cn(
             "h-16 text-lg transition-all duration-150",
+            isFrozen && "pointer-events-none",
             isSelected && !isIncorrect && "border-primary border-2 ring-2 ring-primary/50",
             isCorrect && "bg-success/20 text-muted-foreground line-through pointer-events-none",
             isIncorrect && "bg-destructive/80 text-destructive-foreground border-destructive"
@@ -241,6 +304,8 @@ const SynonymMatchPage = () => {
     };
     
     const formatTime = (seconds: number) => `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
+
+    if (!activeWords1.length) return null;
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -323,10 +388,10 @@ const SynonymMatchPage = () => {
                                 ))}
                             </svg>
                             <div className="flex flex-col gap-4">
-                                {wordSet.words1.map(word => (
+                                {activeWords1.map(word => (
                                     <Button
                                         key={word}
-                                        ref={(el) => { buttonRefs.current.set(word, el); }}
+                                        ref={(el) => buttonRefs.current.set(word, el)}
                                         variant="outline"
                                         className={getButtonClasses(word, true)}
                                         onClick={() => handleSelect1(word)}
@@ -336,10 +401,10 @@ const SynonymMatchPage = () => {
                                 ))}
                             </div>
                             <div className="flex flex-col gap-4">
-                                {wordSet.words2.map(word => (
+                                {activeWords2.map(word => (
                                     <Button
                                         key={word}
-                                        ref={(el) => { buttonRefs.current.set(word, el); }}
+                                        ref={(el) => buttonRefs.current.set(word, el)}
                                         variant="outline"
                                         className={getButtonClasses(word, false)}
                                         onClick={() => handleSelect2(word)}
@@ -366,3 +431,4 @@ const SynonymMatchPage = () => {
 };
 
 export default SynonymMatchPage;
+

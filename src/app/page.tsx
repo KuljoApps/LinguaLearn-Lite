@@ -23,7 +23,7 @@ export default function Home() {
     const [showRateDialog, setShowRateDialog] = useState(false);
     const [newAchievementsCount, setNewAchievementsCount] = useState(0);
     const [fillTheGapText, setFillTheGapText] = useState('the');
-    const [showReadingDots, setShowReadingDots] = useState(false);
+    const [showReadingBounce, setShowReadingBounce] = useState(false);
     const [showQuizzesSpin, setShowQuizzesSpin] = useState(false);
     const [showGamesTilt, setShowGamesTilt] = useState(false);
     const [showListeningPulse, setShowListeningPulse] = useState(false);
@@ -74,8 +74,8 @@ export default function Home() {
                 timers.push(setTimeout(() => setFillTheGapText('the'), 3000));
             },
             () => {
-                setShowReadingDots(true);
-                timers.push(setTimeout(() => setShowReadingDots(false), 3000));
+                setShowReadingBounce(true);
+                timers.push(setTimeout(() => setShowReadingBounce(false), 3000));
             },
             () => {
                 setShowListeningPulse(true);
@@ -203,13 +203,18 @@ export default function Home() {
                                     <BookOpenText className={cn("h-5 w-5 mr-2", iconClasses)} />
                                 </div>
                                 <span className={cn("col-start-2 flex items-baseline", iconClasses)}>
-                                    <span>Reading</span>
-                                    {showReadingDots && (
-                                        <span className="flex pl-1">
-                                            <span className="animate-dancing-dots" style={{ animationDelay: '0s' }}>.</span>
-                                            <span className="animate-dancing-dots" style={{ animationDelay: '0.2s' }}>.</span>
-                                            <span className="animate-dancing-dots" style={{ animationDelay: '0.4s' }}>.</span>
-                                        </span>
+                                    {showReadingBounce ? (
+                                        'Reading'.split('').map((letter, index) => (
+                                            <span
+                                                key={index}
+                                                className="inline-block animate-letter-bounce"
+                                                style={{ animationDelay: `${index * 0.07}s` }}
+                                            >
+                                                {letter}
+                                            </span>
+                                        ))
+                                    ) : (
+                                        'Reading'
                                     )}
                                 </span>
                                 <div />
@@ -220,16 +225,25 @@ export default function Home() {
                                 <div className="flex justify-end">
                                     <Ear className={cn("h-5 w-5 mr-2", iconClasses, showListeningPulse && "animate-pulse-strong")} />
                                 </div>
-                                <span className={cn("col-start-2", iconClasses)}>Listening</span>
+                                <span className={cn("col-start-2 flex items-baseline", iconClasses)}>
+                                    <span>Listening</span>
+                                    {showListeningPulse && (
+                                        <span className="flex pl-1">
+                                            <span className="animate-dancing-dots" style={{ animationDelay: '0s' }}>.</span>
+                                            <span className="animate-dancing-dots" style={{ animationDelay: '0.2s' }}>.</span>
+                                            <span className="animate-dancing-dots" style={{ animationDelay: '0.4s' }}>.</span>
+                                        </span>
+                                    )}
+                                </span>
                                 <div />
                             </Button>
                         </Link>
                     </div>
                 </CardContent>
                 <div data-tutorial-id="learning-button" className="px-6 pb-2">
-                    <Separator className="mb-2"/>
+                    <Separator className="mb-3"/>
                     <Link href={isFrench ? "/learning/fr" : isGerman ? "/learning/de" : isItalian ? "/learning/it" : isSpanish ? "/learning/es" : "/learning/en"} passHref>
-                        <Button variant="outline" className="w-full h-12 text-xl border-2 border-amber bg-orange-500/10 hover:bg-orange-500/20 text-amber hover:text-amber grid grid-cols-[1fr_auto_1fr] items-center font-bold">
+                        <Button variant="outline" className="w-full h-12 text-xl border-2 border-amber bg-orange-500/10 hover:bg-orange-500/20 text-amber hover:text-amber font-bold grid grid-cols-[1fr_auto_1fr] items-center">
                             <div className="flex justify-end">
                                 <GraduationCap className="mr-2 h-5 w-5" />
                             </div>

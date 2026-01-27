@@ -145,6 +145,10 @@ export default {
             '66%': { transform: 'rotate(15deg)' },
             '83%': { transform: 'rotate(-15deg)' },
         },
+        'letter-bounce': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-5px)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -159,6 +163,7 @@ export default {
         'dancing-dots': 'dancing-dots 1.2s infinite ease-in-out',
         'spin-once': 'spin-once 3s linear',
         'joystick-tilt': 'joystick-tilt 3s ease-in-out',
+        'letter-bounce': 'letter-bounce 0.6s ease-in-out',
       },
     },
   },

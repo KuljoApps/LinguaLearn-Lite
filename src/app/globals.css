@@ -102,7 +102,7 @@ body {
     opacity: var(--eye-care-opacity, 0);
     mix-blend-mode: multiply;
     pointer-events: none;
-    z-index: 99999;
+    z-index: 9999;
     transition: opacity 0.2s ease-in-out;
   }
 }
@@ -110,5 +110,9 @@ body {
 @layer utilities {
     .tutorial-spotlight {
         box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+    }
+    .qr-pattern-bg {
+        background-image: repeating-conic-gradient(hsl(var(--background)) 0% 25%, hsl(var(--amber) / 0.15) 0% 50%);
+        background-size: 8px 8px;
     }
 }

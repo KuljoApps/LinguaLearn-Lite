@@ -76,7 +76,7 @@ export default function Home() {
             },
             () => {
                 setShowReadingBounce(true);
-                timers.push(setTimeout(() => setShowReadingBounce(false), 3000));
+                timers.push(setTimeout(() => setShowReadingBounce(false), 4000));
             },
             () => {
                 setShowListeningPulse(true);
@@ -91,7 +91,7 @@ export default function Home() {
         const scheduleNextAnimation = () => {
             animations[currentIndex]();
             currentIndex = (currentIndex + 1) % animations.length;
-            animationTimeoutId = setTimeout(scheduleNextAnimation, 3000 + 5000); // 3s anim + 5s pause
+            animationTimeoutId = setTimeout(scheduleNextAnimation, 3000 + 5000); // anim time + pause
         };
 
         const initialAnimTimeout = setTimeout(scheduleNextAnimation, 3000);
@@ -247,32 +247,21 @@ export default function Home() {
                 </CardContent>
                 <div data-tutorial-id="learning-button" className="px-6 pb-2">
                     <Separator className="mb-3"/>
-                     <Link href={isFrench ? "/learning/fr" : isGerman ? "/learning/de" : isItalian ? "/learning/it" : isSpanish ? "/learning/es" : "/learning/en"} passHref className="relative block">
+                     <Link href={isFrench ? "/learning/fr" : isGerman ? "/learning/de" : isItalian ? "/learning/it" : isSpanish ? "/learning/es" : "/learning/en"} passHref>
                         <Button
                             variant="outline"
                             className={cn(
-                                "w-full h-12 text-xl border-2 grid grid-cols-[1fr_auto_1fr] items-center text-amber hover:text-amber border-amber bg-orange-500/10 hover:bg-orange-500/20"
+                                "w-full h-12 text-xl border-2 grid grid-cols-[1fr_auto_1fr] items-center text-amber hover:text-amber border-amber qr-pattern-bg animate-qr-pan"
                             )}
                         >
                             <div className="flex justify-end">
                                 <GraduationCap className="mr-2 h-5 w-5" />
                             </div>
-                            <span className={cn(
-                                "col-start-2 font-bold",
-                                showLearningAnim && "bg-clip-text text-transparent bg-gradient-to-r from-amber/80 via-white to-amber/80 bg-[length:200%_auto] animate-text-shimmer"
-                            )}>
+                            <span className="col-start-2 font-bold">
                                 {getLearningButtonText()}
                             </span>
                             <div />
                         </Button>
-                        {showLearningAnim && (
-                            <div className="pointer-events-none absolute inset-0">
-                                <span className="absolute top-0 left-0 block h-0.5 w-0 bg-amber animate-draw-horizontal" />
-                                <span className="absolute top-0 right-0 block w-0.5 h-0 bg-amber animate-draw-vertical [animation-delay:0.3s]" />
-                                <span className="absolute bottom-0 right-0 block h-0.5 w-0 bg-amber animate-draw-horizontal [animation-delay:0.6s]" />
-                                <span className="absolute bottom-0 left-0 block w-0.5 h-0 bg-amber animate-draw-vertical [animation-delay:0.9s]" />
-                            </div>
-                        )}
                     </Link>
                 </div>
                 <CardFooter data-tutorial-id="toolbar" className="flex justify-center gap-4 p-4">

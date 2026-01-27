@@ -313,11 +313,11 @@ const SynonymMatchPage = () => {
         const isIncorrect = incorrectPair?.includes(word) ?? false;
         
         return cn(
-            "h-16 text-lg transition-colors duration-150",
+            "h-16 text-lg transition-all duration-150",
             isFrozen && !isCorrect && "animate-shuffle-blur-spin",
             isSelected && !isIncorrect && "border-primary border-2 ring-2 ring-primary/50",
-            isCorrect && "bg-success/20 text-muted-foreground line-through disabled:opacity-100",
-            isIncorrect && "bg-destructive/80 text-destructive-foreground border-destructive disabled:opacity-100"
+            isCorrect && "text-muted-foreground line-through pointer-events-none disabled:bg-success/20 disabled:opacity-100",
+            isIncorrect && "border-destructive disabled:bg-destructive/80 disabled:text-destructive-foreground disabled:opacity-100"
         );
     };
     

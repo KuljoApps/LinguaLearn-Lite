@@ -76,14 +76,14 @@ export default function ButtonColorsPage() {
 
     const buttonBaseClasses = "flex-col gap-2 pointer-events-none font-normal";
     const squareButtonClasses = "w-full h-28";
-    const themeClasses = `text-xl font-bold text-white bg-gradient-to-r ${activeTheme.gradient} transition-all bg-[length:300%_300%]`;
+    const themeClasses = `text-xl text-white bg-gradient-to-r ${activeTheme.gradient} hover:brightness-125 bg-[length:300%_300%] animate-gradient-flow font-normal`;
     const iconClasses = "text-white";
     
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-muted/40">
             <Card className="w-full max-w-4xl shadow-2xl">
-                <CardContent className="flex flex-col items-center gap-4 p-6">
-                    <div className="scale-90 md:scale-100 origin-top border bg-background rounded-lg p-4">
+                <CardContent className="flex flex-col items-center gap-2 p-6">
+                    <div className="scale-100 origin-top border bg-background rounded-lg p-4">
                         <Card className="w-full max-w-md shadow-2xl text-center mx-auto pointer-events-none">
                              <CardHeader>
                                 <div className="flex items-center justify-center gap-4 mb-4">
@@ -143,7 +143,7 @@ export default function ButtonColorsPage() {
                                 <Separator className="mb-4"/>
                                 <Button
                                     variant="outline"
-                                    className={cn("w-full h-12 text-xl border-2 rounded-xl qr-pattern-bg")}
+                                    className={cn("w-full h-12 text-xl border-2 grid grid-cols-[1fr_auto_1fr] items-center rounded-xl qr-pattern-bg")}
                                     style={{
                                         borderColor: activeTheme.mainColor,
                                         '--amber': activeTheme.mainColor, 
@@ -151,8 +151,11 @@ export default function ButtonColorsPage() {
                                         boxShadow: `0 0 20px ${activeTheme.shadow}`,
                                     } as React.CSSProperties}
                                 >
-                                    <GraduationCap className="mr-2 h-6 w-6" />
-                                    <span className="font-bold">{getUIText('learning')}</span>
+                                    <div className="flex justify-end">
+                                        <GraduationCap className="mr-2 h-6 w-6" />
+                                    </div>
+                                    <span className="col-start-2 font-bold">{getUIText('learning')}</span>
+                                    <div />
                                 </Button>
                             </div>
                             <CardFooter className="flex justify-center gap-4 p-4 pointer-events-auto">
@@ -178,7 +181,7 @@ export default function ButtonColorsPage() {
                         </Card>
                     </div>
                     
-                    <div className="p-4 w-full">
+                    <div className="pt-2 w-full">
                         <h3 className="text-center font-semibold mb-4 text-xl">Color Palette</h3>
                         <div className="grid grid-cols-4 sm:grid-cols-8 gap-3 justify-items-center">
                             {themes.map(theme => (

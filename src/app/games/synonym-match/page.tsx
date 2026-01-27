@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
@@ -88,10 +87,10 @@ const SynonymMatchPage = () => {
     }, [successRate]);
 
 
-    const getUIText = (key: keyof typeof uiTexts, replacements: Record<string, string> = {}) => {
+    const getUIText = (key: keyof typeof uiTexts, replacements: Record<string, string | number> = {}) => {
         let text = uiTexts[key][language] || uiTexts[key]['en'];
         for (const placeholder in replacements) {
-            text = text.replace(`{${placeholder}}`, replacements[placeholder]);
+            text = text.replace(`{${placeholder}}`, String(replacements[placeholder]));
         }
         return text;
     };
@@ -177,53 +176,54 @@ const SynonymMatchPage = () => {
         });
     }, [toast]);
     
-    useEffect(() => {
-        if (isFrozen) return;
-        const correctPairCount = correctPairs.length / 2;
-    
-        const handleShuffle = (numToTake: number) => {
-            const currentlyMatchedWords = new Set(correctPairs);
-            const currentBoardWords = [...activeWords1, ...activeWords2];
-            const unmatchedWordsOnBoard = currentBoardWords.filter(w => !currentlyMatchedWords.has(w));
-    
-            const remainingPairsOnBoard: SynonymPair[] = [];
-            const seenWords = new Set();
-            for (const word of unmatchedWordsOnBoard) {
-                if (!seenWords.has(word)) {
-                    const partner = matches[word];
-                    if (unmatchedWordsOnBoard.includes(partner)) {
-                        remainingPairsOnBoard.push({ word1: word, word2: partner });
-                        seenWords.add(word);
-                        seenWords.add(partner);
-                    }
+    const handleShuffle = useCallback((numToTake: number) => {
+        const currentlyMatchedWords = new Set(correctPairs);
+        const currentBoardWords = [...activeWords1, ...activeWords2];
+        const unmatchedWordsOnBoard = currentBoardWords.filter(w => !currentlyMatchedWords.has(w));
+
+        const remainingPairsOnBoard: SynonymPair[] = [];
+        const seenWords = new Set();
+        for (const word of unmatchedWordsOnBoard) {
+            if (!seenWords.has(word)) {
+                const partner = matches[word];
+                if (unmatchedWordsOnBoard.includes(partner)) {
+                    remainingPairsOnBoard.push({ word1: word, word2: partner });
+                    seenWords.add(word);
+                    seenWords.add(partner);
                 }
             }
-            
-            const newPairsFromDeck = deck.slice(0, numToTake);
-            const remainingDeck = deck.slice(numToTake);
-            const nextBoardPairs = [...remainingPairsOnBoard, ...newPairsFromDeck];
-            
-            setActiveWords1(shuffle(nextBoardPairs.map(p => p.word1)));
-            setActiveWords2(shuffle(nextBoardPairs.map(p => p.word2)));
-            setDeck(remainingDeck);
-            setStage(prev => prev + 1);
-            setSelected1(null);
-            setSelected2(null);
+        }
+        
+        const newPairsFromDeck = deck.slice(0, numToTake);
+        const remainingDeck = deck.slice(numToTake);
+        const nextBoardPairs = [...remainingPairsOnBoard, ...newPairsFromDeck];
+        
+        setActiveWords1(shuffle(nextBoardPairs.map(p => p.word1)));
+        setActiveWords2(shuffle(nextBoardPairs.map(p => p.word2)));
+        setDeck(remainingDeck);
+        setStage(prev => prev + 1);
+        setSelected1(null);
+        setSelected2(null);
+
+        setIsFrozen(true);
+        showRemixToast();
+        setTimeout(() => {
+            setIsFrozen(false);
+        }, 1000); // Animation duration
+    }, [correctPairs, activeWords1, activeWords2, deck, matches, showRemixToast]);
     
-            setIsFrozen(true);
-            setTimeout(() => {
-                showRemixToast();
-                setIsFrozen(false);
-            }, 1000); // Animation duration
-        };
+    useEffect(() => {
+        const correctPairCount = correctPairs.length / 2;
     
-        if (stage === 0 && correctPairCount === 3) {
-            handleShuffle(3);
-        } else if (stage === 1 && correctPairCount === 5) {
-            handleShuffle(2);
+        if (!isFrozen) {
+            if (stage === 0 && correctPairCount === 3) {
+                handleShuffle(3);
+            } else if (stage === 1 && correctPairCount === 5) {
+                handleShuffle(2);
+            }
         }
     
-    }, [correctPairs, activeWords1, activeWords2, deck, matches, stage, isFrozen, showRemixToast]);
+    }, [correctPairs.length, isFrozen, stage, handleShuffle]);
 
     useEffect(() => {
         if (!gameContainerRef.current) return;
@@ -364,7 +364,7 @@ const SynonymMatchPage = () => {
                                     <h3 className="text-center font-semibold">{getUIText('worthRepeating')}</h3>
                                     <ScrollArea className="h-24 w-full rounded-md border p-2">
                                         <div className="space-y-2">
-                                            {aggregatedErrors.map((error: SessionError, index: number) => (
+                                            {aggregatedErrors.map((error, index) => (
                                                 <React.Fragment key={index}>
                                                     <div className="text-sm p-2 bg-muted/30 rounded-md">
                                                         <p className="flex justify-between items-start">
@@ -446,7 +446,3 @@ const SynonymMatchPage = () => {
 };
 
 export default SynonymMatchPage;
-
-
-
-    

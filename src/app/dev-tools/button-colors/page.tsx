@@ -98,7 +98,7 @@ export default function ButtonColorsPage() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-muted/40">
             <Card className="w-full max-w-4xl shadow-2xl">
-                <CardContent className="flex flex-col items-center gap-2 p-6">
+                <CardContent className="flex flex-col items-center gap-6 p-6">
                     <div className="scale-100 origin-top border bg-background rounded-lg p-4">
                         <Card className="w-full max-w-md shadow-2xl text-center mx-auto pointer-events-none">
                              <CardHeader>
@@ -108,7 +108,7 @@ export default function ButtonColorsPage() {
                                         Lingua
                                         <span className="relative inline-block">
                                             Learn
-                                            <span className="absolute right-1 -bottom-4 text-xl font-semibold tracking-normal text-deep-purple">
+                                            <span className="absolute -left-[15px] -bottom-4 text-xl font-semibold tracking-normal text-deep-purple">
                                                 PRO
                                             </span>
                                         </span>
@@ -159,11 +159,9 @@ export default function ButtonColorsPage() {
                                 <Separator className="mb-4"/>
                                 <Button
                                     variant="outline"
-                                    className={cn("w-full h-12 text-xl border-2 grid grid-cols-[1fr_auto_1fr] items-center rounded-xl qr-pattern-bg")}
+                                    className={cn("w-full h-12 text-xl border-2 grid grid-cols-[1fr_auto_1fr] items-center rounded-xl qr-pattern-bg text-amber border-amber")}
                                     style={{
-                                        borderColor: activeTheme.mainColor,
                                         '--amber': activeTheme.mainColor, 
-                                        color: activeTheme.mainColor,
                                         boxShadow: `0 0 20px ${activeTheme.shadow}`,
                                     } as React.CSSProperties}
                                 >

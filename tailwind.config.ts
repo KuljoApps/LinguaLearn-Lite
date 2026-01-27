@@ -146,7 +146,7 @@ export default {
         },
         'letter-bounce': {
           '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-5px)' },
+          '50%': { transform: 'translateY(-8px)' },
         },
       },
       animation: {
@@ -162,7 +162,7 @@ export default {
         'dancing-dots': 'dancing-dots 1.2s infinite ease-in-out',
         'spin-once': 'spin-once 3s linear',
         'joystick-tilt': 'joystick-tilt 3s ease-in-out',
-        'letter-bounce': 'letter-bounce 2s ease-in-out 2',
+        'letter-bounce': 'letter-bounce 0.5s ease-in-out 2',
       },
     },
   },

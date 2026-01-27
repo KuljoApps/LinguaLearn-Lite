@@ -149,6 +149,18 @@ export default {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-5px)' },
         },
+        'draw-horizontal': {
+          'from': { width: '0' },
+          'to': { width: '100%' },
+        },
+        'draw-vertical': {
+          'from': { height: '0' },
+          'to': { height: '100%' },
+        },
+        'text-shimmer': {
+          'from': { backgroundPosition: '200% center' },
+          'to': { backgroundPosition: '-200% center' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -164,6 +176,9 @@ export default {
         'spin-once': 'spin-once 3s linear',
         'joystick-tilt': 'joystick-tilt 3s ease-in-out',
         'letter-bounce': 'letter-bounce 0.6s ease-in-out 2',
+        'draw-horizontal': 'draw-horizontal 0.3s ease-out forwards',
+        'draw-vertical': 'draw-vertical 0.3s ease-out forwards',
+        'text-shimmer': 'text-shimmer 1.5s ease-in-out',
       },
     },
   },

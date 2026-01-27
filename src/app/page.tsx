@@ -27,6 +27,7 @@ export default function Home() {
     const [showQuizzesSpin, setShowQuizzesSpin] = useState(false);
     const [showGamesTilt, setShowGamesTilt] = useState(false);
     const [showListeningPulse, setShowListeningPulse] = useState(false);
+    const [showLearningAnim, setShowLearningAnim] = useState(false);
     const pathname = usePathname();
 
     useEffect(() => {
@@ -80,6 +81,10 @@ export default function Home() {
             () => {
                 setShowListeningPulse(true);
                 timers.push(setTimeout(() => setShowListeningPulse(false), 3000));
+            },
+            () => {
+                setShowLearningAnim(true);
+                timers.push(setTimeout(() => setShowLearningAnim(false), 4000));
             }
         ];
 
@@ -194,7 +199,7 @@ export default function Home() {
                                     </span>
                                     <span>Gap</span>
                                 </span>
-                                <div />
+                                 <div />
                             </Button>
                         </Link>
                         <Link href="/reading" passHref>
@@ -242,14 +247,32 @@ export default function Home() {
                 </CardContent>
                 <div data-tutorial-id="learning-button" className="px-6 pb-2">
                     <Separator className="mb-3"/>
-                    <Link href={isFrench ? "/learning/fr" : isGerman ? "/learning/de" : isItalian ? "/learning/it" : isSpanish ? "/learning/es" : "/learning/en"} passHref>
-                        <Button variant="outline" className="w-full h-12 text-xl border-2 border-amber bg-orange-500/10 hover:bg-orange-500/20 text-amber hover:text-amber font-bold grid grid-cols-[1fr_auto_1fr] items-center">
+                     <Link href={isFrench ? "/learning/fr" : isGerman ? "/learning/de" : isItalian ? "/learning/it" : isSpanish ? "/learning/es" : "/learning/en"} passHref className="relative block">
+                        <Button
+                            variant="outline"
+                            className={cn(
+                                "w-full h-12 text-xl border-2 grid grid-cols-[1fr_auto_1fr] items-center font-bold text-amber hover:text-amber border-amber bg-orange-500/10 hover:bg-orange-500/20"
+                            )}
+                        >
                             <div className="flex justify-end">
                                 <GraduationCap className="mr-2 h-5 w-5" />
                             </div>
-                            <span className="col-start-2">{getLearningButtonText()}</span>
+                            <span className={cn(
+                                "col-start-2",
+                                showLearningAnim && "bg-clip-text text-transparent bg-gradient-to-r from-amber/80 via-white to-amber/80 bg-[length:200%_auto] animate-[text-shimmer_1.5s_ease-out_1.3s_1]"
+                            )}>
+                                {getLearningButtonText()}
+                            </span>
                             <div />
                         </Button>
+                        {showLearningAnim && (
+                            <div className="pointer-events-none">
+                                <span className="absolute top-0 left-0 block h-0.5 w-0 bg-amber animate-draw-horizontal" />
+                                <span className="absolute top-0 right-0 block w-0.5 h-0 bg-amber animate-draw-vertical [animation-delay:0.3s]" />
+                                <span className="absolute bottom-0 right-0 block h-0.5 w-0 bg-amber animate-draw-horizontal [animation-delay:0.6s]" />
+                                <span className="absolute bottom-0 left-0 block w-0.5 h-0 bg-amber animate-draw-vertical [animation-delay:0.9s]" />
+                            </div>
+                        )}
                     </Link>
                 </div>
                 <CardFooter data-tutorial-id="toolbar" className="flex justify-center gap-4 p-4">

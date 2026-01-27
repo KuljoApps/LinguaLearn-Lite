@@ -1,16 +1,3 @@
-export interface CrosswordClue {
-  number: number;
-  clue: string;
-  answer: string;
-  options: string[];
-  x: number;
-  y: number;
-  direction: 'across' | 'down';
-}
-
-export interface CrosswordPuzzle {
-  id: number;
-  gridSize: number;
-  gridHeight?: number;
-  clues: CrosswordClue[];
-}
+// This file is no longer needed and can be deleted.
+// The type definitions have been moved to src/lib/games/crossword.ts
+export {};

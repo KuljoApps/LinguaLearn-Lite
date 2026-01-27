@@ -1,4 +1,4 @@
-import type { SynonymPair } from './synonym-match-data';
+import type { SynonymPair } from '../synonym-match';
 
 export const synonymQuestionsEn: SynonymPair[] = [
     { word1: 'happy', word2: 'joyful' },

@@ -1,4 +1,3 @@
-export interface MemoryPair {
-  native: string;
-  pl: string;
-}
+// This file is no longer needed and can be deleted.
+// The type definition has been moved to src/lib/games/memory.ts
+export {};

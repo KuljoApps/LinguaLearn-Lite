@@ -1,4 +1,4 @@
-import type { TranslationPair } from './translation-race-data';
+import type { TranslationPair } from '../translation-race';
 
 export const translationRaceWordsIt: TranslationPair[] = [
   { native: 'albero', pl: 'drzewo' },

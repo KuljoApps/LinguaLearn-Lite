@@ -1,4 +1,4 @@
-import type { HangmanQuestion } from './hangman-data';
+import type { HangmanQuestion } from '../hangman';
 
 export const hangmanQuestionsIt: HangmanQuestion[] = [
   { word: 'PIZZA', hint: 'Un piatto famoso in tutto il mondo.' },

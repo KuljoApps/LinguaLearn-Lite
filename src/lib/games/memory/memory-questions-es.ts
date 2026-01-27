@@ -1,4 +1,4 @@
-import type { MemoryPair } from './memory-data';
+import type { MemoryPair } from '../memory';
 
 export const memoryQuestionsEs: MemoryPair[] = [
   { native: 'gato', pl: 'kot' },

@@ -1,4 +1,4 @@
-import type { OddOneOutSet } from './odd-one-out-data';
+import type { OddOneOutSet } from '../odd-one-out';
 
 export const oddOneOutQuestionsFr: OddOneOutSet[] = [
     { words: ['Pomme', 'Banane', 'Carotte', 'Orange'], correct: 'Carotte', category: { en: 'Fruits', de: 'Obst', fr: 'Fruits', es: 'Frutas', it: 'Frutta' } },

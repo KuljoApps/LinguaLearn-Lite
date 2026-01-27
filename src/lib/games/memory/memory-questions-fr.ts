@@ -1,4 +1,4 @@
-import type { MemoryPair } from './memory-data';
+import type { MemoryPair } from '../memory';
 
 export const memoryQuestionsFr: MemoryPair[] = [
   { native: 'chat', pl: 'kot' },

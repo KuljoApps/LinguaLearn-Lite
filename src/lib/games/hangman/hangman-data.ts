@@ -1,4 +1,3 @@
-export interface HangmanQuestion {
-  word: string;
-  hint: string;
-}
+// This file is no longer needed and can be deleted.
+// The type definition has been moved to src/lib/games/hangman.ts
+export {};

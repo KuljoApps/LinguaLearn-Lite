@@ -1,4 +1,3 @@
-export interface SynonymPair {
-  word1: string;
-  word2: string;
-}
+// This file is no longer needed and can be deleted.
+// The type definition has been moved to src/lib/games/synonym-match.ts
+export {};

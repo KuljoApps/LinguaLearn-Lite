@@ -4,9 +4,23 @@ import { crosswordPuzzlesDe } from './crossword/crossword-questions-de';
 import { crosswordPuzzlesFr } from './crossword/crossword-questions-fr';
 import { crosswordPuzzlesIt } from './crossword/crossword-questions-it';
 import { crosswordPuzzlesEs } from './crossword/crossword-questions-es';
-import type { CrosswordPuzzle, CrosswordClue } from './crossword/crossword-data';
 
-export type { CrosswordPuzzle, CrosswordClue };
+export interface CrosswordClue {
+  number: number;
+  clue: string;
+  answer: string;
+  options: string[];
+  x: number;
+  y: number;
+  direction: 'across' | 'down';
+}
+
+export interface CrosswordPuzzle {
+  id: number;
+  gridSize: number;
+  gridHeight?: number;
+  clues: CrosswordClue[];
+}
 
 export const allCrosswordPuzzles: Record<Language, CrosswordPuzzle[]> = {
     en: crosswordPuzzlesEn,

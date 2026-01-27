@@ -1,7 +1,3 @@
-import type { Language } from "@/lib/storage";
-
-export interface OddOneOutSet {
-  words: string[];
-  correct: string;
-  category: Record<Language, string>;
-}
+// This file is no longer needed and can be deleted.
+// The type definition has been moved to src/lib/games/odd-one-out.ts
+export {};

@@ -4,9 +4,11 @@ import { synonymQuestionsDe } from './synonym-match/synonym-questions-de';
 import { synonymQuestionsFr } from './synonym-match/synonym-questions-fr';
 import { synonymQuestionsIt } from './synonym-match/synonym-questions-it';
 import { synonymQuestionsEs } from './synonym-match/synonym-questions-es';
-import type { SynonymPair } from './synonym-match/synonym-match-data';
 
-export type { SynonymPair };
+export interface SynonymPair {
+  word1: string;
+  word2: string;
+}
 
 export const allSynonymQuestions: Record<Language, SynonymPair[]> = {
     en: synonymQuestionsEn,

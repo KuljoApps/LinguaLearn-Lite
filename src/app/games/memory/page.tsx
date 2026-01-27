@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, Brain, Award } from 'lucide-react';
+import { ArrowLeft, Brain, Award, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getLanguage, type Language } from '@/lib/storage';
 import { allMemoryQuestions, type MemoryPair } from '@/lib/games/memory';
@@ -150,12 +150,18 @@ const MemoryGamePage = () => {
                   key={card.id}
                   onClick={() => handleCardClick(card)}
                   className={cn(
-                    "h-24 sm:h-32 flex items-center justify-center rounded-lg cursor-pointer transition-colors duration-300",
-                    card.isFlipped ? 'bg-card border-2 border-primary' : 'bg-primary text-primary-foreground',
+                    "h-24 sm:h-32 flex items-center justify-center rounded-lg cursor-pointer transition-all duration-300",
+                    card.isFlipped
+                      ? 'bg-card border-2 border-primary'
+                      : 'border-2 border-amber qr-pattern-bg shadow-[0_0_20px_#ff8c00]',
                     card.isMatched && 'bg-success/20 border-success cursor-default',
                   )}
                 >
-                  {card.isFlipped && <span className="text-lg sm:text-xl font-bold p-2 text-center">{card.value}</span>}
+                  {card.isFlipped ? (
+                    <span className="text-lg sm:text-xl font-bold p-2 text-center">{card.value}</span>
+                  ) : (
+                    <HelpCircle className="h-12 w-12 text-amber" />
+                  )}
                 </div>
               ))}
             </div>

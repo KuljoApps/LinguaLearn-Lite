@@ -152,13 +152,13 @@ const MemoryGamePage = () => {
                   className={cn(
                     "h-24 sm:h-32 flex items-center justify-center rounded-lg cursor-pointer transition-all duration-300",
                     card.isFlipped
-                      ? 'bg-card border-2 border-primary'
+                      ? 'bg-amber/10 border-2 border-amber'
                       : 'border-2 border-amber qr-pattern-bg shadow-[0_0_20px_#ff8c00]',
                     card.isMatched && 'bg-success/20 border-success cursor-default',
                   )}
                 >
                   {card.isFlipped ? (
-                    <span className="text-lg sm:text-xl font-bold p-2 text-center">{card.value}</span>
+                    <span className="text-lg sm:text-xl font-bold p-2 text-center text-foreground">{card.value}</span>
                   ) : (
                     <HelpCircle className="h-12 w-12 text-amber" />
                   )}

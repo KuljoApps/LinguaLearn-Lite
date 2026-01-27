@@ -1,3 +1,4 @@
+
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -149,7 +150,7 @@ export default {
           '50%': { transform: 'translateY(-8px)' },
         },
         'draw-line': {
-          'from': { 'stroke-dasharray': '50', 'stroke-dashoffset': '50' },
+          'from': { 'stroke-dasharray': '1000', 'stroke-dashoffset': '1000' },
           'to': { 'stroke-dashoffset': '0' },
         },
       },

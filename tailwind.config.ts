@@ -163,7 +163,7 @@ export default {
         'dancing-dots': 'dancing-dots 1.2s infinite ease-in-out',
         'spin-once': 'spin-once 3s linear',
         'joystick-tilt': 'joystick-tilt 3s ease-in-out',
-        'letter-bounce': 'letter-bounce 0.6s ease-in-out',
+        'letter-bounce': 'letter-bounce 0.6s ease-in-out 2',
       },
     },
   },

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -56,11 +56,17 @@ const OddOneOutPage = () => {
         setLanguage(currentLang);
         setupNewGame(currentLang);
         
-        window.addEventListener('language-changed', () => {
+        const handleLanguageChange = () => {
             const newLang = getLanguage();
             setLanguage(newLang);
             setupNewGame(newLang);
-        });
+        };
+
+        window.addEventListener('language-changed', handleLanguageChange);
+
+        return () => {
+            window.removeEventListener('language-changed', handleLanguageChange);
+        }
     }, [setupNewGame]);
     
     const handleSelect = (word: string) => {
@@ -115,7 +121,7 @@ const OddOneOutPage = () => {
         <CardFooter className="flex justify-center p-6 border-t">
           <Link href="/games" passHref>
             <Button variant="outline" className="gap-2">
-              <ArrowLeft className="h-4 w-4" />
+              <ArrowLeft className="mr-2 h-4 w-4" />
               <span>{getUIText('backToGames')}</span>
             </Button>
           </Link>

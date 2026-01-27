@@ -165,14 +165,35 @@ const TranslationRacePage = () => {
         vibrate('incorrect');
     }, []);
 
-    const getUIText = (key: keyof typeof uiTexts) => uiTexts[key][language] || uiTexts[key]['en'];
+    const getUIText = (key: keyof typeof uiTexts) => {
+        return uiTexts[key]?.[language] || uiTexts[key]?.['en'];
+    };
 
     const wpm = score > 0 ? Math.round(score / (GAME_DURATION / 60)) : 0;
     
     const motivationalMessage = useMemo(() => {
-      if (score >= 40) return { icon: <Trophy className="h-16 w-16 text-amber animate-shake" />, title: getUIText('timesUp') };
-      if (score >= 20) return { icon: <ThumbsUp className="h-16 w-16 text-primary" />, title: getUIText('timesUp') };
-      return { icon: <Brain className="h-16 w-16 text-muted-foreground" />, title: getUIText('timesUp') };
+        if (score >= 40) {
+            return {
+                icon: <Trophy className="h-16 w-16 text-amber animate-shake" />,
+                title: getUIText('timesUp'),
+            };
+        }
+        if (score > 30) {
+            return {
+                icon: <ThumbsUp className="h-16 w-16 text-success animate-joystick-tilt" />,
+                title: getUIText('timesUp'),
+            };
+        }
+        if (score > 20) {
+            return {
+                icon: <Brain className="h-16 w-16 text-success" />,
+                title: getUIText('timesUp'),
+            };
+        }
+        return {
+            icon: <Brain className="h-16 w-16 text-muted-foreground" />,
+            title: getUIText('timesUp'),
+        };
     }, [score, getUIText]);
 
     const isGameFinished = !isActive && timeLeft === 0;
@@ -203,7 +224,7 @@ const TranslationRacePage = () => {
                             <div className="text-center space-y-2 flex flex-col items-center">
                                 {motivationalMessage.icon}
                                 <h2 className="text-2xl font-bold">{motivationalMessage.title}</h2>
-                                <CardDescription>{getUIText('finalScore')} <span className="font-bold text-primary">{score}</span></CardDescription>
+                                <CardDescription>{getUIText('finalScore')} <TallyScore score={score} /></CardDescription>
                             </div>
                             <Card className="bg-muted/50 mt-2">
                                 <CardHeader className="pt-4 pb-2"><CardTitle className="text-xl text-center">{getUIText('summary')}</CardTitle></CardHeader>
@@ -256,13 +277,13 @@ const TranslationRacePage = () => {
                                     </div>
                                 </div>
                             </div>
-
+    
                             <div className="flex-grow flex flex-col items-center justify-center text-center mb-8">
                                 <p className="text-muted-foreground">{getUIText('translateWord')}</p>
                                 <p className="text-6xl font-bold tracking-wider text-amber">{currentWord.native}</p>
                             </div>
-
-                            <div className="w-full max-w-sm space-y-4">
+    
+                            <div className="w-full max-w-sm space-y-6">
                                 <Input 
                                     value={inputValue}
                                     onChange={handleInputChange}

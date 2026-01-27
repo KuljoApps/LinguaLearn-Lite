@@ -4,19 +4,27 @@ import { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, FileText, CheckCircle, Pencil } from 'lucide-react';
+import { ArrowLeft, FileText, CheckCircle, Pencil, LayoutGrid, List } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getLanguage, type Language, getGapWordsProgress } from '@/lib/storage';
 import { allGapWordQuestions, type GapWordQuestion } from '@/lib/fill-the-gap/gap-words';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 
+const VIEW_MODE_KEY = 'gapWordsViewMode';
+
 export default function GapWordsListPage() {
     const [language, setLanguageState] = useState<Language>('en');
     const [questions, setQuestions] = useState<GapWordQuestion[]>([]);
     const [completedWords, setCompletedWords] = useState<Set<string>>(new Set());
+    const [view, setView] = useState<'list' | 'grid'>('list');
 
     useEffect(() => {
+        const savedView = localStorage.getItem(VIEW_MODE_KEY) as 'list' | 'grid' | null;
+        if (savedView) {
+            setView(savedView);
+        }
+        
         const handleStateUpdate = () => {
             const lang = getLanguage();
             setLanguageState(lang);
@@ -26,8 +34,6 @@ export default function GapWordsListPage() {
         handleStateUpdate();
 
         window.addEventListener('language-changed', handleStateUpdate);
-        // Using a generic storage event might be too broad if other things use localStorage.
-        // A custom event would be better, but for now this works to sync tabs.
         window.addEventListener('storage', handleStateUpdate); 
 
         return () => {
@@ -35,6 +41,12 @@ export default function GapWordsListPage() {
             window.removeEventListener('storage', handleStateUpdate);
         };
     }, []);
+
+    const handleViewToggle = () => {
+        const newView = view === 'grid' ? 'list' : 'grid';
+        setView(newView);
+        localStorage.setItem(VIEW_MODE_KEY, newView);
+    };
 
     const { uncompleted, completed } = useMemo(() => {
         const uncompleted: GapWordQuestion[] = [];
@@ -77,24 +89,50 @@ export default function GapWordsListPage() {
                 </CardHeader>
                 <CardContent>
                     <ScrollArea className="h-[60vh] pr-4">
-                        <div className="space-y-1">
-                            {uncompleted.map((q, i) => renderWordItem(q, i, false))}
-                            {completed.length > 0 && uncompleted.length > 0 && (
-                                <div className="py-4">
-                                    <h3 className="text-sm font-semibold text-muted-foreground text-center uppercase tracking-wider">Completed</h3>
-                                    <Separator className="mt-2" />
-                                </div>
-                            )}
-                            {completed.map((q, i) => renderWordItem(q, uncompleted.length + i, true))}
-                        </div>
+                        {view === 'list' ? (
+                            <div className="space-y-1">
+                                {uncompleted.map((q, i) => renderWordItem(q, i, false))}
+                                {completed.length > 0 && uncompleted.length > 0 && (
+                                    <div className="py-4">
+                                        <h3 className="text-sm font-semibold text-muted-foreground text-center uppercase tracking-wider">Completed</h3>
+                                        <Separator className="mt-2" />
+                                    </div>
+                                )}
+                                {completed.map((q, i) => renderWordItem(q, uncompleted.length + i, true))}
+                            </div>
+                        ) : (
+                             <div className="grid grid-cols-4 sm:grid-cols-6 gap-3">
+                                {questions.map((question, index) => {
+                                    const isCompleted = completedWords.has(question.fullWord);
+                                    return (
+                                        <Link href={`/fill-the-gap/gap-words/${encodeURIComponent(question.fullWord)}`} key={question.fullWord}>
+                                            <div className={cn(
+                                                "flex items-center justify-center aspect-square rounded-lg transition-colors border-2 cursor-pointer",
+                                                isCompleted 
+                                                    ? "bg-success/10 text-success-foreground border-success/20 hover:bg-success/20" 
+                                                    : "bg-card hover:bg-muted/50 border-primary"
+                                            )}>
+                                                <span className="font-bold text-xl">{index + 1}</span>
+                                            </div>
+                                        </Link>
+                                    )
+                                })}
+                            </div>
+                        )}
                     </ScrollArea>
                 </CardContent>
                 <CardFooter className="flex justify-center p-6 border-t">
-                    <Link href="/fill-the-gap" passHref>
-                        <Button variant="outline">
-                            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Fill the Gap
+                    <div className="flex flex-wrap justify-center gap-4">
+                        <Link href="/fill-the-gap" passHref>
+                            <Button variant="outline">
+                                <ArrowLeft className="mr-2 h-4 w-4" /> Back to Fill the Gap
+                            </Button>
+                        </Link>
+                        <Button variant="outline" onClick={handleViewToggle}>
+                            {view === 'list' ? <LayoutGrid className="h-4 w-4 mr-2" /> : <List className="h-4 w-4 mr-2" />}
+                            View
                         </Button>
-                    </Link>
+                    </div>
                 </CardFooter>
             </Card>
         </main>

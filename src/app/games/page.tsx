@@ -232,7 +232,6 @@ export default function GamesPage() {
                     </div>
                 </CardContent>
                 <CardFooter className="flex-col p-6 pt-2 border-t gap-4">
-                    <Separator />
                     <div className="flex justify-center gap-4">
                         <Link href="/" passHref>
                             <Button variant="outline" className="gap-2">

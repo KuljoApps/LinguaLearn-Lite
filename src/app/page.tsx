@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import LinguaLearnLogo from '@/components/LinguaLearnLogo';
-import { getLanguage, setLanguage, shouldShowProPromo, shouldShowRateAppDialog, isTutorialCompleted, saveTutorialState, recordProPromoShown, recordRateAppDialogShown, getNewAchievementsCount } from '@/lib/storage';
+import { getLanguage, setLanguage, shouldShowProPromo, shouldShowRateAppDialog, isTutorialCompleted, saveTutorialState, recordProPromoShown, recordRateAppDialogShown, getNewAchievementsCount, type Language } from '@/lib/storage';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -17,12 +17,27 @@ import ProPromotionDialog from '@/components/ProPromotionDialog';
 import RateAppDialog from '@/components/RateAppDialog';
 import { cn } from '@/lib/utils';
 
+const uiTexts = {
+    welcome: { en: "Ready to question your life choices in another language? Let's go!", fr: "Prêt à remettre en question tes choix de vie dans une autre langue? Allons-y!", de: "Bereit, deine Lebensentscheidungen in einer anderen Sprache zu hinterfragen? Los geht's!", it: "Pronto a mettere in discussione le tue scelte di vita in un'altra lingua? Andiamo!", es: "¿Listo para cuestionar tus elecciones de vida en otro idioma? ¡Vamos!" },
+    quizzes: { en: 'Quizzes', fr: 'Quiz', de: 'Quiz', it: 'Quiz', es: 'Cuestionarios' },
+    games: { en: 'Games', fr: 'Jeux', de: 'Spiele', it: 'Giochi', es: 'Juegos' },
+    fill: { en: 'Fill', fr: 'Combler', de: 'Füllen', it: 'Colma', es: 'Rellena' },
+    gap: { en: ' the Gap', fr: ' le Vide', de: ' die Lücke', it: ' il Vuoto', es: ' el Hueco' },
+    reading: { en: 'Reading', fr: 'Lecture', de: 'Lesen', it: 'Lettura', es: 'Lectura' },
+    listening: { en: 'Listening', fr: 'Écoute', de: 'Hören', it: 'Ascolto', es: 'Escucha' },
+    learning: { en: 'Learning', fr: 'Apprentissage', de: 'Lernen', it: 'Apprendimento', es: 'Aprendizaje' },
+};
+
+const fillTheGapAnimatedWord = {
+    en: 'the', fr: 'le', de: 'die', it: 'il', es: 'el',
+};
+
 export default function Home() {
-    const [language, setCurrentLanguage] = useState<'en' | 'fr' | 'de' | 'it' | 'es'>('en');
+    const [language, setCurrentLanguage] = useState<Language>('en');
     const [showPromo, setShowPromo] = useState(false);
     const [showRateDialog, setShowRateDialog] = useState(false);
     const [newAchievementsCount, setNewAchievementsCount] = useState(0);
-    const [fillTheGapText, setFillTheGapText] = useState('the');
+    const [fillTheGapText, setFillTheGapText] = useState(fillTheGapAnimatedWord.en);
     const [showReadingBounce, setShowReadingBounce] = useState(false);
     const [showQuizzesSpin, setShowQuizzesSpin] = useState(false);
     const [showGamesTilt, setShowGamesTilt] = useState(false);
@@ -31,8 +46,10 @@ export default function Home() {
 
     useEffect(() => {
         const handleStateUpdate = () => {
-            setCurrentLanguage(getLanguage());
+            const currentLang = getLanguage();
+            setCurrentLanguage(currentLang);
             updateAchievementCount();
+            setFillTheGapText(fillTheGapAnimatedWord[currentLang]);
         };
 
         const updateAchievementCount = () => {
@@ -71,7 +88,10 @@ export default function Home() {
             },
             () => {
                 setFillTheGapText('___');
-                timers.push(setTimeout(() => setFillTheGapText('the'), 3000));
+                timers.push(setTimeout(() => {
+                    const currentLang = getLanguage();
+                    setFillTheGapText(fillTheGapAnimatedWord[currentLang]);
+                }, 3000));
             },
             () => {
                 setShowReadingBounce(true);
@@ -100,37 +120,19 @@ export default function Home() {
         };
     }, [pathname]);
 
-    const handleLanguageChange = (lang: 'en' | 'fr' | 'de' | 'it' | 'es') => {
+    const handleLanguageChange = (lang: Language) => {
         setLanguage(lang);
-        setCurrentLanguage(lang);
     };
 
-    const isFrench = language === 'fr';
-    const isGerman = language === 'de';
-    const isItalian = language === 'it';
-    const isSpanish = language === 'es';
-
-    const getWelcomeMessage = () => {
-        if (isFrench) return "Prêt à remettre en question tes choix de vie dans une autre langue? Allons-y!";
-        if (isGerman) return "Bereit, deine Lebensentscheidungen in einer anderen Sprache zu hinterfragen? Los geht's!";
-        if (isItalian) return "Pronto a mettere in discussione le tue scelte di vita in un'altra lingua? Andiamo!";
-        if (isSpanish) return "¿Listo para cuestionar tus elecciones de vida en otro idioma? ¡Vamos!";
-        return "Ready to question your life choices in another language? Let's go!";
-    };
-    
-    const getLearningButtonText = () => {
-        if (isFrench) return "Apprentissage";
-        if (isGerman) return "Lernen";
-        if (isItalian) return "Apprendimento";
-        if (isSpanish) return "Aprendizaje";
-        return "Learning";
+    const getUIText = (key: keyof typeof uiTexts) => {
+        return uiTexts[key][language] || uiTexts[key]['en'];
     };
 
     const getFlag = () => {
-        if (isFrench) return '🇫🇷';
-        if (isGerman) return '🇩🇪';
-        if (isItalian) return '🇮🇹';
-        if (isSpanish) return '🇪🇸';
+        if (language === 'fr') return '🇫🇷';
+        if (language === 'de') return '🇩🇪';
+        if (language === 'it') return '🇮🇹';
+        if (language === 'es') return '🇪🇸';
         return '🇬🇧';
     }
     
@@ -158,7 +160,7 @@ export default function Home() {
                         </h1>
                     </div>
                     <p className="text-muted-foreground">
-                        {getWelcomeMessage()}
+                        {getUIText('welcome')}
                     </p>
                 </CardHeader>
                 <CardContent data-tutorial-id="home-main-buttons" className="flex flex-col space-y-4 p-6 pt-0 pb-4">
@@ -166,13 +168,13 @@ export default function Home() {
                         <Link href="/quizzes" passHref>
                              <Button className={cn(buttonBaseClasses, squareButtonClasses, "rounded-xl", themeClasses, "font-normal")}>
                                 <LayoutGrid className={cn("h-12 w-12", iconClasses, showQuizzesSpin && "animate-spin-once")} />
-                                <span>Quizzes</span>
+                                <span>{getUIText('quizzes')}</span>
                             </Button>
                         </Link>
                          <Link href="/games" passHref>
                             <Button className={cn(buttonBaseClasses, squareButtonClasses, "rounded-xl", themeClasses, "font-normal", "!gap-0")}>
                                 <Gamepad2 className={cn("h-14 w-14", iconClasses, showGamesTilt && "animate-joystick-tilt")} />
-                                <span className="mt-1 mb-0.5">Games</span>
+                                <span className="mt-1 mb-0.5">{getUIText('games')}</span>
                             </Button>
                         </Link>
                     </div>
@@ -183,7 +185,7 @@ export default function Home() {
                                     <PencilLine className={cn("h-5 w-5 mr-2", iconClasses)} />
                                 </div>
                                 <span className={cn("col-start-2 flex items-center", iconClasses)}>
-                                    <span>Fill</span>
+                                    <span>{getUIText('fill')}</span>
                                     <span className="relative inline-block h-6 w-12 text-center overflow-hidden">
                                         <span
                                             key={fillTheGapText}
@@ -192,7 +194,7 @@ export default function Home() {
                                             {fillTheGapText}
                                         </span>
                                     </span>
-                                    <span>Gap</span>
+                                    <span>{getUIText('gap')}</span>
                                 </span>
                                  <div />
                             </Button>
@@ -204,7 +206,7 @@ export default function Home() {
                                 </div>
                                 <span className={cn("col-start-2 flex items-baseline", iconClasses)}>
                                     {showReadingBounce ? (
-                                        'Reading'.split('').map((letter, index) => (
+                                        getUIText('reading').split('').map((letter, index) => (
                                             <span
                                                 key={index}
                                                 className="inline-block animate-letter-bounce"
@@ -214,7 +216,7 @@ export default function Home() {
                                             </span>
                                         ))
                                     ) : (
-                                        'Reading'
+                                        getUIText('reading')
                                     )}
                                 </span>
                                  <div />
@@ -226,7 +228,7 @@ export default function Home() {
                                     <Ear className={cn("h-5 w-5 mr-2", iconClasses, showListeningPulse && "animate-pulse-strong")} />
                                 </div>
                                 <span className={cn("col-start-2 flex items-baseline", iconClasses)}>
-                                    <span>Listening</span>
+                                    <span>{getUIText('listening')}</span>
                                     {showListeningPulse && (
                                         <span className="flex pl-1">
                                             <span className="animate-dancing-dots" style={{ animationDelay: '0s' }}>.</span>
@@ -242,7 +244,7 @@ export default function Home() {
                 </CardContent>
                 <div data-tutorial-id="learning-button" className="px-6 pb-2">
                     <Separator className="mb-3"/>
-                     <Link href={isFrench ? "/learning/fr" : isGerman ? "/learning/de" : isItalian ? "/learning/it" : isSpanish ? "/learning/es" : "/learning/en"} passHref>
+                     <Link href={`/learning/${language}`} passHref>
                         <Button
                             variant="outline"
                             className={cn(
@@ -253,7 +255,7 @@ export default function Home() {
                                 <GraduationCap className="mr-2 h-6 w-6" />
                             </div>
                             <span className="col-start-2 font-bold">
-                                {getLearningButtonText()}
+                                {getUIText('learning')}
                             </span>
                             <div />
                         </Button>

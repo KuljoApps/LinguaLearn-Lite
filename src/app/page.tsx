@@ -192,8 +192,8 @@ export default function Home() {
                                     {getUIText('fill')}&nbsp;
                                     <span className={cn(
                                         "relative inline-block h-6 text-center overflow-hidden transition-all duration-300",
-                                        fillTheGapAnimatedWord[language].width,
-                                        fillTheGapAnimatedWord[language].marginClass
+                                        fillTheGapAnimatedWord[language].marginClass,
+                                        fillTheGapAnimatedWord[language].width
                                     )}>
                                         <span
                                             key={fillTheGapText}
@@ -256,7 +256,7 @@ export default function Home() {
                         <Button
                             variant="outline"
                             className={cn(
-                                "w-full h-12 text-xl border-2 grid grid-cols-[1fr_auto_1fr] items-center text-amber hover:text-amber border-amber qr-pattern-bg"
+                                "w-full h-12 text-xl border-2 grid grid-cols-[1fr_auto_1fr] items-center text-amber hover:text-amber border-amber qr-pattern-bg rounded-xl shadow-[0_0_20px_#ff8c00]"
                             )}
                         >
                             <div className="flex justify-end">

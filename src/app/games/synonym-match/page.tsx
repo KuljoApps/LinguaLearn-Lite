@@ -1,14 +1,17 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRightLeft } from 'lucide-react';
+import { ArrowLeft, ArrowRightLeft, Clock, ShieldX, CheckCircle, Percent, Trophy, ThumbsUp, Brain } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { getLanguage, type Language } from '@/lib/storage';
 import { allSynonymQuestions } from '@/lib/games/synonym-match';
+import { playSound } from '@/lib/sounds';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
 
 const shuffle = <T,>(array: T[]): T[] => [...array].sort(() => Math.random() - 0.5);
 const GAME_SIZE = 5;
@@ -23,7 +26,15 @@ const uiTexts = {
     incorrectToastDesc: { en: '"{word1}" and "{word2}" are not synonyms.', fr: '"{word1}" et "{word2}" ne sont pas des synonymes.', de: '"{word1}" und "{word2}" sind keine Synonyme.', it: '"{word1}" e "{word2}" non sono sinonimi.', es: '"{word1}" y "{word2}" no son sinónimos.' },
     winTitle: { en: 'You matched them all!', fr: 'Vous les avez tous trouvés !', de: 'Du hast sie alle gefunden!', it: 'Li hai abbinati tutti!', es: '¡Los has emparejado todos!' },
     playAgain: { en: 'Play Again', fr: 'Rejouer', de: 'Nochmal spielen', it: 'Gioca di nuovo', es: 'Jugar de nuevo' },
-    backToGames: { en: 'Back to Game Center', fr: 'Retour au Centre de jeux', de: 'Zurück zur Spielzentrale', it: 'Torna al Centro Giochi', es: 'Volver al Centro de Juegos' }
+    backToGames: { en: 'Back to Game Center', fr: 'Retour au Centre de jeux', de: 'Zurück zur Spielzentrale', it: 'Torna al Centro Giochi', es: 'Volver al Centro de Juegos' },
+    summary: { en: 'Summary', fr: 'Résumé', de: 'Zusammenfassung', it: 'Riepilogo', es: 'Resumen' },
+    score: { en: 'Score', fr: 'Score', de: 'Ergebnis', it: 'Punteggio', es: 'Puntuación' },
+    mistakes: { en: 'Mistakes', fr: 'Erreurs', de: 'Fehler', it: 'Errori', es: 'Errores' },
+    time: { en: 'Time', fr: 'Temps', de: 'Zeit', it: 'Tempo', es: 'Tiempo' },
+    successRate: { en: 'Success Rate', fr: 'Taux de réussite', de: 'Erfolgsquote', it: 'Tasso di successo', es: 'Tasa de éxito' },
+    worthRepeating: { en: 'Worth repeating', fr: 'À répéter', de: 'Wiederholenswert', it: 'Da ripetere', es: 'Vale la pena repetir' },
+    yourAnswer: { en: 'Your pair', fr: 'Votre paire', de: 'Dein Paar', it: 'La tua coppia', es: 'Tu pareja' },
+    correctAnswer: { en: 'Correct pair', fr: 'Paire correcte', de: 'Richtiges Paar', it: 'Coppia corretta', es: 'Pareja correcta' },
 };
 
 const SynonymMatchPage = () => {
@@ -33,6 +44,11 @@ const SynonymMatchPage = () => {
     const [selected2, setSelected2] = useState<string | null>(null);
     const [correctPairs, setCorrectPairs] = useState<string[]>([]);
     const [incorrectPair, setIncorrectPair] = useState<[string, string] | null>(null);
+    const [mistakes, setMistakes] = useState(0);
+    const [startTime, setStartTime] = useState<number | null>(null);
+    const [gameWonTime, setGameWonTime] = useState<number | null>(null);
+    const [sessionErrors, setSessionErrors] = useState<{ word1: string; word2: string; correct: string }[]>([]);
+
     const { toast } = useToast();
 
     const getUIText = (key: keyof typeof uiTexts, replacements: Record<string, string> = {}) => {
@@ -87,6 +103,10 @@ const SynonymMatchPage = () => {
         setSelected2(null);
         setCorrectPairs([]);
         setIncorrectPair(null);
+        setMistakes(0);
+        setStartTime(Date.now());
+        setGameWonTime(null);
+        setSessionErrors([]);
     }, []);
 
     useEffect(() => {
@@ -101,6 +121,13 @@ const SynonymMatchPage = () => {
         
         return () => window.removeEventListener('language-changed', handleLanguageChange);
     }, [setupNewGame]);
+
+    useEffect(() => {
+        if (correctPairs.length > 0 && correctPairs.length === GAME_SIZE * 2 && !gameWonTime) {
+            setGameWonTime(Date.now());
+            playSound('achievement');
+        }
+    }, [correctPairs, gameWonTime]);
 
     const handleSelect1 = (word: string) => {
         if (correctPairs.includes(word) || incorrectPair) return;
@@ -119,11 +146,14 @@ const SynonymMatchPage = () => {
             setCorrectPairs(prev => [...prev, selected1, word]);
             toast({ title: getUIText('correctToastTitle'), description: getUIText('correctToastDesc', { word1: selected1, word2: word }), duration: 2000 });
             setSelected1(null);
-            setSelected2(null);
         } else {
             // Incorrect match
             setSelected2(word);
             setIncorrectPair([selected1, word]);
+            setMistakes(prev => prev + 1);
+            if(wordSet) {
+              setSessionErrors(prev => [...prev, { word1: selected1, word2: word, correct: wordSet.matches[selected1] }]);
+            }
             toast({ variant: "destructive", title: getUIText('incorrectToastTitle'), description: getUIText('incorrectToastDesc', { word1: selected1, word2: word }), duration: 2000 });
             setTimeout(() => {
                 setSelected1(null);
@@ -137,7 +167,7 @@ const SynonymMatchPage = () => {
         return null;
     }
     
-    const isGameWon = correctPairs.length === GAME_SIZE * 2;
+    const isGameWon = !!gameWonTime;
 
     const getButtonClasses = (word: string, isColumn1: boolean) => {
         const isSelected = isColumn1 ? selected1 === word : selected2 === word;
@@ -151,6 +181,34 @@ const SynonymMatchPage = () => {
             isIncorrect && "bg-destructive/80 text-destructive-foreground border-destructive"
         );
     };
+    
+    const totalTime = gameWonTime && startTime ? Math.round((gameWonTime - startTime) / 1000) : 0;
+    const successRate = GAME_SIZE + mistakes > 0 ? Math.round((GAME_SIZE / (GAME_SIZE + mistakes)) * 100) : 100;
+    const formatTime = (seconds: number) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+    };
+
+    const motivationalMessage = useMemo(() => {
+        if (successRate === 100) {
+            return {
+                icon: <Trophy className="h-16 w-16 text-amber animate-shake" />,
+                title: 'Perfect Match!',
+            };
+        }
+        if (successRate >= 80) {
+            return {
+                icon: <ThumbsUp className="h-16 w-16 text-primary" />,
+                title: 'Great Job!',
+            };
+        }
+        return {
+            icon: <Brain className="h-16 w-16 text-muted-foreground" />,
+            title: 'Good Effort!',
+        };
+    }, [successRate]);
+
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -160,13 +218,57 @@ const SynonymMatchPage = () => {
                         <ArrowRightLeft className="h-8 w-8" />
                         <CardTitle className="text-3xl font-bold tracking-tight">{getUIText('title')}</CardTitle>
                     </div>
-                    <p className="text-muted-foreground pt-2">{getUIText('description')}</p>
                 </CardHeader>
-                <CardContent className="p-6 space-y-6">
+                <CardContent className="p-6 pt-0 space-y-8">
+                    <p className="text-muted-foreground pt-2 text-center pb-0">{getUIText('description')}</p>
                     {isGameWon ? (
-                        <div className="text-center space-y-4">
-                            <h2 className="text-2xl font-bold text-success">{getUIText('winTitle')}</h2>
-                            <Button onClick={() => setupNewGame(language)}>{getUIText('playAgain')}</Button>
+                        <div className="space-y-4">
+                            <div className="text-center space-y-2 flex flex-col items-center">
+                                {motivationalMessage.icon}
+                                <h2 className="text-2xl font-bold text-success">{getUIText('winTitle')}</h2>
+                            </div>
+                            <Card className="bg-muted/50">
+                                <CardHeader className="pb-2"><CardTitle className="text-xl text-center">{getUIText('summary')}</CardTitle></CardHeader>
+                                <CardContent className="grid grid-cols-2 gap-4 text-center">
+                                    <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background">
+                                        <div className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-success"/><span className="text-2xl font-bold">{GAME_SIZE}</span></div>
+                                        <span className="text-xs text-muted-foreground">{getUIText('score')}</span>
+                                    </div>
+                                    <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background">
+                                        <div className="flex items-center gap-2"><ShieldX className="h-4 w-4 text-destructive"/><span className="text-2xl font-bold">{mistakes}</span></div>
+                                        <span className="text-xs text-muted-foreground">{getUIText('mistakes')}</span>
+                                    </div>
+                                    <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background">
+                                        <div className="flex items-center gap-2"><Clock className="h-4 w-4 text-muted-foreground"/><span className="text-2xl font-bold">{formatTime(totalTime)}</span></div>
+                                        <span className="text-xs text-muted-foreground">{getUIText('time')}</span>
+                                    </div>
+                                    <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background">
+                                        <div className="flex items-center gap-2"><Percent className="h-4 w-4 text-amber"/><span className="text-2xl font-bold">{successRate}%</span></div>
+                                        <span className="text-xs text-muted-foreground">{getUIText('successRate')}</span>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                            {sessionErrors.length > 0 && (
+                                <div className="space-y-2">
+                                    <h3 className="text-center font-semibold">{getUIText('worthRepeating')}</h3>
+                                    <ScrollArea className="h-24 w-full rounded-md border p-2">
+                                        <div className="space-y-2">
+                                            {sessionErrors.map((error, index) => (
+                                                <React.Fragment key={index}>
+                                                    <div className="text-sm p-2 bg-muted/30 rounded-md">
+                                                        <p><span className="text-destructive">{getUIText('yourAnswer')}:</span> {error.word1} & {error.word2}</p>
+                                                        <p><span className="text-success">{getUIText('correctAnswer')}:</span> {error.word1} & {error.correct}</p>
+                                                    </div>
+                                                    {index < sessionErrors.length - 1 && <Separator />}
+                                                </React.Fragment>
+                                            ))}
+                                        </div>
+                                    </ScrollArea>
+                                </div>
+                            )}
+                             <div className="text-center pt-2">
+                                <Button onClick={() => setupNewGame(language)}>{getUIText('playAgain')}</Button>
+                             </div>
                         </div>
                     ) : (
                         <div className="grid grid-cols-2 gap-8">

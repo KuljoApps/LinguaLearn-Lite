@@ -5,7 +5,7 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRightLeft, Clock, ShieldX, Percent, Trophy, ThumbsUp, Brain, Flame } from 'lucide-react';
+import { ArrowLeft, ArrowRightLeft, Clock, ShieldX, Percent, Trophy, ThumbsUp, Brain, Flame, Shuffle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { getLanguage, type Language } from '@/lib/storage';
@@ -89,11 +89,8 @@ const SynonymMatchPage = () => {
     }, [successRate]);
 
 
-    const getUIText = (key: keyof typeof uiTexts, replacements: Record<string, string | number> = {}) => {
+    const getUIText = (key: keyof typeof uiTexts) => {
       let text = uiTexts[key][language] || uiTexts[key]['en'];
-      for (const placeholder in replacements) {
-          text = text.replace(`{${placeholder}}`, String(replacements[placeholder]));
-      }
       return text;
     };
     
@@ -202,14 +199,29 @@ const SynonymMatchPage = () => {
 
         const correctPairCount = correctPairs.length / 2;
 
+        const showRemixToast = () => {
+            toast({
+                title: (
+                    <div className="flex items-center gap-3">
+                        <Shuffle className="h-8 w-8 text-amber" />
+                        <span className="text-xl font-bold">Shuffle Time!</span>
+                    </div>
+                ),
+                description: "New words are entering the board.",
+                duration: 2000,
+            });
+        };
+
         if (stage === 0 && correctPairCount === 3) {
+            showRemixToast();
             setIsFrozen(true);
             setTimeout(replaceAndShuffle, 1000);
         } else if (stage === 1 && correctPairCount === 5) {
+            showRemixToast();
             setIsFrozen(true);
             setTimeout(replaceAndShuffle, 1000);
         }
-    }, [correctPairs, stage, replaceAndShuffle, isFrozen]);
+    }, [correctPairs.length, isFrozen, replaceAndShuffle, stage, toast]);
 
     useEffect(() => {
         if (!gameContainerRef.current) return;
@@ -259,7 +271,6 @@ const SynonymMatchPage = () => {
         if (matches && matches[selected1] === word) {
             setCorrectPairs(prev => [...prev, selected1, word]);
             setCurrentStreak(prev => prev + 1);
-            toast({ title: getUIText('correctToastTitle'), description: getUIText('correctToastDesc', { word1: selected1, word2: word }), duration: 2000 });
             setSelected1(null);
             setSelected2(null);
         } else {
@@ -279,7 +290,7 @@ const SynonymMatchPage = () => {
                 return newErrors;
               });
             }
-            toast({ variant: "destructive", title: getUIText('incorrectToastTitle'), description: getUIText('incorrectToastDesc', { word1: selected1, word2: word }), duration: 2000 });
+            toast({ variant: "destructive", title: getUIText('incorrectToastTitle'), description: `"${selected1}" and "${word}" are not synonyms.`, duration: 2000 });
             setTimeout(() => {
                 setSelected1(null);
                 setSelected2(null);

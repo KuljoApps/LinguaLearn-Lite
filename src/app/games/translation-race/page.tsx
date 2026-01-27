@@ -1,13 +1,17 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, Timer } from 'lucide-react';
+import { ArrowLeft, Timer, Play, SkipForward, Trophy, ThumbsUp, Brain, CheckCircle, ShieldX, Zap } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { getLanguage, type Language } from '@/lib/storage';
 import { allTranslationRaceWords, type TranslationPair } from '@/lib/games/translation-race';
+import { playSound } from '@/lib/sounds';
+import { vibrate } from '@/lib/vibrations';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
 
 const GAME_DURATION = 60; // seconds
 
@@ -22,13 +26,17 @@ const uiTexts = {
     },
     startGame: { en: 'Start Game', fr: 'Démarrer le jeu', de: 'Spiel starten', it: 'Inizia il gioco', es: 'Empezar juego' },
     timesUp: { en: 'Time\'s up!', fr: 'Le temps est écoulé !', de: 'Die Zeit ist um!', it: 'Tempo scaduto!', es: '¡Se acabó el tiempo!' },
-    finalScore: { en: 'Your final score is:', fr: 'Votre score final est :', de: 'Dein Endergebnis ist:', it: 'Il tuo punteggio finale è:', es: 'Tu puntuación final es:' },
     playAgain: { en: 'Play Again', fr: 'Rejouer', de: 'Nochmal spielen', it: 'Gioca di nuovo', es: 'Jugar de nuevo' },
     timeLeft: { en: 'Time Left', fr: 'Temps restant', de: 'Verbleibende Zeit', it: 'Tempo rimasto', es: 'Tiempo restante' },
     score: { en: 'Score', fr: 'Score', de: 'Punkte', it: 'Punteggio', es: 'Puntuación' },
     translateWord: { en: 'Translate the word:', fr: 'Traduisez le mot :', de: 'Übersetze das Wort:', it: 'Traduci la parola:', es: 'Traduce la palabra:' },
     placeholder: { en: 'Type translation in Polish...', fr: 'Tapez la traduction en polonais...', de: 'Gib die polnische Übersetzung ein...', it: 'Scrivi la traduzione in polacco...', es: 'Escribe la traducción en polaco...' },
-    back: { en: 'Back to Game Center', fr: 'Retour aux Jeux', de: 'Zurück zur Spielzentrale', it: 'Torna ai Giochi', es: 'Volver a Juegos' }
+    back: { en: 'Back to Game Center', fr: 'Retour aux Jeux', de: 'Zurück zur Spielzentrale', it: 'Torna ai Giochi', es: 'Volver a Juegos' },
+    summary: { en: 'Summary', fr: 'Résumé', de: 'Zusammenfassung', it: 'Riepilogo', es: 'Resumen' },
+    wpm: { en: 'Words per minute', fr: 'Mots par minute', de: 'Wörter pro Minute', it: 'Parole al minuto', es: 'Palabras por minuto' },
+    skips: { en: 'Skips Used', fr: 'Passes utilisées', de: 'Übersprungen', it: 'Salti usati', es: 'Saltos usados' },
+    worthRepeating: { en: 'Worth repeating', fr: 'À répéter', de: 'Wiederholenswert', it: 'Da ripetere', es: 'Vale la pena repetir' },
+    skippedWord: { en: 'Skipped word', fr: 'Mot passé', de: 'Übersprungenes Wort', it: 'Parola saltata', es: 'Palabra saltada' },
 };
 
 const shuffle = <T,>(array: T[]): T[] => [...array].sort(() => Math.random() - 0.5);
@@ -42,13 +50,18 @@ const TranslationRacePage = () => {
     const [isActive, setIsActive] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const [usedWords, setUsedWords] = useState<Set<string>>(new Set());
+    const [skipsLeft, setSkipsLeft] = useState(3);
+    const [sessionSkippedWords, setSessionSkippedWords] = useState<TranslationPair[]>([]);
 
     const getNextWord = useCallback(() => {
         const availableWords = wordSet.filter(w => !usedWords.has(w.native));
         if (availableWords.length === 0) {
-            // All words used, reset the used words set
-            setUsedWords(new Set([wordSet[0].native]));
-            return wordSet[0];
+            setUsedWords(new Set()); // Reset if all words are used
+            const newWordSet = shuffle(wordSet);
+            setWordSet(newWordSet);
+            const firstWord = newWordSet[0];
+            setUsedWords(new Set([firstWord.native]));
+            return firstWord;
         }
         const nextWord = availableWords[Math.floor(Math.random() * availableWords.length)];
         setUsedWords(prev => new Set(prev).add(nextWord.native));
@@ -70,6 +83,8 @@ const TranslationRacePage = () => {
         setScore(0);
         setIsActive(true);
         setInputValue('');
+        setSkipsLeft(3);
+        setSessionSkippedWords([]);
     }, []);
 
     useEffect(() => {
@@ -92,8 +107,9 @@ const TranslationRacePage = () => {
         let timer: NodeJS.Timeout;
         if (isActive && timeLeft > 0) {
             timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
-        } else if (timeLeft === 0) {
+        } else if (timeLeft === 0 && isActive) {
             setIsActive(false);
+            playSound('achievement');
         }
         return () => clearTimeout(timer);
     }, [isActive, timeLeft]);
@@ -115,46 +131,118 @@ const TranslationRacePage = () => {
         const normalizedAnswer = normalizeString(currentWord.pl);
 
         if (normalizedInput === normalizedAnswer) {
+            playSound('correct');
+            vibrate('correct');
             setScore(score + 1);
             setInputValue('');
             setCurrentWord(getNextWord());
         }
     }
 
+    const handleSkip = useCallback(() => {
+      if (skipsLeft > 0 && currentWord) {
+          setSkipsLeft(prev => prev - 1);
+          setScore(prev => prev - 1);
+          setSessionSkippedWords(prev => [...prev, currentWord]);
+          setCurrentWord(getNextWord());
+          setInputValue('');
+          vibrate('incorrect');
+          playSound('incorrect');
+      }
+    }, [skipsLeft, currentWord, getNextWord]);
+
     const getUIText = (key: keyof typeof uiTexts) => uiTexts[key][language] || uiTexts[key]['en'];
+
+    const wpm = score > 0 ? Math.round(score / (GAME_DURATION / 60)) : 0;
+    
+    const motivationalMessage = useMemo(() => {
+      if (score >= 40) return { icon: <Trophy className="h-16 w-16 text-amber animate-shake" />, title: getUIText('timesUp') };
+      if (score >= 20) return { icon: <ThumbsUp className="h-16 w-16 text-primary" />, title: getUIText('timesUp') };
+      return { icon: <Brain className="h-16 w-16 text-muted-foreground" />, title: getUIText('timesUp') };
+    }, [score, getUIText]);
+
+    const isGameFinished = !isActive && timeLeft === 0;
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-2xl shadow-2xl">
                 <CardHeader className="text-center p-6">
-                    <div className="flex items-center justify-center gap-4">
-                        <Timer className="h-8 w-8" />
-                        <CardTitle className="text-3xl font-bold tracking-tight">{getUIText('title')}</CardTitle>
-                    </div>
-                    <p className="text-muted-foreground pt-2">{getUIText('description')}</p>
+                    {!isGameFinished && (
+                      <div className="flex items-center justify-center gap-4">
+                          <Timer className="h-8 w-8" />
+                          <CardTitle className="text-3xl font-bold tracking-tight">{getUIText('title')}</CardTitle>
+                      </div>
+                    )}
                 </CardHeader>
-                <CardContent className="p-6 space-y-8">
-                    {!isActive && timeLeft > 0 && <div className="text-center"><Button size="lg" onClick={setupNewGame}>{getUIText('startGame')}</Button></div>}
+                <CardContent className="p-6 pt-0 space-y-8 flex flex-col justify-center min-h-[50vh]">
+                    {!isActive && timeLeft > 0 && (
+                        <div className="text-center flex flex-col items-center justify-center gap-8 flex-grow">
+                            <p className="text-muted-foreground mt-4">{getUIText('description')}</p>
+                            <Button size="lg" onClick={setupNewGame} className="mt-4">
+                                <Play className="mr-2 h-5 w-5 animate-pulse-strong" />
+                                {getUIText('startGame')}
+                            </Button>
+                        </div>
+                    )}
                     
-                    {!isActive && timeLeft === 0 && (
-                        <div className="text-center space-y-4">
-                            <h2 className="text-2xl font-bold">{getUIText('timesUp')}</h2>
-                            <p className="text-xl">{getUIText('finalScore')} <span className="font-bold text-primary">{score}</span></p>
-                            <Button onClick={setupNewGame}>{getUIText('playAgain')}</Button>
+                    {isGameFinished && (
+                        <div className="space-y-4">
+                            <div className="text-center space-y-2 flex flex-col items-center">
+                                {motivationalMessage.icon}
+                                <h2 className="text-2xl font-bold">{motivationalMessage.title}</h2>
+                                <CardDescription>{getUIText('finalScore')} <span className="font-bold text-primary">{score}</span></CardDescription>
+                            </div>
+                            <Card className="bg-muted/50">
+                                <CardHeader className="pb-2"><CardTitle className="text-xl text-center">{getUIText('summary')}</CardTitle></CardHeader>
+                                <CardContent className="grid grid-cols-2 gap-4 text-center">
+                                    <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background">
+                                        <div className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-success"/><span className="text-2xl font-bold">{score}</span></div>
+                                        <span className="text-xs text-muted-foreground">{getUIText('score')}</span>
+                                    </div>
+                                    <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background">
+                                        <div className="flex items-center gap-2"><Zap className="h-4 w-4 text-amber"/><span className="text-2xl font-bold">{wpm}</span></div>
+                                        <span className="text-xs text-muted-foreground">{getUIText('wpm')}</span>
+                                    </div>
+                                    <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background col-span-2">
+                                        <div className="flex items-center gap-2"><ShieldX className="h-4 w-4 text-destructive"/><span className="text-2xl font-bold">{3 - skipsLeft}</span></div>
+                                        <span className="text-xs text-muted-foreground">{getUIText('skips')}</span>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                            {sessionSkippedWords.length > 0 && (
+                                <div className="space-y-2">
+                                    <h3 className="text-center font-semibold">{getUIText('worthRepeating')}</h3>
+                                    <ScrollArea className="h-24 w-full rounded-md border p-2">
+                                        <div className="space-y-2">
+                                            {sessionSkippedWords.map((word, index) => (
+                                                <React.Fragment key={index}>
+                                                    <div className="text-sm p-2 bg-muted/30 rounded-md">
+                                                        <p><span className="text-destructive font-semibold">{getUIText('skippedWord')}:</span> {word.native} - {word.pl}</p>
+                                                    </div>
+                                                    {index < sessionSkippedWords.length - 1 && <Separator />}
+                                                </React.Fragment>
+                                            ))}
+                                        </div>
+                                    </ScrollArea>
+                                </div>
+                            )}
+                             <div className="text-center pt-2">
+                                <Button onClick={setupNewGame}>{getUIText('playAgain')}</Button>
+                             </div>
                         </div>
                     )}
                     
                     {isActive && currentWord && (
-                         <div className="space-y-6 text-center">
+                         <div className="space-y-6 text-center flex flex-col justify-between flex-grow">
+                             <div className="flex-grow flex flex-col items-center justify-center">
+                                <p className="text-muted-foreground">{getUIText('translateWord')}</p>
+                                <p className="text-4xl font-bold tracking-wider">{currentWord.native}</p>
+                            </div>
                             <div className="flex justify-around text-2xl font-bold">
                                 <div>{getUIText('timeLeft')}: <span className="text-primary">{timeLeft}s</span></div>
                                 <div>{getUIText('score')}: <span className="text-primary">{score}</span></div>
                             </div>
-                            <div>
-                                <p className="text-muted-foreground">{getUIText('translateWord')}</p>
-                                <p className="text-4xl font-bold tracking-wider">{currentWord.native}</p>
-                            </div>
-                            <div className="flex justify-center">
+                            <div className="flex justify-center items-center gap-2">
                                 <Input 
                                     value={inputValue}
                                     onChange={handleInputChange}
@@ -162,6 +250,10 @@ const TranslationRacePage = () => {
                                     className="text-lg text-center max-w-sm"
                                     autoFocus
                                 />
+                                <Button variant="outline" size="icon" onClick={handleSkip} disabled={skipsLeft <= 0} className="relative">
+                                  <SkipForward className="h-5 w-5" />
+                                  <span className="absolute -top-1 -right-1 text-xs font-bold bg-destructive text-destructive-foreground rounded-full h-4 w-4 flex items-center justify-center">{skipsLeft}</span>
+                                </Button>
                             </div>
                         </div>
                     )}

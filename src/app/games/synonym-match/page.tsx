@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRightLeft, Clock, ShieldX, CheckCircle, Percent, Trophy, ThumbsUp, Brain, Flame } from 'lucide-react';
+import { ArrowLeft, ArrowRightLeft, Clock, ShieldX, CheckCircle, Percent, Trophy, ThumbsUp, Brain } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { getLanguage, type Language } from '@/lib/storage';
@@ -28,7 +28,7 @@ const uiTexts = {
     playAgain: { en: 'Play Again', fr: 'Rejouer', de: 'Nochmal spielen', it: 'Gioca di nuovo', es: 'Jugar de nuevo' },
     backToGames: { en: 'Back to Game Center', fr: 'Retour au Centre de jeux', de: 'Zurück zur Spielzentrale', it: 'Torna al Centro Giochi', es: 'Volver al Centro de Juegos' },
     summary: { en: 'Summary', fr: 'Résumé', de: 'Zusammenfassung', it: 'Riepilogo', es: 'Resumen' },
-    longestStreak: { en: 'Longest Streak', fr: 'Série la plus longue', de: 'Längste Serie', it: 'Serie più lunga', es: 'Racha más larga' },
+    score: { en: 'Score', fr: 'Score', de: 'Ergebnis', it: 'Punteggio', es: 'Puntuación' },
     mistakes: { en: 'Mistakes', fr: 'Erreurs', de: 'Fehler', it: 'Errori', es: 'Errores' },
     time: { en: 'Time', fr: 'Temps', de: 'Zeit', it: 'Tempo', es: 'Tiempo' },
     successRate: { en: 'Success Rate', fr: 'Taux de réussite', de: 'Erfolgsquote', it: 'Tasso di successo', es: 'Tasa de éxito' },
@@ -47,9 +47,7 @@ const SynonymMatchPage = () => {
     const [mistakes, setMistakes] = useState(0);
     const [startTime, setStartTime] = useState<number | null>(null);
     const [gameWonTime, setGameWonTime] = useState<number | null>(null);
-    const [sessionErrors, setSessionErrors] = useState<{ word1: string; word2: string; correct: string; count: number }[]>([]);
-    const [currentStreak, setCurrentStreak] = useState(0);
-    const [maxStreak, setMaxStreak] = useState(0);
+    const [sessionErrors, setSessionErrors] = useState<{ word1: string; word2: string; correct: string }[]>([]);
 
     const { toast } = useToast();
 
@@ -132,8 +130,6 @@ const SynonymMatchPage = () => {
         setStartTime(Date.now());
         setGameWonTime(null);
         setSessionErrors([]);
-        setCurrentStreak(0);
-        setMaxStreak(0);
     }, []);
 
     useEffect(() => {
@@ -153,9 +149,8 @@ const SynonymMatchPage = () => {
         if (correctPairs.length > 0 && correctPairs.length === GAME_SIZE * 2 && !gameWonTime) {
             setGameWonTime(Date.now());
             playSound('achievement');
-            setMaxStreak(prev => Math.max(prev, currentStreak));
         }
-    }, [correctPairs, gameWonTime, currentStreak]);
+    }, [correctPairs, gameWonTime]);
 
     const handleSelect1 = (word: string) => {
         if (correctPairs.includes(word) || incorrectPair) return;
@@ -168,38 +163,25 @@ const SynonymMatchPage = () => {
 
     const handleSelect2 = (word: string) => {
         if (correctPairs.includes(word) || !selected1 || incorrectPair) return;
-        
-        setIncorrectPair([selected1, word]);
+        setSelected2(word);
 
         if (wordSet && wordSet.matches[selected1] === word) {
             // Correct match
-            setTimeout(() => {
-                setCorrectPairs(prev => [...prev, selected1, word]);
-                toast({ title: getUIText('correctToastTitle'), description: getUIText('correctToastDesc', { word1: selected1, word2: word }), duration: 2000 });
-                setSelected1(null);
-                setIncorrectPair(null);
-                setCurrentStreak(prev => prev + 1);
-            }, 150);
+            setCorrectPairs(prev => [...prev, selected1, word]);
+            toast({ title: getUIText('correctToastTitle'), description: getUIText('correctToastDesc', { word1: selected1, word2: word }), duration: 2000 });
+            setSelected1(null);
+            setSelected2(null);
         } else {
             // Incorrect match
-            setMaxStreak(prev => Math.max(prev, currentStreak));
-            setCurrentStreak(0);
+            setIncorrectPair([selected1, word]);
             setMistakes(prev => prev + 1);
             if(wordSet) {
-              const correctSynonym = wordSet.matches[selected1!];
-              setSessionErrors(prevErrors => {
-                  const existingErrorIndex = prevErrors.findIndex(e => e.word1 === selected1 && e.word2 === word);
-                  if (existingErrorIndex > -1) {
-                      const updatedErrors = [...prevErrors];
-                      updatedErrors[existingErrorIndex].count++;
-                      return updatedErrors;
-                  }
-                  return [...prevErrors, { word1: selected1!, word2: word, correct: correctSynonym, count: 1 }];
-              });
+              setSessionErrors(prev => [...prev, { word1: selected1!, word2: word, correct: wordSet.matches[selected1!] }]);
             }
             toast({ variant: "destructive", title: getUIText('incorrectToastTitle'), description: getUIText('incorrectToastDesc', { word1: selected1, word2: word }), duration: 2000 });
             setTimeout(() => {
                 setSelected1(null);
+                setSelected2(null);
                 setIncorrectPair(null);
             }, 800);
         }
@@ -212,15 +194,16 @@ const SynonymMatchPage = () => {
     const isGameWon = !!gameWonTime;
 
     const getButtonClasses = (word: string, isColumn1: boolean) => {
-        const isSelected = isColumn1 ? selected1 === word : false;
+        const isSelected = isColumn1 ? selected1 === word : selected2 === word;
         const isCorrect = correctPairs.includes(word);
         const isIncorrect = incorrectPair?.includes(word) ?? false;
         
-        if(isCorrect) return "bg-success/20 text-muted-foreground line-through pointer-events-none";
-        if(isIncorrect) return "bg-destructive/80 text-destructive-foreground border-destructive";
-        if(isSelected) return "border-primary border-2 ring-2 ring-primary/50";
-        
-        return "h-16 text-lg transition-all duration-150";
+        return cn(
+            "h-16 text-lg transition-all duration-150",
+            isSelected && !isIncorrect && "border-primary border-2 ring-2 ring-primary/50",
+            isCorrect && "bg-success/20 text-muted-foreground line-through pointer-events-none",
+            isIncorrect && "bg-destructive/80 text-destructive-foreground border-destructive"
+        );
     };
     
     const formatTime = (seconds: number) => {
@@ -233,17 +216,15 @@ const SynonymMatchPage = () => {
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-2xl shadow-2xl">
-                 {!isGameWon && (
-                    <CardHeader className="text-center p-6">
-                        <div className="flex items-center justify-center gap-4">
-                            <ArrowRightLeft className="h-8 w-8" />
-                            <CardTitle className="text-3xl font-bold tracking-tight">{getUIText('title')}</CardTitle>
-                        </div>
-                    </CardHeader>
-                )}
+                <CardHeader className="text-center p-6">
+                    <div className="flex items-center justify-center gap-4">
+                        <ArrowRightLeft className="h-8 w-8" />
+                        <CardTitle className="text-3xl font-bold tracking-tight">{getUIText('title')}</CardTitle>
+                    </div>
+                </CardHeader>
                 <CardContent className="p-6 pt-0 space-y-8">
                     {isGameWon ? (
-                        <div className="space-y-4 pt-6">
+                        <div className="space-y-4">
                             <div className="text-center space-y-2 flex flex-col items-center">
                                 {motivationalMessage.icon}
                                 <h2 className="text-2xl font-bold text-success">{getUIText('winTitle')}</h2>
@@ -252,8 +233,8 @@ const SynonymMatchPage = () => {
                                 <CardHeader className="pb-2"><CardTitle className="text-xl text-center">{getUIText('summary')}</CardTitle></CardHeader>
                                 <CardContent className="grid grid-cols-2 gap-4 text-center">
                                     <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background">
-                                        <div className="flex items-center gap-2"><Flame className="h-4 w-4 text-primary"/><span className="text-2xl font-bold">{maxStreak}</span></div>
-                                        <span className="text-xs text-muted-foreground">{getUIText('longestStreak')}</span>
+                                        <div className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-success"/><span className="text-2xl font-bold">{GAME_SIZE}</span></div>
+                                        <span className="text-xs text-muted-foreground">{getUIText('score')}</span>
                                     </div>
                                     <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background">
                                         <div className="flex items-center gap-2"><ShieldX className="h-4 w-4 text-destructive"/><span className="text-2xl font-bold">{mistakes}</span></div>
@@ -277,12 +258,7 @@ const SynonymMatchPage = () => {
                                             {sessionErrors.map((error, index) => (
                                                 <React.Fragment key={index}>
                                                     <div className="text-sm p-2 bg-muted/30 rounded-md">
-                                                        <div className="flex justify-between items-center">
-                                                            <p><span className="text-destructive">{getUIText('yourAnswer')}:</span> {error.word1} & {error.word2}</p>
-                                                            {error.count > 1 && (
-                                                                <span className="text-xs font-mono bg-destructive/20 text-destructive-foreground rounded-full px-1.5 py-0.5">{error.count}x</span>
-                                                            )}
-                                                        </div>
+                                                        <p><span className="text-destructive">{getUIText('yourAnswer')}:</span> {error.word1} & {error.word2}</p>
                                                         <p><span className="text-success">{getUIText('correctAnswer')}:</span> {error.word1} & {error.correct}</p>
                                                     </div>
                                                     {index < sessionErrors.length - 1 && <Separator />}
@@ -298,7 +274,7 @@ const SynonymMatchPage = () => {
                         </div>
                     ) : (
                         <>
-                         <p className="text-muted-foreground text-center pb-4 pt-2">{getUIText('description')}</p>
+                         <p className="text-muted-foreground pt-2 text-center pb-0">{getUIText('description')}</p>
                         <div className="grid grid-cols-2 gap-8">
                             <div className="flex flex-col gap-4">
                                 {wordSet.words1.map(word => (
@@ -342,3 +318,5 @@ const SynonymMatchPage = () => {
 };
 
 export default SynonymMatchPage;
+
+    

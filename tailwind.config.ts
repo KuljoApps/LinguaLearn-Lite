@@ -153,6 +153,23 @@ export default {
           'from': { 'stroke-dasharray': '1000', 'stroke-dashoffset': '1000' },
           'to': { 'stroke-dashoffset': '0' },
         },
+        'shuffle-blur-spin': {
+          '0%': {
+            transform: 'scale(1) rotate(0deg)',
+            opacity: '1',
+            filter: 'blur(0)',
+          },
+          '50%': {
+            transform: 'scale(0.5) rotate(180deg)',
+            opacity: '0.5',
+            filter: 'blur(2px)',
+          },
+          '100%': {
+            transform: 'scale(1) rotate(360deg)',
+            opacity: '1',
+            filter: 'blur(0)',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -169,9 +186,11 @@ export default {
         'joystick-tilt': 'joystick-tilt 3s ease-in-out',
         'letter-bounce': 'letter-bounce 0.5s ease-in-out 2',
         'draw-line': 'draw-line 0.5s ease-out forwards',
+        'shuffle-blur-spin': 'shuffle-blur-spin 1s ease-in-out',
       },
     },
   },
   plugins: [require('tailwindcss-animate')],
 } satisfies Config;
+
 

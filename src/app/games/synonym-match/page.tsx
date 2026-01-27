@@ -30,8 +30,6 @@ type SessionError = {
 const uiTexts = {
     title: { en: 'Synonym Match', fr: 'Jeu des Synonymes', de: 'Synonym-Paare', it: 'Abbinamento Sinonimi', es: 'Coincidencia de Sinónimos' },
     description: { en: 'Match the words with their synonyms.', fr: 'Associez les mots à leurs synonymes.', de: 'Ordne die Wörter ihren Synonymen zu.', it: 'Abbina le parole con i loro sinonimi.', es: 'Empareja las palabras con sus sinónimos.' },
-    correctToastTitle: { en: 'Correct!', fr: 'Correct !', de: 'Richtig!', it: 'Corretto!', es: '¡Correcto!' },
-    correctToastDesc: { en: '"{word1}" and "{word2}" are synonyms.', fr: '"{word1}" et "{word2}" sont des synonymes.', de: '"{word1}" und "{word2}" sind Synonyme.', it: '"{word1}" e "{word2}" sono sinonimi.', es: '"{word1}" y "{word2}" son sinónimos.' },
     incorrectToastTitle: { en: 'Incorrect', fr: 'Incorrect', de: 'Falsch', it: 'Sbagliato', es: 'Incorrecto' },
     incorrectToastDesc: { en: '"{word1}" and "{word2}" are not synonyms.', fr: '"{word1}" et "{word2}" ne sont pas des synonymes.', de: '"{word1}" und "{word2}" sind keine Synonyme.', it: '"{word1}" e "{word2}" non sono sinonimi.', es: '"{word1}" y "{word2}" no son sinónimos.' },
     winTitle: { en: 'You matched them all!', fr: 'Vous les avez tous trouvés !', de: 'Du hast sie alle gefunden!', it: 'Li hai abbinati tutti!', es: '¡Los has emparejado todos!' },
@@ -73,7 +71,8 @@ const SynonymMatchPage = () => {
     const [longestStreak, setLongestStreak] = useState(0);
 
     const gameContainerRef = useRef<HTMLDivElement>(null);
-    const buttonRefs = useRef<Map<string, HTMLButtonElement | null>>(new Map());
+    const buttonRefs = useRef(new Map<string, HTMLButtonElement | null>());
+
     const [lines, setLines] = useState<{ x1: number; y1: number; x2: number; y2: number; key: string }[]>([]);
 
     const { toast } = useToast();
@@ -308,7 +307,7 @@ const SynonymMatchPage = () => {
         
         return cn(
             "h-16 text-lg transition-all duration-150",
-            isFrozen && "pointer-events-none",
+            isFrozen && !isCorrect && "animate-shuffle-blur-spin",
             isSelected && !isIncorrect && "border-primary border-2 ring-2 ring-primary/50",
             isCorrect && "bg-success/20 text-muted-foreground line-through pointer-events-none",
             isIncorrect && "bg-destructive/80 text-destructive-foreground border-destructive"
@@ -322,7 +321,7 @@ const SynonymMatchPage = () => {
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-2xl shadow-2xl">
-                <CardHeader className="text-center p-6">
+                 <CardHeader className="text-center p-6">
                     <div className="flex items-center justify-center gap-4">
                         <ArrowRightLeft className="h-8 w-8" />
                         <CardTitle className="text-3xl font-bold tracking-tight">{getUIText('title')}</CardTitle>
@@ -403,10 +402,7 @@ const SynonymMatchPage = () => {
                                 {activeWords1.map(word => (
                                     <Button
                                         key={word}
-                                        ref={(el) => {
-                                            if (el) buttonRefs.current.set(word, el);
-                                            else buttonRefs.current.delete(word);
-                                        }}
+                                        ref={(el) => buttonRefs.current.set(word, el)}
                                         variant="outline"
                                         className={getButtonClasses(word, true)}
                                         onClick={() => handleSelect1(word)}
@@ -419,10 +415,7 @@ const SynonymMatchPage = () => {
                                 {activeWords2.map(word => (
                                     <Button
                                         key={word}
-                                        ref={(el) => {
-                                            if (el) buttonRefs.current.set(word, el);
-                                            else buttonRefs.current.delete(word);
-                                        }}
+                                        ref={(el) => buttonRefs.current.set(word, el)}
                                         variant="outline"
                                         className={getButtonClasses(word, false)}
                                         onClick={() => handleSelect2(word)}
@@ -449,3 +442,4 @@ const SynonymMatchPage = () => {
 };
 
 export default SynonymMatchPage;
+

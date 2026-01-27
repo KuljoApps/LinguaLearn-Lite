@@ -15,7 +15,7 @@ import { Separator } from '@/components/ui/separator';
 
 const shuffle = <T,>(array: T[]): T[] => [...array].sort(() => Math.random() - 0.5);
 
-const TOTAL_PAIRS = 10;
+const TOTAL_PAIRS = 12;
 const BOARD_SIZE = 5;
 const USED_SYNONYMS_KEY_PREFIX = 'linguaLearnUsedSynonyms_';
 
@@ -95,6 +95,19 @@ const SynonymMatchPage = () => {
         return text;
     };
     
+    const showRemixToast = useCallback(() => {
+        toast({
+            title: (
+                <div className="flex items-center gap-3">
+                    <Shuffle className="h-8 w-8 text-amber" />
+                    <span className="text-xl font-bold">Shuffle Time!</span>
+                </div>
+            ),
+            description: "New words are entering the board.",
+            duration: 2000,
+        });
+    }, [toast]);
+    
     const setupNewGame = useCallback((lang: Language) => {
         const STORAGE_KEY = `${USED_SYNONYMS_KEY_PREFIX}${lang}`;
         const allPairsForLang = allSynonymQuestions[lang];
@@ -163,19 +176,6 @@ const SynonymMatchPage = () => {
         }
     }, [correctPairs, gameWonTime]);
     
-    const showRemixToast = useCallback(() => {
-        toast({
-            title: (
-                <div className="flex items-center gap-3">
-                    <Shuffle className="h-8 w-8 text-amber" />
-                    <span className="text-xl font-bold">Shuffle Time!</span>
-                </div>
-            ),
-            description: "New words are entering the board.",
-            duration: 2000,
-        });
-    }, [toast]);
-    
     const handleShuffle = useCallback((numToTake: number) => {
         const currentlyMatchedWords = new Set(correctPairs);
         const currentBoardWords = [...activeWords1, ...activeWords2];
@@ -218,8 +218,8 @@ const SynonymMatchPage = () => {
         if (!isFrozen) {
             if (stage === 0 && correctPairCount === 3) {
                 handleShuffle(3);
-            } else if (stage === 1 && correctPairCount === 5) {
-                handleShuffle(2);
+            } else if (stage === 1 && correctPairCount === 6) { // 3 + 3
+                handleShuffle(4); // 2 remaining + 4 new = 6 pairs on board
             }
         }
     
@@ -446,3 +446,4 @@ const SynonymMatchPage = () => {
 };
 
 export default SynonymMatchPage;
+

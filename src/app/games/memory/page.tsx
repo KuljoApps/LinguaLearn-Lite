@@ -128,14 +128,14 @@ const MemoryGamePage = () => {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4">
       <Card className="w-full max-w-2xl shadow-2xl">
-        <CardHeader className="text-center p-6">
+        <CardHeader className="text-center p-6 pb-2">
           <div className="flex items-center justify-center gap-4">
             <Brain className="h-8 w-8" />
             <CardTitle className="text-3xl font-bold tracking-tight">{getUIText('title')}</CardTitle>
           </div>
-          <p className="text-muted-foreground pt-2">{getUIText('moves')}: {moves}</p>
         </CardHeader>
-        <CardContent className="p-6">
+        <CardContent className="p-6 pt-2">
+          <p className="text-muted-foreground text-center pb-4">{getUIText('moves')}: {moves}</p>
           {isGameWon ? (
             <div className="text-center space-y-4">
               <Award className="h-16 w-16 mx-auto text-amber" />

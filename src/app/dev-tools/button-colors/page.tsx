@@ -33,6 +33,22 @@ const themes = [
     { name: 'Ocean', gradient: 'from-blue-700 via-cyan-800 to-sky-900', shadow: '#0369a1', mainColor: 'hsl(204 92% 53%)' },
     { name: 'Sunset', gradient: 'from-orange-500 via-red-600 to-rose-700', shadow: '#f97316', mainColor: 'hsl(24 95% 53%)' },
     { name: 'Galaxy', gradient: 'from-slate-900 via-purple-900 to-indigo-900', shadow: '#4338ca', mainColor: 'hsl(244 80% 63%)' },
+    { name: 'Crimson', gradient: 'from-red-600 via-rose-700 to-red-800', shadow: '#dc143c', mainColor: 'hsl(348, 83%, 47%)' },
+    { name: 'Turquoise', gradient: 'from-cyan-400 via-teal-500 to-emerald-600', shadow: '#40e0d0', mainColor: 'hsl(174, 72%, 56%)' },
+    { name: 'Magenta', gradient: 'from-fuchsia-600 via-pink-700 to-purple-800', shadow: '#ff00ff', mainColor: 'hsl(300, 100%, 50%)' },
+    { name: 'Olive', gradient: 'from-yellow-600 via-olive-500 to-green-700', shadow: '#808000', mainColor: 'hsl(60, 100%, 25%)' },
+    { name: 'Maroon', gradient: 'from-red-800 via-rose-900 to-red-900', shadow: '#800000', mainColor: 'hsl(0, 100%, 25%)' },
+    { name: 'Navy', gradient: 'from-blue-800 via-indigo-900 to-slate-900', shadow: '#000080', mainColor: 'hsl(240, 100%, 25%)' },
+    { name: 'Teal', gradient: 'from-teal-600 via-cyan-700 to-emerald-800', shadow: '#008080', mainColor: 'hsl(180, 100%, 25%)' },
+    { name: 'Silver', gradient: 'from-gray-400 via-slate-400 to-gray-500', shadow: '#c0c0c0', mainColor: 'hsl(0, 0%, 75%)' },
+    { name: 'Gold', gradient: 'from-yellow-400 via-amber-500 to-orange-500', shadow: '#ffd700', mainColor: 'hsl(51, 100%, 50%)' },
+    { name: 'Coral', gradient: 'from-orange-400 via-rose-400 to-red-500', shadow: '#ff7f50', mainColor: 'hsl(16, 100%, 66%)' },
+    { name: 'Plum', gradient: 'from-purple-400 via-fuchsia-500 to-violet-600', shadow: '#dda0dd', mainColor: 'hsl(300, 47%, 78%)' },
+    { name: 'Orchid', gradient: 'from-fuchsia-400 via-pink-500 to-purple-500', shadow: '#da70d6', mainColor: 'hsl(302, 59%, 65%)' },
+    { name: 'Salmon', gradient: 'from-rose-400 via-red-400 to-orange-300', shadow: '#fa8072', mainColor: 'hsl(6, 93%, 71%)' },
+    { name: 'Chocolate', gradient: 'from-yellow-800 via-orange-900 to-red-900', shadow: '#d2691e', mainColor: 'hsl(25, 76%, 53%)' },
+    { name: 'Steel Blue', gradient: 'from-sky-600 via-blue-700 to-indigo-800', shadow: '#4682b4', mainColor: 'hsl(207, 44%, 49%)' },
+    { name: 'Sienna', gradient: 'from-orange-700 via-red-800 to-yellow-900', shadow: '#a0522d', mainColor: 'hsl(19, 72%, 40%)' },
 ];
 
 const fakeUiTexts: Record<string, Record<Language, string>> = {
@@ -92,7 +108,7 @@ export default function ButtonColorsPage() {
                                         Lingua
                                         <span className="relative inline-block">
                                             Learn
-                                            <span className="absolute -right-3 -bottom-4 text-xl font-semibold tracking-normal text-deep-purple">
+                                            <span className="absolute right-1 -bottom-4 text-xl font-semibold tracking-normal text-deep-purple">
                                                 PRO
                                             </span>
                                         </span>
@@ -108,7 +124,7 @@ export default function ButtonColorsPage() {
                                         <LayoutGrid className={cn("h-12 w-12", iconClasses)} />
                                         <span>{getUIText('quizzes')}</span>
                                     </Button>
-                                    <Button className={cn(buttonBaseClasses, squareButtonClasses, "rounded-xl", themeClasses, "!gap-0")} style={{ boxShadow: `0 0 20px ${activeTheme.shadow}` }}>
+                                    <Button className={cn(buttonBaseClasses, squareButtonClasses, "rounded-xl", themeClasses)} style={{ boxShadow: `0 0 20px ${activeTheme.shadow}` }}>
                                         <Gamepad2 className={cn("h-14 w-14", iconClasses)} />
                                         <span className="mt-1 mb-0.5">{getUIText('games')}</span>
                                     </Button>
@@ -119,7 +135,7 @@ export default function ButtonColorsPage() {
                                             <PencilLine className={cn("h-5 w-5 mr-2", iconClasses)} />
                                         </div>
                                         <span className={cn("col-start-2 flex items-center", iconClasses)}>
-                                            {getUIText('fill')} ___ {getUIText('gap')}
+                                            {getUIText('fill')}&nbsp;___&nbsp;{getUIText('gap')}
                                         </span>
                                         <div />
                                     </Button>
@@ -181,21 +197,25 @@ export default function ButtonColorsPage() {
                         </Card>
                     </div>
                     
-                    <div className="pt-2 w-full">
+                    <div className="w-full">
                         <h3 className="text-center font-semibold mb-4 text-xl">Color Palette</h3>
-                        <div className="grid grid-cols-4 sm:grid-cols-8 gap-3 justify-items-center">
-                            {themes.map(theme => (
-                                <button
-                                    key={theme.name}
-                                    title={theme.name}
-                                    onClick={() => handleThemeChange(theme)}
-                                    className={cn(
-                                        "w-12 h-12 rounded-full transition-all bg-gradient-to-r cursor-pointer",
-                                        theme.gradient,
-                                        activeTheme.name === theme.name && "ring-2 ring-ring ring-offset-2 ring-offset-background"
-                                    )}
-                                    aria-label={`Select theme ${theme.name}`}
-                                />
+                        <div className="grid grid-cols-4 sm:grid-cols-8 gap-4 justify-items-center">
+                            {themes.map((theme, index) => (
+                                <div key={theme.name} className="relative">
+                                    <button
+                                        title={theme.name}
+                                        onClick={() => handleThemeChange(theme)}
+                                        className={cn(
+                                            "w-12 h-12 rounded-full transition-all bg-gradient-to-r cursor-pointer",
+                                            theme.gradient,
+                                            activeTheme.name === theme.name && "ring-2 ring-ring ring-offset-2 ring-offset-background"
+                                        )}
+                                        aria-label={`Select theme ${theme.name}`}
+                                    />
+                                    <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                                        {index + 1}
+                                    </span>
+                                </div>
                             ))}
                         </div>
                     </div>

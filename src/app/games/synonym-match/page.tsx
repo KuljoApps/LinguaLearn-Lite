@@ -8,10 +8,11 @@ import { ArrowLeft, ArrowRightLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { getLanguage, type Language } from '@/lib/storage';
-import { allSynonymQuestions, type SynonymPair } from '@/lib/games/synonym-match';
+import { allSynonymQuestions } from '@/lib/games/synonym-match';
 
 const shuffle = <T,>(array: T[]): T[] => [...array].sort(() => Math.random() - 0.5);
-const GAME_SIZE = 6; // Number of pairs per game
+const GAME_SIZE = 5;
+const USED_SYNONYMS_KEY_PREFIX = 'linguaLearnUsedSynonyms_';
 
 const uiTexts = {
     title: { en: 'Synonym Match', fr: 'Jeu des Synonymes', de: 'Synonym-Paare', it: 'Abbinamento Sinonimi', es: 'Coincidencia de Sinónimos' },
@@ -31,6 +32,7 @@ const SynonymMatchPage = () => {
     const [selected1, setSelected1] = useState<string | null>(null);
     const [selected2, setSelected2] = useState<string | null>(null);
     const [correctPairs, setCorrectPairs] = useState<string[]>([]);
+    const [incorrectPair, setIncorrectPair] = useState<[string, string] | null>(null);
     const { toast } = useToast();
 
     const getUIText = (key: keyof typeof uiTexts, replacements: Record<string, string> = {}) => {
@@ -42,8 +44,34 @@ const SynonymMatchPage = () => {
     };
 
     const setupNewGame = useCallback((lang: Language) => {
-        const allPairs = shuffle(allSynonymQuestions[lang]);
-        const gamePairs = allPairs.slice(0, GAME_SIZE);
+        const STORAGE_KEY = `${USED_SYNONYMS_KEY_PREFIX}${lang}`;
+        const allPairsForLang = allSynonymQuestions[lang];
+        
+        let usedWords: string[] = [];
+        try {
+            const usedWordsJson = localStorage.getItem(STORAGE_KEY);
+            usedWords = usedWordsJson ? JSON.parse(usedWordsJson) : [];
+        } catch (e) {
+            console.error("Failed to parse used synonyms", e);
+            usedWords = [];
+        }
+
+        let availablePairs = allPairsForLang.filter(p => !usedWords.includes(p.word1));
+
+        if (availablePairs.length < GAME_SIZE) {
+            availablePairs = allPairsForLang;
+            usedWords = [];
+            localStorage.removeItem(STORAGE_KEY);
+        }
+
+        const gamePairs = shuffle(availablePairs).slice(0, GAME_SIZE);
+        const newUsedWords = [...usedWords, ...gamePairs.map(p => p.word1)];
+        
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(newUsedWords));
+        } catch (e) {
+            console.error("Failed to save used synonyms", e);
+        }
 
         const words1 = shuffle(gamePairs.map(p => p.word1));
         const words2 = shuffle(gamePairs.map(p => p.word2));
@@ -51,62 +79,78 @@ const SynonymMatchPage = () => {
         const matches: Record<string, string> = {};
         gamePairs.forEach(p => {
             matches[p.word1] = p.word2;
-            matches[p.word2] = p.word1; // For bidirectional check
+            matches[p.word2] = p.word1;
         });
 
         setWordSet({ words1, words2, matches });
         setSelected1(null);
         setSelected2(null);
         setCorrectPairs([]);
+        setIncorrectPair(null);
     }, []);
 
     useEffect(() => {
-        const currentLang = getLanguage();
-        setLanguage(currentLang);
-        setupNewGame(currentLang);
-        
-        window.addEventListener('language-changed', () => {
+        const handleLanguageChange = () => {
             const newLang = getLanguage();
             setLanguage(newLang);
             setupNewGame(newLang);
-        });
+        };
         
-        return () => window.removeEventListener('language-changed', () => {});
+        handleLanguageChange();
+        window.addEventListener('language-changed', handleLanguageChange);
+        
+        return () => window.removeEventListener('language-changed', handleLanguageChange);
     }, [setupNewGame]);
 
-    useEffect(() => {
-        if (selected1 && selected2 && wordSet) {
-            if (wordSet.matches[selected1] === selected2) {
-                setCorrectPairs(prev => [...prev, selected1, selected2]);
-                toast({ title: getUIText('correctToastTitle'), description: getUIText('correctToastDesc', { word1: selected1, word2: selected2 }) });
-            } else {
-                toast({ variant: "destructive", title: getUIText('incorrectToastTitle'), description: getUIText('incorrectToastDesc', { word1: selected1, word2: selected2 }) });
-            }
-            setSelected1(null);
-            setSelected2(null);
-        }
-    }, [selected1, selected2, wordSet, toast, getUIText]);
-
     const handleSelect1 = (word: string) => {
-        if (correctPairs.includes(word) || selected1 === word) {
+        if (correctPairs.includes(word) || incorrectPair) return;
+        if (selected1 === word) {
             setSelected1(null);
-            return;
-        };
-        setSelected1(word);
-    }
-    const handleSelect2 = (word: string) => {
-        if (correctPairs.includes(word) || !selected1 || selected2 === word) {
-            setSelected2(null);
-            return;
+        } else {
+            setSelected1(word);
         }
-        setSelected2(word);
-    }
+    };
+
+    const handleSelect2 = (word: string) => {
+        if (correctPairs.includes(word) || !selected1 || incorrectPair) return;
+
+        if (wordSet && wordSet.matches[selected1] === word) {
+            // Correct match
+            setCorrectPairs(prev => [...prev, selected1, word]);
+            toast({ title: getUIText('correctToastTitle'), description: getUIText('correctToastDesc', { word1: selected1, word2: word }), duration: 2000 });
+            setSelected1(null);
+            setSelected2(null);
+        } else {
+            // Incorrect match
+            setSelected2(word);
+            setIncorrectPair([selected1, word]);
+            toast({ variant: "destructive", title: getUIText('incorrectToastTitle'), description: getUIText('incorrectToastDesc', { word1: selected1, word2: word }), duration: 2000 });
+            setTimeout(() => {
+                setSelected1(null);
+                setSelected2(null);
+                setIncorrectPair(null);
+            }, 800);
+        }
+    };
 
     if (!wordSet) {
-        return null; // Or a loading spinner
+        return null;
     }
     
     const isGameWon = correctPairs.length === GAME_SIZE * 2;
+
+    const getButtonClasses = (word: string, isColumn1: boolean) => {
+        const isSelected = isColumn1 ? selected1 === word : selected2 === word;
+        const isCorrect = correctPairs.includes(word);
+        const isIncorrect = incorrectPair?.includes(word) ?? false;
+        
+        return cn(
+            "h-16 text-lg transition-all duration-150",
+            isSelected && !isIncorrect && "border-primary border-2 ring-2 ring-primary/50",
+            isCorrect && "bg-success/20 text-muted-foreground line-through pointer-events-none",
+            isIncorrect && "bg-destructive/80 text-destructive-foreground border-destructive"
+        );
+    };
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -131,11 +175,7 @@ const SynonymMatchPage = () => {
                                     <Button
                                         key={word}
                                         variant="outline"
-                                        className={cn(
-                                            "h-16 text-lg",
-                                            selected1 === word && "border-primary border-2",
-                                            correctPairs.includes(word) && "bg-success/20 text-muted-foreground line-through"
-                                        )}
+                                        className={getButtonClasses(word, true)}
                                         onClick={() => handleSelect1(word)}
                                     >
                                         {word}
@@ -147,11 +187,7 @@ const SynonymMatchPage = () => {
                                     <Button
                                         key={word}
                                         variant="outline"
-                                        className={cn(
-                                            "h-16 text-lg",
-                                            selected2 === word && "border-primary border-2",
-                                            correctPairs.includes(word) && "bg-success/20 text-muted-foreground line-through"
-                                        )}
+                                        className={getButtonClasses(word, false)}
                                         onClick={() => handleSelect2(word)}
                                     >
                                         {word}

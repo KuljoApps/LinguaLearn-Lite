@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, Timer, Play, SkipForward, Trophy, ThumbsUp, Brain, CheckCircle, ShieldX, Zap } from 'lucide-react';
+import { ArrowLeft, Timer, Play, SkipForward, Trophy, ThumbsUp, Brain, CheckCircle, ShieldX, Zap, FlagOff } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { getLanguage, type Language } from '@/lib/storage';
 import { allTranslationRaceWords, type TranslationPair } from '@/lib/games/translation-race';
@@ -37,6 +37,8 @@ const uiTexts = {
     skips: { en: 'Skips Used', fr: 'Passes utilisées', de: 'Übersprungen', it: 'Salti usati', es: 'Saltos usados' },
     worthRepeating: { en: 'Worth repeating', fr: 'À répéter', de: 'Wiederholenswert', it: 'Da ripetere', es: 'Vale la pena repetir' },
     skippedWord: { en: 'Skipped word', fr: 'Mot passé', de: 'Übersprungenes Wort', it: 'Parola saltata', es: 'Palabra saltada' },
+    finalScore: { en: 'Final Score', fr: 'Score Final', de: 'Endergebnis', it: 'Punteggio Finale', es: 'Puntuación Final' },
+    surrender: { en: 'Surrender', fr: 'Abandonner', de: 'Aufgeben', it: 'Arrendersi', es: 'Rendirse' },
 };
 
 const shuffle = <T,>(array: T[]): T[] => [...array].sort(() => Math.random() - 0.5);
@@ -52,6 +54,7 @@ const TranslationRacePage = () => {
     const [usedWords, setUsedWords] = useState<Set<string>>(new Set());
     const [skipsLeft, setSkipsLeft] = useState(3);
     const [sessionSkippedWords, setSessionSkippedWords] = useState<TranslationPair[]>([]);
+    const [isGameOver, setIsGameOver] = useState(false);
 
     const getNextWord = useCallback(() => {
         const availableWords = wordSet.filter(w => !usedWords.has(w.native));
@@ -85,6 +88,7 @@ const TranslationRacePage = () => {
         setInputValue('');
         setSkipsLeft(3);
         setSessionSkippedWords([]);
+        setIsGameOver(false);
     }, []);
 
     useEffect(() => {
@@ -98,6 +102,7 @@ const TranslationRacePage = () => {
             setWordSet(allTranslationRaceWords[newLang]);
             setIsActive(false);
             setTimeLeft(GAME_DURATION);
+            setIsGameOver(false);
         };
         window.addEventListener('language-changed', handleLanguageChange);
         return () => window.removeEventListener('language-changed', handleLanguageChange);
@@ -142,7 +147,7 @@ const TranslationRacePage = () => {
     const handleSkip = useCallback(() => {
       if (skipsLeft > 0 && currentWord) {
           setSkipsLeft(prev => prev - 1);
-          setScore(prev => prev - 1);
+          setScore(prev => Math.max(-99, prev - 1)); // Prevents score from going too low
           setSessionSkippedWords(prev => [...prev, currentWord]);
           setCurrentWord(getNextWord());
           setInputValue('');
@@ -150,6 +155,13 @@ const TranslationRacePage = () => {
           playSound('incorrect');
       }
     }, [skipsLeft, currentWord, getNextWord]);
+    
+    const handleSurrender = useCallback(() => {
+        setIsActive(false);
+        setIsGameOver(true);
+        playSound('incorrect');
+        vibrate('incorrect');
+    }, []);
 
     const getUIText = (key: keyof typeof uiTexts) => uiTexts[key][language] || uiTexts[key]['en'];
 
@@ -162,20 +174,21 @@ const TranslationRacePage = () => {
     }, [score, getUIText]);
 
     const isGameFinished = !isActive && timeLeft === 0;
+    const shouldShowResults = isGameFinished || isGameOver;
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-2xl shadow-2xl">
-                <CardHeader className="text-center p-6">
-                    {!isGameFinished && (
-                      <div className="flex items-center justify-center gap-4">
-                          <Timer className="h-8 w-8" />
-                          <CardTitle className="text-3xl font-bold tracking-tight">{getUIText('title')}</CardTitle>
-                      </div>
-                    )}
-                </CardHeader>
-                <CardContent className="p-6 pt-0 space-y-8 flex flex-col justify-center min-h-[50vh]">
-                    {!isActive && timeLeft > 0 && (
+                {!shouldShowResults && (
+                    <CardHeader className="text-center p-6">
+                        <div className="flex items-center justify-center gap-4">
+                            <Timer className="h-8 w-8" />
+                            <CardTitle className="text-3xl font-bold tracking-tight">{getUIText('title')}</CardTitle>
+                        </div>
+                    </CardHeader>
+                )}
+                <CardContent className="p-6 pt-0 flex flex-col justify-center min-h-[50vh]">
+                    {!isActive && !shouldShowResults && (
                         <div className="text-center flex flex-col items-center justify-center gap-8 flex-grow">
                             <p className="text-muted-foreground mt-4">{getUIText('description')}</p>
                             <Button size="lg" onClick={setupNewGame} className="mt-4">
@@ -185,7 +198,7 @@ const TranslationRacePage = () => {
                         </div>
                     )}
                     
-                    {isGameFinished && (
+                    {shouldShowResults && (
                         <div className="space-y-4">
                             <div className="text-center space-y-2 flex flex-col items-center">
                                 {motivationalMessage.icon}
@@ -233,27 +246,53 @@ const TranslationRacePage = () => {
                     )}
                     
                     {isActive && currentWord && (
-                         <div className="space-y-6 text-center flex flex-col justify-between flex-grow">
-                             <div className="flex-grow flex flex-col items-center justify-center">
+                         <div className="flex flex-col h-full items-center">
+                            <div className="grid grid-cols-2 gap-4 w-full mb-8">
+                                <Card>
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                        <CardTitle className="text-sm font-medium">{getUIText('timeLeft')}</CardTitle>
+                                        <Clock className="h-4 w-4 text-muted-foreground" />
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="text-2xl font-bold text-primary">{timeLeft}s</div>
+                                    </CardContent>
+                                </Card>
+                                <Card>
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                        <CardTitle className="text-sm font-medium">{getUIText('score')}</CardTitle>
+                                        <CheckCircle className="h-4 w-4 text-muted-foreground" />
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="text-2xl font-bold text-primary">{score}</div>
+                                    </CardContent>
+                                </Card>
+                            </div>
+
+                            <div className="flex-grow flex flex-col items-center justify-center text-center">
                                 <p className="text-muted-foreground">{getUIText('translateWord')}</p>
-                                <p className="text-4xl font-bold tracking-wider">{currentWord.native}</p>
+                                <p className="text-6xl font-bold tracking-wider text-amber">{currentWord.native}</p>
                             </div>
-                            <div className="flex justify-around text-2xl font-bold">
-                                <div>{getUIText('timeLeft')}: <span className="text-primary">{timeLeft}s</span></div>
-                                <div>{getUIText('score')}: <span className="text-primary">{score}</span></div>
-                            </div>
-                            <div className="flex justify-center items-center gap-2">
+
+                            <div className="w-full max-w-sm space-y-4">
                                 <Input 
                                     value={inputValue}
                                     onChange={handleInputChange}
                                     placeholder={getUIText('placeholder')}
-                                    className="text-lg text-center max-w-sm"
+                                    className="text-lg text-center h-12"
                                     autoFocus
                                 />
-                                <Button variant="outline" size="icon" onClick={handleSkip} disabled={skipsLeft <= 0} className="relative">
-                                  <SkipForward className="h-5 w-5" />
-                                  <span className="absolute -top-1 -right-1 text-xs font-bold bg-destructive text-destructive-foreground rounded-full h-4 w-4 flex items-center justify-center">{skipsLeft}</span>
-                                </Button>
+                                <div className="flex justify-center gap-2">
+                                    <Button variant="outline" size="lg" onClick={handleSkip} disabled={skipsLeft <= 0} className="relative">
+                                    <SkipForward className="h-5 w-5" />
+                                    <span className="absolute -top-1 -right-1 text-xs font-bold bg-destructive text-destructive-foreground rounded-full h-4 w-4 flex items-center justify-center">{skipsLeft}</span>
+                                    </Button>
+                                    {skipsLeft <= 0 && (
+                                        <Button variant="destructive" size="lg" onClick={handleSurrender}>
+                                            <FlagOff className="mr-2 h-4 w-4" />
+                                            {getUIText('surrender')}
+                                        </Button>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     )}

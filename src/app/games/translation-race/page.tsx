@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -183,7 +183,7 @@ const TranslationRacePage = () => {
                  <CardHeader className="text-center p-6">
                      <div className="flex items-center justify-center gap-4">
                          <Timer className="h-8 w-8" />
-                         {!shouldShowResults && <CardTitle className="text-3xl font-bold tracking-tight">{getUIText('title')}</CardTitle>}
+                         <CardTitle className="text-3xl font-bold tracking-tight">{getUIText('title')}</CardTitle>
                      </div>
                  </CardHeader>
                 <CardContent className="p-6 pt-0 flex flex-col justify-center min-h-[50vh]">

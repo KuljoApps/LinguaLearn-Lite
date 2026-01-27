@@ -49,14 +49,6 @@ const TallyScore: React.FC<TallyScoreProps> = ({ score }) => {
             return () => clearTimeout(timer);
         }
     }, [score, prevScore]);
-
-    if (score < 0) {
-        return (
-            <div className="flex items-center gap-2">
-                <span className="text-3xl font-bold text-destructive">{score}</span>
-            </div>
-        );
-    }
     
     if (score === 0) {
         return (
@@ -66,19 +58,22 @@ const TallyScore: React.FC<TallyScoreProps> = ({ score }) => {
         );
     }
 
-    const groupsOfFive = Math.floor(score / 5);
-    const remainder = score % 5;
-    const animateLastMark = isAnimating && score > prevScore;
+    const displayScore = Math.abs(score);
+    const strokeColor = score >= 0 ? 'stroke-success' : 'stroke-destructive';
+    
+    const groupsOfFive = Math.floor(displayScore / 5);
+    const remainder = displayScore % 5;
+    const animateLastMark = isAnimating && displayScore > Math.abs(prevScore);
 
     return (
-        <div className="flex flex-wrap items-center justify-center gap-4">
+        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
             {Array.from({ length: groupsOfFive }).map((_, i) => (
-                <svg key={i} width="32" height="28" className="stroke-success overflow-visible">
+                <svg key={i} width="32" height="28" className={cn(strokeColor, "overflow-visible")}>
                     <TallyGroup animateLast={animateLastMark && remainder === 0 && i === groupsOfFive - 1} />
                 </svg>
             ))}
             {remainder > 0 && (
-                <svg width={(remainder) * 8} height="28" className="stroke-success overflow-visible">
+                <svg width={(remainder) * 8} height="28" className={cn(strokeColor, "overflow-visible")}>
                     {Array.from({ length: remainder }).map((_, i) => (
                         <TallyMark key={i} index={i} animate={animateLastMark && i === remainder - 1} />
                     ))}

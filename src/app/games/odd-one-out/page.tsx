@@ -206,36 +206,26 @@ const OddOneOutPage = () => {
     }, [gameStage, answerStatus, currentQuestionIndex, currentSet, showAchievementToast, language, isPreGame, currentStreak]);
     
     useEffect(() => {
-        let animationFrameId: number;
-        if (gameStage === 'results' && sessionErrors.length > 0 && !isInteracted) {
+        if (gameStage !== 'results' || sessionErrors.length === 0 || isInteracted) return;
+
+        let scrollInterval: NodeJS.Timeout;
+        const scrollTimeout = setTimeout(() => {
             const viewport = scrollAreaRef.current?.querySelector('div[data-radix-scroll-area-viewport]');
-            
-            const startTime = Date.now();
-            
-            const scroll = () => {
-                if (!viewport || isInteracted) {
-                    cancelAnimationFrame(animationFrameId);
+            if (!viewport) return;
+
+            scrollInterval = setInterval(() => {
+                if (isInteracted || viewport.scrollTop >= viewport.scrollHeight - viewport.clientHeight) {
+                    clearInterval(scrollInterval);
                     return;
                 }
+                viewport.scrollTop += 0.5;
+            }, 16);
+        }, 1000);
 
-                // Start scrolling after 1 second
-                if (Date.now() - startTime < 1000) {
-                     animationFrameId = requestAnimationFrame(scroll);
-                     return;
-                }
-
-                if (viewport.scrollTop < viewport.scrollHeight - viewport.clientHeight) {
-                    viewport.scrollTop += 0.5; // slow scroll speed
-                    animationFrameId = requestAnimationFrame(scroll);
-                }
-            };
-            
-            animationFrameId = requestAnimationFrame(scroll);
-            
-            return () => {
-                cancelAnimationFrame(animationFrameId);
-            };
-        }
+        return () => {
+            clearTimeout(scrollTimeout);
+            clearInterval(scrollInterval);
+        };
     }, [gameStage, sessionErrors.length, isInteracted]);
     
     const handleSelect = (word: string) => {
@@ -360,13 +350,14 @@ const OddOneOutPage = () => {
                         <div className="relative flex-1 flex flex-col items-center">
                             <span className="text-sm font-medium text-muted-foreground mb-2">{getUIText('timeLeft')}</span>
                              <div className="relative flex h-28 w-28 items-center justify-center">
-                                <TimerRing timeLeft={isPreGame ? 0 : timeLeft} totalTime={GAME_DURATION} />
-                                {isPreGame && (
-                                    <div className="absolute inset-0 flex items-center justify-center bg-background/80 rounded-full">
+                                {isPreGame ? (
+                                     <div className="absolute inset-0 flex items-center justify-center rounded-full">
                                         <span className="text-5xl font-bold text-amber animate-pulse">
                                             {preGameCountdown > 0 ? preGameCountdown : 'GO!'}
                                         </span>
                                     </div>
+                                ) : (
+                                    <TimerRing timeLeft={timeLeft} totalTime={GAME_DURATION} />
                                 )}
                             </div>
                         </div>
@@ -397,7 +388,7 @@ const OddOneOutPage = () => {
                                 <Button 
                                     key={word}
                                     variant="outline"
-                                    className={cn("h-24 text-2xl relative overflow-hidden", 
+                                    className={cn("h-24 text-2xl relative", 
                                         answerStatus && isSelected && !isCorrectAnswer && 'bg-destructive text-destructive-foreground',
                                         answerStatus && isCorrectAnswer && 'bg-success text-success-foreground',
                                         answerStatus && !isSelected && !isCorrectAnswer && 'opacity-50'
@@ -405,10 +396,12 @@ const OddOneOutPage = () => {
                                     onClick={() => handleSelect(word)}
                                     disabled={!!selected || isPreGame}
                                 >
-                                    {word}
-                                     {answerStatus && isCorrectAnswer && (
-                                        <div className="absolute top-1/2 left-0 h-0.5 w-full bg-card-foreground/70 animate-strike-through" />
-                                    )}
+                                    <span className="relative">
+                                        {word}
+                                        {answerStatus && isCorrectAnswer && (
+                                            <div className="absolute top-1/2 left-0 h-0.5 w-full bg-success-foreground/80 animate-strike-through" />
+                                        )}
+                                    </span>
                                 </Button>
                             );
                         })}
@@ -428,4 +421,3 @@ const OddOneOutPage = () => {
 };
 
 export default OddOneOutPage;
-

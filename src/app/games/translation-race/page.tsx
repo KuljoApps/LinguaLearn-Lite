@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, Timer, Play, SkipForward, FlagOff, Zap, Brain, ThumbsUp, Trophy, ShieldX, CheckCircle, Percent } from 'lucide-react';
+import { ArrowLeft, Timer, Play, SkipForward, FlagOff, Zap, Brain, ThumbsUp, Trophy, ShieldX, CheckCircle, Percent, Clock } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { getLanguage, type Language } from '@/lib/storage';
 import { allTranslationRaceWords, type TranslationPair } from '@/lib/games/translation-race';
@@ -115,6 +115,7 @@ const TranslationRacePage = () => {
             timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
         } else if (timeLeft === 0 && isActive) {
             setIsActive(false);
+            setIsGameOver(true);
             playSound('achievement');
         }
         return () => clearTimeout(timer);
@@ -148,7 +149,7 @@ const TranslationRacePage = () => {
     const handleSkip = useCallback(() => {
       if (skipsLeft > 0 && currentWord) {
           setSkipsLeft(prev => prev - 1);
-          setScore(prev => Math.max(-99, prev - 1));
+          setScore(prev => prev - 1);
           setSessionSkippedWords(prev => [...prev, currentWord]);
           setCurrentWord(getNextWord());
           setInputValue('');
@@ -269,7 +270,7 @@ const TranslationRacePage = () => {
                                     className="text-lg text-center h-12"
                                     autoFocus
                                 />
-                                <div className="flex justify-center gap-2 mt-4">
+                                <div className="flex justify-center gap-2 mt-8">
                                     <Button variant="outline" size="lg" onClick={handleSkip} disabled={skipsLeft <= 0} className="relative">
                                     <SkipForward className="h-5 w-5" />
                                     <span className="absolute -top-1 -right-1 text-xs font-bold bg-destructive text-destructive-foreground rounded-full h-4 w-4 flex items-center justify-center">{skipsLeft}</span>

@@ -60,12 +60,11 @@ const OddOneOutPage = () => {
     const [sessionErrors, setSessionErrors] = useState<Omit<ErrorRecord, 'id'>[]>([]);
     const { toast } = useToast();
     const [isPreGame, setIsPreGame] = useState(true);
-    const [preGameCountdown, setPreGameCountdown] = useState(4); // 4 -> 3, 2, 1, GO!
+    const [preGameCountdown, setPreGameCountdown] = useState(3);
     const [currentStreak, setCurrentStreak] = useState(0);
     const [longestStreakInSession, setLongestStreakInSession] = useState(0);
     
-    const scrollAreaRef = useRef<HTMLDivElement>(null);
-    const [isInteracted, setIsInteracted] = useState(false);
+    const startTimeRef = useRef<number | null>(null);
 
     const currentSet = sessionQuestions[currentQuestionIndex];
     
@@ -99,12 +98,12 @@ const OddOneOutPage = () => {
         setCurrentStreak(0);
         setLongestStreakInSession(0);
         setTotalTime(0);
+        startTimeRef.current = null;
         setSessionErrors([]);
-        setIsInteracted(false);
         resetQuestionState(gameQuestions[0]);
         setGameStage('playing');
         setIsPreGame(true);
-        setPreGameCountdown(4);
+        setPreGameCountdown(3);
     }, []);
 
     const resetQuestionState = (questionSet: OddOneOutSet) => {
@@ -131,13 +130,21 @@ const OddOneOutPage = () => {
             setPreGameCountdown(prev => {
                 if (prev <= 1) {
                     clearInterval(countdownTimer);
-                    setTimeout(() => setIsPreGame(false), 1000); // Show "GO!" for 1s
+                    setTimeout(() => {
+                        setIsPreGame(false);
+                    }, 1000); // Show "GO!" for 1s
                 }
                 return prev - 1;
             });
         }, 1000);
         return () => clearInterval(countdownTimer);
     }, [isPreGame]);
+
+    useEffect(() => {
+        if (!isPreGame && gameStage === 'playing' && startTimeRef.current === null) {
+            startTimeRef.current = Date.now();
+        }
+    }, [isPreGame, gameStage]);
     
     const showAchievementToast = useCallback((achievement: Achievement) => {
         playSound('achievement');
@@ -149,7 +156,12 @@ const OddOneOutPage = () => {
 
     const handleNextQuestion = useCallback(() => {
         if (currentQuestionIndex >= QUESTIONS_PER_SESSION - 1) {
-             setLongestStreakInSession(prev => Math.max(prev, currentStreak));
+            if (startTimeRef.current) {
+                const endTime = Date.now();
+                const elapsedSeconds = Math.round((endTime - startTimeRef.current) / 1000);
+                setTotalTime(elapsedSeconds);
+            }
+            setLongestStreakInSession(prev => Math.max(prev, currentStreak));
             setGameStage('results');
         } else {
             setCurrentQuestionIndex(prev => prev + 1);
@@ -195,38 +207,10 @@ const OddOneOutPage = () => {
             });
         }, 1000);
 
-        const gameTimer = setInterval(() => {
-            setTotalTime(prev => prev + 1);
-        }, 1000);
-
         return () => {
             clearInterval(questionTimer);
-            clearInterval(gameTimer);
         };
     }, [gameStage, answerStatus, currentQuestionIndex, currentSet, showAchievementToast, language, isPreGame, currentStreak]);
-    
-    useEffect(() => {
-        if (gameStage !== 'results' || sessionErrors.length === 0 || isInteracted) return;
-
-        let scrollInterval: NodeJS.Timeout;
-        const scrollTimeout = setTimeout(() => {
-            const viewport = scrollAreaRef.current?.querySelector('div[data-radix-scroll-area-viewport]');
-            if (!viewport) return;
-
-            scrollInterval = setInterval(() => {
-                if (isInteracted || viewport.scrollTop >= viewport.scrollHeight - viewport.clientHeight) {
-                    clearInterval(scrollInterval);
-                    return;
-                }
-                viewport.scrollTop += 0.5;
-            }, 16);
-        }, 1000);
-
-        return () => {
-            clearTimeout(scrollTimeout);
-            clearInterval(scrollInterval);
-        };
-    }, [gameStage, sessionErrors.length, isInteracted]);
     
     const handleSelect = (word: string) => {
         if (answerStatus || isPreGame) return;
@@ -301,12 +285,7 @@ const OddOneOutPage = () => {
                          {sessionErrors.length > 0 && (
                             <div className="space-y-2">
                                 <h3 className="text-center font-semibold">{getUIText('worthRepeating')}</h3>
-                                <ScrollArea 
-                                    ref={scrollAreaRef}
-                                    onPointerDown={() => setIsInteracted(true)}
-                                    onWheel={() => setIsInteracted(true)}
-                                    className="h-24 w-full rounded-md border p-2"
-                                >
+                                <ScrollArea className="h-24 w-full rounded-md border p-2">
                                     <div className="space-y-2">
                                         {sessionErrors.map((error, index) => (
                                             <React.Fragment key={index}>
@@ -365,7 +344,7 @@ const OddOneOutPage = () => {
                         <div className="flex-1 flex flex-col items-center">
                             <span className="text-sm font-medium text-muted-foreground mb-2">{getUIText('score')}</span>
                             <div className="h-[112px] flex items-center justify-center">
-                                <TallyScore score={score} />
+                                {!isPreGame && <TallyScore score={score} />}
                             </div>
                         </div>
                     </div>
@@ -421,3 +400,5 @@ const OddOneOutPage = () => {
 };
 
 export default OddOneOutPage;
+
+```

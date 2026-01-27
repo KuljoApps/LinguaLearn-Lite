@@ -35,6 +35,7 @@ const uiTexts = {
     placeholder: { en: 'Type translation in Polish...', fr: 'Tapez la traduction en polonais...', de: 'Gib die polnische Übersetzung ein...', it: 'Scrivi la traduzione in polacco...', es: 'Escribe la traducción en polaco...' },
     back: { en: 'Back to Game Center', fr: 'Retour aux Jeux', de: 'Zurück zur Spielzentrale', it: 'Torna ai Giochi', es: 'Volver a Juegos' },
     summary: { en: 'Summary', fr: 'Résumé', de: 'Zusammenfassung', it: 'Riepilogo', es: 'Resumen' },
+    worthRepeating: { en: 'Worth repeating', fr: 'À répéter', de: 'Wiederholenswert', it: 'Da ripetere', es: 'Vale la pena repetir' },
     wpm: { en: 'Words per minute', fr: 'Mots par minute', de: 'Wörter pro Minute', it: 'Parole al minuto', es: 'Palabras por minuto' },
     skips: { en: 'Skips Used', fr: 'Passes utilisées', de: 'Übersprungen', it: 'Salti usati', es: 'Saltos usados' },
     skippedWord: { en: 'Skipped word', fr: 'Mot passé', de: 'Übersprungenes Wort', it: 'Parola saltata', es: 'Palabra saltada' },
@@ -164,11 +165,7 @@ const TranslationRacePage = () => {
         vibrate('incorrect');
     }, []);
 
-    const getUIText = (key: keyof typeof uiTexts) => {
-      const texts = uiTexts[key];
-      if (!texts) return '';
-      return texts[language] || texts['en'];
-    };
+    const getUIText = (key: keyof typeof uiTexts) => uiTexts[key][language] || uiTexts[key]['en'];
 
     const wpm = score > 0 ? Math.round(score / (GAME_DURATION / 60)) : 0;
     

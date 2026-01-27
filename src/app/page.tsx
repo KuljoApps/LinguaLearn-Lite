@@ -21,19 +21,19 @@ const uiTexts = {
     welcome: { en: "Ready to question your life choices in another language? Let's go!", fr: "Prêt à remettre en question tes choix de vie dans une autre langue? Allons-y!", de: "Bereit, deine Lebensentscheidungen in einer anderen Sprache zu hinterfragen? Los geht's!", it: "Pronto a mettere in discussione le tue scelte di vita in un'altra lingua? Andiamo!", es: "¿Listo para cuestionar tus elecciones de vida en otro idioma? ¡Vamos!" },
     quizzes: { en: 'Quizzes', fr: 'Quiz', de: 'Quizze', it: 'Quiz', es: 'Cuestionarios' },
     games: { en: 'Games', fr: 'Jeux', de: 'Spiele', it: 'Giochi', es: 'Juegos' },
-    fill: { en: 'Fill', fr: 'Combler', de: 'Füllen', it: 'Colma', es: 'Rellena' },
+    fill: { en: 'Fill', fr: 'Remplis', de: 'Fülle', it: 'Colma', es: 'Rellena' },
     gap: { en: 'Gap', fr: 'Vide', de: 'Lücke', it: 'Vuoto', es: 'Hueco' },
     reading: { en: 'Reading', fr: 'Lecture', de: 'Lesen', it: 'Lettura', es: 'Lectura' },
     listening: { en: 'Listening', fr: 'Écoute', de: 'Hören', it: 'Ascolto', es: 'Escucha' },
     learning: { en: 'Learning', fr: 'Apprentissage', de: 'Lernen', it: 'Apprendimento', es: 'Aprendizaje' },
 };
 
-const fillTheGapAnimatedWord = {
-    en: { text: 'the', placeholder: '___' },
-    fr: { text: 'le', placeholder: '__' },
-    de: { text: 'die', placeholder: '___' },
-    it: { text: 'il', placeholder: '__' },
-    es: { text: 'el', placeholder: '__' },
+const fillTheGapAnimatedWord: Record<Language, { text: string; placeholder: string; width: string }> = {
+    en: { text: 'the', placeholder: '___', width: 'w-10' },
+    fr: { text: 'le', placeholder: '__', width: 'w-8' },
+    de: { text: 'die', placeholder: '___', width: 'w-10' },
+    it: { text: 'il', placeholder: '__', width: 'w-8' },
+    es: { text: 'el', placeholder: '__', width: 'w-8' },
 };
 
 export default function Home() {
@@ -184,13 +184,16 @@ export default function Home() {
                     </div>
                     <div className="flex flex-col space-y-2">
                         <Link href="/fill-the-gap" passHref>
-                            <Button className={cn("h-12", "w-full grid grid-cols-[1fr_auto_1fr] items-center", "rounded-xl", themeClasses, "font-normal")}>
+                             <Button className={cn("h-12", "w-full grid grid-cols-[1fr_auto_1fr] items-center", "rounded-xl", themeClasses, "font-normal")}>
                                 <div className="flex justify-end">
                                     <PencilLine className={cn("h-5 w-5 mr-2", iconClasses)} />
                                 </div>
                                 <span className={cn("col-start-2 flex items-center", iconClasses)}>
                                     {getUIText('fill')}&nbsp;
-                                    <span className="relative inline-block h-6 w-10 text-center overflow-hidden">
+                                    <span className={cn(
+                                        "relative inline-block h-6 text-center overflow-hidden transition-all duration-300",
+                                        fillTheGapAnimatedWord[language].width
+                                    )}>
                                         <span
                                             key={fillTheGapText}
                                             className="absolute inset-0 flex items-center justify-center animate-text-fall-down"

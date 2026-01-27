@@ -367,10 +367,11 @@ const OddOneOutPage = () => {
                                 <Button 
                                     key={word}
                                     variant="outline"
-                                    className={cn("h-24 text-2xl relative", 
-                                        answerStatus && isSelected && !isCorrectAnswer && 'bg-destructive text-destructive-foreground',
-                                        answerStatus && isCorrectAnswer && 'bg-success text-success-foreground',
-                                        answerStatus && !isSelected && !isCorrectAnswer && 'opacity-50'
+                                    className={cn(
+                                        "h-24 text-2xl relative transition-all", 
+                                        answerStatus && isSelected && !isCorrectAnswer && 'bg-destructive text-destructive-foreground disabled:bg-destructive disabled:text-destructive-foreground disabled:opacity-100',
+                                        answerStatus && isCorrectAnswer && 'bg-success text-success-foreground disabled:bg-success disabled:text-success-foreground disabled:opacity-100',
+                                        answerStatus && !isSelected && !isCorrectAnswer && 'opacity-50 disabled:opacity-50'
                                     )}
                                     onClick={() => handleSelect(word)}
                                     disabled={!!selected || isPreGame}
@@ -400,3 +401,5 @@ const OddOneOutPage = () => {
 };
 
 export default OddOneOutPage;
+
+    

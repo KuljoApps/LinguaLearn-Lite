@@ -1,15 +1,14 @@
 
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
-import { ArrowLeft, Beaker, CheckCircle, Clock, Palette, Shapes, SlidersHorizontal, Sparkles, ShieldX, Trophy, Save, ClipboardCopy, PlusCircle, Trash2, FolderOpen, Upload, FileDown } from 'lucide-react';
+import { ArrowLeft, Beaker, CheckCircle, Clock, Palette, Shapes, SlidersHorizontal, Sparkles, ShieldX, Trophy, Save, ClipboardCopy, PlusCircle, Trash2, FolderOpen, Upload, FileDown, Wind, MoveVertical, MoveHorizontal, MapPin } from 'lucide-react';
 import Confetti from '@/components/Confetti';
 import { Label } from '@/components/ui/label';
 import { Slider } from "@/components/ui/slider";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -27,20 +26,32 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from '@/components/ui/checkbox';
+import { useWindowSize } from '@react-hook/window-size';
 
-type ConfettiShape = 'square' | 'circle' | 'triangle' | 'star';
+
+type ConfettiShape = 'square' | 'circle' | 'triangle' | 'star' | 'line' | 'heart';
 
 interface ConfettiConfig {
   pieces: number;
   gravity: number;
+  wind: number;
   duration: number; // in seconds
-  shape: ConfettiShape;
+  shapes: ConfettiShape[];
   colors: string[];
+  initialVelocityX: number;
+  initialVelocityY: number;
+  confettiSource: {
+    x: number; // percentage
+    y: number; // percentage
+    w: number; // pixels
+    h: number; // pixels
+  };
 }
 
-const CONFIGS_STORAGE_KEY = 'linguaLearnConfettiConfigs_v2';
-const PALETTES_STORAGE_KEY = 'linguaLearnConfettiPalettes_v2';
-const LAST_CONFIG_KEY = 'linguaLearnLastConfettiConfigName_v2';
+const CONFIGS_STORAGE_KEY = 'linguaLearnConfettiConfigs_v3';
+const PALETTES_STORAGE_KEY = 'linguaLearnConfettiPalettes_v3';
+const LAST_CONFIG_KEY = 'linguaLearnLastConfettiConfigName_v3';
 
 const defaultColors = ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a'];
 
@@ -52,43 +63,39 @@ const presetPalettes: Record<string, string[]> = {
 };
 
 const drawTriangle = (ctx: CanvasRenderingContext2D) => {
-    ctx.beginPath();
-    ctx.moveTo(-5, 5);
-    ctx.lineTo(5, 5);
-    ctx.lineTo(0, -8);
-    ctx.fill();
-    ctx.closePath();
+    ctx.beginPath(); ctx.moveTo(-5, 5); ctx.lineTo(5, 5); ctx.lineTo(0, -8); ctx.fill(); ctx.closePath();
 };
-
 const drawStar = (ctx: CanvasRenderingContext2D) => {
-    const points = 5;
-    const outerRadius = 7;
-    const innerRadius = 3;
-    ctx.beginPath();
-    for (let i = 0; i < 2 * points; i++) {
-        const radius = i % 2 === 0 ? outerRadius : innerRadius;
-        const angle = (i * Math.PI) / points - Math.PI / 2;
-        ctx.lineTo(radius * Math.cos(angle), radius * Math.sin(angle));
-    }
-    ctx.fill();
-    ctx.closePath();
+    const p=5, or=7, ir=3; ctx.beginPath(); for (let i=0; i<2*p; i++) { const r=i%2===0?or:ir; const a=(i*Math.PI)/p - Math.PI/2; ctx.lineTo(r*Math.cos(a), r*Math.sin(a)); } ctx.fill(); ctx.closePath();
+};
+const drawCircle = (ctx: CanvasRenderingContext2D) => {
+    ctx.beginPath(); ctx.arc(0, 0, 5, 0, 2*Math.PI); ctx.fill(); ctx.closePath();
+};
+const drawLine = (ctx: CanvasRenderingContext2D) => {
+    ctx.fillRect(-1, -10, 2, 20);
+};
+const drawHeart = (ctx: CanvasRenderingContext2D) => {
+    const s = 0.5; ctx.scale(s,s); ctx.beginPath(); ctx.moveTo(0, 4); ctx.bezierCurveTo(-12, -20, -20, 0, 0, 15); ctx.bezierCurveTo(20, 0, 12, -20, 0, 4); ctx.fill(); ctx.closePath();
 };
 
-const drawCircle = (ctx: CanvasRenderingContext2D) => {
-    ctx.beginPath();
-    ctx.arc(0, 0, 5, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.closePath();
+const drawFunctions: Record<ConfettiShape, (ctx: CanvasRenderingContext2D) => void> = {
+    square: (ctx: CanvasRenderingContext2D) => ctx.fillRect(-5, -5, 10, 10),
+    circle: drawCircle,
+    triangle: drawTriangle,
+    star: drawStar,
+    line: drawLine,
+    heart: drawHeart,
 };
 
 export default function ConfettiConfiguratorPage() {
     const { toast } = useToast();
+    const [width, height] = useWindowSize();
     const [config, setConfig] = useState<ConfettiConfig>({
-        pieces: 200,
-        gravity: 0.2,
-        duration: 5,
-        shape: 'square',
+        pieces: 200, gravity: 0.2, wind: 0, duration: 5,
+        shapes: ['square', 'circle'],
         colors: defaultColors,
+        initialVelocityX: 0, initialVelocityY: -10,
+        confettiSource: { x: 50, y: 50, w: 10, h: 10 },
     });
     const [isExploding, setIsExploding] = useState(false);
     const [customColor, setCustomColor] = useState('#a864fd');
@@ -103,6 +110,13 @@ export default function ConfettiConfiguratorPage() {
     
     const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; type: 'config' | 'palette' | null; name: string | null }>({ open: false, type: null, name: null });
 
+    const presets: Record<string, Partial<ConfettiConfig>> = {
+      'Explosion': { pieces: 500, duration: 3, gravity: 0.3, initialVelocityY: -15, confettiSource: { x: 50, y: 50, w: 20, h: 20 }, colors: ['#ff0000', '#ffa500', '#ffff00', '#ff4500'], shapes: ['star', 'triangle'] },
+      'Fountain': { pieces: 400, duration: 4, gravity: 0.1, initialVelocityY: -25, confettiSource: { x: 50, y: 80, w: 20, h: 10 }, shapes: ['line', 'circle'] },
+      'Rain': { pieces: 600, duration: 6, gravity: 0.5, wind: 2, confettiSource: { x: 50, y: 0, w: 100, h: 0 }, colors: ['#4dabf7', '#1971c2', '#a5d8ff'], shapes: ['line'] },
+      'Side Cannons': { pieces: 500, duration: 4, gravity: 0, initialVelocityX: 20, confettiSource: { x: 50, y: 50, w: 0, h: 100 }, colors: ['#f03e3e', '#12b886', '#fab005'], shapes: ['square'] },
+    };
+
     useEffect(() => {
         try {
             const configsJson = localStorage.getItem(CONFIGS_STORAGE_KEY);
@@ -114,146 +128,72 @@ export default function ConfettiConfiguratorPage() {
 
             const lastConfigName = localStorage.getItem(LAST_CONFIG_KEY);
             if (lastConfigName && loadedConfigs[lastConfigName]) {
-                setConfig(loadedConfigs[lastConfigName]);
+                setConfig(prev => ({...prev, ...loadedConfigs[lastConfigName]}));
                 setActiveConfigName(lastConfigName);
             }
-        } catch (e) {
-            console.error("Failed to load confetti data:", e);
-        }
+        } catch (e) { console.error("Failed to load confetti data:", e); }
     }, []);
 
-    const handleTestClick = () => {
-        if (isExploding) return;
-        setIsExploding(true);
-        setTimeout(() => setIsExploding(false), config.duration * 1000);
-    };
+    const handleTestClick = () => { if (isExploding) return; setIsExploding(true); setTimeout(() => setIsExploding(false), config.duration * 1000); };
     
-    const getShapeFunction = () => {
-        switch (config.shape) {
-            case 'circle': return drawCircle;
-            case 'triangle': return drawTriangle;
-            case 'star': return drawStar;
-            case 'square': default: return undefined;
-        }
+    const getDrawShapeFunction = () => {
+        if (config.shapes.length === 0) return undefined;
+        return (ctx: CanvasRenderingContext2D) => {
+            const randomShape = config.shapes[Math.floor(Math.random() * config.shapes.length)];
+            const drawFn = drawFunctions[randomShape];
+            if (drawFn) drawFn(ctx);
+        };
     };
     
     const handleGenerateJson = () => setOutputJson(JSON.stringify(config, null, 2));
-    const handleCopyToClipboard = () => {
-        if (!outputJson) return;
-        navigator.clipboard.writeText(outputJson);
-        toast({ title: 'Copied to clipboard!' });
-    };
-
-    // --- Color Palette Management ---
-    const handleAddColor = () => {
-        if (!config.colors.includes(customColor)) {
-            setConfig(prev => ({ ...prev, colors: [...prev.colors, customColor] }));
-        }
-    };
-    const handleRemoveColor = (colorToRemove: string) => {
-        setConfig(prev => ({ ...prev, colors: prev.colors.filter(c => c !== colorToRemove) }));
-    };
-    const handleLoadPalette = (palette: string[]) => {
-        setConfig(prev => ({...prev, colors: palette}));
-    };
-    const handleSavePalette = () => {
-        if (!newPaletteName.trim()) {
-            toast({ title: 'Error', description: 'Please enter a name for the palette.', variant: 'destructive' });
-            return;
-        }
-        const newPalettes = { ...savedPalettes, [newPaletteName]: config.colors };
-        setSavedPalettes(newPalettes);
-        localStorage.setItem(PALETTES_STORAGE_KEY, JSON.stringify(newPalettes));
-        toast({ title: 'Palette Saved!', description: `Saved as "${newPaletteName}".` });
-        setNewPaletteName('');
-    };
-    const handleDeletePalette = (name: string) => {
-        const newPalettes = { ...savedPalettes };
-        delete newPalettes[name];
-        setSavedPalettes(newPalettes);
-        localStorage.setItem(PALETTES_STORAGE_KEY, JSON.stringify(newPalettes));
-        toast({ title: 'Palette Deleted!', description: `"${name}" has been removed.` });
-        setDeleteDialog({ open: false, type: null, name: null });
-    };
-
-    // --- Config Profile Management ---
-    const handleSaveConfig = () => {
-        if (!newConfigName.trim()) {
-            toast({ title: 'Error', description: 'Please enter a name for the configuration.', variant: 'destructive' });
-            return;
-        }
-        const newConfigs = { ...savedConfigs, [newConfigName]: config };
-        setSavedConfigs(newConfigs);
-        localStorage.setItem(CONFIGS_STORAGE_KEY, JSON.stringify(newConfigs));
-        setActiveConfigName(newConfigName);
-        localStorage.setItem(LAST_CONFIG_KEY, newConfigName);
-        toast({ title: 'Configuration Saved!', description: `Saved as "${newConfigName}".` });
-        setNewConfigName('');
-    };
-
-    const handleLoadConfig = (name: string) => {
-        if (savedConfigs[name]) {
-            setConfig(savedConfigs[name]);
-            setActiveConfigName(name);
-            localStorage.setItem(LAST_CONFIG_KEY, name);
-            toast({ title: 'Configuration Loaded!', description: `"${name}" is now active.` });
-        }
-    };
-
-    const handleDeleteConfig = (name: string) => {
-        const newConfigs = { ...savedConfigs };
-        delete newConfigs[name];
-        setSavedConfigs(newConfigs);
-        localStorage.setItem(CONFIGS_STORAGE_KEY, JSON.stringify(newConfigs));
-        if (activeConfigName === name) {
-            setActiveConfigName(null);
-            localStorage.removeItem(LAST_CONFIG_KEY);
-        }
-        toast({ title: 'Configuration Deleted!', description: `"${name}" has been removed.` });
-        setDeleteDialog({ open: false, type: null, name: null });
-    };
+    const handleCopyToClipboard = () => { if (!outputJson) return; navigator.clipboard.writeText(outputJson); toast({ title: 'Copied to clipboard!' }); };
     
-    const openDeleteDialog = (type: 'config' | 'palette', name: string) => {
-        setDeleteDialog({ open: true, type, name });
-    };
-
-    const confirmDelete = () => {
-        if (!deleteDialog.name || !deleteDialog.type) return;
-        if (deleteDialog.type === 'config') {
-            handleDeleteConfig(deleteDialog.name);
-        } else if (deleteDialog.type === 'palette') {
-            handleDeletePalette(deleteDialog.name);
-        }
-    };
+    const handleAddColor = () => { if (!config.colors.includes(customColor)) { setConfig(prev => ({ ...prev, colors: [...prev.colors, customColor] })); } };
+    const handleRemoveColor = (colorToRemove: string) => { setConfig(prev => ({ ...prev, colors: prev.colors.filter(c => c !== colorToRemove) })); };
+    const handleLoadPalette = (palette: string[]) => { setConfig(prev => ({...prev, colors: palette})); };
+    const handleSavePalette = () => { if (!newPaletteName.trim()) { toast({ title: 'Error', description: 'Please enter a name for the palette.', variant: 'destructive' }); return; } const newPalettes = { ...savedPalettes, [newPaletteName]: config.colors }; setSavedPalettes(newPalettes); localStorage.setItem(PALETTES_STORAGE_KEY, JSON.stringify(newPalettes)); toast({ title: 'Palette Saved!', description: `Saved as "${newPaletteName}".` }); setNewPaletteName(''); };
+    const handleDeletePalette = (name: string) => { const newPalettes = { ...savedPalettes }; delete newPalettes[name]; setSavedPalettes(newPalettes); localStorage.setItem(PALETTES_STORAGE_KEY, JSON.stringify(newPalettes)); toast({ title: 'Palette Deleted!', description: `"${name}" has been removed.` }); setDeleteDialog({ open: false, type: null, name: null }); };
+    
+    const handleSaveConfig = () => { if (!newConfigName.trim()) { toast({ title: 'Error', description: 'Please enter a name for the configuration.', variant: 'destructive' }); return; } const newConfigs = { ...savedConfigs, [newConfigName]: config }; setSavedConfigs(newConfigs); localStorage.setItem(CONFIGS_STORAGE_KEY, JSON.stringify(newConfigs)); setActiveConfigName(newConfigName); localStorage.setItem(LAST_CONFIG_KEY, newConfigName); toast({ title: 'Configuration Saved!', description: `Saved as "${newConfigName}".` }); setNewConfigName(''); };
+    const handleLoadConfig = (name: string) => { if (savedConfigs[name]) { setConfig(prev => ({...prev, ...savedConfigs[name]})); setActiveConfigName(name); localStorage.setItem(LAST_CONFIG_KEY, name); toast({ title: 'Configuration Loaded!', description: `"${name}" is now active.` }); } };
+    const handleDeleteConfig = (name: string) => { const newConfigs = { ...savedConfigs }; delete newConfigs[name]; setSavedConfigs(newConfigs); localStorage.setItem(CONFIGS_STORAGE_KEY, JSON.stringify(newConfigs)); if (activeConfigName === name) { setActiveConfigName(null); localStorage.removeItem(LAST_CONFIG_KEY); } toast({ title: 'Configuration Deleted!', description: `"${name}" has been removed.` }); setDeleteDialog({ open: false, type: null, name: null }); };
+    
+    const openDeleteDialog = (type: 'config' | 'palette', name: string) => { setDeleteDialog({ open: true, type, name }); };
+    const confirmDelete = () => { if (!deleteDialog.name || !deleteDialog.type) return; if (deleteDialog.type === 'config') { handleDeleteConfig(deleteDialog.name); } else if (deleteDialog.type === 'palette') { handleDeletePalette(deleteDialog.name); } };
     
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-muted/40">
-            {isExploding && <Confetti recycle={false} numberOfPieces={config.pieces} gravity={config.gravity} colors={config.colors} confettiSource={{ w: 10, h: 10, x: window.innerWidth / 2, y: window.innerHeight / 2 }} drawShape={getShapeFunction()} />}
+            {isExploding && <Confetti recycle={false} numberOfPieces={config.pieces} gravity={config.gravity} wind={config.wind} initialVelocityX={config.initialVelocityX} initialVelocityY={config.initialVelocityY} colors={config.colors} confettiSource={{ w: config.confettiSource.w, h: config.confettiSource.h, x: width * (config.confettiSource.x / 100), y: height * (config.confettiSource.y / 100) }} drawShape={getDrawShapeFunction()} />}
              <Card className="w-full max-w-lg shadow-2xl pointer-events-none mb-8">
                 <CardHeader className="items-center text-center pb-4"><Trophy className="h-16 w-16 text-amber" /><CardTitle className="text-3xl font-bold">Perfect Score!</CardTitle><CardDescription>Amazing! You answered all questions correctly.</CardDescription></CardHeader>
                 <CardContent className="space-y-4"><Card className="bg-muted/50"><CardHeader className="pb-2 pt-4"><CardTitle className="text-xl text-center">Summary</CardTitle></CardHeader><CardContent className="grid grid-cols-2 gap-4 text-center"><div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background"><span className="text-2xl font-bold">30 / 30</span><span className="text-xs text-muted-foreground">Score</span></div><div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background"><span className="text-2xl font-bold">100%</span><span className="text-xs text-muted-foreground">Success Rate</span></div><div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background"><div className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-success"/><span className="text-2xl font-bold">30</span></div><span className="text-xs text-muted-foreground">Correct</span></div><div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background"><div className="flex items-center gap-2"><ShieldX className="h-4 w-4 text-destructive"/><span className="text-2xl font-bold">0</span></div><span className="text-xs text-muted-foreground">Mistakes</span></div><div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background col-span-2"><div className="flex items-center gap-2"><Clock className="h-4 w-4 text-muted-foreground"/><span className="text-2xl font-bold">02:15</span></div><span className="text-xs text-muted-foreground">Total Time</span></div></CardContent></Card></CardContent>
             </Card>
 
             <Card className="w-full max-w-6xl shadow-2xl">
-                 <CardHeader className="p-4 pb-2 text-center"><div className="flex items-center justify-center gap-4"><Beaker className="h-8 w-8" /><CardTitle className="text-2xl">Confetti Configurator</CardTitle></div></CardHeader>
-                 <div className="text-center py-4 border-b">
-                    <Button onClick={handleTestClick} disabled={isExploding} className="w-full max-w-xs"><Sparkles className="mr-2 h-4 w-4"/> Test Animation</Button>
-                 </div>
+                 <CardHeader className="p-4 text-center border-b"><div className="flex items-center justify-center gap-4"><Beaker className="h-8 w-8" /><CardTitle className="text-2xl">Confetti Configurator</CardTitle></div>
+                    <div className="pt-4"><Button onClick={handleTestClick} disabled={isExploding} className="w-full max-w-xs"><Sparkles className="mr-2 h-4 w-4"/> Test Animation</Button></div>
+                 </CardHeader>
                  <CardContent className="p-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                     {/* Left Column */}
                     <div className="space-y-6">
-                        <div className="space-y-6"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><SlidersHorizontal className="h-5 w-5"/> Parameters</h3><div className="space-y-4"><Label htmlFor="amount">Amount: {config.pieces}</Label><Slider id="amount" value={[config.pieces]} onValueChange={(v) => setConfig(p => ({...p, pieces: v[0]}))} min={10} max={800} step={10} /></div><div className="space-y-4"><Label htmlFor="duration">Duration: {config.duration}s</Label><Slider id="duration" value={[config.duration]} onValueChange={(v) => setConfig(p => ({...p, duration: v[0]}))} min={1} max={15} step={1} /></div><div className="space-y-4"><Label htmlFor="gravity">Gravity: {config.gravity.toFixed(2)}</Label><Slider id="gravity" value={[config.gravity]} onValueChange={(v) => setConfig(p => ({...p, gravity: v[0]}))} min={0.05} max={0.7} step={0.01} /></div></div>
+                        <div className="space-y-4"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><SlidersHorizontal className="h-5 w-5"/> Parameters</h3><div><Label htmlFor="amount">Amount: {config.pieces}</Label><Slider id="amount" value={[config.pieces]} onValueChange={(v) => setConfig(p => ({...p, pieces: v[0]}))} min={10} max={1000} step={10} /></div><div><Label htmlFor="duration">Duration: {config.duration}s</Label><Slider id="duration" value={[config.duration]} onValueChange={(v) => setConfig(p => ({...p, duration: v[0]}))} min={1} max={20} step={0.5} /></div></div>
                         <Separator/>
-                        <div className="space-y-6"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><Shapes className="h-5 w-5"/> Shape</h3><RadioGroup value={config.shape} onValueChange={(v) => setConfig(p => ({...p, shape: v as ConfettiShape}))} className="flex justify-center gap-4 flex-wrap"><Label htmlFor="square" className="cursor-pointer flex flex-col items-center gap-2 p-3 rounded-md border-2 has-[:checked]:border-primary"><div className="h-8 w-8 bg-foreground rounded-sm" /><div className="flex items-center gap-2"><RadioGroupItem value="square" id="square" />Square</div></Label><Label htmlFor="circle" className="cursor-pointer flex flex-col items-center gap-2 p-3 rounded-md border-2 has-[:checked]:border-primary"><div className="h-8 w-8 bg-foreground rounded-full" /><div className="flex items-center gap-2"><RadioGroupItem value="circle" id="circle" />Circle</div></Label><Label htmlFor="triangle" className="cursor-pointer flex flex-col items-center gap-2 p-3 rounded-md border-2 has-[:checked]:border-primary"><div className="h-8 w-8 bg-foreground" style={{ clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }} /><div className="flex items-center gap-2"><RadioGroupItem value="triangle" id="triangle" />Triangle</div></Label><Label htmlFor="star" className="cursor-pointer flex flex-col items-center gap-2 p-3 rounded-md border-2 has-[:checked]:border-primary"><div className="h-8 w-8 bg-foreground" style={{ clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)' }} /><div className="flex items-center gap-2"><RadioGroupItem value="star" id="star" />Star</div></Label></RadioGroup></div>
+                        <div className="space-y-4"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><Wind className="h-5 w-5"/> Physics</h3><div><Label>Gravity: {config.gravity.toFixed(2)}</Label><Slider value={[config.gravity]} onValueChange={(v) => setConfig(p => ({...p, gravity: v[0]}))} min={0} max={1} step={0.05} /></div><div><Label>Wind: {config.wind.toFixed(1)}</Label><Slider value={[config.wind]} onValueChange={(v) => setConfig(p => ({...p, wind: v[0]}))} min={-10} max={10} step={0.5} /></div><div className="grid grid-cols-2 gap-4"><div><Label>Initial Velocity X: {config.initialVelocityX}</Label><Slider value={[config.initialVelocityX]} onValueChange={(v) => setConfig(p => ({...p, initialVelocityX: v[0]}))} min={-30} max={30} step={1} /></div><div><Label>Initial Velocity Y: {config.initialVelocityY}</Label><Slider value={[config.initialVelocityY]} onValueChange={(v) => setConfig(p => ({...p, initialVelocityY: v[0]}))} min={-30} max={30} step={1} /></div></div></div>
                         <Separator/>
-                        <div className="space-y-6"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><Palette className="h-5 w-5"/> Colors</h3><div className="flex justify-center gap-2 flex-wrap">{Object.entries(presetPalettes).map(([name]) => (<Button key={name} variant="outline" size="sm" onClick={() => handleLoadPalette(presetPalettes[name])}>{name}</Button>))}</div>{Object.keys(savedPalettes).length > 0 && <div className="flex justify-center gap-2 flex-wrap">{Object.entries(savedPalettes).map(([name, colors]) => (<div key={name} className="relative group"><Button variant="outline" size="sm" onClick={() => handleLoadPalette(colors)}>{name}</Button><button onClick={() => openDeleteDialog('palette', name)} className="absolute -top-1 -right-1 flex items-center justify-center bg-destructive rounded-full h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 className="h-2.5 w-2.5 text-destructive-foreground"/></button></div>))}</div>}<div className="flex flex-wrap items-center justify-center gap-4"><Popover><PopoverTrigger asChild><div className="w-10 h-10 rounded-full border-2 cursor-pointer" style={{ backgroundColor: customColor }}/></PopoverTrigger><PopoverContent className="w-auto"><HexColorPicker color={customColor} onChange={setCustomColor} /></PopoverContent></Popover><Button size="sm" onClick={handleAddColor}><PlusCircle className="mr-2 h-4 w-4" /> Add Custom Color</Button></div><div className="flex flex-wrap gap-3 justify-center min-h-[36px] rounded-md border p-2">{config.colors.map(color => (<div key={color} className="relative group"><div style={{backgroundColor: color}} className="h-7 w-7 rounded-full border" /><button onClick={() => handleRemoveColor(color)} className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 className="h-4 w-4 text-white"/></button></div>))}</div><div className="flex gap-2"><Input placeholder="Custom palette name..." value={newPaletteName} onChange={(e) => setNewPaletteName(e.target.value)} /><Button onClick={handleSavePalette}><Save className="mr-2 h-4 w-4"/>Save</Button></div></div>
+                        <div className="space-y-4"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><MapPin className="h-5 w-5"/> Source Position</h3><div className="grid grid-cols-2 gap-4"><div><Label>X Position: {config.confettiSource.x}%</Label><Slider value={[config.confettiSource.x]} onValueChange={(v) => setConfig(p => ({...p, confettiSource: {...p.confettiSource, x: v[0]}}))} /></div><div><Label>Y Position: {config.confettiSource.y}%</Label><Slider value={[config.confettiSource.y]} onValueChange={(v) => setConfig(p => ({...p, confettiSource: {...p.confettiSource, y: v[0]}}))} /></div></div><div className="grid grid-cols-2 gap-4"><div><Label>Width (w): {config.confettiSource.w}px</Label><Slider value={[config.confettiSource.w]} onValueChange={(v) => setConfig(p => ({...p, confettiSource: {...p.confettiSource, w: v[0]}}))} min={0} max={500} step={5} /></div><div><Label>Height (h): {config.confettiSource.h}px</Label><Slider value={[config.confettiSource.h]} onValueChange={(v) => setConfig(p => ({...p, confettiSource: {...p.confettiSource, h: v[0]}}))} min={0} max={500} step={5} /></div></div></div>
                     </div>
 
                     {/* Right Column */}
                     <div className="space-y-6">
-                        <div className="space-y-4"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><FolderOpen className="h-5 w-5"/>Saved Configurations</h3><div className="space-y-2">{Object.keys(savedConfigs).length === 0 ? <p className="text-sm text-center text-muted-foreground">No saved configurations.</p> : <div className="max-h-32 overflow-y-auto space-y-2 pr-2">{Object.keys(savedConfigs).map(name => (<div key={name} className={cn("flex items-center justify-between p-2 rounded-md border", activeConfigName === name ? "bg-accent border-primary" : "bg-muted/30")}><span className="font-semibold">{name}</span><div className="flex gap-1"><Button size="sm" variant="ghost" onClick={() => handleLoadConfig(name)}><Upload className="h-4 w-4"/></Button><Button size="sm" variant="ghost" onClick={() => openDeleteDialog('config', name)}><Trash2 className="h-4 w-4 text-destructive"/></Button></div></div>))}</div>}</div><div className="flex gap-2"><Input placeholder="New configuration name..." value={newConfigName} onChange={(e) => setNewConfigName(e.target.value)} /><Button onClick={handleSaveConfig}><Save className="mr-2 h-4 w-4"/>Save</Button></div></div>
+                        <div className="space-y-4"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><Sparkles className="h-5 w-5"/> Presets</h3><div className="flex justify-center gap-2 flex-wrap">{Object.keys(presets).map(name => <Button key={name} variant="outline" size="sm" onClick={() => setConfig(prev => ({...prev, ...presets[name]}))}>{name}</Button>)}</div></div>
                         <Separator/>
-                        <div className="space-y-4"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><FileDown className="h-5 w-5" /> Generate & Export</h3><Button className="w-full" onClick={handleGenerateJson}>Generate JSON</Button>{outputJson && (<div className="relative"><Textarea value={outputJson} readOnly className="h-32 font-mono text-xs"/><Button size="icon" variant="ghost" className="absolute top-2 right-2 h-7 w-7" onClick={handleCopyToClipboard}><ClipboardCopy className="h-4 w-4" /></Button></div>)}</div>
+                        <div className="space-y-4"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><Shapes className="h-5 w-5"/> Shapes</h3><div className="flex justify-center gap-2 flex-wrap">{(Object.keys(drawFunctions) as ConfettiShape[]).map(shape => <div key={shape} className="flex items-center space-x-2"><Checkbox id={shape} checked={config.shapes.includes(shape)} onCheckedChange={(checked) => setConfig(p => ({...p, shapes: checked ? [...p.shapes, shape] : p.shapes.filter(s => s !== shape)}))} /><Label htmlFor={shape} className="text-sm font-medium capitalize">{shape}</Label></div>)}</div></div>
+                        <Separator/>
+                        <div className="space-y-4"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><Palette className="h-5 w-5"/> Colors</h3><div className="flex justify-center gap-2 flex-wrap">{Object.entries(presetPalettes).map(([name]) => (<Button key={name} variant="outline" size="sm" onClick={() => handleLoadPalette(presetPalettes[name])}>{name}</Button>))}</div>{Object.keys(savedPalettes).length > 0 && <div className="flex justify-center gap-2 flex-wrap">{Object.entries(savedPalettes).map(([name, colors]) => (<div key={name} className="relative group"><Button variant="outline" size="sm" onClick={() => handleLoadPalette(colors)}>{name}</Button><button onClick={() => openDeleteDialog('palette', name)} className="absolute -top-1 -right-1 flex items-center justify-center bg-destructive rounded-full h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 className="h-2.5 w-2.5 text-destructive-foreground"/></button></div>))}</div>}<div className="flex flex-wrap items-center justify-center gap-4"><Popover><PopoverTrigger asChild><div className="w-10 h-10 rounded-full border-2 cursor-pointer" style={{ backgroundColor: customColor }}/></PopoverTrigger><PopoverContent className="w-auto"><HexColorPicker color={customColor} onChange={setCustomColor} /></PopoverContent></Popover><Button size="sm" onClick={handleAddColor}><PlusCircle className="mr-2 h-4 w-4" /> Add Custom Color</Button></div><div className="flex flex-wrap gap-3 justify-center min-h-[36px] rounded-md border p-2">{config.colors.map(color => (<div key={color} className="relative group"><div style={{backgroundColor: color}} className="h-7 w-7 rounded-full border" /><button onClick={() => handleRemoveColor(color)} className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 className="h-4 w-4 text-white"/></button></div>))}</div><div className="flex gap-2"><Input placeholder="Custom palette name..." value={newPaletteName} onChange={(e) => setNewPaletteName(e.target.value)} /><Button onClick={handleSavePalette}><Save className="mr-2 h-4 w-4"/>Save</Button></div></div>
+                        <Separator/>
+                        <div className="space-y-4"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><FolderOpen className="h-5 w-5"/>Saved Configurations</h3><div className="space-y-2">{Object.keys(savedConfigs).length === 0 ? <p className="text-sm text-center text-muted-foreground">No saved configurations.</p> : <div className="max-h-24 overflow-y-auto space-y-2 pr-2">{Object.keys(savedConfigs).map(name => (<div key={name} className={cn("flex items-center justify-between p-2 rounded-md border", activeConfigName === name ? "bg-accent border-primary" : "bg-muted/30")}><span className="font-semibold">{name}</span><div className="flex gap-1"><Button size="sm" variant="ghost" onClick={() => handleLoadConfig(name)}><Upload className="h-4 w-4"/></Button><Button size="sm" variant="ghost" onClick={() => openDeleteDialog('config', name)}><Trash2 className="h-4 w-4 text-destructive"/></Button></div></div>))}</div>}</div><div className="flex gap-2"><Input placeholder="New configuration name..." value={newConfigName} onChange={(e) => setNewConfigName(e.target.value)} /><Button onClick={handleSaveConfig}><Save className="mr-2 h-4 w-4"/>Save</Button></div></div>
+                        <Separator/>
+                        <div className="space-y-4"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><FileDown className="h-5 w-5" /> Generate & Export</h3><Button className="w-full" onClick={handleGenerateJson}>Generate JSON</Button>{outputJson && (<div className="relative"><Textarea value={outputJson} readOnly className="h-24 font-mono text-xs"/><Button size="icon" variant="ghost" className="absolute top-2 right-2 h-7 w-7" onClick={handleCopyToClipboard}><ClipboardCopy className="h-4 w-4" /></Button></div>)}</div>
                     </div>
                  </CardContent>
                  <CardFooter className="flex justify-center p-6 border-t">
@@ -277,5 +217,4 @@ export default function ConfettiConfiguratorPage() {
             </AlertDialog>
         </main>
     );
-
-    
+}

@@ -142,11 +142,11 @@ export default function Home() {
     
     const buttonBaseClasses = "flex-col gap-2";
     const squareButtonClasses = "w-full h-28";
-    const themeClasses = "text-xl font-bold text-white bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 hover:brightness-125 transition-all shadow-[0_0_20px_#ff8c00] border border-yellow-400/50 bg-[length:300%_300%] animate-gradient-flow";
+    const themeClasses = "text-xl font-bold text-white bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 hover:brightness-125 transition-all shadow-[0_0_20px_#ff8c00] border border-amber bg-[length:300%_300%] animate-gradient-flow";
     const iconClasses = "text-white";
 
     return (
-        <main className="flex min-h-screen flex-col items-center justify-center p-4">
+        <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-orange-100">
             <ProPromotionDialog open={showPromo} onOpenChange={setShowPromo} />
             <RateAppDialog open={showRateDialog} onOpenChange={setShowRateDialog} />
             <Card className="w-full max-w-md shadow-2xl text-center">

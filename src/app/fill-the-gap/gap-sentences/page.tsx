@@ -24,10 +24,8 @@ const uiTexts = {
     title: { en: 'Gap in the Sentences', fr: 'Trou dans les Phrases', de: 'Lücke in den Sätzen', it: 'Spazio nelle Frasi', es: 'Hueco en las Oraciones' },
     description: { en: 'Complete the sentences by choosing the correct word from the list.', fr: 'Complétez les phrases en choisissant le mot correct dans la liste.', de: 'Vervollständige die Sätze, indem du das richtige Wort aus der Liste auswählst.', it: 'Completa le frasi scegliendo la parola corretta dall\'elenco.', es: 'Completa las oraciones eligiendo la palabra correcta de la lista.' },
     check: { en: 'Check Answers', fr: 'Vérifier', de: 'Antworten prüfen', it: 'Controlla', es: 'Comprobar' },
-    reset: { en: 'Reset Answers', fr: 'Réinitialiser', de: 'Zurücksetzen', it: 'Resetta', es: 'Reiniciar' },
+    reset: { en: 'Try Again', fr: 'Réessayer', de: 'Erneut versuchen', it: 'Riprova', es: 'Intentar de Nuevo' },
     back: { en: 'Back to Fill the Gap', fr: 'Retour à Fill the Gap', de: 'Zurück zu Lückentext', it: 'Torna a Riempi gli spazi', es: 'Volver a Rellenar Huecos' },
-    correctToast: { en: 'Correct!', fr: 'Correct !', de: 'Richtig!', it: 'Corretto!', es: '¡Correcto!' },
-    correctDesc: { en: 'Great job!', fr: 'Bien joué !', de: 'Gut gemacht!', it: 'Ottimo lavoro!', es: '¡Buen trabajo!' },
     incorrectToast: { en: 'Incorrect', fr: 'Incorrect', de: 'Falsch', it: 'Sbagliato', es: 'Incorrecto' },
     incorrectDesc: { en: 'One or more answers are wrong. Try again!', fr: 'Une ou plusieurs réponses sont fausses. Réessayez !', de: 'Eine oder mehrere Antworten sind falsch. Versuche es erneut!', it: 'Una o più risposte sono sbagliate. Riprova!', es: 'Una o más respuestas son incorrectas. ¡Inténtalo de nuevo!' },
     selectPlaceholder: { en: 'Select word...', fr: 'Choisir un mot...', de: 'Wort auswählen...', it: 'Seleziona parola...', es: 'Seleccionar palabra...' },
@@ -71,7 +69,6 @@ function SentenceExercise({
         });
 
         if (isCorrect1 && isCorrect2 && isCorrect3) {
-            toast({ title: getUIText('correctToast'), description: getUIText('correctDesc') });
             playSound('correct');
             vibrate('correct');
             setShowConfetti(true);
@@ -101,7 +98,7 @@ function SentenceExercise({
                     disabled={!!answerStates.sentence1}
                 >
                     <SelectTrigger className={cn(
-                        "h-7 pt-0 font-semibold text-base w-auto inline-flex items-baseline justify-start [&>svg]:hidden px-2 border-amber",
+                        "h-8 pt-0 font-semibold text-base w-auto inline-flex items-baseline justify-start [&>svg]:hidden px-2 border-amber",
                         answerStates[key] === 'correct' && 'border-success text-success ring-2 ring-success/50',
                         answerStates[key] === 'incorrect' && 'border-destructive text-destructive ring-2 ring-destructive/50'
                     )}>
@@ -120,14 +117,14 @@ function SentenceExercise({
 
     return (
         <div className="space-y-4">
-            {showConfetti && <Confetti onConfettiComplete={() => setShowConfetti(false)} />}
+            {showConfetti && <Confetti numberOfPieces={100} gravity={0.3} onConfettiComplete={() => setShowConfetti(false)} />}
             
             <div className="space-y-4">
                 {renderSentence(sentenceSet.sentence1, 'sentence1')}
                 {renderSentence(sentenceSet.sentence2, 'sentence2')}
                 {renderSentence(sentenceSet.sentence3, 'sentence3')}
             </div>
-            
+
             <div className="flex justify-center pt-2">
                 {!answerStates.sentence1 ? (
                     <Button

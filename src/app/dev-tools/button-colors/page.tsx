@@ -107,7 +107,7 @@ export default function ButtonColorsPage() {
                                         Lingua
                                         <span className="relative inline-block">
                                             Learn
-                                            <span className="absolute -left-[30px] -bottom-3 text-sm font-semibold tracking-normal text-deep-purple">
+                                            <span className="absolute left-[85px] -bottom-2.5 text-sm font-semibold tracking-normal text-deep-purple">
                                                 PRO
                                             </span>
                                         </span>

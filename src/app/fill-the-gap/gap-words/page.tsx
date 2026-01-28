@@ -232,17 +232,17 @@ function WordListPage({ onSelectQuestion }: { onSelectQuestion: Dispatch<SetStat
     if (!currentCategory) return null;
 
     return (
-        <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-orange-100">
+        <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-2xl shadow-2xl">
                 <CardHeader className="text-center pb-2">
                     <div className="flex items-center justify-center gap-4 pb-3">
                         <FileText className="h-8 w-8" />
                         <CardTitle className="text-3xl">{getUIText('title')}</CardTitle>
                     </div>
-                    <p className="text-muted-foreground pt-0">{getUIText('description')}</p>
+                    <p className="text-muted-foreground pt-0 -mb-1">{getUIText('description')}</p>
                 </CardHeader>
                 <CardContent className="p-0 pt-2 pb-4">
-                    <div className="px-4 mb-4">
+                    <div className="px-4 mb-2">
                         <div className="flex items-center justify-between p-2 rounded-lg bg-orange-100 border border-amber">
                             <Button variant="ghost" size="icon" onClick={handlePrevCategory}>
                             <ArrowLeft className="h-5 w-5" />

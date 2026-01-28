@@ -95,19 +95,19 @@ export default function ButtonColorsPage() {
     const iconClasses = "text-white";
     
     return (
-        <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-muted/40">
+        <main className="flex min-h-screen flex-col items-center justify-center pb-4 bg-muted/40">
             <Card className="w-full max-w-4xl shadow-2xl">
                 <CardContent className="flex flex-col items-center gap-2 p-6">
                     <div className="scale-100 origin-top border bg-background rounded-lg p-4">
                         <Card className="w-full max-w-md shadow-2xl text-center mx-auto pointer-events-none">
                              <CardHeader>
                                 <div className="flex items-center justify-center gap-4 mb-4">
-                                    <LinguaLearnLogo width="48" height="48" />
+                                    <LinguaLearnLogo width="44" height="44" />
                                     <h1 className="text-4xl font-bold tracking-tight whitespace-nowrap">
                                         Lingua
                                         <span className="relative inline-block">
                                             Learn
-                                            <span className="absolute left-[85px] -bottom-2.5 text-sm font-semibold tracking-normal text-deep-purple">
+                                            <span className="absolute left-[57px] -bottom-2.5 text-sm font-semibold tracking-normal text-deep-purple">
                                                 PRO
                                             </span>
                                         </span>

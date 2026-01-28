@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useMemo, type SetStateAction, type Dispatch } from 'react';
@@ -234,13 +235,13 @@ function WordListPage({ onSelectQuestion }: { onSelectQuestion: Dispatch<SetStat
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
             <Card className="w-full max-w-2xl shadow-2xl">
                 <CardHeader className="text-center">
-                    <div className="flex items-center justify-center gap-4">
+                    <div className="flex items-center justify-center gap-4 pb-3">
                         <FileText className="h-8 w-8" />
                         <CardTitle className="text-3xl">{getUIText('title')}</CardTitle>
                     </div>
-                    <p className="text-muted-foreground pt-2">{getUIText('description')}</p>
+                    <p className="text-muted-foreground pt-0 -pb-1">{getUIText('description')}</p>
                 </CardHeader>
-                <CardContent className="pl-6 pr-2 pt-2 pb-4">
+                <CardContent className="pl-4 pr-0 pt-0 pb-4">
                      <div className="flex items-center justify-between p-2 mb-2 rounded-lg bg-amber/10 border border-amber">
                         <Button variant="ghost" size="icon" onClick={handlePrevCategory}>
                           <ArrowLeft className="h-5 w-5" />
@@ -254,7 +255,7 @@ function WordListPage({ onSelectQuestion }: { onSelectQuestion: Dispatch<SetStat
                         </Button>
                       </div>
 
-                    <ScrollArea className="h-[64vh] pr-4">
+                    <ScrollArea className="h-[63vh] pr-4">
                         {view === 'list' ? (
                             <div className="space-y-1">
                                 {uncompleted.map((q, i) => renderWordItem(q, i, false))}

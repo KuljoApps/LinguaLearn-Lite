@@ -162,10 +162,10 @@ function WordListPage({ onSelectQuestion }: { onSelectQuestion: Dispatch<SetStat
     const renderWordItem = (question: GapWordQuestion, index: number, isCompleted: boolean) => (
         <div onClick={() => onSelectQuestion(question)} key={question.fullWord} className="cursor-pointer">
             <div className={cn(
-                "flex items-center justify-between p-4 rounded-lg transition-colors",
+                "flex items-center justify-between p-3 rounded-lg transition-colors",
                 isCompleted ? "bg-success/10 text-muted-foreground" : "bg-card hover:bg-muted/50"
             )}>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
                     <span className="text-muted-foreground font-mono w-6 text-right">{index + 1}.</span>
                     <span className={cn("font-semibold text-lg", !isCompleted && "font-mono tracking-wider")}>
                          {isCompleted ? question.fullWord : question.wordWithGap.replace(/_+/g, '___')}
@@ -185,7 +185,7 @@ function WordListPage({ onSelectQuestion }: { onSelectQuestion: Dispatch<SetStat
                         <CardTitle className="text-3xl">Gap in the Words</CardTitle>
                     </div>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="pl-6 pr-2 pt-2 pb-4">
                     <ScrollArea className="h-[60vh] pr-4">
                         {view === 'list' ? (
                             <div className="space-y-1">

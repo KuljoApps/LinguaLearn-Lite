@@ -38,13 +38,11 @@ function SentenceExercise({
     onComplete,
     isCompleted,
     language,
-    styleVariant
 }: {
     sentenceSet: GapSentenceSet;
     onComplete: () => void;
     isCompleted: boolean;
     language: Language;
-    styleVariant: number;
 }) {
     const { toast } = useToast();
     const [selectedAnswers, setSelectedAnswers] = useState<{ sentence1?: string; sentence2?: string }>({});
@@ -88,7 +86,7 @@ function SentenceExercise({
     };
 
     const renderSentence = (sentence: Gap, key: 'sentence1' | 'sentence2') => (
-        <p className="text-lg flex flex-wrap items-center gap-2">
+        <p className="text-base flex flex-wrap items-center gap-2">
             <span>{sentence.text[0]}</span>
             <Select
                 onValueChange={(value) => handleSelectChange(key, value)}
@@ -96,124 +94,35 @@ function SentenceExercise({
                 disabled={!!answerStates.sentence1}
             >
                 <SelectTrigger className={cn(
-                    "w-[150px] h-9 text-base font-semibold",
+                    "w-[140px] h-8 font-semibold",
                     answerStates[key] === 'correct' && 'border-success text-success ring-2 ring-success/50',
                     answerStates[key] === 'incorrect' && 'border-destructive text-destructive ring-2 ring-destructive/50'
                 )}>
                     <SelectValue placeholder={getUIText('selectPlaceholder')} />
                 </SelectTrigger>
                 <SelectContent>
-                    {sentence.options.map(opt => <SelectItem key={opt} value={opt}>{opt}</SelectItem>)}
+                    {sentence.options.map(opt => <SelectItem key={opt} value={opt} className="text-base">{opt}</SelectItem>)}
                 </SelectContent>
             </Select>
             <span>{sentence.text[1]}</span>
         </p>
     );
 
-    const renderContent = () => {
-        switch (styleVariant) {
-            case 1: // Style 1: Original with HR
-                return (
-                    <div className="space-y-4">
-                        {renderSentence(sentenceSet.sentence1, 'sentence1')}
-                        <hr />
-                        {renderSentence(sentenceSet.sentence2, 'sentence2')}
-                    </div>
-                );
-            case 2: // Style 2: Side-by-side columns
-                return (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-                        {renderSentence(sentenceSet.sentence1, 'sentence1')}
-                        {renderSentence(sentenceSet.sentence2, 'sentence2')}
-                    </div>
-                );
-            case 3: // Style 3: Numbered Steps
-                return (
-                    <div className="space-y-4">
-                        <div className="flex gap-4 items-start">
-                            <div className="flex-shrink-0 h-8 w-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold mt-1">1</div>
-                            <div className="flex-grow">{renderSentence(sentenceSet.sentence1, 'sentence1')}</div>
-                        </div>
-                        <div className="flex gap-4 items-start">
-                            <div className="flex-shrink-0 h-8 w-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold mt-1">2</div>
-                            <div className="flex-grow">{renderSentence(sentenceSet.sentence2, 'sentence2')}</div>
-                        </div>
-                    </div>
-                );
-            case 4: // Style 4: Individual Cards
-                return (
-                    <div className="grid grid-cols-1 gap-4">
-                        <Card className="p-4">{renderSentence(sentenceSet.sentence1, 'sentence1')}</Card>
-                        <Card className="p-4">{renderSentence(sentenceSet.sentence2, 'sentence2')}</Card>
-                    </div>
-                );
-            case 5: // Style 5: Blockquotes
-                return (
-                    <div className="space-y-4">
-                        <blockquote className="border-l-4 border-muted-foreground/40 pl-4">{renderSentence(sentenceSet.sentence1, 'sentence1')}</blockquote>
-                        <blockquote className="border-l-4 border-muted-foreground/40 pl-4">{renderSentence(sentenceSet.sentence2, 'sentence2')}</blockquote>
-                    </div>
-                );
-            case 6: // Style 6: Alternating Backgrounds
-                return (
-                    <div className="space-y-2">
-                        <div className="p-4 rounded-lg">{renderSentence(sentenceSet.sentence1, 'sentence1')}</div>
-                        <div className="bg-muted/30 p-4 rounded-lg">{renderSentence(sentenceSet.sentence2, 'sentence2')}</div>
-                    </div>
-                );
-            case 7: // Style 7: Icon Separator
-                return (
-                    <div className="space-y-4">
-                        {renderSentence(sentenceSet.sentence1, 'sentence1')}
-                        <div className="flex justify-center items-center text-muted-foreground"><Link2 className="h-5 w-5" /></div>
-                        {renderSentence(sentenceSet.sentence2, 'sentence2')}
-                    </div>
-                );
-            case 8: // Style 8: Vertical Layout with Line
-                return (
-                    <div className="flex flex-col md:flex-row gap-6">
-                        <div className="flex-1">{renderSentence(sentenceSet.sentence1, 'sentence1')}</div>
-                        <Separator orientation="vertical" className="hidden md:block h-auto" />
-                        <Separator orientation="horizontal" className="block md:hidden" />
-                        <div className="flex-1">{renderSentence(sentenceSet.sentence2, 'sentence2')}</div>
-                    </div>
-                );
-            case 9: // Style 9: Minimalist with a Dot
-                return (
-                    <div className="space-y-2 text-center">
-                        {renderSentence(sentenceSet.sentence1, 'sentence1')}
-                        <div className="text-muted-foreground font-bold text-2xl leading-none">·</div>
-                        {renderSentence(sentenceSet.sentence2, 'sentence2')}
-                    </div>
-                );
-            case 10: // Style 10: Boxed sections with titles
-                return (
-                    <div className="space-y-4">
-                        <div className="border p-4 rounded-lg">
-                            <h4 className="text-sm font-bold text-muted-foreground mb-2 flex items-center gap-2"><FileText className="h-4 w-4"/> Zdanie 1</h4>
-                            {renderSentence(sentenceSet.sentence1, 'sentence1')}
-                        </div>
-                        <div className="border p-4 rounded-lg">
-                            <h4 className="text-sm font-bold text-muted-foreground mb-2 flex items-center gap-2"><Type className="h-4 w-4"/> Zdanie 2</h4>
-                            {renderSentence(sentenceSet.sentence2, 'sentence2')}
-                        </div>
-                    </div>
-                );
-            default:
-                return (
-                    <div className="space-y-4">
-                        {renderSentence(sentenceSet.sentence1, 'sentence1')}
-                        <hr />
-                        {renderSentence(sentenceSet.sentence2, 'sentence2')}
-                    </div>
-                );
-        }
-    }
-
     return (
         <div className="space-y-4 pt-2">
             {showConfetti && <Confetti onConfettiComplete={() => setShowConfetti(false)} />}
-            {renderContent()}
+            
+            <div className="space-y-4">
+                <div className="flex gap-4 items-start">
+                    <div className="flex-shrink-0 h-8 w-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold mt-1">1</div>
+                    <div className="flex-grow">{renderSentence(sentenceSet.sentence1, 'sentence1')}</div>
+                </div>
+                <div className="flex gap-4 items-start">
+                    <div className="flex-shrink-0 h-8 w-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold mt-1">2</div>
+                    <div className="flex-grow">{renderSentence(sentenceSet.sentence2, 'sentence2')}</div>
+                </div>
+            </div>
+
             <div className="flex justify-end gap-2 pt-2">
                 {answerStates.sentence1 && (
                      <Button variant="outline" size="sm" onClick={handleReset}><RefreshCw className="h-4 w-4 mr-2" /> {getUIText('reset')}</Button>
@@ -284,7 +193,6 @@ export default function GapSentencesPage() {
                                             onComplete={() => handleSetComplete(q.id)}
                                             isCompleted={completedSets.has(q.id)}
                                             language={language}
-                                            styleVariant={(index % 10) + 1}
                                         />
                                     </AccordionContent>
                                 </AccordionItem>

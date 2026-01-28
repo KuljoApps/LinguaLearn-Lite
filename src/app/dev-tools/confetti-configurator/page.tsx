@@ -110,6 +110,7 @@ export default function ConfettiConfiguratorPage() {
     const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; type: 'config' | 'palette' | null; name: string | null }>({ open: false, type: null, name: null });
 
     const presets: Record<string, Partial<ConfettiConfig>> = {
+      'Classic': { pieces: 600, gravity: 0.2, wind: 0, shapes: ['heart', 'square', 'star', 'circle', 'line', 'triangle'], colors: ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#4b0082', '#9400d3'], initialVelocityX: 9, initialVelocityY: 10, confettiSource: { x: 50, y: 0, w: 0, h: 100 } },
       'Explosion': { pieces: 500, gravity: 0.3, initialVelocityY: -15, confettiSource: { x: 50, y: 50, w: 20, h: 20 }, colors: ['#ff0000', '#ffa500', '#ffff00', '#ff4500'], shapes: ['star', 'triangle'] },
       'Fountain': { pieces: 400, gravity: 0.1, initialVelocityY: -25, confettiSource: { x: 50, y: 80, w: 20, h: 10 }, shapes: ['line', 'circle'] },
       'Rain': { pieces: 600, gravity: 0.5, wind: 2, confettiSource: { x: 50, y: 0, w: 100, h: 0 }, colors: ['#4dabf7', '#1971c2', '#a5d8ff'], shapes: ['line'] },

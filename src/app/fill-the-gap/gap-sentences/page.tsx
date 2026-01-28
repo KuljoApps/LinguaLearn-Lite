@@ -90,15 +90,15 @@ function SentenceExercise({
             <div className="flex-shrink-0 h-8 w-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold mt-1">
                 {key === 'sentence1' ? 1 : 2}
             </div>
-            <p className="text-base flex flex-wrap items-baseline gap-2">
-                <span>{sentence.text[0]}</span>
+            <p className="text-base leading-snug">
+                <span>{sentence.text[0]}</span>{' '}
                 <Select
                     onValueChange={(value) => handleSelectChange(key, value)}
                     value={selectedAnswers[key] || ''}
                     disabled={!!answerStates.sentence1}
                 >
                     <SelectTrigger className={cn(
-                        "h-8 font-semibold w-fit [&>svg]:hidden px-2",
+                        "h-8 font-semibold w-auto inline-flex items-center align-baseline justify-start [&>svg]:hidden px-2",
                         answerStates[key] === 'correct' && 'border-success text-success ring-2 ring-success/50',
                         answerStates[key] === 'incorrect' && 'border-destructive text-destructive ring-2 ring-destructive/50'
                     )}>
@@ -108,7 +108,7 @@ function SentenceExercise({
                         {sentence.options.map(opt => <SelectItem key={opt} value={opt} className="text-lg">{opt}</SelectItem>)}
                     </SelectContent>
                 </Select>
-                <span>{sentence.text[1]}</span>
+                {' '}<span>{sentence.text[1]}</span>
             </p>
         </div>
     );

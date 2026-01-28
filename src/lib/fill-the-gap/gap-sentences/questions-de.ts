@@ -1,6 +1,6 @@
 import type { GapSentenceSet } from '.';
 
-export const gapWordsQuestionsDe: GapSentenceSet[] = [
+export const gapSentencesQuestionsDe: GapSentenceSet[] = [
   {
     id: 1,
     title: 'Ein Tag im Park',

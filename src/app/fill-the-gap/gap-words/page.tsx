@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useMemo, type SetStateAction, type Dispatch } from 'react';
@@ -231,7 +232,7 @@ function WordListPage({ onSelectQuestion }: { onSelectQuestion: Dispatch<SetStat
     if (!currentCategory) return null;
 
     return (
-        <main className="flex min-h-screen flex-col items-center justify-center p-4">
+        <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-orange-100">
             <Card className="w-full max-w-2xl shadow-2xl">
                 <CardHeader className="text-center pb-2">
                     <div className="flex items-center justify-center gap-4 pb-3">
@@ -241,38 +242,35 @@ function WordListPage({ onSelectQuestion }: { onSelectQuestion: Dispatch<SetStat
                     <p className="text-muted-foreground pt-0">{getUIText('description')}</p>
                 </CardHeader>
                 <CardContent className="p-0 pt-2 pb-4">
-                    <div className="px-4 mb-2">
-                      <div className="flex items-center justify-between p-2 rounded-lg bg-orange-100 border border-amber">
-                          <Button variant="ghost" size="icon" onClick={handlePrevCategory}>
-                          <ArrowLeft className="h-5 w-5" />
-                          </Button>
-                          <div className="text-center">
-                          <h3 className="font-semibold">{currentCategory.title}</h3>
-                          <p className="text-sm text-muted-foreground">{currentCategoryIndex + 1} / {categories.length}</p>
-                          </div>
-                          <Button variant="ghost" size="icon" onClick={handleNextCategory}>
-                          <ArrowRight className="h-5 w-5" />
-                          </Button>
-                      </div>
+                    <div className="px-4 mb-4">
+                        <div className="flex items-center justify-between p-2 rounded-lg bg-orange-100 border border-amber">
+                            <Button variant="ghost" size="icon" onClick={handlePrevCategory}>
+                            <ArrowLeft className="h-5 w-5" />
+                            </Button>
+                            <div className="text-center">
+                            <h3 className="font-semibold">{currentCategory.title}</h3>
+                            <p className="text-sm text-muted-foreground">{currentCategoryIndex + 1} / {categories.length}</p>
+                            </div>
+                            <Button variant="ghost" size="icon" onClick={handleNextCategory}>
+                            <ArrowRight className="h-5 w-5" />
+                            </Button>
+                        </div>
                     </div>
                     <ScrollArea className="h-[64vh]">
-                        <div className={cn(
-                            view === 'list' && 'space-y-1 px-4',
-                            view === 'grid' && 'grid grid-cols-4 sm:grid-cols-7 gap-3 px-6'
-                        )}>
-                            {view === 'list' ? (
-                                <>
-                                    {uncompleted.map((q, i) => renderWordItem(q, i, false))}
-                                    {completed.length > 0 && uncompleted.length > 0 && (
-                                        <div className="py-4">
-                                            <h3 className="text-sm font-semibold text-muted-foreground text-center uppercase tracking-wider">Completed</h3>
-                                            <Separator className="mt-2" />
-                                        </div>
-                                    )}
-                                    {completed.map((q, i) => renderWordItem(q, uncompleted.length + i, true))}
-                                </>
-                            ) : (
-                                currentCategory.words.map((question, index) => {
+                        {view === 'list' ? (
+                            <div className="space-y-1 px-4">
+                                {uncompleted.map((q, i) => renderWordItem(q, i, false))}
+                                {completed.length > 0 && uncompleted.length > 0 && (
+                                    <div className="py-4">
+                                        <h3 className="text-sm font-semibold text-muted-foreground text-center uppercase tracking-wider">Completed</h3>
+                                        <Separator className="mt-2" />
+                                    </div>
+                                )}
+                                {completed.map((q, i) => renderWordItem(q, uncompleted.length + i, true))}
+                            </div>
+                        ) : (
+                             <div className="grid grid-cols-4 sm:grid-cols-7 gap-3 px-6">
+                                {currentCategory.words.map((question, index) => {
                                     const isCompleted = completedWords.has(question.fullWord);
                                     return (
                                         <div onClick={() => onSelectQuestion(question)} key={question.fullWord} className="cursor-pointer">
@@ -286,9 +284,9 @@ function WordListPage({ onSelectQuestion }: { onSelectQuestion: Dispatch<SetStat
                                             </div>
                                         </div>
                                     )
-                                })
-                            )}
-                        </div>
+                                })}
+                            </div>
+                        )}
                     </ScrollArea>
                 </CardContent>
                 <CardFooter className="flex justify-center p-6 border-t">

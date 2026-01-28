@@ -209,7 +209,18 @@ function WordListPage({ onSelectQuestion }: { onSelectQuestion: Dispatch<SetStat
                 <div className="flex items-center gap-3">
                     <span className="text-muted-foreground font-mono w-6 text-right">{index + 1}.</span>
                     <span className={cn("font-semibold text-lg", !isCompleted && "font-mono tracking-wider")}>
-                         {isCompleted ? question.fullWord : question.wordWithGap.replace(/_+/g, '___')}
+                         {isCompleted ? (
+                            (() => {
+                                const parts = question.wordWithGap.split(/_+/);
+                                return (
+                                    <span>
+                                        {parts[0]}<span className="underline decoration-amber underline-offset-2 decoration-2">{question.missingLetters}</span>{parts[1]}
+                                    </span>
+                                );
+                            })()
+                         ) : (
+                            question.wordWithGap.replace(/_+/g, '___')
+                         )}
                     </span>
                 </div>
                 {isCompleted ? <CheckCircle className="h-5 w-5 text-success" /> : <Pencil className="h-5 w-5 text-muted-foreground/50" />}
@@ -230,7 +241,7 @@ function WordListPage({ onSelectQuestion }: { onSelectQuestion: Dispatch<SetStat
                     <p className="text-muted-foreground pt-2">{getUIText('description')}</p>
                 </CardHeader>
                 <CardContent className="pl-6 pr-2 pt-2 pb-4">
-                     <div className="flex items-center justify-between p-2 mb-4 rounded-lg bg-muted/50 border">
+                     <div className="flex items-center justify-between p-2 mb-2 rounded-lg bg-amber/10 border border-amber">
                         <Button variant="ghost" size="icon" onClick={handlePrevCategory}>
                           <ArrowLeft className="h-5 w-5" />
                         </Button>

@@ -14,6 +14,11 @@ export const gapSentencesQuestionsDe: GapSentenceSet[] = [
       options: ['kalte', 'warme', 'dunkle', 'leere'],
       correctAnswer: 'warme',
     },
+    sentence3: {
+      text: ['Leute entspannten sich auf Decken und genossen das ', ' Wetter.'],
+      options: ['schreckliche', 'regnerische', 'schöne', 'stürmische'],
+      correctAnswer: 'schöne',
+    },
   },
   {
     id: 2,
@@ -27,6 +32,11 @@ export const gapSentencesQuestionsDe: GapSentenceSet[] = [
       text: ['Danach gehe ich in die Küche, um mir eine ', ' Tasse Kaffee zu machen.'],
       options: ['kalte', 'schwache', 'starke', 'blaue'],
       correctAnswer: 'starke',
+    },
+    sentence3: {
+        text: ['Bevor ich zur Arbeit gehe, lese ich immer die ', ' auf meinem Handy.'],
+        options: ['Bücher', 'Nachrichten', 'Botschaften', 'E-Mails'],
+        correctAnswer: 'Nachrichten',
     },
   },
   {
@@ -42,6 +52,11 @@ export const gapSentencesQuestionsDe: GapSentenceSet[] = [
       options: ['erinnert', 'vergessen', 'gekauft', 'gesehen'],
       correctAnswer: 'vergessen',
     },
+    sentence3: {
+        text: ['Vergessen Sie nicht, eine wiederverwendbare ', ' mitzunehmen, um alles zu tragen.'],
+        options: ['Kiste', 'Flasche', 'Tasche', 'Tasse'],
+        correctAnswer: 'Tasche',
+    },
   },
   {
     id: 4,
@@ -55,6 +70,11 @@ export const gapSentencesQuestionsDe: GapSentenceSet[] = [
       text: ['Geben Sie dann die Soße in den Topf und ', ' Sie gelegentlich um.'],
       options: ['frieren', 'verbrennen', 'rühren', 'trinken'],
       correctAnswer: 'rühren',
+    },
+    sentence3: {
+        text: ['Lassen Sie es 10 Minuten köcheln, damit sich die Aromen ', '.'],
+        options: ['trennen', 'verschwinden', 'vermischen', 'abkühlen'],
+        correctAnswer: 'vermischen',
     },
   },
   {
@@ -70,6 +90,11 @@ export const gapSentencesQuestionsDe: GapSentenceSet[] = [
       options: ['langweiliges', 'gutes', 'kurzes', 'lautes'],
       correctAnswer: 'gutes',
     },
+    sentence3: {
+        text: ['Eine warme Tasse Tee war der perfekte ', ' für den gemütlichen Nachmittag.'],
+        options: ['Feind', 'Problem', 'Begleiter', 'Aufgabe'],
+        correctAnswer: 'Begleiter',
+    },
   },
   {
     id: 6,
@@ -83,6 +108,11 @@ export const gapSentencesQuestionsDe: GapSentenceSet[] = [
       text: ['Der Film war so ', ', dass ich meine Augen nicht vom Bildschirm abwenden konnte.'],
       options: ['langweilig', 'lang', 'spannend', 'traurig'],
       correctAnswer: 'spannend',
+    },
+    sentence3: {
+        text: ['Die Soundeffekte waren unglaublich und machten das Erlebnis ', '.'],
+        options: ['ruhig', 'verwirrend', 'immersiv', 'langweilig'],
+        correctAnswer: 'immersiv',
     },
   },
   {
@@ -98,6 +128,11 @@ export const gapSentencesQuestionsDe: GapSentenceSet[] = [
       options: ['schmutzigen', 'nötigen', 'alten', 'schweren'],
       correctAnswer: 'nötigen',
     },
+    sentence3: {
+        text: ['Ich muss auch ein gutes ', ' in der Nähe des Stadtzentrums finden.'],
+        options: ['Restaurant', 'Park', 'Hotel', 'Geschäft'],
+        correctAnswer: 'Hotel',
+    },
   },
   {
     id: 8,
@@ -111,6 +146,11 @@ export const gapSentencesQuestionsDe: GapSentenceSet[] = [
       text: ['Danach läuft sie normalerweise 30 Minuten auf dem ', ', um ihr Kardio zu verbessern.'],
       options: ['Sofa', 'Laufband', 'Bett', 'Boden'],
       correctAnswer: 'Laufband',
+    },
+    sentence3: {
+        text: ['Es ist wichtig, sich vor jedem Training richtig zu ', '.'],
+        options: ['essen', 'schlafen', 'dehnen', 'sitzen'],
+        correctAnswer: 'dehnen',
     },
   },
   {
@@ -126,6 +166,11 @@ export const gapSentencesQuestionsDe: GapSentenceSet[] = [
       options: ['Schlafen', 'Apportieren', 'Verstecken', 'Lesen'],
       correctAnswer: 'Apportieren',
     },
+    sentence3: {
+        text: ['Jeden Abend machen sie einen langen ', ' durch die Nachbarschaft.'],
+        options: ['Fahrt', 'Schlaf', 'Spaziergang', 'Lauf'],
+        correctAnswer: 'Spaziergang',
+    },
   },
   {
     id: 10,
@@ -139,6 +184,11 @@ export const gapSentencesQuestionsDe: GapSentenceSet[] = [
       text: ['Es war so einfach, sich in der faszinierenden ', ' des Romans zu verlieren.'],
       options: ['Bildern', 'Index', 'Geschichte', 'Preis'],
       correctAnswer: 'Geschichte',
+    },
+    sentence3: {
+        text: ['Der Schreibstil des Autors war sowohl ', ' als auch leicht zu folgen.'],
+        options: ['verwirrend', 'langweilig', 'elegant', 'einfach'],
+        correctAnswer: 'elegant',
     },
   },
 ];

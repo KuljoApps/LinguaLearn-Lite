@@ -14,6 +14,11 @@ export const gapSentencesQuestionsIt: GapSentenceSet[] = [
       options: ['fredda', 'calda', 'buia', 'vuota'],
       correctAnswer: 'calda',
     },
+    sentence3: {
+      text: ['La gente si rilassava sulle coperte, godendosi il ', ' tempo.'],
+      options: ['brutto', 'piovoso', 'bel', 'tempestoso'],
+      correctAnswer: 'bel',
+    },
   },
   {
     id: 2,
@@ -27,6 +32,11 @@ export const gapSentencesQuestionsIt: GapSentenceSet[] = [
       text: ['Poi vado in cucina a prepararmi una ', ' tazza di caffè.'],
       options: ['fredda', 'debole', 'buona', 'blu'],
       correctAnswer: 'buona',
+    },
+    sentence3: {
+        text: ['Prima di andare al lavoro, leggo sempre le ', ' sul mio telefono.'],
+        options: ['libri', 'notizie', 'poesie', 'email'],
+        correctAnswer: 'notizie',
     },
   },
   {
@@ -42,6 +52,11 @@ export const gapSentencesQuestionsIt: GapSentenceSet[] = [
       options: ['ricordato', 'dimenticato', 'comprato', 'visto'],
       correctAnswer: 'dimenticato',
     },
+    sentence3: {
+        text: ['Non dimenticare di prendere una borsa ', ' per trasportare tutto.'],
+        options: ['di carta', 'di plastica', 'riutilizzabile', 'piccola'],
+        correctAnswer: 'riutilizzabile',
+    },
   },
   {
     id: 4,
@@ -55,6 +70,11 @@ export const gapSentencesQuestionsIt: GapSentenceSet[] = [
       text: ['Poi, aggiungi la salsa nella pentola e ', ' di tanto in tanto.'],
       options: ['congela', 'brucia', 'mescola', 'bevi'],
       correctAnswer: 'mescola',
+    },
+    sentence3: {
+        text: ['Lascia sobbollire per 10 minuti per far ', ' i sapori.'],
+        options: ['separare', 'svanire', 'amalgamare', 'raffreddare'],
+        correctAnswer: 'amalgamare',
     },
   },
   {
@@ -70,6 +90,11 @@ export const gapSentencesQuestionsIt: GapSentenceSet[] = [
       options: ['noioso', 'bel', 'corto', 'rumoroso'],
       correctAnswer: 'bel',
     },
+    sentence3: {
+        text: ['Una tazza di tè caldo era la ', ' perfetta per il pomeriggio accogliente.'],
+        options: ['nemica', 'compagna', 'distrazione', 'sfida'],
+        correctAnswer: 'compagna',
+    },
   },
   {
     id: 6,
@@ -83,6 +108,11 @@ export const gapSentencesQuestionsIt: GapSentenceSet[] = [
       text: ['Il film era così ', ' che non riuscivo a staccare gli occhi dallo schermo.'],
       options: ['noioso', 'lungo', 'avvincente', 'triste'],
       correctAnswer: 'avvincente',
+    },
+    sentence3: {
+        text: ['Gli effetti sonori erano incredibili e rendevano l\'esperienza ', '.'],
+        options: ['silenziosa', 'confusa', 'immersiva', 'piatta'],
+        correctAnswer: 'immersiva',
     },
   },
   {
@@ -98,6 +128,11 @@ export const gapSentencesQuestionsIt: GapSentenceSet[] = [
       options: ['sporchi', 'necessari', 'vecchi', 'pesanti'],
       correctAnswer: 'necessari',
     },
+    sentence3: {
+        text: ['Dovrò anche trovare un buon ', ' vicino al centro della città.'],
+        options: ['ristorante', 'parco', 'hotel', 'negozio'],
+        correctAnswer: 'hotel',
+    },
   },
   {
     id: 8,
@@ -111,6 +146,11 @@ export const gapSentencesQuestionsIt: GapSentenceSet[] = [
       text: ['Dopo di che, di solito corre per 30 minuti sul ', ' per migliorare il suo cardio.'],
       options: ['divano', 'tapis roulant', 'letto', 'pavimento'],
       correctAnswer: 'tapis roulant',
+    },
+    sentence3: {
+        text: ['È importante fare ', ' correttamente prima di iniziare qualsiasi allenamento.'],
+        options: ['colazione', 'una doccia', 'stretching', 'una pausa'],
+        correctAnswer: 'stretching',
     },
   },
   {
@@ -126,6 +166,11 @@ export const gapSentencesQuestionsIt: GapSentenceSet[] = [
       options: ['dormire', 'riportare', 'nascondere', 'leggere'],
       correctAnswer: 'riportare',
     },
+    sentence3: {
+        text: ['Ogni sera, fanno una lunga ', ' nel quartiere.'],
+        options: ['dormita', 'festa', 'passeggiata', 'corsa'],
+        correctAnswer: 'passeggiata',
+    },
   },
   {
     id: 10,
@@ -139,6 +184,11 @@ export const gapSentencesQuestionsIt: GapSentenceSet[] = [
       text: ['Era così facile perdersi nell\'affascinante ', ' del romanzo.'],
       options: ['immagini', 'indice', 'storia', 'prezzo'],
       correctAnswer: 'storia',
+    },
+    sentence3: {
+        text: ['Lo stile di scrittura dell\'autore era sia ', ' che facile da seguire.'],
+        options: ['confusionario', 'noioso', 'elegante', 'semplice'],
+        correctAnswer: 'elegante',
     },
   },
 ];

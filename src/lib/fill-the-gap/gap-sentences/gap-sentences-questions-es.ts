@@ -14,6 +14,11 @@ export const gapSentencesQuestionsEs: GapSentenceSet[] = [
       options: ['frío', 'cálido', 'oscuro', 'vacío'],
       correctAnswer: 'cálido',
     },
+    sentence3: {
+      text: ['La gente se relajaba en mantas, disfrutando del ', ' tiempo.'],
+      options: ['horrible', 'lluvioso', 'buen', 'tormentoso'],
+      correctAnswer: 'buen',
+    },
   },
   {
     id: 2,
@@ -27,6 +32,11 @@ export const gapSentencesQuestionsEs: GapSentenceSet[] = [
       text: ['Luego, voy a la cocina para prepararme una ', ' taza de café.'],
       options: ['fría', 'débil', 'fuerte', 'azul'],
       correctAnswer: 'fuerte',
+    },
+    sentence3: {
+        text: ['Antes de ir al trabajo, siempre leo las ', ' en mi móvil.'],
+        options: ['libros', 'mensajes', 'noticias', 'cartas'],
+        correctAnswer: 'noticias',
     },
   },
   {
@@ -42,6 +52,11 @@ export const gapSentencesQuestionsEs: GapSentenceSet[] = [
       options: ['recordé', 'olvidé', 'compré', 'vi'],
       correctAnswer: 'olvidé',
     },
+    sentence3: {
+        text: ['No olvides coger una bolsa ', ' para llevarlo todo.'],
+        options: ['de papel', 'de plástico', 'reutilizable', 'pequeña'],
+        correctAnswer: 'reutilizable',
+    },
   },
   {
     id: 4,
@@ -55,6 +70,11 @@ export const gapSentencesQuestionsEs: GapSentenceSet[] = [
       text: ['Luego, añade la salsa a la olla y ', ' de vez en cuando.'],
       options: ['congela', 'quema', 'remueve', 'bebe'],
       correctAnswer: 'remueve',
+    },
+    sentence3: {
+        text: ['Déjalo cocer a fuego lento durante 10 minutos para que los sabores se ', '.'],
+        options: ['separen', 'evaporen', 'mezclen', 'enfríen'],
+        correctAnswer: 'mezclen',
     },
   },
   {
@@ -70,6 +90,11 @@ export const gapSentencesQuestionsEs: GapSentenceSet[] = [
       options: ['aburrido', 'buen', 'corto', 'ruidoso'],
       correctAnswer: 'buen',
     },
+    sentence3: {
+        text: ['Una taza de té caliente era la ', ' perfecta para la tarde acogedora.'],
+        options: ['enemiga', 'compañera', 'molestia', 'tarea'],
+        correctAnswer: 'compañera',
+    },
   },
   {
     id: 6,
@@ -83,6 +108,11 @@ export const gapSentencesQuestionsEs: GapSentenceSet[] = [
       text: ['La película era tan ', ' que no podía quitar los ojos de la pantalla.'],
       options: ['aburrida', 'larga', 'emocionante', 'triste'],
       correctAnswer: 'emocionante',
+    },
+    sentence3: {
+        text: ['Los efectos de sonido fueron increíbles e hicieron la experiencia ', '.'],
+        options: ['silenciosa', 'confusa', 'inmersiva', 'monótona'],
+        correctAnswer: 'inmersiva',
     },
   },
   {
@@ -98,6 +128,11 @@ export const gapSentencesQuestionsEs: GapSentenceSet[] = [
       options: ['sucia', 'necesaria', 'vieja', 'pesada'],
       correctAnswer: 'necesaria',
     },
+    sentence3: {
+        text: ['También necesitaré encontrar un buen ', ' cerca del centro de la ciudad.'],
+        options: ['restaurante', 'parque', 'hotel', 'tienda'],
+        correctAnswer: 'hotel',
+    },
   },
   {
     id: 8,
@@ -111,6 +146,11 @@ export const gapSentencesQuestionsEs: GapSentenceSet[] = [
       text: ['Después de eso, ella suele correr 30 minutos en la ', ' para mejorar su cardio.'],
       options: ['sofá', 'cinta de correr', 'cama', 'suelo'],
       correctAnswer: 'cinta de correr',
+    },
+    sentence3: {
+        text: ['Es importante ', ' correctamente antes de empezar cualquier entrenamiento.'],
+        options: ['comer', 'dormir', 'estirar', 'sentarse'],
+        correctAnswer: 'estirar',
     },
   },
   {
@@ -126,6 +166,11 @@ export const gapSentencesQuestionsEs: GapSentenceSet[] = [
       options: ['dormir', 'buscar', 'esconderse', 'leer'],
       correctAnswer: 'buscar',
     },
+    sentence3: {
+        text: ['Cada tarde, dan un largo ', ' por el vecindario.'],
+        options: ['viaje', 'sueño', 'paseo', 'carrera'],
+        correctAnswer: 'paseo',
+    },
   },
   {
     id: 10,
@@ -139,6 +184,11 @@ export const gapSentencesQuestionsEs: GapSentenceSet[] = [
       text: ['Era tan fácil perderse en la fascinante ', ' de la novela.'],
       options: ['imágenes', 'índice', 'historia', 'precio'],
       correctAnswer: 'historia',
+    },
+    sentence3: {
+        text: ['El estilo de escritura del autor era elegante y ', ' de seguir.'],
+        options: ['difícil', 'aburrido', 'fácil', 'complicado'],
+        correctAnswer: 'fácil',
     },
   },
 ];

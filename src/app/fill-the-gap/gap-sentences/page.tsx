@@ -17,8 +17,8 @@ import { playSound } from '@/lib/sounds';
 import { vibrate } from '@/lib/vibrations';
 import { Separator } from '@/components/ui/separator';
 
-type SelectedAnswers = Record<number, { sentence1?: string; sentence2?: string }>;
-type AnswerStates = Record<number, { sentence1?: 'correct' | 'incorrect'; sentence2?: 'correct' | 'incorrect' }>;
+type SelectedAnswers = Record<number, { sentence1?: string; sentence2?: string; sentence3?: string }>;
+type AnswerStates = Record<number, { sentence1?: 'correct' | 'incorrect'; sentence2?: 'correct' | 'incorrect'; sentence3?: 'correct' | 'incorrect' }>;
 
 const uiTexts = {
     title: { en: 'Gap in the Sentences', fr: 'Trou dans les Phrases', de: 'Lücke in den Sätzen', it: 'Spazio nelle Frasi', es: 'Hueco en las Oraciones' },
@@ -45,11 +45,11 @@ function SentenceExercise({
     language: Language;
 }) {
     const { toast } = useToast();
-    const [selectedAnswers, setSelectedAnswers] = useState<{ sentence1?: string; sentence2?: string }>({});
-    const [answerStates, setAnswerStates] = useState<{ sentence1?: 'correct' | 'incorrect' | null; sentence2?: 'correct' | 'incorrect' | null }>({ sentence1: null, sentence2: null });
+    const [selectedAnswers, setSelectedAnswers] = useState<{ sentence1?: string; sentence2?: string, sentence3?: string }>({});
+    const [answerStates, setAnswerStates] = useState<{ sentence1?: 'correct' | 'incorrect' | null; sentence2?: 'correct' | 'incorrect' | null, sentence3?: 'correct' | 'incorrect' | null }>({ sentence1: null, sentence2: null, sentence3: null });
     const [showConfetti, setShowConfetti] = useState(false);
 
-    const handleSelectChange = (sentenceKey: 'sentence1' | 'sentence2', value: string) => {
+    const handleSelectChange = (sentenceKey: 'sentence1' | 'sentence2' | 'sentence3', value: string) => {
         if (answerStates.sentence1) return; // Don't allow changes after checking
         setSelectedAnswers(prev => ({ ...prev, [sentenceKey]: value }));
     };
@@ -57,17 +57,19 @@ function SentenceExercise({
     const getUIText = (key: keyof typeof uiTexts) => uiTexts[key][language] || uiTexts[key]['en'];
 
     const handleCheckAnswers = () => {
-        if (!selectedAnswers.sentence1 || !selectedAnswers.sentence2) return;
+        if (!selectedAnswers.sentence1 || !selectedAnswers.sentence2 || !selectedAnswers.sentence3) return;
 
         const isCorrect1 = selectedAnswers.sentence1 === sentenceSet.sentence1.correctAnswer;
         const isCorrect2 = selectedAnswers.sentence2 === sentenceSet.sentence2.correctAnswer;
+        const isCorrect3 = selectedAnswers.sentence3 === sentenceSet.sentence3.correctAnswer;
 
         setAnswerStates({
             sentence1: isCorrect1 ? 'correct' : 'incorrect',
             sentence2: isCorrect2 ? 'correct' : 'incorrect',
+            sentence3: isCorrect3 ? 'correct' : 'incorrect',
         });
 
-        if (isCorrect1 && isCorrect2) {
+        if (isCorrect1 && isCorrect2 && isCorrect3) {
             toast({ title: getUIText('correctToast'), description: getUIText('correctDesc') });
             playSound('correct');
             vibrate('correct');
@@ -82,13 +84,13 @@ function SentenceExercise({
 
     const handleReset = () => {
         setSelectedAnswers({});
-        setAnswerStates({ sentence1: null, sentence2: null });
+        setAnswerStates({ sentence1: null, sentence2: null, sentence3: null });
     };
 
-    const renderSentence = (sentence: Gap, key: 'sentence1' | 'sentence2') => (
-        <div className="flex items-start gap-4">
+    const renderSentence = (sentence: Gap, key: 'sentence1' | 'sentence2' | 'sentence3') => (
+        <div className="flex items-start gap-4" key={key}>
             <div className="flex-shrink-0 h-8 w-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold mt-1">
-                {key === 'sentence1' ? 1 : 2}
+                {key === 'sentence1' ? 1 : key === 'sentence2' ? 2 : 3}
             </div>
             <p className="text-base leading-loose">
                 <span>{sentence.text[0]}</span>{' '}
@@ -98,7 +100,7 @@ function SentenceExercise({
                     disabled={!!answerStates.sentence1}
                 >
                     <SelectTrigger className={cn(
-                        "h-8 font-semibold w-auto inline-flex items-center align-baseline justify-start [&>svg]:hidden px-2",
+                        "h-8 font-semibold w-auto inline-flex items-baseline justify-start [&>svg]:hidden px-2",
                         answerStates[key] === 'correct' && 'border-success text-success ring-2 ring-success/50',
                         answerStates[key] === 'incorrect' && 'border-destructive text-destructive ring-2 ring-destructive/50'
                     )}>
@@ -120,13 +122,14 @@ function SentenceExercise({
             <div className="space-y-4">
                 {renderSentence(sentenceSet.sentence1, 'sentence1')}
                 {renderSentence(sentenceSet.sentence2, 'sentence2')}
+                {renderSentence(sentenceSet.sentence3, 'sentence3')}
             </div>
 
             <div className="flex justify-end gap-2 pt-2">
                 {answerStates.sentence1 && !isCompleted && (
                      <Button variant="outline" size="sm" onClick={handleReset}><RefreshCw className="h-4 w-4 mr-2" /> {getUIText('reset')}</Button>
                 )}
-                <Button size="sm" onClick={handleCheckAnswers} disabled={!selectedAnswers.sentence1 || !selectedAnswers.sentence2 || !!answerStates.sentence1}>
+                <Button size="sm" onClick={handleCheckAnswers} disabled={!selectedAnswers.sentence1 || !selectedAnswers.sentence2 || !selectedAnswers.sentence3 || !!answerStates.sentence1}>
                     {getUIText('check')}
                 </Button>
             </div>

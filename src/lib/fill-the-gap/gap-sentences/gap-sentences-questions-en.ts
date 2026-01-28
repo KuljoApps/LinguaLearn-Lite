@@ -14,6 +14,11 @@ export const gapSentencesQuestionsEn: GapSentenceSet[] = [
       options: ['cold', 'warm', 'dark', 'empty'],
       correctAnswer: 'warm',
     },
+    sentence3: {
+      text: ['People were relaxing on blankets, enjoying the ', ' weather.'],
+      options: ['awful', 'rainy', 'lovely', 'stormy'],
+      correctAnswer: 'lovely',
+    },
   },
   {
     id: 2,
@@ -27,6 +32,11 @@ export const gapSentencesQuestionsEn: GapSentenceSet[] = [
       text: ['Then, I go to the kitchen to make a ', ' cup of coffee.'],
       options: ['cold', 'weak', 'strong', 'blue'],
       correctAnswer: 'strong',
+    },
+    sentence3: {
+        text: ['Before leaving for work, I always read the ', ' on my phone.'],
+        options: ['books', 'messages', 'news', 'emails'],
+        correctAnswer: 'news',
     },
   },
   {
@@ -42,6 +52,11 @@ export const gapSentencesQuestionsEn: GapSentenceSet[] = [
       options: ['remembered', 'forgot', 'bought', 'saw'],
       correctAnswer: 'forgot',
     },
+    sentence3: {
+        text: ['Don\'t forget to grab a reusable ', ' to carry everything.'],
+        options: ['box', 'bottle', 'bag', 'cup'],
+        correctAnswer: 'bag',
+    },
   },
   {
     id: 4,
@@ -55,6 +70,11 @@ export const gapSentencesQuestionsEn: GapSentenceSet[] = [
       text: ['Then, add the sauce to the pot and ', ' it occasionally.'],
       options: ['freeze', 'burn', 'stir', 'drink'],
       correctAnswer: 'stir',
+    },
+    sentence3: {
+        text: ['Let it simmer for 10 minutes to allow the flavors to ', '.'],
+        options: ['separate', 'disappear', 'blend', 'cool'],
+        correctAnswer: 'blend',
     },
   },
   {
@@ -70,6 +90,11 @@ export const gapSentencesQuestionsEn: GapSentenceSet[] = [
       options: ['boring', 'good', 'short', 'loud'],
       correctAnswer: 'good',
     },
+    sentence3: {
+        text: ['A warm cup of tea was the perfect ', ' for the cozy afternoon.'],
+        options: ['enemy', 'problem', 'companion', 'task'],
+        correctAnswer: 'companion',
+    },
   },
   {
     id: 6,
@@ -83,6 +108,11 @@ export const gapSentencesQuestionsEn: GapSentenceSet[] = [
       text: ['The movie was so ', ' that I couldn\'t take my eyes off the screen.'],
       options: ['boring', 'long', 'exciting', 'sad'],
       correctAnswer: 'exciting',
+    },
+    sentence3: {
+        text: ['The sound effects were incredible and made the experience ', '.'],
+        options: ['quiet', 'confusing', 'immersive', 'dull'],
+        correctAnswer: 'immersive',
     },
   },
   {
@@ -98,6 +128,11 @@ export const gapSentencesQuestionsEn: GapSentenceSet[] = [
       options: ['dirty', 'necessary', 'old', 'heavy'],
       correctAnswer: 'necessary',
     },
+    sentence3: {
+        text: ['I\'ll also need to find a good ', ' near the city center.'],
+        options: ['restaurant', 'park', 'hotel', 'shop'],
+        correctAnswer: 'hotel',
+    },
   },
   {
     id: 8,
@@ -111,6 +146,11 @@ export const gapSentencesQuestionsEn: GapSentenceSet[] = [
       text: ['After that, she usually runs for 30 minutes on the ', ' to improve her cardio.'],
       options: ['sofa', 'treadmill', 'bed', 'floor'],
       correctAnswer: 'treadmill',
+    },
+    sentence3: {
+        text: ['It\'s important to ', ' properly before starting any workout.'],
+        options: ['eat', 'sleep', 'stretch', 'sit'],
+        correctAnswer: 'stretch',
     },
   },
   {
@@ -126,6 +166,11 @@ export const gapSentencesQuestionsEn: GapSentenceSet[] = [
       options: ['sleep', 'fetch', 'hide', 'read'],
       correctAnswer: 'fetch',
     },
+    sentence3: {
+        text: ['Every evening, they go for a long ', ' around the neighborhood.'],
+        options: ['drive', 'sleep', 'walk', 'run'],
+        correctAnswer: 'walk',
+    },
   },
   {
     id: 10,
@@ -139,6 +184,11 @@ export const gapSentencesQuestionsEn: GapSentenceSet[] = [
       text: ['It was so easy to get lost in the fascinating ', ' of the novel.'],
       options: ['pictures', 'index', 'story', 'price'],
       correctAnswer: 'story',
+    },
+    sentence3: {
+        text: ['The author\'s writing style was both ', ' and easy to follow.'],
+        options: ['confusing', 'boring', 'elegant', 'simple'],
+        correctAnswer: 'elegant',
     },
   },
 ];

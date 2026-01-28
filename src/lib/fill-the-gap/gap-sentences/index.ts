@@ -16,6 +16,7 @@ export interface GapSentenceSet {
   title: string;
   sentence1: Gap;
   sentence2: Gap;
+  sentence3: Gap;
 }
 
 export const allGapSentenceQuestions: Record<Language, GapSentenceSet[]> = {

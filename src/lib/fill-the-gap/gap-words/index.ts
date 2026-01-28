@@ -1,9 +1,9 @@
 import type { Language } from '@/lib/storage';
-import { gapWordsQuestionsEn } from './questions-en';
-import { gapWordsQuestionsDe } from './questions-de';
-import { gapWordsQuestionsFr } from './questions-fr';
-import { gapWordsQuestionsEs } from './questions-es';
-import { gapWordsQuestionsIt } from './questions-it';
+import { gapWordsQuestionsEn } from './gap-words-questions-en';
+import { gapWordsQuestionsDe } from './gap-words-questions-de';
+import { gapWordsQuestionsFr } from './gap-words-questions-fr';
+import { gapWordsQuestionsEs } from './gap-words-questions-es';
+import { gapWordsQuestionsIt } from './gap-words-questions-it';
 
 export interface GapWordQuestion {
   wordWithGap: string;

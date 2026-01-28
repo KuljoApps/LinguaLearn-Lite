@@ -1,9 +1,9 @@
 import type { Language } from '@/lib/storage';
-import { gapSentencesQuestionsEn } from './questions-en';
-import { gapSentencesQuestionsDe } from './questions-de';
-import { gapSentencesQuestionsFr } from './questions-fr';
-import { gapSentencesQuestionsEs } from './questions-es';
-import { gapSentencesQuestionsIt } from './questions-it';
+import { gapSentencesQuestionsEn } from './gap-sentences-questions-en';
+import { gapSentencesQuestionsDe } from './gap-sentences-questions-de';
+import { gapSentencesQuestionsFr } from './gap-sentences-questions-fr';
+import { gapSentencesQuestionsEs } from './gap-sentences-questions-es';
+import { gapSentencesQuestionsIt } from './gap-sentences-questions-it';
 
 export interface Gap {
   text: string[]; // [part1, part2]

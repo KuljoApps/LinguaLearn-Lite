@@ -4,7 +4,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowLeft, Puzzle, Save, Trash2, ClipboardCopy, Settings, Wrench } from 'lucide-react';
+import { ArrowLeft, Puzzle, Save, Trash2, ClipboardCopy, Settings, Wrench, FolderOpen, Upload } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { type CrosswordPuzzle, type CrosswordClue } from '@/lib/games/crossword';
 import { Input } from '@/components/ui/input';
@@ -14,9 +14,20 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { getLanguage, type Language } from '@/lib/storage';
 import { allCrosswordPuzzles } from '@/lib/games/crossword';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const GRID_WIDTH = 6;
 const GRID_HEIGHT = 9;
+const PUZZLES_STORAGE_KEY = 'linguaLearnCrosswordSaves_v1';
 
 const initialGrid = () => Array(GRID_HEIGHT).fill(null).map(() => Array(GRID_WIDTH).fill({ letter: '', number: null }));
 
@@ -39,9 +50,22 @@ const CrosswordGeneratorPage = () => {
     const [outputJson, setOutputJson] = useState('');
     const [language, setLanguage] = useState<Language>(getLanguage());
 
+    const [savedPuzzles, setSavedPuzzles] = useState<Record<string, { grid: GridState; clues: [number, ClueData][] }>>({});
+    const [newPuzzleName, setNewPuzzleName] = useState('');
+    const [activePuzzleName, setActivePuzzleName] = useState<string | null>(null);
+    const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; name: string | null }>({ open: false, name: null });
+
     useEffect(() => {
         const handleLanguageChange = () => setLanguage(getLanguage());
         window.addEventListener('language-changed', handleLanguageChange);
+        
+        try {
+            const puzzlesJson = localStorage.getItem(PUZZLES_STORAGE_KEY);
+            if (puzzlesJson) {
+                setSavedPuzzles(JSON.parse(puzzlesJson));
+            }
+        } catch (e) { console.error("Failed to load crossword data:", e); }
+
         return () => window.removeEventListener('language-changed', handleLanguageChange);
     }, []);
 
@@ -81,7 +105,56 @@ const CrosswordGeneratorPage = () => {
         setActiveCell(null);
         setClues(new Map());
         setOutputJson('');
+        setActivePuzzleName(null);
         toast({ title: 'Generator zresetowany', description: 'Wszystkie pola zostały wyczyszczone.' });
+    };
+
+    const handleSavePuzzle = () => {
+        if (!newPuzzleName.trim()) {
+            toast({ title: 'Błąd', description: 'Proszę wpisać nazwę dla krzyżówki.', variant: 'destructive' });
+            return;
+        }
+        const cluesArray = Array.from(clues.entries());
+        const dataToSave = { grid, clues: cluesArray };
+        const newPuzzles = { ...savedPuzzles, [newPuzzleName]: dataToSave };
+
+        setSavedPuzzles(newPuzzles);
+        localStorage.setItem(PUZZLES_STORAGE_KEY, JSON.stringify(newPuzzles));
+        setActivePuzzleName(newPuzzleName);
+        toast({ title: 'Krzyżówka zapisana!', description: `Zapisano jako "${newPuzzleName}".` });
+        setNewPuzzleName('');
+    };
+
+    const handleLoadPuzzle = (name: string) => {
+        if (savedPuzzles[name]) {
+            const { grid: savedGrid, clues: savedCluesArray } = savedPuzzles[name];
+            setGrid(savedGrid);
+            setClues(new Map(savedCluesArray));
+            setActivePuzzleName(name);
+            toast({ title: 'Krzyżówka wczytana!', description: `Wczytano "${name}".` });
+        }
+    };
+    
+    const handleDeletePuzzle = (name: string) => {
+        const newPuzzles = { ...savedPuzzles };
+        delete newPuzzles[name];
+        setSavedPuzzles(newPuzzles);
+        localStorage.setItem(PUZZLES_STORAGE_KEY, JSON.stringify(newPuzzles));
+        if (activePuzzleName === name) {
+            setActivePuzzleName(null);
+        }
+        toast({ title: 'Krzyżówka usunięta!', description: `Usunięto "${name}".` });
+        setDeleteDialog({ open: false, name: null });
+    };
+
+    const openDeleteDialog = (name: string) => {
+        setDeleteDialog({ open: true, name });
+    };
+    
+    const confirmDelete = () => {
+        if (deleteDialog.name) {
+            handleDeletePuzzle(deleteDialog.name);
+        }
     };
 
     const handleGenerateJson = () => {
@@ -172,8 +245,8 @@ const CrosswordGeneratorPage = () => {
                      <div className="space-y-1 pt-2">
                         <Label className="text-xs text-muted-foreground">Błędne odpowiedzi (opcje do wyboru)</Label>
                         {[0, 1].map(i => (
-                            <Input key={i} placeholder={`Opcja ${i + 1}`} value={clueData.options[i]} onChange={(e) => {
-                                const newOptions = [...clueData.options];
+                            <Input key={i} placeholder={`Opcja ${i + 1}`} value={clueData.options[i] || ''} onChange={(e) => {
+                                const newOptions = [...(clueData.options || ['', ''])];
                                 newOptions[i] = e.target.value;
                                 handleClueDataChange(num, 'options', newOptions);
                             }} />
@@ -239,7 +312,34 @@ const CrosswordGeneratorPage = () => {
                         </Card>
                         
                         <Card>
-                             <CardHeader className="p-3"><CardTitle className="text-base">3. Zapisz i zresetuj</CardTitle></CardHeader>
+                            <CardHeader className="p-3"><CardTitle className="text-base flex items-center gap-2"><FolderOpen className="h-5 w-5"/> 3. Zapisz / Wczytaj postęp</CardTitle></CardHeader>
+                            <CardContent className="p-3 space-y-3">
+                                <div className="space-y-2">
+                                    {Object.keys(savedPuzzles).length === 0 ? (
+                                        <p className="text-sm text-center text-muted-foreground">Brak zapisanych krzyżówek.</p>
+                                    ) : (
+                                        <div className="max-h-24 overflow-y-auto space-y-2 pr-2">
+                                            {Object.keys(savedPuzzles).map(name => (
+                                                <div key={name} className={cn("flex items-center justify-between p-2 rounded-md border", activePuzzleName === name ? "bg-accent border-primary" : "bg-muted/30")}>
+                                                    <span className="font-semibold">{name}</span>
+                                                    <div className="flex gap-1">
+                                                        <Button size="sm" variant="ghost" onClick={() => handleLoadPuzzle(name)}><Upload className="h-4 w-4"/></Button>
+                                                        <Button size="sm" variant="ghost" onClick={() => openDeleteDialog(name)}><Trash2 className="h-4 w-4 text-destructive"/></Button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="flex gap-2">
+                                    <Input placeholder="Nazwa nowej krzyżówki..." value={newPuzzleName} onChange={(e) => setNewPuzzleName(e.target.value)} />
+                                    <Button onClick={handleSavePuzzle}><Save className="mr-2 h-4 w-4"/>Zapisz</Button>
+                                </div>
+                            </CardContent>
+                        </Card>
+                        
+                        <Card>
+                             <CardHeader className="p-3"><CardTitle className="text-base">4. Wygeneruj JSON i zresetuj</CardTitle></CardHeader>
                              <CardContent className="p-3 space-y-3">
                                 <div className="flex gap-2">
                                     <Button className="w-full" onClick={handleGenerateJson}><Save className="mr-2 h-4 w-4"/> Wygeneruj JSON</Button>
@@ -264,6 +364,21 @@ const CrosswordGeneratorPage = () => {
                     </Link>
                 </CardFooter>
             </Card>
+
+            <AlertDialog open={deleteDialog.open} onOpenChange={(open) => setDeleteDialog({ ...deleteDialog, open })}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Czy na pewno?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Spowoduje to trwałe usunięcie krzyżówki o nazwie "{deleteDialog.name}". Tej akcji nie można cofnąć.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel onClick={() => setDeleteDialog({ open: false, name: null })}>Anuluj</AlertDialogCancel>
+                        <AlertDialogAction onClick={confirmDelete} className="bg-destructive hover:bg-destructive/90">Usuń</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </main>
     );
 };

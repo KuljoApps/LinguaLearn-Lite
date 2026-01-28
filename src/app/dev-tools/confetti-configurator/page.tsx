@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
-import { ArrowLeft, Beaker, CheckCircle, Clock, Palette, Shapes, SlidersHorizontal, Sparkles, ShieldX, Trophy, Save, ClipboardCopy, PlusCircle, Trash2, FolderOpen, Upload } from 'lucide-react';
+import { ArrowLeft, Beaker, CheckCircle, Clock, Palette, Shapes, SlidersHorizontal, Sparkles, ShieldX, Trophy, Save, ClipboardCopy, PlusCircle, Trash2, FolderOpen, Upload, FileDown } from 'lucide-react';
 import Confetti from '@/components/Confetti';
 import { Label } from '@/components/ui/label';
 import { Slider } from "@/components/ui/slider";
@@ -236,6 +236,9 @@ export default function ConfettiConfiguratorPage() {
 
             <Card className="w-full max-w-6xl shadow-2xl">
                  <CardHeader className="p-4 pb-2 text-center"><div className="flex items-center justify-center gap-4"><Beaker className="h-8 w-8" /><CardTitle className="text-2xl">Confetti Configurator</CardTitle></div></CardHeader>
+                 <div className="text-center py-4 border-b">
+                    <Button onClick={handleTestClick} disabled={isExploding} className="w-full max-w-xs"><Sparkles className="mr-2 h-4 w-4"/> Test Animation</Button>
+                 </div>
                  <CardContent className="p-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                     {/* Left Column */}
                     <div className="space-y-6">
@@ -253,7 +256,9 @@ export default function ConfettiConfiguratorPage() {
                         <div className="space-y-4"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><FileDown className="h-5 w-5" /> Generate & Export</h3><Button className="w-full" onClick={handleGenerateJson}>Generate JSON</Button>{outputJson && (<div className="relative"><Textarea value={outputJson} readOnly className="h-32 font-mono text-xs"/><Button size="icon" variant="ghost" className="absolute top-2 right-2 h-7 w-7" onClick={handleCopyToClipboard}><ClipboardCopy className="h-4 w-4" /></Button></div>)}</div>
                     </div>
                  </CardContent>
-                 <CardFooter className="flex-col gap-4 p-6 border-t"><Button onClick={handleTestClick} disabled={isExploding} className="w-full max-w-xs"><Sparkles className="mr-2 h-4 w-4"/> Test Animation</Button><Link href="/listening" passHref><Button variant="outline"><ArrowLeft className="mr-2 h-4 w-4" /> Back to Listening</Button></Link></CardFooter>
+                 <CardFooter className="flex justify-center p-6 border-t">
+                    <Link href="/listening" passHref><Button variant="outline"><ArrowLeft className="mr-2 h-4 w-4" /> Back to Listening</Button></Link>
+                 </CardFooter>
             </Card>
 
             <AlertDialog open={deleteDialog.open} onOpenChange={(open) => setDeleteDialog({ ...deleteDialog, open })}>
@@ -272,4 +277,5 @@ export default function ConfettiConfiguratorPage() {
             </AlertDialog>
         </main>
     );
-}
+
+    

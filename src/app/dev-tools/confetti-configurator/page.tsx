@@ -36,7 +36,6 @@ interface ConfettiConfig {
   pieces: number;
   gravity: number;
   wind: number;
-  duration: number; // in seconds
   shapes: ConfettiShape[];
   colors: string[];
   initialVelocityX: number;
@@ -91,7 +90,7 @@ export default function ConfettiConfiguratorPage() {
     const { toast } = useToast();
     const [width, height] = useWindowSize();
     const [config, setConfig] = useState<ConfettiConfig>({
-        pieces: 200, gravity: 0.2, wind: 0, duration: 5,
+        pieces: 200, gravity: 0.2, wind: 0,
         shapes: ['square', 'circle'],
         colors: defaultColors,
         initialVelocityX: 0, initialVelocityY: -10,
@@ -111,10 +110,10 @@ export default function ConfettiConfiguratorPage() {
     const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; type: 'config' | 'palette' | null; name: string | null }>({ open: false, type: null, name: null });
 
     const presets: Record<string, Partial<ConfettiConfig>> = {
-      'Explosion': { pieces: 500, duration: 3, gravity: 0.3, initialVelocityY: -15, confettiSource: { x: 50, y: 50, w: 20, h: 20 }, colors: ['#ff0000', '#ffa500', '#ffff00', '#ff4500'], shapes: ['star', 'triangle'] },
-      'Fountain': { pieces: 400, duration: 4, gravity: 0.1, initialVelocityY: -25, confettiSource: { x: 50, y: 80, w: 20, h: 10 }, shapes: ['line', 'circle'] },
-      'Rain': { pieces: 600, duration: 6, gravity: 0.5, wind: 2, confettiSource: { x: 50, y: 0, w: 100, h: 0 }, colors: ['#4dabf7', '#1971c2', '#a5d8ff'], shapes: ['line'] },
-      'Side Cannons': { pieces: 500, duration: 4, gravity: 0, initialVelocityX: 20, confettiSource: { x: 50, y: 50, w: 0, h: 100 }, colors: ['#f03e3e', '#12b886', '#fab005'], shapes: ['square'] },
+      'Explosion': { pieces: 500, gravity: 0.3, initialVelocityY: -15, confettiSource: { x: 50, y: 50, w: 20, h: 20 }, colors: ['#ff0000', '#ffa500', '#ffff00', '#ff4500'], shapes: ['star', 'triangle'] },
+      'Fountain': { pieces: 400, gravity: 0.1, initialVelocityY: -25, confettiSource: { x: 50, y: 80, w: 20, h: 10 }, shapes: ['line', 'circle'] },
+      'Rain': { pieces: 600, gravity: 0.5, wind: 2, confettiSource: { x: 50, y: 0, w: 100, h: 0 }, colors: ['#4dabf7', '#1971c2', '#a5d8ff'], shapes: ['line'] },
+      'Side Cannons': { pieces: 500, gravity: 0, initialVelocityX: 20, confettiSource: { x: 50, y: 50, w: 0, h: 100 }, colors: ['#f03e3e', '#12b886', '#fab005'], shapes: ['square'] },
     };
 
     useEffect(() => {
@@ -134,8 +133,12 @@ export default function ConfettiConfiguratorPage() {
         } catch (e) { console.error("Failed to load confetti data:", e); }
     }, []);
 
-    const handleTestClick = () => { if (isExploding) return; setIsExploding(true); setTimeout(() => setIsExploding(false), config.duration * 1000); };
+    const handleTestClick = () => { if (isExploding) return; setIsExploding(true); };
     
+    const onConfettiCompleteHandler = () => {
+        setIsExploding(false);
+    };
+
     const getDrawShapeFunction = () => {
         if (config.shapes.length === 0) return undefined;
         return (ctx: CanvasRenderingContext2D) => {
@@ -163,7 +166,7 @@ export default function ConfettiConfiguratorPage() {
     
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-muted/40">
-            {isExploding && <Confetti recycle={false} numberOfPieces={config.pieces} gravity={config.gravity} wind={config.wind} initialVelocityX={config.initialVelocityX} initialVelocityY={config.initialVelocityY} colors={config.colors} confettiSource={{ w: config.confettiSource.w, h: config.confettiSource.h, x: width * (config.confettiSource.x / 100), y: height * (config.confettiSource.y / 100) }} drawShape={getDrawShapeFunction()} />}
+            {isExploding && <Confetti recycle={false} numberOfPieces={config.pieces} gravity={config.gravity} wind={config.wind} initialVelocityX={config.initialVelocityX} initialVelocityY={config.initialVelocityY} colors={config.colors} confettiSource={{ w: config.confettiSource.w, h: config.confettiSource.h, x: width * (config.confettiSource.x / 100), y: height * (config.confettiSource.y / 100) }} drawShape={getDrawShapeFunction()} onConfettiComplete={onConfettiCompleteHandler} />}
              <Card className="w-full max-w-lg shadow-2xl pointer-events-none mb-8">
                 <CardHeader className="items-center text-center pb-4"><Trophy className="h-16 w-16 text-amber" /><CardTitle className="text-3xl font-bold">Perfect Score!</CardTitle><CardDescription>Amazing! You answered all questions correctly.</CardDescription></CardHeader>
                 <CardContent className="space-y-4"><Card className="bg-muted/50"><CardHeader className="pb-2 pt-4"><CardTitle className="text-xl text-center">Summary</CardTitle></CardHeader><CardContent className="grid grid-cols-2 gap-4 text-center"><div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background"><span className="text-2xl font-bold">30 / 30</span><span className="text-xs text-muted-foreground">Score</span></div><div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background"><span className="text-2xl font-bold">100%</span><span className="text-xs text-muted-foreground">Success Rate</span></div><div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background"><div className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-success"/><span className="text-2xl font-bold">30</span></div><span className="text-xs text-muted-foreground">Correct</span></div><div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background"><div className="flex items-center gap-2"><ShieldX className="h-4 w-4 text-destructive"/><span className="text-2xl font-bold">0</span></div><span className="text-xs text-muted-foreground">Mistakes</span></div><div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background col-span-2"><div className="flex items-center gap-2"><Clock className="h-4 w-4 text-muted-foreground"/><span className="text-2xl font-bold">02:15</span></div><span className="text-xs text-muted-foreground">Total Time</span></div></CardContent></Card></CardContent>
@@ -176,7 +179,7 @@ export default function ConfettiConfiguratorPage() {
                  <CardContent className="p-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                     {/* Left Column */}
                     <div className="space-y-6">
-                        <div className="space-y-4"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><SlidersHorizontal className="h-5 w-5"/> Parameters</h3><div><Label htmlFor="amount">Amount: {config.pieces}</Label><Slider id="amount" value={[config.pieces]} onValueChange={(v) => setConfig(p => ({...p, pieces: v[0]}))} min={10} max={1000} step={10} /></div><div><Label htmlFor="duration">Duration: {config.duration}s</Label><Slider id="duration" value={[config.duration]} onValueChange={(v) => setConfig(p => ({...p, duration: v[0]}))} min={1} max={20} step={0.5} /></div></div>
+                        <div className="space-y-4"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><SlidersHorizontal className="h-5 w-5"/> Parameters</h3><div><Label htmlFor="amount">Amount: {config.pieces}</Label><Slider id="amount" value={[config.pieces]} onValueChange={(v) => setConfig(p => ({...p, pieces: v[0]}))} min={10} max={1000} step={10} /></div></div>
                         <Separator/>
                         <div className="space-y-4"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><Wind className="h-5 w-5"/> Physics</h3><div><Label>Gravity: {config.gravity.toFixed(2)}</Label><Slider value={[config.gravity]} onValueChange={(v) => setConfig(p => ({...p, gravity: v[0]}))} min={0} max={1} step={0.05} /></div><div><Label>Wind: {config.wind.toFixed(1)}</Label><Slider value={[config.wind]} onValueChange={(v) => setConfig(p => ({...p, wind: v[0]}))} min={-10} max={10} step={0.5} /></div><div className="grid grid-cols-2 gap-4"><div><Label>Initial Velocity X: {config.initialVelocityX}</Label><Slider value={[config.initialVelocityX]} onValueChange={(v) => setConfig(p => ({...p, initialVelocityX: v[0]}))} min={-30} max={30} step={1} /></div><div><Label>Initial Velocity Y: {config.initialVelocityY}</Label><Slider value={[config.initialVelocityY]} onValueChange={(v) => setConfig(p => ({...p, initialVelocityY: v[0]}))} min={-30} max={30} step={1} /></div></div></div>
                         <Separator/>

@@ -1,20 +1,32 @@
+
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
-import { ArrowLeft, Beaker, CheckCircle, Clock, Palette, Shapes, SlidersHorizontal, Sparkles, ShieldX, Trophy, Save, ClipboardCopy, PlusCircle, Trash2 } from 'lucide-react';
+import { ArrowLeft, Beaker, CheckCircle, Clock, Palette, Shapes, SlidersHorizontal, Sparkles, ShieldX, Trophy, Save, ClipboardCopy, PlusCircle, Trash2, FolderOpen, Upload } from 'lucide-react';
 import Confetti from '@/components/Confetti';
 import { Label } from '@/components/ui/label';
-import { Slider } from '@/components/ui/slider';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Separator } from '@/components/ui/separator';
+import { Slider } from "@/components/ui/slider";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Separator } from "@/components/ui/separator";
 import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { HexColorPicker } from 'react-colorful';
-import { Textarea } from '@/components/ui/textarea';
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from '@/hooks/use-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Input } from "@/components/ui/input";
 
 type ConfettiShape = 'square' | 'circle' | 'triangle' | 'star';
 
@@ -26,18 +38,19 @@ interface ConfettiConfig {
   colors: string[];
 }
 
-const STORAGE_KEY = 'linguaLearnConfettiConfig';
+const CONFIGS_STORAGE_KEY = 'linguaLearnConfettiConfigs_v2';
+const PALETTES_STORAGE_KEY = 'linguaLearnConfettiPalettes_v2';
+const LAST_CONFIG_KEY = 'linguaLearnLastConfettiConfigName_v2';
 
 const defaultColors = ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a'];
 
-const presetColors: Record<string, string[]> = {
+const presetPalettes: Record<string, string[]> = {
     'Rainbow': ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#4b0082', '#9400d3'],
     'Pastel': ['#a8e6cf', '#dcedc1', '#ffd3b6', '#ffaaa5', '#ff8b94'],
     'Ocean': ['#003f5c', '#2f4b7c', '#665191', '#a05195', '#d45087'],
     'Forest': ['#004225', '#588157', '#a3b18a', '#dad7cd', '#3a5a40'],
 };
 
-// --- Shape drawing functions ---
 const drawTriangle = (ctx: CanvasRenderingContext2D) => {
     ctx.beginPath();
     ctx.moveTo(-5, 5);
@@ -68,7 +81,6 @@ const drawCircle = (ctx: CanvasRenderingContext2D) => {
     ctx.closePath();
 };
 
-
 export default function ConfettiConfiguratorPage() {
     const { toast } = useToast();
     const [config, setConfig] = useState<ConfettiConfig>({
@@ -82,173 +94,182 @@ export default function ConfettiConfiguratorPage() {
     const [customColor, setCustomColor] = useState('#a864fd');
     const [outputJson, setOutputJson] = useState('');
     
+    const [savedConfigs, setSavedConfigs] = useState<Record<string, ConfettiConfig>>({});
+    const [newConfigName, setNewConfigName] = useState('');
+    const [activeConfigName, setActiveConfigName] = useState<string | null>(null);
+
+    const [savedPalettes, setSavedPalettes] = useState<Record<string, string[]>>({});
+    const [newPaletteName, setNewPaletteName] = useState('');
+    
+    const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; type: 'config' | 'palette' | null; name: string | null }>({ open: false, type: null, name: null });
+
     useEffect(() => {
         try {
-            const savedConfig = localStorage.getItem(STORAGE_KEY);
-            if (savedConfig) {
-                setConfig(JSON.parse(savedConfig));
+            const configsJson = localStorage.getItem(CONFIGS_STORAGE_KEY);
+            const loadedConfigs = configsJson ? JSON.parse(configsJson) : {};
+            setSavedConfigs(loadedConfigs);
+
+            const palettesJson = localStorage.getItem(PALETTES_STORAGE_KEY);
+            if (palettesJson) setSavedPalettes(JSON.parse(palettesJson));
+
+            const lastConfigName = localStorage.getItem(LAST_CONFIG_KEY);
+            if (lastConfigName && loadedConfigs[lastConfigName]) {
+                setConfig(loadedConfigs[lastConfigName]);
+                setActiveConfigName(lastConfigName);
             }
         } catch (e) {
-            console.error("Failed to load confetti config:", e);
+            console.error("Failed to load confetti data:", e);
         }
     }, []);
-    
-    const handleSave = () => {
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
-            toast({ title: 'Config saved!', description: 'Your confetti settings have been saved locally.' });
-        } catch (e) {
-            console.error("Failed to save confetti config:", e);
-        }
-    };
 
     const handleTestClick = () => {
         if (isExploding) return;
         setIsExploding(true);
         setTimeout(() => setIsExploding(false), config.duration * 1000);
     };
-
-    const handleAddColor = () => {
-        if (!config.colors.includes(customColor)) {
-            setConfig(prev => ({ ...prev, colors: [...prev.colors, customColor] }));
+    
+    const getShapeFunction = () => {
+        switch (config.shape) {
+            case 'circle': return drawCircle;
+            case 'triangle': return drawTriangle;
+            case 'star': return drawStar;
+            case 'square': default: return undefined;
         }
     };
-
-    const handleRemoveColor = (colorToRemove: string) => {
-        setConfig(prev => ({
-            ...prev,
-            colors: prev.colors.filter(c => c !== colorToRemove)
-        }));
-    };
     
-    const handlePresetClick = (presetName: string) => {
-        setConfig(prev => ({...prev, colors: presetColors[presetName]}));
-    };
-
-    const handleGenerateJson = () => {
-        setOutputJson(JSON.stringify(config, null, 2));
-    };
-
+    const handleGenerateJson = () => setOutputJson(JSON.stringify(config, null, 2));
     const handleCopyToClipboard = () => {
         if (!outputJson) return;
         navigator.clipboard.writeText(outputJson);
         toast({ title: 'Copied to clipboard!' });
     };
 
-    const getShapeFunction = () => {
-        switch (config.shape) {
-            case 'circle':
-                return drawCircle;
-            case 'triangle':
-                return drawTriangle;
-            case 'star':
-                return drawStar;
-            case 'square':
-            default:
-                return undefined; // Default is square
+    // --- Color Palette Management ---
+    const handleAddColor = () => {
+        if (!config.colors.includes(customColor)) {
+            setConfig(prev => ({ ...prev, colors: [...prev.colors, customColor] }));
+        }
+    };
+    const handleRemoveColor = (colorToRemove: string) => {
+        setConfig(prev => ({ ...prev, colors: prev.colors.filter(c => c !== colorToRemove) }));
+    };
+    const handleLoadPalette = (palette: string[]) => {
+        setConfig(prev => ({...prev, colors: palette}));
+    };
+    const handleSavePalette = () => {
+        if (!newPaletteName.trim()) {
+            toast({ title: 'Error', description: 'Please enter a name for the palette.', variant: 'destructive' });
+            return;
+        }
+        const newPalettes = { ...savedPalettes, [newPaletteName]: config.colors };
+        setSavedPalettes(newPalettes);
+        localStorage.setItem(PALETTES_STORAGE_KEY, JSON.stringify(newPalettes));
+        toast({ title: 'Palette Saved!', description: `Saved as "${newPaletteName}".` });
+        setNewPaletteName('');
+    };
+    const handleDeletePalette = (name: string) => {
+        const newPalettes = { ...savedPalettes };
+        delete newPalettes[name];
+        setSavedPalettes(newPalettes);
+        localStorage.setItem(PALETTES_STORAGE_KEY, JSON.stringify(newPalettes));
+        toast({ title: 'Palette Deleted!', description: `"${name}" has been removed.` });
+        setDeleteDialog({ open: false, type: null, name: null });
+    };
+
+    // --- Config Profile Management ---
+    const handleSaveConfig = () => {
+        if (!newConfigName.trim()) {
+            toast({ title: 'Error', description: 'Please enter a name for the configuration.', variant: 'destructive' });
+            return;
+        }
+        const newConfigs = { ...savedConfigs, [newConfigName]: config };
+        setSavedConfigs(newConfigs);
+        localStorage.setItem(CONFIGS_STORAGE_KEY, JSON.stringify(newConfigs));
+        setActiveConfigName(newConfigName);
+        localStorage.setItem(LAST_CONFIG_KEY, newConfigName);
+        toast({ title: 'Configuration Saved!', description: `Saved as "${newConfigName}".` });
+        setNewConfigName('');
+    };
+
+    const handleLoadConfig = (name: string) => {
+        if (savedConfigs[name]) {
+            setConfig(savedConfigs[name]);
+            setActiveConfigName(name);
+            localStorage.setItem(LAST_CONFIG_KEY, name);
+            toast({ title: 'Configuration Loaded!', description: `"${name}" is now active.` });
+        }
+    };
+
+    const handleDeleteConfig = (name: string) => {
+        const newConfigs = { ...savedConfigs };
+        delete newConfigs[name];
+        setSavedConfigs(newConfigs);
+        localStorage.setItem(CONFIGS_STORAGE_KEY, JSON.stringify(newConfigs));
+        if (activeConfigName === name) {
+            setActiveConfigName(null);
+            localStorage.removeItem(LAST_CONFIG_KEY);
+        }
+        toast({ title: 'Configuration Deleted!', description: `"${name}" has been removed.` });
+        setDeleteDialog({ open: false, type: null, name: null });
+    };
+    
+    const openDeleteDialog = (type: 'config' | 'palette', name: string) => {
+        setDeleteDialog({ open: true, type, name });
+    };
+
+    const confirmDelete = () => {
+        if (!deleteDialog.name || !deleteDialog.type) return;
+        if (deleteDialog.type === 'config') {
+            handleDeleteConfig(deleteDialog.name);
+        } else if (deleteDialog.type === 'palette') {
+            handleDeletePalette(deleteDialog.name);
         }
     };
     
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-muted/40">
-            {isExploding && (
-                <Confetti
-                    recycle={true}
-                    numberOfPieces={config.pieces}
-                    gravity={config.gravity}
-                    colors={config.colors}
-                    confettiSource={{ w: 10, h: 10, x: window.innerWidth / 2, y: window.innerHeight / 2 }}
-                    drawShape={getShapeFunction()}
-                />
-            )}
+            {isExploding && <Confetti recycle={false} numberOfPieces={config.pieces} gravity={config.gravity} colors={config.colors} confettiSource={{ w: 10, h: 10, x: window.innerWidth / 2, y: window.innerHeight / 2 }} drawShape={getShapeFunction()} />}
              <Card className="w-full max-w-lg shadow-2xl pointer-events-none mb-8">
-                <CardHeader className="items-center text-center pb-4">
-                    <Trophy className="h-16 w-16 text-amber" />
-                    <CardTitle className="text-3xl font-bold">Perfect Score!</CardTitle>
-                    <CardDescription>Amazing! You answered all questions correctly.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    <Card className="bg-muted/50">
-                        <CardHeader className="pb-2 pt-4"><CardTitle className="text-xl text-center">Summary</CardTitle></CardHeader>
-                        <CardContent className="grid grid-cols-2 gap-4 text-center">
-                            <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background"><span className="text-2xl font-bold">30 / 30</span><span className="text-xs text-muted-foreground">Score</span></div>
-                            <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background"><span className="text-2xl font-bold">100%</span><span className="text-xs text-muted-foreground">Success Rate</span></div>
-                            <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background"><div className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-success"/><span className="text-2xl font-bold">30</span></div><span className="text-xs text-muted-foreground">Correct</span></div>
-                            <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background"><div className="flex items-center gap-2"><ShieldX className="h-4 w-4 text-destructive"/><span className="text-2xl font-bold">0</span></div><span className="text-xs text-muted-foreground">Mistakes</span></div>
-                            <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background col-span-2"><div className="flex items-center gap-2"><Clock className="h-4 w-4 text-muted-foreground"/><span className="text-2xl font-bold">02:15</span></div><span className="text-xs text-muted-foreground">Total Time</span></div>
-                        </CardContent>
-                    </Card>
-                </CardContent>
+                <CardHeader className="items-center text-center pb-4"><Trophy className="h-16 w-16 text-amber" /><CardTitle className="text-3xl font-bold">Perfect Score!</CardTitle><CardDescription>Amazing! You answered all questions correctly.</CardDescription></CardHeader>
+                <CardContent className="space-y-4"><Card className="bg-muted/50"><CardHeader className="pb-2 pt-4"><CardTitle className="text-xl text-center">Summary</CardTitle></CardHeader><CardContent className="grid grid-cols-2 gap-4 text-center"><div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background"><span className="text-2xl font-bold">30 / 30</span><span className="text-xs text-muted-foreground">Score</span></div><div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background"><span className="text-2xl font-bold">100%</span><span className="text-xs text-muted-foreground">Success Rate</span></div><div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background"><div className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-success"/><span className="text-2xl font-bold">30</span></div><span className="text-xs text-muted-foreground">Correct</span></div><div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background"><div className="flex items-center gap-2"><ShieldX className="h-4 w-4 text-destructive"/><span className="text-2xl font-bold">0</span></div><span className="text-xs text-muted-foreground">Mistakes</span></div><div className="flex flex-col items-center justify-center p-2 rounded-lg bg-background col-span-2"><div className="flex items-center gap-2"><Clock className="h-4 w-4 text-muted-foreground"/><span className="text-2xl font-bold">02:15</span></div><span className="text-xs text-muted-foreground">Total Time</span></div></CardContent></Card></CardContent>
             </Card>
 
-            <Card className="w-full max-w-3xl shadow-2xl">
-                 <CardHeader className="p-4 pb-2 text-center">
-                    <div className="flex items-center justify-center gap-4"><Beaker className="h-8 w-8" /><CardTitle className="text-2xl">Confetti Configurator</CardTitle></div>
-                </CardHeader>
+            <Card className="w-full max-w-6xl shadow-2xl">
+                 <CardHeader className="p-4 pb-2 text-center"><div className="flex items-center justify-center gap-4"><Beaker className="h-8 w-8" /><CardTitle className="text-2xl">Confetti Configurator</CardTitle></div></CardHeader>
                  <CardContent className="p-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                    {/* Left Column */}
                     <div className="space-y-6">
-                        <h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><SlidersHorizontal className="h-5 w-5"/> Parameters</h3>
-                        <div className="space-y-4"><Label htmlFor="amount">Amount: {config.pieces}</Label><Slider id="amount" value={[config.pieces]} onValueChange={(v) => setConfig(p => ({...p, pieces: v[0]}))} min={10} max={800} step={10} /></div>
-                        <div className="space-y-4"><Label htmlFor="duration">Duration: {config.duration}s</Label><Slider id="duration" value={[config.duration]} onValueChange={(v) => setConfig(p => ({...p, duration: v[0]}))} min={1} max={15} step={1} /></div>
-                        <div className="space-y-4"><Label htmlFor="gravity">Gravity: {config.gravity.toFixed(2)}</Label><Slider id="gravity" value={[config.gravity]} onValueChange={(v) => setConfig(p => ({...p, gravity: v[0]}))} min={0.05} max={0.7} step={0.01} /></div>
+                        <div className="space-y-6"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><SlidersHorizontal className="h-5 w-5"/> Parameters</h3><div className="space-y-4"><Label htmlFor="amount">Amount: {config.pieces}</Label><Slider id="amount" value={[config.pieces]} onValueChange={(v) => setConfig(p => ({...p, pieces: v[0]}))} min={10} max={800} step={10} /></div><div className="space-y-4"><Label htmlFor="duration">Duration: {config.duration}s</Label><Slider id="duration" value={[config.duration]} onValueChange={(v) => setConfig(p => ({...p, duration: v[0]}))} min={1} max={15} step={1} /></div><div className="space-y-4"><Label htmlFor="gravity">Gravity: {config.gravity.toFixed(2)}</Label><Slider id="gravity" value={[config.gravity]} onValueChange={(v) => setConfig(p => ({...p, gravity: v[0]}))} min={0.05} max={0.7} step={0.01} /></div></div>
+                        <Separator/>
+                        <div className="space-y-6"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><Shapes className="h-5 w-5"/> Shape</h3><RadioGroup value={config.shape} onValueChange={(v) => setConfig(p => ({...p, shape: v as ConfettiShape}))} className="flex justify-center gap-4 flex-wrap"><Label htmlFor="square" className="cursor-pointer flex flex-col items-center gap-2 p-3 rounded-md border-2 has-[:checked]:border-primary"><div className="h-8 w-8 bg-foreground rounded-sm" /><div className="flex items-center gap-2"><RadioGroupItem value="square" id="square" />Square</div></Label><Label htmlFor="circle" className="cursor-pointer flex flex-col items-center gap-2 p-3 rounded-md border-2 has-[:checked]:border-primary"><div className="h-8 w-8 bg-foreground rounded-full" /><div className="flex items-center gap-2"><RadioGroupItem value="circle" id="circle" />Circle</div></Label><Label htmlFor="triangle" className="cursor-pointer flex flex-col items-center gap-2 p-3 rounded-md border-2 has-[:checked]:border-primary"><div className="h-8 w-8 bg-foreground" style={{ clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }} /><div className="flex items-center gap-2"><RadioGroupItem value="triangle" id="triangle" />Triangle</div></Label><Label htmlFor="star" className="cursor-pointer flex flex-col items-center gap-2 p-3 rounded-md border-2 has-[:checked]:border-primary"><div className="h-8 w-8 bg-foreground" style={{ clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)' }} /><div className="flex items-center gap-2"><RadioGroupItem value="star" id="star" />Star</div></Label></RadioGroup></div>
+                        <Separator/>
+                        <div className="space-y-6"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><Palette className="h-5 w-5"/> Colors</h3><div className="flex justify-center gap-2 flex-wrap">{Object.entries(presetPalettes).map(([name]) => (<Button key={name} variant="outline" size="sm" onClick={() => handleLoadPalette(presetPalettes[name])}>{name}</Button>))}</div>{Object.keys(savedPalettes).length > 0 && <div className="flex justify-center gap-2 flex-wrap">{Object.entries(savedPalettes).map(([name, colors]) => (<div key={name} className="relative group"><Button variant="outline" size="sm" onClick={() => handleLoadPalette(colors)}>{name}</Button><button onClick={() => openDeleteDialog('palette', name)} className="absolute -top-1 -right-1 flex items-center justify-center bg-destructive rounded-full h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 className="h-2.5 w-2.5 text-destructive-foreground"/></button></div>))}</div>}<div className="flex flex-wrap items-center justify-center gap-4"><Popover><PopoverTrigger asChild><div className="w-10 h-10 rounded-full border-2 cursor-pointer" style={{ backgroundColor: customColor }}/></PopoverTrigger><PopoverContent className="w-auto"><HexColorPicker color={customColor} onChange={setCustomColor} /></PopoverContent></Popover><Button size="sm" onClick={handleAddColor}><PlusCircle className="mr-2 h-4 w-4" /> Add Custom Color</Button></div><div className="flex flex-wrap gap-3 justify-center min-h-[36px] rounded-md border p-2">{config.colors.map(color => (<div key={color} className="relative group"><div style={{backgroundColor: color}} className="h-7 w-7 rounded-full border" /><button onClick={() => handleRemoveColor(color)} className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 className="h-4 w-4 text-white"/></button></div>))}</div><div className="flex gap-2"><Input placeholder="Custom palette name..." value={newPaletteName} onChange={(e) => setNewPaletteName(e.target.value)} /><Button onClick={handleSavePalette}><Save className="mr-2 h-4 w-4"/>Save</Button></div></div>
                     </div>
+
+                    {/* Right Column */}
                     <div className="space-y-6">
-                        <h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><Shapes className="h-5 w-5"/> Shape</h3>
-                         <RadioGroup value={config.shape} onValueChange={(v) => setConfig(p => ({...p, shape: v as ConfettiShape}))} className="flex justify-center gap-4">
-                            <Label htmlFor="square" className="cursor-pointer flex flex-col items-center gap-2 p-3 rounded-md border-2 has-[:checked]:border-primary"><div className="h-8 w-8 bg-foreground rounded-sm" /><div className="flex items-center gap-2"><RadioGroupItem value="square" id="square" />Square</div></Label>
-                            <Label htmlFor="circle" className="cursor-pointer flex flex-col items-center gap-2 p-3 rounded-md border-2 has-[:checked]:border-primary"><div className="h-8 w-8 bg-foreground rounded-full" /><div className="flex items-center gap-2"><RadioGroupItem value="circle" id="circle" />Circle</div></Label>
-                            <Label htmlFor="triangle" className="cursor-pointer flex flex-col items-center gap-2 p-3 rounded-md border-2 has-[:checked]:border-primary"><div className="h-8 w-8 bg-foreground" style={{ clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }} /><div className="flex items-center gap-2"><RadioGroupItem value="triangle" id="triangle" />Triangle</div></Label>
-                            <Label htmlFor="star" className="cursor-pointer flex flex-col items-center gap-2 p-3 rounded-md border-2 has-[:checked]:border-primary"><div className="h-8 w-8 bg-foreground" style={{ clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)' }} /><div className="flex items-center gap-2"><RadioGroupItem value="star" id="star" />Star</div></Label>
-                        </RadioGroup>
-                    </div>
-                    <div className="md:col-span-2 space-y-6">
-                        <Separator />
-                        <h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><Palette className="h-5 w-5"/> Colors</h3>
-                        <div className="flex justify-center gap-2">
-                            {Object.entries(presetColors).map(([name]) => (<Button key={name} variant="outline" size="sm" onClick={() => handlePresetClick(name)}>{name}</Button>))}
-                        </div>
-                        <div className="flex items-center justify-center gap-4">
-                           <Popover>
-                              <PopoverTrigger asChild><div className="w-10 h-10 rounded-full border-2 cursor-pointer" style={{ backgroundColor: customColor }}/></PopoverTrigger>
-                              <PopoverContent className="w-auto"><HexColorPicker color={customColor} onChange={setCustomColor} /></PopoverContent>
-                            </Popover>
-                             <Button size="sm" onClick={handleAddColor}><PlusCircle className="mr-2 h-4 w-4" /> Add Custom Color</Button>
-                        </div>
-                        <div className="flex flex-wrap gap-3 justify-center min-h-[36px] rounded-md border p-2">
-                            {config.colors.map(color => (
-                                <div key={color} className="relative group">
-                                    <div style={{backgroundColor: color}} className="h-7 w-7 rounded-full border" />
-                                    <button onClick={() => handleRemoveColor(color)} className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <Trash2 className="h-4 w-4 text-white"/>
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                     <div className="md:col-span-2 space-y-4">
-                         <Separator />
-                        <h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><Save className="h-5 w-5" /> Generate & Save</h3>
-                        <div className="flex gap-2 justify-center">
-                            <Button className="w-full max-w-xs" onClick={handleGenerateJson}>Generate JSON</Button>
-                            <Button className="w-full max-w-xs" onClick={handleSave}>Save Config</Button>
-                        </div>
-                        {outputJson && (
-                             <div className="relative">
-                                 <Textarea value={outputJson} readOnly className="h-32 font-mono text-xs"/>
-                                 <Button size="icon" variant="ghost" className="absolute top-2 right-2 h-7 w-7" onClick={handleCopyToClipboard}><ClipboardCopy className="h-4 w-4" /></Button>
-                             </div>
-                        )}
+                        <div className="space-y-4"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><FolderOpen className="h-5 w-5"/>Saved Configurations</h3><div className="space-y-2">{Object.keys(savedConfigs).length === 0 ? <p className="text-sm text-center text-muted-foreground">No saved configurations.</p> : <div className="max-h-32 overflow-y-auto space-y-2 pr-2">{Object.keys(savedConfigs).map(name => (<div key={name} className={cn("flex items-center justify-between p-2 rounded-md border", activeConfigName === name ? "bg-accent border-primary" : "bg-muted/30")}><span className="font-semibold">{name}</span><div className="flex gap-1"><Button size="sm" variant="ghost" onClick={() => handleLoadConfig(name)}><Upload className="h-4 w-4"/></Button><Button size="sm" variant="ghost" onClick={() => openDeleteDialog('config', name)}><Trash2 className="h-4 w-4 text-destructive"/></Button></div></div>))}</div>}</div><div className="flex gap-2"><Input placeholder="New configuration name..." value={newConfigName} onChange={(e) => setNewConfigName(e.target.value)} /><Button onClick={handleSaveConfig}><Save className="mr-2 h-4 w-4"/>Save</Button></div></div>
+                        <Separator/>
+                        <div className="space-y-4"><h3 className="text-lg font-semibold text-center flex items-center justify-center gap-2"><FileDown className="h-5 w-5" /> Generate & Export</h3><Button className="w-full" onClick={handleGenerateJson}>Generate JSON</Button>{outputJson && (<div className="relative"><Textarea value={outputJson} readOnly className="h-32 font-mono text-xs"/><Button size="icon" variant="ghost" className="absolute top-2 right-2 h-7 w-7" onClick={handleCopyToClipboard}><ClipboardCopy className="h-4 w-4" /></Button></div>)}</div>
                     </div>
                  </CardContent>
-                 <CardFooter className="flex-col gap-4 p-6 border-t">
-                    <Button onClick={handleTestClick} disabled={isExploding} className="w-full max-w-xs">
-                        <Sparkles className="mr-2 h-4 w-4"/> Test Animation
-                    </Button>
-                    <Link href="/listening" passHref>
-                        <Button variant="outline"><ArrowLeft className="mr-2 h-4 w-4" /> Back to Listening</Button>
-                    </Link>
-                </CardFooter>
+                 <CardFooter className="flex-col gap-4 p-6 border-t"><Button onClick={handleTestClick} disabled={isExploding} className="w-full max-w-xs"><Sparkles className="mr-2 h-4 w-4"/> Test Animation</Button><Link href="/listening" passHref><Button variant="outline"><ArrowLeft className="mr-2 h-4 w-4" /> Back to Listening</Button></Link></CardFooter>
             </Card>
+
+            <AlertDialog open={deleteDialog.open} onOpenChange={(open) => setDeleteDialog({ ...deleteDialog, open })}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            This will permanently delete the {deleteDialog.type} named "{deleteDialog.name}". This action cannot be undone.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel onClick={() => setDeleteDialog({ open: false, type: null, name: null })}>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={confirmDelete} className="bg-destructive hover:bg-destructive/90">Delete</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </main>
     );
 }

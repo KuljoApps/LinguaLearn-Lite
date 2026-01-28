@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect, useMemo, type SetStateAction, type Dispatch } from 'react';
@@ -239,11 +238,11 @@ function WordListPage({ onSelectQuestion }: { onSelectQuestion: Dispatch<SetStat
                         <FileText className="h-8 w-8" />
                         <CardTitle className="text-3xl">{getUIText('title')}</CardTitle>
                     </div>
-                    <p className="text-muted-foreground pt-0">{getUIText('description')}</p>
+                    <p className="text-muted-foreground pt-0 -pb-1">{getUIText('description')}</p>
                 </CardHeader>
                 <CardContent className="p-0 pt-2 pb-4">
-                    <div className="px-4 mb-2">
-                        <div className="flex items-center justify-between p-2 rounded-lg bg-amber/10 border border-amber">
+                    <div className="px-4 mb-4">
+                        <div className="flex items-center justify-between p-2 rounded-lg bg-orange-100 border border-amber">
                             <Button variant="ghost" size="icon" onClick={handlePrevCategory}>
                             <ArrowLeft className="h-5 w-5" />
                             </Button>
@@ -256,7 +255,7 @@ function WordListPage({ onSelectQuestion }: { onSelectQuestion: Dispatch<SetStat
                             </Button>
                         </div>
                     </div>
-                    <ScrollArea className="h-[64vh]">
+                    <ScrollArea className="h-[63vh] pr-4">
                         {view === 'list' ? (
                             <div className="space-y-1 px-4">
                                 {uncompleted.map((q, i) => renderWordItem(q, i, false))}
@@ -269,7 +268,7 @@ function WordListPage({ onSelectQuestion }: { onSelectQuestion: Dispatch<SetStat
                                 {completed.map((q, i) => renderWordItem(q, uncompleted.length + i, true))}
                             </div>
                         ) : (
-                             <div className="grid grid-cols-4 sm:grid-cols-7 gap-3 px-4">
+                             <div className="grid grid-cols-4 sm:grid-cols-7 gap-3 px-6">
                                 {currentCategory.words.map((question, index) => {
                                     const isCompleted = completedWords.has(question.fullWord);
                                     return (

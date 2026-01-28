@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
     ArrowLeft, GraduationCap,
@@ -10,7 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
 import LinguaLearnLogo from '@/components/LinguaLearnLogo';
-import { getLanguage, setLanguage, type Language } from '@/lib/storage';
+import { type Language } from '@/lib/storage';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
@@ -51,6 +51,16 @@ const themes = [
     { name: 'Sienna', gradient: 'from-orange-700 via-red-800 to-yellow-900', shadow: '#a0522d', mainColor: '19 72% 40%' },
 ];
 
+const THEME_STORAGE_KEY = 'linguaLearnDevButtonTheme';
+
+const languageOptions: { code: Language; name: string }[] = [
+    { code: 'en', name: 'English' },
+    { code: 'fr', name: 'Français' },
+    { code: 'de', name: 'Deutsch' },
+    { code: 'it', name: 'Italiano' },
+    { code: 'es', name: 'Español' },
+];
+
 const fakeUiTexts: Record<string, Record<Language, string>> = {
     welcome: {
         en: "This is a fake Home Screen. We are just testing something!",
@@ -72,8 +82,19 @@ export default function ButtonColorsPage() {
     const [language, setLanguageState] = useState<Language>('en');
     const [activeTheme, setActiveTheme] = useState(themes[0]);
 
+    useEffect(() => {
+        const savedThemeName = localStorage.getItem(THEME_STORAGE_KEY);
+        if (savedThemeName) {
+            const savedTheme = themes.find(t => t.name === savedThemeName);
+            if (savedTheme) {
+                setActiveTheme(savedTheme);
+            }
+        }
+    }, []);
+
     const handleThemeChange = (theme: typeof themes[0]) => {
         setActiveTheme(theme);
+        localStorage.setItem(THEME_STORAGE_KEY, theme.name);
         playSound('correct');
     };
 
@@ -179,9 +200,9 @@ export default function ButtonColorsPage() {
                                         </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="center">
-                                        {(['en', 'fr', 'de', 'it', 'es'] as Language[]).map(lang => (
-                                            <DropdownMenuItem key={lang} onClick={() => setLanguageState(lang)}>
-                                                <span className="mr-2 text-lg">{getFlag(lang)}</span> {lang.charAt(0).toUpperCase() + lang.slice(1)}
+                                        {languageOptions.map(lang => (
+                                            <DropdownMenuItem key={lang.code} onClick={() => setLanguageState(lang.code)}>
+                                                <span className="mr-2 text-lg">{getFlag(lang.code)}</span> {lang.name}
                                             </DropdownMenuItem>
                                         ))}
                                     </DropdownMenuContent>
